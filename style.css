@@ -1,0 +1,25 @@
+table {
+  border-collapse: collapse;
+}
+
+td {
+  border: 1px solid #ddd;
+  width: 16px;
+  height: 16px;
+}
+
+.wall {
+  background-color: #000;
+}
+
+.start {
+  background-color: #f00;
+}
+
+.end {
+  background-color: #0f0;
+}
+
+.path-node {
+  background-color: #888;
+}

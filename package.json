@@ -1,0 +1,22 @@
+{
+  "name": "world",
+  "version": "1.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gooz92/2no-data.git"
+  },
+  "author": "Gooz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Gooz92/2no-data/issues"
+  }
+}
