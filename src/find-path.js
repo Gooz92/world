@@ -11,7 +11,7 @@ function buildPath(node) {
   return path;
 }
 
-export function findPath(field, x, y, predicate) {
+function bfs(field, x, y, predicate) {
   const checked = new Map();
 
   const nodes = [{
@@ -64,3 +64,5 @@ export function findPath(field, x, y, predicate) {
 
   return [];
 }
+
+export const findPath = bfs;
