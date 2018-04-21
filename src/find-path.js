@@ -1,3 +1,5 @@
+import { WALL } from './const.js';
+
 function buildPath(node) {
   const path = [];
 
@@ -8,8 +10,6 @@ function buildPath(node) {
 
   return path;
 }
-
-const WALL = 1;
 
 export function findPath(field, x, y, predicate) {
   const checked = new Map();
@@ -62,5 +62,5 @@ export function findPath(field, x, y, predicate) {
     
   } while (nodes.length > 0);
 
-  // return ???
+  return [];
 }

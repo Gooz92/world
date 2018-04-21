@@ -1,16 +1,13 @@
 import { createTable } from './dom.utils.js';
 import { generateArray } from './utils.js';
 import { findPath } from './find-path.js';
+import { EMPTY, WALL, START, END } from './consts.js';
 
 const SIZE = 40;
 
 const field = generateArray(SIZE, _ => (
-  generateArray(SIZE, _ => 0)
+  generateArray(SIZE, _ => EMPTY)
 ));
-
-const START = 2;
-const END  = 3;
-const WALL = 1;
 
 const START_X = 5;
 const START_Y = 5;
