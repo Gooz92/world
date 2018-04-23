@@ -12,11 +12,11 @@ const field = generateArray(SIZE, _ => (
 const START_X = 5;
 const START_Y = 5;
 
-const END_X = 30;
-const END_Y = 30;
+const END_X = 10;
+const END_Y = 28;
 
 field[START_Y][START_X] = START;
-field[END_Y][END_Y] = END;
+field[END_Y][END_X] = END;
 
 function onCellCreated(cell, i, j) {
 
