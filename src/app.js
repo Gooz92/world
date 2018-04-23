@@ -1,7 +1,7 @@
 import { createTable } from './dom.utils.js';
 import { generateArray } from './utils.js';
 import { findPath } from './find-path.js';
-import { EMPTY, WALL, START, END } from './consts.js';
+import { EMPTY, WALL, START, END } from './const.js';
 
 const SIZE = 40;
 
