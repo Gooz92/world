@@ -17,18 +17,24 @@ function bfs(field, x, y, predicate) {
   const nodes = [{
     position: [ x, y ]
   }];
+
+  const offsets = [
+    [ 0, -1 ],
+    [ -1, 0 ],
+    [ 0, 1 ],
+    [ 1, 0 ]
+  ];
   
   do {
     const node = nodes.shift();
     const [ currentX, currentY ] = node.position;
     
-    const nextPostions = [
-      [ currentX, currentY - 1 ],
-      [ currentX, currentY + 1 ],
-      [ currentX - 1, currentY ],
-      [ currentX + 1, currentY ]
-    ];
-
+    const nextPostions = ((currentX + currentY) % 2 ? offsets : [...offsets].reverse())
+      .map(([ dx, dy ]) => [
+        currentX + dx,
+        currentY + dy
+      ]);
+    
     for (let i = 0; i < nextPostions.length; i++) {
       const [ nextX, nextY ] = nextPostions[i];
 
@@ -59,6 +65,8 @@ function bfs(field, x, y, predicate) {
         previous: node
       });
     }
+
+    
     
   } while (nodes.length > 0);
 

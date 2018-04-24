@@ -10,3 +10,9 @@ export function generateArray(length, generateItem) {
 
   return array;
 }
+
+export const randomInt = (min, max) => (
+  Mat.floor((min + (max - min + 1) * Math.random()))
+);
+
+export const randomElement = array => array[randomInt(0, array.length - 1)];

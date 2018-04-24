@@ -1,6 +1,7 @@
 import { createTable } from './dom.utils.js';
 import { generateArray } from './utils.js';
 import { findPath } from './find-path.js';
+import { randomInt } from './utils.js';
 import { EMPTY, WALL, START, END } from './const.js';
 
 const SIZE = 40;
@@ -12,8 +13,8 @@ const field = generateArray(SIZE, _ => (
 const START_X = 5;
 const START_Y = 5;
 
-const END_X = 10;
-const END_Y = 28;
+const END_X = 38;
+const END_Y = 20;
 
 field[START_Y][START_X] = START;
 field[END_Y][END_X] = END;
@@ -53,6 +54,17 @@ function onCellCreated(cell, i, j) {
           document.getElementById(`tile-${x}-${y}`).className = 'path-node';           
         });
     });
+  }
+}
+
+function generateLumberjacks(count, x1, y2, x2, y2) {
+  const lumberjacks = [];
+
+  for (let i = 0; i < count; i++) {
+    const x = randomInt(x1, x2);
+    const y = randomInt(y1, y2);
+
+    
   }
 }
 
