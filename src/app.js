@@ -19,6 +19,8 @@ const END_Y = 20;
 field[START_Y][START_X] = START;
 field[END_Y][END_X] = END;
 
+const lmbs = generateLumberjacks(3, 10, 10, 20, 23);
+
 function onCellCreated(cell, i, j) {
 
   cell.id = `tile-${j}-${i}`;
@@ -61,11 +63,17 @@ function generateLumberjacks(count, x1, y2, x2, y2) {
   const lumberjacks = [];
 
   for (let i = 0; i < count; i++) {
-    const x = randomInt(x1, x2);
-    const y = randomInt(y1, y2);
+    let rx, ry;
 
-    
+    do {
+      rx = randomInt(x1, x2);
+      ry = randomInt(y1, y2);
+    } while (!lumberjacks.find(([ x, y ]) => x === rx && y === ry));
+
+    lumberjacks.push([ rx, ry ]);
   }
+
+  return lumberjacks;
 }
 
 document.addEventListener('DOMContentLoaded', () => {

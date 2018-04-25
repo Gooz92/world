@@ -11,6 +11,8 @@ function buildPath(node) {
   return path;
 }
 
+const hash = (x, y) => `${x}-${y}`;
+
 function bfs(field, x, y, predicate) {
   const checked = new Map();
 
@@ -46,7 +48,9 @@ function bfs(field, x, y, predicate) {
         continue;
       }
 
-      if (checked.has(nextX + '-' + nextY)) {
+      const key = hash(nextX, nextY);
+
+      if (checked.has(key)) {
         continue;
       }
 
@@ -54,7 +58,7 @@ function bfs(field, x, y, predicate) {
         return buildPath(node);
       }
 
-      checked.set(nextX + '-' + nextY, true);
+      checked.set(key, true);
 
       if (field[nextY][nextX] === WALL) {
         continue;
@@ -65,8 +69,6 @@ function bfs(field, x, y, predicate) {
         previous: node
       });
     }
-
-    
     
   } while (nodes.length > 0);
 
