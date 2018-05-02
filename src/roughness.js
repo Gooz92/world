@@ -1,6 +1,6 @@
 import { randomInt } from './utils.js';
 
-function roughness(startX, startY, endX, endY, r, n) {
+export function roughness(startX, startY, endX, endY, r, n) {
   
   let points = [
     [ startX, startY ],
@@ -15,17 +15,19 @@ function roughness(startX, startY, endX, endY, r, n) {
 
       const dx = x2 - x1;
       const dy = y2 - y1;
+
+      const d = 2 * r  * (Math.random() - 0.5);
     
-      const dxm = r * dx;
-      const dym = -r * dy;
+      const dxm = d * dy;
+      const dym = -d * dx;
     
       const xm = (x1 + x2) / 2;
       const ym = (y1 + y2) / 2;
 
-      nextPoints.push([ x1, y1 ], [ xm, ym ]);
+      nextPoints.push([ x1, y1 ], [ xm + dxm, ym + dym ]);
     }
 
-    points = nextPoints.concat([ points[points.length - 1] ])
+    points = nextPoints.concat([ points[points.length - 1] ]);
   }
 
   return points;

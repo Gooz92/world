@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/app.js',
+  entry: './src/canvas.js',
   mode: 'development',
   output: {
     filename: 'bundle.js'
