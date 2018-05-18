@@ -4,7 +4,8 @@
   "dependencies": {},
   "devDependencies": {
     "webpack": "^4.5.0",
-    "webpack-cli": "^2.0.14"
+    "webpack-cli": "^2.0.14",
+    "webpack-dev-server": "^3.1.4"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
