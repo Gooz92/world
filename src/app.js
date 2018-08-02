@@ -1,8 +1,8 @@
-import { generateWorld } from './generate-world.js';
-import { createTable } from './dom.utils.js';
+import generateWorld from './generate-world.js';
 import step from './step.js';
+import { createTable } from './dom.utils.js';
 
-const world = generateWorld();
+const world = generateWorld(128, 64, 0.3);
 
 const table = createTable(world.cells.length, world.cells[0].length, (cell, y, x) => {
   if (world.cells[y][x].type === 3) {

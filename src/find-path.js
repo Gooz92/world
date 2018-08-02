@@ -1,4 +1,4 @@
-import { WALL } from './const.js';
+import TILE_TYPES from './tile-types.js';
 
 function buildPath(node) {
   const path = [];
@@ -56,7 +56,7 @@ function bfs(field, x, y, predicate) {
 
       checked.set(key, true);
 
-      if (field[nextY][nextX] === WALL) {
+      if (field[nextY][nextX] === TILE_TYPES.OBSTACLE) {
         continue;
       }
 
