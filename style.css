@@ -4,8 +4,8 @@ table {
 
 td {
   border: 1px solid #ddd;
-  width: 16px;
-  height: 16px;
+  width: 6px;
+  height: 6px;
 }
 
 .wall {
@@ -22,4 +22,12 @@ td {
 
 .path-node {
   background-color: #888;
+}
+
+.tree {
+  background-color: green;
+}
+
+.man {
+  background-color: #f00;
 }

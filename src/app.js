@@ -1,37 +1,31 @@
+import { generateWorld } from './generate-world.js';
 import { createTable } from './dom.utils.js';
-import { generateArray } from './utils.js';
-import { findPath } from './find-path.js';
-import { randomInt } from './utils.js';
+import step from './step.js';
 
-const SIZE = 32;
+const world = generateWorld();
 
-const field = smooth(generateArray(SIZE + 2, _ => (
-  generateArray(SIZE + 2, _ => randomInt(0, 15))
-)));
-
-function smooth(array) {
-  const smoothed = [];
-
-  for (let i = 0; i < array.length - 1; i++) {
-    smoothed.push([]);
-    for (let j = 0; j < array[i].length - 1; j++) {
-      smoothed[Math.floor(i / 2)][Math.floor(j / 2)] = Math.max(
-        array[i][j], array[i][j + 1],
-        array[i + 1][j], array[i + 1][j + 1]
-      )
-    }
+const table = createTable(world.cells.length, world.cells[0].length, (cell, y, x) => {
+  if (world.cells[y][x].type === 3) {
+    cell.className = 'tree';
+  } else if (world.cells[y][x].type === 7) {
+    cell.className = 'man';
   }
 
-  debugger;
-  return smoothed;
-}
+  cell.id = `tile-${x}-${y}`;
+});
 
-function onCellCreated(cell, i, j) {
-  const grey = (17 * field[i][j]).toString(16);
-  cell.style.backgroundColor = `#${generateArray(3, () => grey).join('')}`;
+let pos = world.man;
+
+function gameLoop() {
+
+  document.getElementById(`tile-${pos[0]}-${pos[1]}`).className = '';
+  pos = step(world);
+  document.getElementById(`tile-${pos[0]}-${pos[1]}`).className = 'man';
+
+  setTimeout(gameLoop, 300);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const table = createTable(SIZE, SIZE, onCellCreated);
   document.body.appendChild(table);
+  gameLoop();
 });

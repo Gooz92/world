@@ -54,10 +54,6 @@ function bfs(field, x, y, predicate) {
         continue;
       }
 
-      if (predicate(nextX, nextY)) {
-        return buildPath(node);
-      }
-
       checked.set(key, true);
 
       if (field[nextY][nextX] === WALL) {
@@ -68,6 +64,10 @@ function bfs(field, x, y, predicate) {
         position: [ nextX, nextY ],
         previous: node
       });
+
+      if (predicate(nextX, nextY)) {
+        return buildPath({ previous: node, position: [ nextX, nextY ]});
+      }
     }
     
   } while (nodes.length > 0);
