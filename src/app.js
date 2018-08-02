@@ -1,26 +1,36 @@
 import generateWorld from './generate-world.js';
 import step from './step.js';
+import TILE_TYPES from './tile-types.js';
 import { createTable } from './dom.utils.js';
 
 const world = generateWorld(128, 64, 0.3);
 
+const getCellId = (x, y) => `tile-${x}-${y}`;
+
 const table = createTable(world.cells.length, world.cells[0].length, (cell, y, x) => {
-  if (world.cells[y][x].type === 3) {
+  const cellType = world.cells[y][x].type;
+
+  if (cellType === TILE_TYPES.TREE) {
     cell.className = 'tree';
-  } else if (world.cells[y][x].type === 7) {
+  } else if (cellType === TILE_TYPES.PERSON) {
     cell.className = 'man';
   }
 
-  cell.id = `tile-${x}-${y}`;
+  cell.id = getCellId(x, y);
 });
 
 let pos = world.man;
 
+function getCell(x, y) {
+  const cellId = getCellId(x, y);
+  return document.getElementById(cellId);
+}
+
 function gameLoop() {
 
-  document.getElementById(`tile-${pos[0]}-${pos[1]}`).className = '';
+  getCell(...pos).className = '';
   pos = step(world);
-  document.getElementById(`tile-${pos[0]}-${pos[1]}`).className = 'man';
+  getCell(...pos).className = 'man';
 
   setTimeout(gameLoop, 300);
 }
