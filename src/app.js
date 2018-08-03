@@ -3,7 +3,7 @@ import step from './step.js';
 import TILE_TYPES from './tile-types.js';
 import { createTable } from './dom.utils.js';
 
-const world = generateWorld(128, 64, 0.3);
+const world = generateWorld(64, 64, 0.8);
 
 const getCellId = (x, y) => `tile-${x}-${y}`;
 
@@ -32,7 +32,7 @@ function gameLoop() {
   pos = step(world);
   getCell(...pos).className = 'man';
 
-  setTimeout(gameLoop, 300);
+  setTimeout(gameLoop, 150);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

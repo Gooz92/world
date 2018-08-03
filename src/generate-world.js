@@ -8,26 +8,26 @@ export default function generateWorld(width, height, treesDensity) {
   
   const trees = new Set();
   
-  for (let i = 0; i < height; i++) {
-    for (let j = 0; j < width; j++) {
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
       if (Math.random() < treesDensity) {
-        world[i][j] = { type: TILE_TYPES.TREE, wood: 10 };
-        trees.add(`${i}-${j}`);
+        world[y][x] = { type: TILE_TYPES.TREE, wood: 10 };
+        trees.add(`${x}-${y}`);
       }
     }
   }
 
-  let i, j;
+  let x, y;
   
   do {
-    i = randomInt(height / 3, 2 * width / 3);
-    j = randomInt(height / 3, 2 * width / 3);
-  } while (!trees.has(`${i}-${j}`));
+    x = randomInt(height / 3, 2 * width / 3);
+    y = randomInt(height / 3, 2 * width / 3);
+  } while (!trees.has(`${x}-${y}`));
   
-  world[i][j] = { type: TILE_TYPES.PERSON };
+  world[y][x] = { type: TILE_TYPES.PERSON };
 
   return {
-    man: [ j, i ],
+    man: [ x, y ],
     cells: world
   };
 }
