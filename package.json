@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "dependencies": {},
   "devDependencies": {
+    "nodemon": "^1.18.3",
     "webpack": "^4.5.0",
     "webpack-cli": "^2.0.14",
     "webpack-dev-server": "^3.1.4"
