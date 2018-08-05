@@ -8,26 +8,14 @@ td {
   height: 6px;
 }
 
-.wall {
-  background-color: #000;
-}
-
-.start {
-  background-color: #f00;
-}
-
-.end {
-  background-color: #0f0;
-}
-
-.path-node {
-  background-color: #888;
+.obstacle {
+  background-color: #ddd;
 }
 
 .tree {
   background-color: green;
 }
 
-.man {
+.person {
   background-color: #f00;
 }

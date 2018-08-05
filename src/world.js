@@ -3,18 +3,20 @@ import step from './step.js';
 import TILE_TYPES from './tile-types.js';
 import { createTable } from './dom.utils.js';
 
-const world = generateWorld(64, 64, 0.8);
+const world = generateWorld(64, 64, [
+  [ 10, TILE_TYPES.EMPTY ],
+  [ 3, TILE_TYPES.TREE ],
+  [ 1, TILE_TYPES.OBSTACLE ]
+]);
 
 const getCellId = (x, y) => `tile-${x}-${y}`;
+
+const classes = [ 'empty', 'obstacle', 'tree', 'person' ];
 
 const table = createTable(world.cells.length, world.cells[0].length, (cell, y, x) => {
   const cellType = world.cells[y][x].type;
 
-  if (cellType === TILE_TYPES.TREE) {
-    cell.className = 'tree';
-  } else if (cellType === TILE_TYPES.PERSON) {
-    cell.className = 'man';
-  }
+  cell.className = classes[cellType];
 
   cell.id = getCellId(x, y);
 });
@@ -30,7 +32,7 @@ function gameLoop() {
 
   getCell(...pos).className = '';
   pos = step(world);
-  getCell(...pos).className = 'man';
+  getCell(...pos).className = 'person';
 
   setTimeout(gameLoop, 150);
 }
