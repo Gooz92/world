@@ -62,7 +62,7 @@ function betterFindPath(field, x, y, predicate) {
       const nextPosition = [ currentX + dx, currentY + dy ];
       const [ nextX, nextY ] = nextPosition;
 
-      if (!inBounds(field, nextX, nextY)) {
+      if (!inBounds(field, nextX, nextY) || field[nextY][nextX].type === TILE_TYPES.OBSTACLE) {
         continue;
       }
 
