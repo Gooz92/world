@@ -4,8 +4,8 @@ import TILE_TYPES from './tile-types.js';
 import { createTable } from './dom.utils.js';
 
 const world = generateWorld(64, 64, [
-  [ 30, TILE_TYPES.EMPTY ],
-  [ 20, TILE_TYPES.TREE ],
+  [ 50, TILE_TYPES.EMPTY ],
+  [ 4, TILE_TYPES.TREE ],
   [ 1, TILE_TYPES.OBSTACLE ]
 ]);
 

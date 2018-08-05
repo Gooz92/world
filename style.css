@@ -8,6 +8,10 @@ td {
   height: 6px;
 }
 
+.path-node {
+  background-color: #0af;
+}
+
 .obstacle {
   background-color: #ddd;
 }

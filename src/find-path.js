@@ -13,6 +13,77 @@ function buildPath(node) {
 
 const hash = (x, y) => `${x}-${y}`;
 
+const inBounds = (field, x, y) => (
+  x >= 0 && y >= 0 && y < field.length && x < field[y].length
+);
+
+function pickMin(array, getValue) {
+  let value = getValue(array[0]);
+  let index = 0;
+
+  for (let i = 0; i < array.length; i++) {
+    const nextValue = getValue(array[i]);
+    if (nextValue < value) {
+      value = nextValue;
+      index = i;
+    }
+  }
+
+  return array.splice(index, 1)[0];
+}
+
+function betterFindPath(field, x, y, predicate) {
+
+  const visited = {
+    [`${x}-${y}`]: 0
+  };
+
+  const nodes = [{
+    position: [ x, y ],
+    cost: 0
+  }];
+
+  const offsets = [
+    [ 0, -1 ], [ -1, -1 ], [ -1, 0 ], [ 1, -1 ],
+    [ 1, 0 ], [-1, 1], [ 0, 1 ], [ 1, 1 ],
+  ];
+
+  do {
+    const currentNode = pickMin(nodes, node => node.cost);
+    const [ currentX, currentY ] = currentNode.position;
+    const currentKey = hash(...currentNode.position);
+
+    if (predicate(...currentNode.position)) {
+      return buildPath(currentNode);
+    }
+
+    for (let i = 0; i < offsets.length; i++) {
+      const [ dx, dy ] = offsets[i];
+      const nextPosition = [ currentX + dx, currentY + dy ];
+      const [ nextX, nextY ] = nextPosition;
+
+      if (!inBounds(field, nextX, nextY)) {
+        continue;
+      }
+
+      const nextCost = visited[currentKey] + 2 + (i % 2);
+      const key = hash(...nextPosition);
+
+      if (!visited[key] || nextCost < visited[key]) {
+        visited[key] = nextCost;
+        nodes.push({
+          position: nextPosition,
+          previous: currentNode,
+          cost: nextCost
+        });
+      }
+    }
+
+  } while (nodes.length > 0);
+
+  return [];
+}
+
 function bfs(field, x, y, predicate) {
   const checked = new Map();
 
@@ -40,11 +111,7 @@ function bfs(field, x, y, predicate) {
     for (let i = 0; i < nextPostions.length; i++) {
       const [ nextX, nextY ] = nextPostions[i];
 
-      if (nextY < 0 || nextY >= field.length) {
-        continue;
-      }
-
-      if (nextX < 0 || nextX >= field[nextY].length) {
+      if (!inBounds(field, nextX, nextY)) {
         continue;
       }
 
@@ -75,4 +142,4 @@ function bfs(field, x, y, predicate) {
   return [];
 }
 
-export const findPath = bfs;
+export const findPath = betterFindPath;
