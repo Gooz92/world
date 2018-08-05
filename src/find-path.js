@@ -56,7 +56,7 @@ function bfs(field, x, y, predicate) {
 
       checked.set(key, true);
 
-      if (field[nextY][nextX] === TILE_TYPES.OBSTACLE) {
+      if (field[nextY][nextX].type === TILE_TYPES.OBSTACLE) {
         continue;
       }
 

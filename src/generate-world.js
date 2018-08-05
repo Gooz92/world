@@ -2,6 +2,10 @@ import { generateArray, randomInt } from './utils.js';
 import random from './random.js';
 import TILE_TYPES from './tile-types.js';
 
+export const fromTileTypes = tiles => (
+  tiles.map(row => row.map(type => ({ type })))
+);
+
 const hash = (x, y) => `${x}-${y}`;
 
 export default function generateWorld(width, height, obejctDistribution) {

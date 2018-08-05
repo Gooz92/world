@@ -20,7 +20,7 @@ export default function step(world) {
     path = null;
   }
 
-  world.cells[nextY][nextX].type = 7;
+  world.cells[nextY][nextX].type = TILE_TYPES.PERSON;
 
   // command
   return [ nextX, nextY ];
