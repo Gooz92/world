@@ -1,6 +1,6 @@
-import random from './random.js';
+import random from '../utils/random.js';
 
-export default function () {
+function r() {
 
   const next = random([
     [ 1, 'a' ],
@@ -19,3 +19,11 @@ export default function () {
 
   console.log(freq);
 }
+
+
+export default {
+  
+  enter: _ => {
+    r();
+  }
+};

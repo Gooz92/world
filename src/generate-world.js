@@ -1,5 +1,5 @@
-import { generateArray, randomInt } from './utils.js';
-import random from './random.js';
+import { generateArray, randomInt } from './utils/utils.js';
+import random from './utils/random.js';
 import TILE_TYPES from './tile-types.js';
 
 export const fromTileTypes = tiles => (
