@@ -3,12 +3,20 @@ import TILE_TYPES from './tile-types.js';
 
 let path;
 
+const isTreeFound = (tiles, x, y) => (
+  tiles[y][x].type === TILE_TYPES.TREE
+);
+
+const isPassable = (tiles, x, y) => (
+  tiles[y][x].type !== TILE_TYPES.OBSTACLE
+);
+
 export default function step(world) {
 
   const [ y, x ] = world.man;
 
   if (!path) {
-    path = findPath(world.cells, y, x, (x, y) => world.cells[y][x].type === TILE_TYPES.TREE);
+    path = findPath(world.cells, y, x, isTreeFound, isPassable);
     if (path.length === 0) return [ x, y ];
   }
 

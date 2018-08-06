@@ -1,5 +1,3 @@
-import TILE_TYPES from './tile-types.js';
-
 function buildPath(node) {
   const path = [];
 
@@ -32,7 +30,12 @@ function pickMin(array, getValue) {
   return array.splice(index, 1)[0];
 }
 
-function betterFindPath(field, x, y, predicate) {
+const offsets = [
+  [ 0, -1 ], [ -1, -1 ], [ -1, 0 ], [ 1, -1 ],
+  [ 1, 0 ], [-1, 1], [ 0, 1 ], [ 1, 1 ],
+];
+
+export function findPath(field, x, y, isFound, isPassable) {
 
   const visited = {
     [`${x}-${y}`]: 0
@@ -43,17 +46,12 @@ function betterFindPath(field, x, y, predicate) {
     cost: 0
   }];
 
-  const offsets = [
-    [ 0, -1 ], [ -1, -1 ], [ -1, 0 ], [ 1, -1 ],
-    [ 1, 0 ], [-1, 1], [ 0, 1 ], [ 1, 1 ],
-  ];
-
   do {
     const currentNode = pickMin(nodes, node => node.cost);
     const [ currentX, currentY ] = currentNode.position;
     const currentKey = hash(...currentNode.position);
 
-    if (predicate(...currentNode.position)) {
+    if (isFound(field, currentX, currentY)) {
       return buildPath(currentNode);
     }
 
@@ -62,7 +60,7 @@ function betterFindPath(field, x, y, predicate) {
       const nextPosition = [ currentX + dx, currentY + dy ];
       const [ nextX, nextY ] = nextPosition;
 
-      if (!inBounds(field, nextX, nextY) || field[nextY][nextX].type === TILE_TYPES.OBSTACLE) {
+      if (!inBounds(field, nextX, nextY) || !isPassable(field, nextX, nextY)) {
         continue;
       }
 
@@ -83,63 +81,3 @@ function betterFindPath(field, x, y, predicate) {
 
   return [];
 }
-
-function bfs(field, x, y, predicate) {
-  const checked = new Map();
-
-  const nodes = [{
-    position: [ x, y ]
-  }];
-
-  const offsets = [
-    [ 0, -1 ],
-    [ -1, 0 ],
-    [ 0, 1 ],
-    [ 1, 0 ]
-  ];
-  
-  do {
-    const node = nodes.shift();
-    const [ currentX, currentY ] = node.position;
-    
-    const nextPostions = ((currentX + currentY) % 2 ? offsets : [...offsets].reverse())
-      .map(([ dx, dy ]) => [
-        currentX + dx,
-        currentY + dy
-      ]);
-    
-    for (let i = 0; i < nextPostions.length; i++) {
-      const [ nextX, nextY ] = nextPostions[i];
-
-      if (!inBounds(field, nextX, nextY)) {
-        continue;
-      }
-
-      const key = hash(nextX, nextY);
-
-      if (checked.has(key)) {
-        continue;
-      }
-
-      checked.set(key, true);
-
-      if (field[nextY][nextX].type === TILE_TYPES.OBSTACLE) {
-        continue;
-      }
-
-      nodes.push({
-        position: [ nextX, nextY ],
-        previous: node
-      });
-
-      if (predicate(nextX, nextY)) {
-        return buildPath({ previous: node, position: [ nextX, nextY ]});
-      }
-    }
-    
-  } while (nodes.length > 0);
-
-  return [];
-}
-
-export const findPath = betterFindPath;
