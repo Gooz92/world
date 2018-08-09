@@ -30,12 +30,12 @@ function pickMin(array, getValue) {
   return array.splice(index, 1)[0];
 }
 
-const offsets = [
+let offsets = [
   [ 0, -1 ], [ -1, -1 ], [ -1, 0 ], [ 1, -1 ],
   [ 1, 0 ], [-1, 1], [ 0, 1 ], [ 1, 1 ],
 ];
 
-export function findPath(field, x, y, isFound, isPassable) {
+export default function findPath(field, x, y, isFound, isPassable) {
 
   const visited = {
     [`${x}-${y}`]: 0
@@ -55,6 +55,8 @@ export function findPath(field, x, y, isFound, isPassable) {
       return buildPath(currentNode);
     }
 
+   // offsets = (currentX + currentY) % 2 == 0 ? offsets.reverse() : offsets;
+
     for (let i = 0; i < offsets.length; i++) {
       const [ dx, dy ] = offsets[i];
       const nextPosition = [ currentX + dx, currentY + dy ];
@@ -64,7 +66,7 @@ export function findPath(field, x, y, isFound, isPassable) {
         continue;
       }
 
-      const nextCost = visited[currentKey] + 2 + (i % 2);
+      const nextCost = visited[currentKey] + 3 - (Math.abs(dx + dy) % 2);
       const key = hash(...nextPosition);
 
       if (!visited[key] || nextCost < visited[key]) {

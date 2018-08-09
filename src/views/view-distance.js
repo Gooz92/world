@@ -4,7 +4,7 @@ import { createTable } from '../utils/dom.utils.js';
 export default {
   enter: _ => {
     const table = createTable(61, 61, (cell, x, y) => {
-      const distance = calculateDistance(30, 30, x, y) / 5;
+      const distance = calculateDistance(30, 30, x, y) / 2;
       
       if (distance < 30) {
         cell.style.backgroundColor = 'black';

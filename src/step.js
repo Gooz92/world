@@ -1,4 +1,4 @@
-import { findPath } from './find-path.js'
+import findPath from './find-path.js'
 import TILE_TYPES from './tile-types.js';
 
 let path;

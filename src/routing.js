@@ -1,11 +1,13 @@
 import world from './views/world.js';
 import randomTest from './views/random-test.js';
 import viewDistance from './views/view-distance.js';
+import viewPath from './views/view-path.js'
 
 const routes = {
   w: world,
   r: randomTest,
-  d: viewDistance
+  d: viewDistance,
+  p: viewPath
 };
 
 let currentRoute;
