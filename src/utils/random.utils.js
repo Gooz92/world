@@ -1,6 +1,10 @@
-import { randomInt } from './utils.js';
+export const randomInt = (min, max) => (
+  Math.floor((min + (max - min + 1) * Math.random()))
+);
 
-export default function (distribution) {
+export const randomElement = array => array[randomInt(0, array.length - 1)];
+
+export function distributionRandom (distribution) {
   const weightsSum = distribution
     .reduce((sum, [ weight ]) => sum + weight, 0);
   

@@ -1,4 +1,4 @@
-import { noop } from './utils.js';
+import { noop } from './fn.utils.js';
 
 function createElement(tagName, properties)  {
   return Object.assign(document.createElement(tagName), properties);

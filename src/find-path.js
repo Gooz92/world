@@ -31,8 +31,8 @@ function pickMin(array, getValue) {
 }
 
 let offsets = [
-  [ 0, -1 ], [ -1, -1 ], [ -1, 0 ], [ 1, -1 ],
-  [ 1, 0 ], [-1, 1], [ 0, 1 ], [ 1, 1 ],
+  [ -1, -1 ], [ 0, -1 ], [ 1, -1 ], [ -1, 0 ],
+  [ 1, 0 ], [ -1, 1], [ 0, 1 ], [ 1, 1 ]
 ];
 
 export default function findPath(field, x, y, isFound, isPassable) {
@@ -47,6 +47,7 @@ export default function findPath(field, x, y, isFound, isPassable) {
   }];
 
   do {
+    // TODO: use priority queue
     const currentNode = pickMin(nodes, node => node.cost);
     const [ currentX, currentY ] = currentNode.position;
     const currentKey = hash(...currentNode.position);
@@ -55,7 +56,7 @@ export default function findPath(field, x, y, isFound, isPassable) {
       return buildPath(currentNode);
     }
 
-   // offsets = (currentX + currentY) % 2 == 0 ? offsets.reverse() : offsets;
+   offsets = (currentX + currentY) % 2 == 0 ? offsets.reverse() : offsets;
 
     for (let i = 0; i < offsets.length; i++) {
       const [ dx, dy ] = offsets[i];

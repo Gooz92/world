@@ -1,4 +1,4 @@
-import random from '../utils/random.js';
+import random from '../utils/random.utils.js';
 
 function r() {
 

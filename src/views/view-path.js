@@ -1,5 +1,5 @@
 import { createTable } from '../utils/dom.utils.js';
-import { generateArray } from '../utils/utils.js';
+import { generateArray } from '../utils/array.utils.js';
 import findPath from '../find-path.js';
 
 const WIDTH = 68;

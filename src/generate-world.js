@@ -1,5 +1,5 @@
-import { generateArray, randomInt } from './utils/utils.js';
-import random from './utils/random.js';
+import { distributionRandom, randomInt } from './utils/random.utils.js';
+import { generateArray } from './utils/array.utils.js';
 import TILE_TYPES from './tile-types.js';
 
 export const fromTileTypes = tiles => (
@@ -14,7 +14,7 @@ export default function generateWorld(width, height, obejctDistribution) {
   })));
 
   const occupied = new Set();
-  const getNextTileType = random(obejctDistribution);
+  const getNextTileType = distributionRandom(obejctDistribution);
 
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
