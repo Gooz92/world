@@ -1,8 +1,8 @@
-import random from '../utils/random.utils.js';
+import { distributionRandom } from '../utils/random.utils.js';
 
-function r() {
+export default function () {
 
-  const next = random([
+  const next = distributionRandom([
     [ 1, 'a' ],
     [ 2, 'b' ],
     [ 3, 'c' ]
@@ -19,11 +19,3 @@ function r() {
 
   console.log(freq);
 }
-
-
-export default {
-  
-  enter: _ => {
-    r();
-  }
-};

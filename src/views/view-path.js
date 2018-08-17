@@ -32,30 +32,23 @@ const world = generateArray(HEIGHT, y => (
 
 const path = findPath(world, START_X, START_Y, (tiles, x, y) => tiles[y][x] === END, _ => true);
 
-export default {
+export default function () {
+  const cells = [];
 
-  enter: _ => {
-    const cells = [];
+  const table = createTable(HEIGHT, WIDTH, (cell, y, x) => {
+    const tile = world[y][x];
 
-    const table = createTable(HEIGHT, WIDTH, (cell, y, x) => {
-      const tile = world[y][x];
+    (cells[y] || (cells[y] = []))[x] = cell;
+    
+    if (tile === 0) return;
 
-      (cells[y] || (cells[y] = []))[x] = cell;
-      
-      if (tile === 0) return;
+    if (tile === 3) cell.style.backgroundColor = 'red';
+    if (tile === 4) cell.style.backgroundColor = 'green';
+  });
 
-      if (tile === 3) cell.style.backgroundColor = 'red';
-      if (tile === 4) cell.style.backgroundColor = 'green';
-    });
+  path.forEach(([ x, y ]) => {
+    cells[y][x].style.backgroundColor = 'gray';
+  });
 
-    path.forEach(([ x, y ]) => {
-      cells[y][x].style.backgroundColor = 'gray';
-    });
-
-    document.body.appendChild(table);
-  },
-
-  leave: _ => {
-    document.body.innerHTML = '';
-  }
+  document.body.appendChild(table);
 }
