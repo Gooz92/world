@@ -19,7 +19,13 @@ describe('arrayUtils', function () {
       assert.lengthOf(array, length);
     });
 
-    // TODO
+    it('return [0; length) if second argument is omit', () => {
+      const length = 5;
+      const array = generateArray(length);
+      assert.deepEqual(array, [0, 1, 2, 3, 4]);
+    });
+
+    // TODO check calls of generateItems
 
   });
 
