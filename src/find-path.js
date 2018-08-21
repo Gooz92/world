@@ -35,7 +35,9 @@ let offsets = [
   [ 1, 0 ], [ -1, 1], [ 0, 1 ], [ 1, 1 ]
 ];
 
-export default function findPath(field, x, y, isFound, isPassable) {
+const getTrue = () => true;
+
+export default function findPath(field, x, y, isFound, isPassable = getTrue) {
 
   const visited = {
     [`${x}-${y}`]: 0
@@ -55,8 +57,6 @@ export default function findPath(field, x, y, isFound, isPassable) {
     if (isFound(field, currentX, currentY)) {
       return buildPath(currentNode);
     }
-
-   offsets = (currentX + currentY) % 2 == 0 ? offsets.reverse() : offsets;
 
     for (let i = 0; i < offsets.length; i++) {
       const [ dx, dy ] = offsets[i];
