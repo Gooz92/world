@@ -15,7 +15,7 @@
     "webpack-dev-server": "^3.1.4"
   },
   "scripts": {
-    "test": "./node_modules/karma/bin/karma start",
+    "test": "node run-tests.js start",
     "build": "webpack"
   },
   "author": "Gooz",
