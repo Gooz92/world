@@ -36,17 +36,16 @@ export default {
       [ 4, TILE_TYPES.OBSTACLE ]
     ]);
     
-    let pos = { x: world.man[0], y: world.man[1] };
 
     function gameLoop() {
 
-      const nextPos = step(world);
+      const moves = step(world);
 
       console.log(`TICK`);
 
-      if (nextPos) {
-        pos = viewMove(pos, nextPos, 'person');
-      }
+      moves.forEach(({ from, to }) => {
+        viewMove(from, to, 'person');
+      });
 
       timeoutId = setTimeout(gameLoop, TICK_TIME);
     }

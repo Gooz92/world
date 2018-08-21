@@ -36,7 +36,7 @@ export default function generateWorld(width, height, obejctDistribution) {
   world[y][x] = { type: TILE_TYPES.PERSON };
 
   return {
-    man: [ x, y ],
+    objects: [ { position: [ x, y ] } ],
     cells: world
   };
 }
