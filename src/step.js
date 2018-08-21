@@ -1,7 +1,11 @@
 import findPath from './find-path.js'
 import TILE_TYPES from './tile-types.js';
 
-let path;
+let path, nextPosition, idleTime = 0;
+
+const isDiagonal = ([ x1, y1 ], [ x2, y2 ]) => (
+  Math.abs(x1 - x2) > 0 && Math.abs(y1 - y2) > 0
+);
 
 const isTreeFound = (tiles, x, y) => (
   tiles[y][x].type === TILE_TYPES.TREE
@@ -11,25 +15,45 @@ const isPassable = (tiles, x, y) => (
   tiles[y][x].type !== TILE_TYPES.OBSTACLE
 );
 
-export default function step(world) {
+// sates: search tree, move
 
-  const [ y, x ] = world.man;
+function move(world) {
 
-  if (!path) {
-    path = findPath(world.cells, y, x, isTreeFound, isPassable);
-    if (path.length === 0) return [ x, y ];
-  }
-
-  const [ nextX, nextY ] = path.shift();
-
-  world.man = [ nextX, nextY ];
+  console.log(`MOVE: ${world.man.join(',')} -> ${nextPosition.join(',')}`);
+  world.man = nextPosition;
 
   if (path.length === 0) {
     path = null;
   }
 
+  const [ nextX, nextY ] = nextPosition;
   world.cells[nextY][nextX].type = TILE_TYPES.PERSON;
 
+  
+  nextPosition = null;
+  idleTime = 0;
+
   // command
-  return [ nextX, nextY ];
+  return world.man;
+}
+
+export default function step(world) {
+
+  const [ x, y ] = world.man;
+
+  if (!path) {
+    path = findPath(world.cells, x, y, isTreeFound, isPassable);
+    if (path.length === 0) return [ x, y ];
+  }
+
+  if (!nextPosition) {
+    nextPosition = path.shift();
+  } else {
+    ++idleTime;
+    if (isDiagonal([ x, y ], nextPosition)) {
+      if (idleTime === 2) return move(world);
+    } else {
+      if (idleTime === 1) return move(world);
+    }
+  }
 }

@@ -3,7 +3,9 @@ import step from '../step.js';
 import TILE_TYPES from '../tile-types.js';
 import { createTable } from '../utils/dom.utils.js';
 
-const TICK_TIME = 500;
+const TICK_TIME = 180;
+
+// @ - person, O - tree
 
 const getCellId = (x, y) => `tile-${x}-${y}`;
 
@@ -20,17 +22,24 @@ export default {
   enter: _ => {
     const world = generateWorld(64, 64, [
       [ 50, TILE_TYPES.EMPTY ],
-      [ 4, TILE_TYPES.TREE ],
-      [ 1, TILE_TYPES.OBSTACLE ]
+      [ 1, TILE_TYPES.TREE ],
+      [ 4, TILE_TYPES.OBSTACLE ]
     ]);
     
     let pos = world.man;
 
     function gameLoop() {
 
-      getCell(...pos).className = '';
-      pos = step(world);
-      getCell(...pos).className = 'person';
+      const nextPos = step(world);
+
+      console.log(`TICK`);
+
+      if (nextPos) {
+        getCell(...pos).className = '';
+        pos = nextPos;
+        getCell(...pos).className = 'person';
+      }
+
       timeoutId = setTimeout(gameLoop, TICK_TIME);
     }
 
