@@ -39,6 +39,10 @@ const getTrue = () => true;
 
 export default function findPath(field, x, y, isFound, isPassable = getTrue) {
 
+  const $isPassable = (x, y, field) => (
+    inBounds(x, y, field) && isPassable(x, y, field)
+  );
+
   const visited = {
     [`${x}-${y}`]: 0
   };
@@ -63,11 +67,19 @@ export default function findPath(field, x, y, isFound, isPassable = getTrue) {
       const nextPosition = [ currentX + dx, currentY + dy ];
       const [ nextX, nextY ] = nextPosition;
 
-      if (!inBounds(nextX, nextY, field) || !isPassable(nextX, nextY, field)) {
+      if (!$isPassable(nextX, nextY, field)) {
         continue;
       }
 
-      const nextCost = visited[currentKey] + 3 - (Math.abs(dx + dy) % 2);
+      const isDiagonal = Math.abs(dx) > 0 && Math.abs(dy) > 0;
+
+      if (isDiagonal && 
+        !$isPassable(currentX, currentY + dy, field) &&
+        !$isPassable(currentX + dx, currentY, field)) {
+        continue;
+      }
+
+      const nextCost = visited[currentKey] + (isDiagonal ? 3 : 2);
       const key = hash(...nextPosition);
 
       if (!visited[key] || nextCost < visited[key]) {
