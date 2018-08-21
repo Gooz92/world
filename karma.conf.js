@@ -2,10 +2,13 @@
 module.exports = function (config) {
   config.set({
     frameworks: ['mocha'],
+    singleRun: true,
     plugins: [
       'karma-mocha',
-      'karma-webpack'
+      'karma-webpack',
+      'karma-chrome-launcher'
     ],
+    browsers: [ 'Chrome' ],
     preprocessors: {
       '**/*.js': [ 'webpack' ]
     },
