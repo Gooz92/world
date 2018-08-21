@@ -12,6 +12,9 @@ module.exports = function (config) {
     preprocessors: {
       '**/*.js': [ 'webpack' ]
     },
+    webpack: {
+      mode: 'development'
+    },
     basePath: './src',
     files: [ '**/*.test.js' ]
   })
