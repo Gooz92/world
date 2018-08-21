@@ -7,11 +7,11 @@ const isDiagonal = ([ x1, y1 ], [ x2, y2 ]) => (
   Math.abs(x1 - x2) > 0 && Math.abs(y1 - y2) > 0
 );
 
-const isTreeFound = (tiles, x, y) => (
+const isTreeFound = (x, y, tiles) => (
   tiles[y][x].type === TILE_TYPES.TREE
 );
 
-const isPassable = (tiles, x, y) => (
+const isPassable = (x, y, tiles) => (
   tiles[y][x].type !== TILE_TYPES.OBSTACLE
 );
 

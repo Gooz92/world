@@ -30,7 +30,7 @@ const world = generateArray(HEIGHT, y => (
   })
 ));
 
-const path = findPath(world, START_X, START_Y, (tiles, x, y) => tiles[y][x] === END, _ => true);
+const path = findPath(world, START_X, START_Y, (x, y, tiles) => tiles[y][x] === END, _ => true);
 
 export default function () {
   const cells = [];

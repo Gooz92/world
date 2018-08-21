@@ -11,7 +11,7 @@ function buildPath(node) {
 
 const hash = (x, y) => `${x}-${y}`;
 
-const inBounds = (field, x, y) => (
+const inBounds = (x, y, field) => (
   x >= 0 && y >= 0 && y < field.length && x < field[y].length
 );
 
@@ -54,7 +54,7 @@ export default function findPath(field, x, y, isFound, isPassable = getTrue) {
     const [ currentX, currentY ] = currentNode.position;
     const currentKey = hash(...currentNode.position);
 
-    if (isFound(field, currentX, currentY)) {
+    if (isFound(currentX, currentY, field)) {
       return buildPath(currentNode);
     }
 
@@ -63,7 +63,7 @@ export default function findPath(field, x, y, isFound, isPassable = getTrue) {
       const nextPosition = [ currentX + dx, currentY + dy ];
       const [ nextX, nextY ] = nextPosition;
 
-      if (!inBounds(field, nextX, nextY) || !isPassable(field, nextX, nextY)) {
+      if (!inBounds(nextX, nextY, field) || !isPassable(nextX, nextY, field)) {
         continue;
       }
 
