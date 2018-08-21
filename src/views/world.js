@@ -18,6 +18,16 @@ function getCell(x, y) {
 
 let timeoutId;
 
+function viewMove(from, to, objectType) {
+  const startCell = getCell(from.x, from.y);
+  const endCell = getCell(to.x, to.y);
+
+  startCell.className = '';
+  endCell.className = objectType;
+
+  return to;
+}
+
 export default {
   enter: _ => {
     const world = generateWorld(64, 64, [
@@ -26,7 +36,7 @@ export default {
       [ 4, TILE_TYPES.OBSTACLE ]
     ]);
     
-    let pos = world.man;
+    let pos = { x: world.man[0], y: world.man[1] };
 
     function gameLoop() {
 
@@ -35,9 +45,7 @@ export default {
       console.log(`TICK`);
 
       if (nextPos) {
-        getCell(...pos).className = '';
-        pos = nextPos;
-        getCell(...pos).className = 'person';
+        pos = viewMove(pos, nextPos, 'person');
       }
 
       timeoutId = setTimeout(gameLoop, TICK_TIME);

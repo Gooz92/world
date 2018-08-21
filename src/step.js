@@ -33,8 +33,10 @@ function move(world) {
   nextPosition = null;
   idleTime = 0;
 
+  const [ x, y ] = world.man;
+
   // command
-  return world.man;
+  return { x, y };
 }
 
 export default function step(world) {
