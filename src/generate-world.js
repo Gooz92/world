@@ -8,6 +8,22 @@ export const fromTileTypes = tiles => (
 
 const hash = (x, y) => `${x}-${y}`;
 
+function generateRandomPoints(count, minX, maxX, minY, maxY, occupied) {
+  const points = [];
+
+  while (count-- > 0) {
+    let x, y;
+    do {
+      x = randomInt(minX, maxX);
+      y = randomInt(minY, maxY);
+    } while (!occupied.has(hash(x, y)));
+  
+    points.push([ x, y ]);
+  }
+
+  return points;
+}
+
 export default function generateWorld(width, height, obejctDistribution) {
   const world = generateArray(height, _ => generateArray(width, _ => ({
     type: TILE_TYPES.EMPTY
@@ -26,17 +42,15 @@ export default function generateWorld(width, height, obejctDistribution) {
     }
   }
 
-  let x, y;
-
-  do {
-    x = randomInt(height / 3, 2 * width / 3);
-    y = randomInt(height / 3, 2 * width / 3);
-  } while (!occupied.has(hash(x, y)));
-
-  world[y][x] = { type: TILE_TYPES.PERSON };
+  const points = generateRandomPoints(3, width / 3, 2 * width / 3,
+      height / 3, 2 * height / 3, occupied);
+  
+  points.forEach(([ x, y ]) => {
+    world[y][x] = { type: TILE_TYPES.PERSON };
+  });
 
   return {
-    objects: [ { position: [ x, y ] } ],
+    objects: points.map(position => ({ position })),
     cells: world
   };
 }
