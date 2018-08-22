@@ -30,9 +30,9 @@ function pickMin(array, getValue) {
   return array.splice(index, 1)[0];
 }
 
-let offsets = [
+const offsets = [
   [ -1, -1 ], [ 0, -1 ], [ 1, -1 ], [ -1, 0 ],
-  [ 1, 0 ], [ -1, 1], [ 0, 1 ], [ 1, 1 ]
+  [ 1, 0 ], [ -1, 1 ], [ 0, 1 ], [ 1, 1 ]
 ];
 
 const getTrue = () => true;
@@ -56,14 +56,13 @@ export default function findPath(field, x, y, isFound, isPassable = getTrue) {
     // TODO: use priority queue
     const currentNode = pickMin(nodes, node => node.cost);
     const [ currentX, currentY ] = currentNode.position;
-    const currentKey = hash(...currentNode.position);
+    const currentKey = hash(currentX, currentY);
 
     if (isFound(currentX, currentY, field)) {
       return buildPath(currentNode);
     }
 
-    for (let i = 0; i < offsets.length; i++) {
-      const [ dx, dy ] = offsets[i];
+    for (const [ dx, dy ] of offsets) {
       const nextPosition = [ currentX + dx, currentY + dy ];
       const [ nextX, nextY ] = nextPosition;
 
@@ -74,13 +73,13 @@ export default function findPath(field, x, y, isFound, isPassable = getTrue) {
       const isDiagonal = Math.abs(dx) > 0 && Math.abs(dy) > 0;
 
       if (isDiagonal && 
-        !$isPassable(currentX, currentY + dy, field) &&
-        !$isPassable(currentX + dx, currentY, field)) {
+        !$isPassable(currentX, nextY, field) &&
+        !$isPassable(nextX, currentY, field)) {
         continue;
       }
 
       const nextCost = visited[currentKey] + (isDiagonal ? 3 : 2);
-      const key = hash(...nextPosition);
+      const key = hash(nextX, nextY);
 
       if (!visited[key] || nextCost < visited[key]) {
         visited[key] = nextCost;

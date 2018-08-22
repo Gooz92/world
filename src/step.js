@@ -14,8 +14,6 @@ const isPassable = (x, y, tiles) => (
   tiles[y][x].type !== TILE_TYPES.OBSTACLE
 );
 
-// sates: search tree, move
-
 function move(world, object) {
 
   console.log(`MOVE: ${object.position.join(',')} -> ${object.nextPosition.join(',')}`);
@@ -29,7 +27,6 @@ function move(world, object) {
   const [ nextX, nextY ] = object.nextPosition;
   world.cells[nextY][nextX].type = TILE_TYPES.PERSON;
 
-  
   object.nextPosition = null;
   object.idleTime = 0;
 
