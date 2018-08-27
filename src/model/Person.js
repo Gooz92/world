@@ -15,7 +15,7 @@ const isPassable = (x, y, tiles) => (
 );
 
 export default class Person {
-  
+
   constructor(world, position) {
     this.world = world;
     this.position = position;
@@ -24,19 +24,19 @@ export default class Person {
   move() {
     const prevPos = this.position;
     this.position = this.nextPosition;
-  
+
     if (this.path.length === 0) {
       this.path = null;
     }
-  
+
     const [ nextX, nextY ] = this.nextPosition;
     this.world[nextY][nextX].type = TILE_TYPES.PERSON;
-  
+
     this.nextPosition = null;
     this.idleTime = 0;
-  
+
     const [ x, y ] = this.position;
-  
+
     // command
     return {
       type: 'MOVE',

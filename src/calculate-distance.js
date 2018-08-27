@@ -1,9 +1,8 @@
-
 /**
  * vertical and horisontal moves cost 2 point
  * diaganal cost 3 point
- * 
- *  3 / 2 = 1.5 
+ *
+ *  3 / 2 = 1.5
  *  sqrt(2) = 1.414
  */
 

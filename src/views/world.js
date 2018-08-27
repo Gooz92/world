@@ -35,7 +35,6 @@ export default {
       [ 1, TILE_TYPES.TREE ],
       [ 4, TILE_TYPES.OBSTACLE ]
     ]);
-    
 
     function gameLoop() {
 
@@ -50,12 +49,12 @@ export default {
 
     const table = createTable(world.cells.length, world.cells[0].length, (cell, y, x) => {
       const cellType = world.cells[y][x].type;
-    
+
       cell.className = classes[cellType];
-    
+
       cell.id = getCellId(x, y);
     });
-    
+
     document.body.appendChild(table);
     gameLoop();
   },

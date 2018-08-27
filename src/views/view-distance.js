@@ -5,7 +5,7 @@ export default function () {
 
   const table = createTable(61, 61, (cell, x, y) => {
     const distance = calculateDistance(30, 30, x, y) / 2;
-    
+
     if (distance < 30) {
       cell.style.backgroundColor = 'black';
     }

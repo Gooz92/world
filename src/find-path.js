@@ -72,7 +72,7 @@ export default function findPath(field, x, y, isFound, isPassable = getTrue) {
 
       const isDiagonal = Math.abs(dx) > 0 && Math.abs(dy) > 0;
 
-      if (isDiagonal && 
+      if (isDiagonal &&
         !$isPassable(currentX, nextY, field) &&
         !$isPassable(nextX, currentY, field)) {
         continue;

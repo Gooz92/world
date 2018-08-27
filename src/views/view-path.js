@@ -39,7 +39,7 @@ export default function () {
     const tile = world[y][x];
 
     (cells[y] || (cells[y] = []))[x] = cell;
-    
+
     if (tile === 0) return;
 
     if (tile === 3) cell.style.backgroundColor = 'red';

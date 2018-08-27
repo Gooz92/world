@@ -18,7 +18,7 @@ function generateRandomPoints(count, minX, maxX, minY, maxY, occupied) {
       x = randomInt(minX, maxX);
       y = randomInt(minY, maxY);
     } while (!occupied.has(hash(x, y)));
-  
+
     points.push([ x, y ]);
   }
 
@@ -45,9 +45,9 @@ export default function generateWorld(width, height, obejctDistribution) {
 
   const points = generateRandomPoints(3, width / 3, 2 * width / 3,
       height / 3, 2 * height / 3, occupied);
-  
+
   const people = points.map(position => new Person(world, position));
-  
+
   people.forEach(person => {
     const [ x, y ] = person.position;
     world[y][x] = { object: person };

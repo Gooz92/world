@@ -43,7 +43,7 @@ describe('arrayUtils', function () {
     it('call itemGenerator with index as first argument', () => {
       const itemGenerator = sinon.spy();
       generateArray(3, itemGenerator);
-  
+
       assert.strictEqual(itemGenerator.firstCall.args[0], 0);
       assert.strictEqual(itemGenerator.secondCall.args[0], 1);
       assert.strictEqual(itemGenerator.thirdCall.args[0], 2);
@@ -52,7 +52,7 @@ describe('arrayUtils', function () {
     it('call itemGenerator with generated array as second argument', () => {
       const itemGenerator = sinon.spy(index => index);
       const array = generateArray(1, itemGenerator);
-  
+
       assert.strictEqual(itemGenerator.firstCall.args[1], array);
     });
 
