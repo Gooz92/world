@@ -41,8 +41,6 @@ export default {
 
       const moves = step(world);
 
-      console.log(`TICK`);
-
       moves.forEach(({ from, to }) => {
         viewMove(from, to, 'person');
       });

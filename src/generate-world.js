@@ -1,6 +1,7 @@
 import { distributionRandom, randomInt } from './utils/random.utils.js';
 import { generateArray } from './utils/array.utils.js';
 import TILE_TYPES from './tile-types.js';
+import Person from './model/Person.js';
 
 export const fromTileTypes = tiles => (
   tiles.map(row => row.map(type => ({ type })))
@@ -45,12 +46,15 @@ export default function generateWorld(width, height, obejctDistribution) {
   const points = generateRandomPoints(3, width / 3, 2 * width / 3,
       height / 3, 2 * height / 3, occupied);
   
-  points.forEach(([ x, y ]) => {
-    world[y][x] = { type: TILE_TYPES.PERSON };
+  const people = points.map(position => new Person(world, position));
+  
+  people.forEach(person => {
+    const [ x, y ] = person.position;
+    world[y][x] = { object: person };
   });
 
   return {
-    objects: points.map(position => ({ position })),
+    objects: people,
     cells: world
   };
 }
