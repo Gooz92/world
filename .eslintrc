@@ -12,6 +12,7 @@
   },
 
   "rules": {
-    "no-trailing-spaces": 2
+    "no-trailing-spaces": 2,
+    "no-multi-spaces": 2
   }  
 }

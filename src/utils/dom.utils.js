@@ -1,6 +1,6 @@
 import { noop } from './fn.utils.js';
 
-export function createElement(tagName, properties)  {
+export function createElement(tagName, properties) {
   return Object.assign(document.createElement(tagName), properties);
 }
 

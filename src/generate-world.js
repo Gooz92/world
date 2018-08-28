@@ -36,7 +36,7 @@ export default function generateWorld(width, height, obejctDistribution) {
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const type = getNextTileType();
-      world[y][x] = { type  };
+      world[y][x] = { type };
 
       if (type !== TILE_TYPES.EMPTY)
         occupied.add(hash(x, y));
