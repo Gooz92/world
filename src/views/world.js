@@ -1,7 +1,40 @@
 import generateWorld from '../generate-world.js';
 import step from '../step.js';
 import TILE_TYPES from '../tile-types.js';
-import { createTable } from '../utils/dom.utils.js';
+import { createTable, createElement } from '../utils/dom.utils.js';
+
+const brushes = [
+  'erase',
+  'obstacle',
+  'tree',
+  'person'
+];
+function createMenu() {
+  const menu = createElement('ul', { className: 'menu' });
+
+  brushes.forEach(brush => {
+    const item = createElement('li');
+
+    const label = createElement('label', {
+      htmlFor: brush, // reflects 'for' attribute
+      innerHTML: brush
+    });
+
+    const radioButton = createElement('input', {
+      id: brush,
+      type: 'radio',
+      name: 'brush',
+      value: brush
+    });
+
+    item.appendChild(label);
+    item.appendChild(radioButton);
+
+    menu.appendChild(item);
+  });
+
+  return menu;
+}
 
 const TICK_TIME = 180;
 
@@ -55,8 +88,31 @@ export default {
       cell.id = getCellId(x, y);
     });
 
+    const playButton = createElement('button', {
+      innerHTML: 'Play',
+      onclick: () => {
+        playButton.disabled = true;
+        stopButton.disabled = false;
+        gameLoop();
+      }
+    });
+
+    const stopButton = createElement('button', {
+      innerHTML: 'Stop',
+      onclick: () => {
+        clearTimeout(timeoutId);
+        stopButton.disabled = true;
+        playButton.disabled = false;
+      }
+    });
+
+    // const menu = createMenu();
+
     document.body.appendChild(table);
-    gameLoop();
+    document.body.appendChild(playButton);
+    document.body.appendChild(stopButton);
+
+    // gameLoop();
   },
 
   leave: _ => {

@@ -23,3 +23,13 @@ td {
 .person {
   background-color: #f00;
 }
+
+.menu {
+  list-style-type: none;
+  padding: 4px;
+}
+
+.menu li {
+  float: left;
+  margin: 4px;
+}
