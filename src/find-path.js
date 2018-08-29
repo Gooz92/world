@@ -1,16 +1,6 @@
 import direction from './model/direction.js';
 import { getTrue } from './utils/fn.utils.js';
-
-function buildPath(node) {
-  const path = [];
-
-  while (node.previous) {
-    path.unshift(node.position);
-    node = node.previous;
-  }
-
-  return path;
-}
+import backtracePath from './backtrace-path.js';
 
 const hash = (x, y) => `${x}-${y}`;
 
@@ -58,7 +48,7 @@ export default function findPath(field, x, y, isFound, isPassable = getTrue) {
     const currentKey = hash(currentX, currentY);
 
     if (isFound(currentX, currentY, field)) {
-      return buildPath(currentNode);
+      return backtracePath(currentNode);
     }
 
     for (const [ dx, dy ] of offsets) {
