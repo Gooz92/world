@@ -44,4 +44,14 @@ describe('fnUtils', function () {
 
   });
 
+  describe('getTrue', function () {
+
+    const getTrue = fnUtils.getTrue;
+
+    it('return true', () => {
+      assert.isTrue(getTrue());
+    });
+
+  });
+
 });

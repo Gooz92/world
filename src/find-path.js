@@ -1,4 +1,5 @@
 import direction from './model/direction.js';
+import { getTrue } from './utils/fn.utils.js';
 
 function buildPath(node) {
   const path = [];
@@ -34,8 +35,6 @@ function pickMin(array, getValue) {
 
 const offsets = Object.keys(direction)
   .reduce((acc, directionName) => [ ...acc, direction[directionName] ]);
-
-const getTrue = () => true;
 
 export default function findPath(field, x, y, isFound, isPassable = getTrue) {
 

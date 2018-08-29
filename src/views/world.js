@@ -80,10 +80,10 @@ export default {
       timeoutId = setTimeout(gameLoop, TICK_TIME);
     }
 
-    const table = createTable(world.cells.length, world.cells[0].length, (cell, y, x) => {
-      const cellType = world.cells[y][x].type;
+    const table = createTable(world.tiles.length, world.tiles[0].length, (cell, y, x) => {
+      const tileType = world.tiles[y][x].type;
 
-      cell.className = classes[cellType];
+      cell.className = classes[tileType];
 
       cell.id = getCellId(x, y);
     });

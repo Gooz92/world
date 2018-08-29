@@ -1,6 +1,7 @@
 import { createTable } from '../utils/dom.utils.js';
 import { generateArray } from '../utils/array.utils.js';
 import findPath from '../find-path.js';
+import { getTrue } from '../utils/fn.utils.js';
 
 const WIDTH = 68;
 const HEIGHT = 70;
@@ -30,7 +31,7 @@ const world = generateArray(HEIGHT, y => (
   })
 ));
 
-const path = findPath(world, START_X, START_Y, (x, y, tiles) => tiles[y][x] === END, _ => true);
+const path = findPath(world, START_X, START_Y, (x, y, tiles) => tiles[y][x] === END, getTrue);
 
 export default function () {
   const cells = [];

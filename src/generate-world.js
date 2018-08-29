@@ -55,6 +55,6 @@ export default function generateWorld(width, height, obejctDistribution) {
 
   return {
     objects: people,
-    cells: world
+    tiles: world
   };
 }
