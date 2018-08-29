@@ -1,3 +1,5 @@
+import direction from './model/direction.js';
+
 function buildPath(node) {
   const path = [];
 
@@ -30,10 +32,8 @@ function pickMin(array, getValue) {
   return array.splice(index, 1)[0];
 }
 
-const offsets = [
-  [ -1, -1 ], [ 0, -1 ], [ 1, -1 ], [ -1, 0 ],
-  [ 1, 0 ], [ -1, 1 ], [ 0, 1 ], [ 1, 1 ]
-];
+const offsets = Object.keys(direction)
+  .reduce((acc, directionName) => [ ...acc, direction[directionName] ]);
 
 const getTrue = () => true;
 
