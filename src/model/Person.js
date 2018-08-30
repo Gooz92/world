@@ -14,16 +14,17 @@ const isPassable = (x, y, tiles) => (
   tiles[y][x].type !== TILE_TYPES.OBSTACLE
 );
 
-export default class Person {
+class GeatherStrategy {
 
-  constructor(world, position) {
+  constructor(world, person) {
     this.world = world;
-    this.position = position;
+    this.person = person;
+    this.idleTime = 0;
   }
 
   move() {
-    const prevPos = this.position;
-    this.position = this.nextPosition;
+    const prevPos = this.person.position;
+    this.person.position = this.nextPosition;
 
     if (this.path.length === 0) {
       this.path = null;
@@ -35,7 +36,7 @@ export default class Person {
     this.nextPosition = null;
     this.idleTime = 0;
 
-    const [ x, y ] = this.position;
+    const [ x, y ] = this.person.position;
 
     // command
     return {
@@ -47,14 +48,10 @@ export default class Person {
 
   act() {
 
-    const [ x, y ] = this.position;
+    const [ x, y ] = this.person.position;
 
     if (!this.path) {
       this.path = findPath(this.world, x, y, isTreeFound, isPassable);
-    }
-
-    if (isUndefined(this.idleTime)) {
-      this.idleTime = 0;
     }
 
     if (!this.nextPosition) {
@@ -69,5 +66,18 @@ export default class Person {
     }
 
     return { type: 'IDLE' };
+  }
+}
+
+export default class Person {
+
+  constructor(world, position) {
+    this.strategy = new GeatherStrategy(world, this);
+    this.position = position;
+  }
+
+  act() {
+
+    return this.strategy.act();
   }
 }
