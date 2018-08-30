@@ -33,7 +33,7 @@ describe('findPath', function () {
 
     const isFound = (x, y) => world[y][x] === 5;
     const isPassable = (x, y) => world[y][x] !== 1;
-    debugger;
+
     const path = findPath(world, 0, 1, isFound, isPassable);
 
     assert.notDeepEqual(path, [ [ 1, 2 ] ]);

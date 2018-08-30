@@ -52,8 +52,8 @@ function getCell(x, y) {
 let timeoutId;
 
 function viewMove(from, to, objectType) {
-  const startCell = getCell(from.x, from.y);
-  const endCell = getCell(to.x, to.y);
+  const startCell = getCell(from[0], from[1]);
+  const endCell = getCell(to[0], to[1]);
 
   startCell.className = '';
   endCell.className = objectType;
@@ -73,7 +73,7 @@ export default {
 
       const moves = step(world);
 
-      moves.forEach(({ from, to }) => {
+      moves.forEach(({ data: { from, to } }) => {
         viewMove(from, to, 'person');
       });
 

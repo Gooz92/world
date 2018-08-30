@@ -1,5 +1,4 @@
 import findPath from '../find-path.js'
-import { isUndefined } from '../utils/is.utils.js';
 import TILE_TYPES from '../tile-types.js';
 
 const isDiagonal = ([ x1, y1 ], [ x2, y2 ]) => (
@@ -16,68 +15,79 @@ const isPassable = (x, y, tiles) => (
 
 class GeatherStrategy {
 
-  constructor(world, person) {
+  constructor(world, actor) {
     this.world = world;
-    this.person = person;
-    this.idleTime = 0;
+    this.actor = actor;
   }
 
-  move() {
-    const prevPos = this.person.position;
-    this.person.position = this.nextPosition;
-
-    if (this.path.length === 0) {
-      this.path = null;
-    }
-
-    const [ nextX, nextY ] = this.nextPosition;
-    this.world[nextY][nextX].type = TILE_TYPES.PERSON;
-
-    this.nextPosition = null;
-    this.idleTime = 0;
-
-    const [ x, y ] = this.person.position;
-
-    // command
-    return {
-      type: 'MOVE',
-      to: { x, y },
-      from: { x: prevPos[0], y: prevPos[1] }
-    };
-  }
-
-  act() {
-
-    const [ x, y ] = this.person.position;
-
-    if (!this.path) {
+  nextAction() {
+    if (!this.path || this.path.length === 0) {
+      const [ x, y ] = this.actor.position;
       this.path = findPath(this.world, x, y, isTreeFound, isPassable);
     }
 
-    if (!this.nextPosition) {
-      this.nextPosition = this.path.shift();
-    } else {
-      ++this.idleTime;
-      if (isDiagonal([ x, y ], this.nextPosition)) {
-        if (this.idleTime === 2) return this.move();
-      } else {
-        if (this.idleTime === 1) return this.move();
-      }
+    const position = this.path.shift();
+    return new MoveAction(this.actor, position);
+  }
+
+  getAction() {
+
+    if (!this.action || this.action.completed) {
+      this.action = this.nextAction();
     }
 
-    return { type: 'IDLE' };
+    return this.action;
+  }
+}
+
+class MoveAction {
+
+  constructor(actor, position) {
+    this.duration = isDiagonal(actor.position, position) ? 3 : 2;
+    this.position = position;
+    this.completed = false;
+    this.actor = actor;
+  }
+
+  perform() {
+    const from = this.actor.position;
+
+    const [ x0, y0 ] = from;
+
+    this.actor.world[y0][x0] = TILE_TYPES.EMPTY;
+
+    this.completed = true;
+    
+    this.actor.position = this.position;
+
+    const [ x1, y1 ] = this.position;
+    this.actor.world[y1][x1] = TILE_TYPES.PERSON;
+
+    return { type: 'MOVE', data: { from, to: this.position } };
   }
 }
 
 export default class Person {
 
   constructor(world, position) {
+    this.world = world;
     this.strategy = new GeatherStrategy(world, this);
     this.position = position;
+    this.actionPoints = 0;
   }
 
   act() {
 
-    return this.strategy.act();
+    ++this.actionPoints;
+
+    const action = this.strategy.getAction();
+    
+    if (action.duration <= this.actionPoints) {
+      this.actionPoints -= action.duration;
+      console.log('perform');
+      return action.perform();
+    }
+
+    return { type: 'IDLE' };
   }
 }
