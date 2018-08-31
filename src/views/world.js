@@ -1,5 +1,4 @@
 import generateWorld from '../generate-world.js';
-import step from '../step.js';
 import TILE_TYPES from '../model/tile-types.js';
 import { createTable, createElement } from '../utils/dom.utils.js';
 
@@ -9,32 +8,6 @@ const brushes = [
   'tree',
   'person'
 ];
-function createMenu() {
-  const menu = createElement('ul', { className: 'menu' });
-
-  brushes.forEach(brush => {
-    const item = createElement('li');
-
-    const label = createElement('label', {
-      htmlFor: brush, // reflects 'for' attribute
-      innerHTML: brush
-    });
-
-    const radioButton = createElement('input', {
-      id: brush,
-      type: 'radio',
-      name: 'brush',
-      value: brush
-    });
-
-    item.appendChild(label);
-    item.appendChild(radioButton);
-
-    menu.appendChild(item);
-  });
-
-  return menu;
-}
 
 const TICK_TIME = 180;
 
@@ -71,7 +44,9 @@ export default {
 
     function gameLoop() {
 
-      const moves = step(world);
+      const moves = world.objects
+        .map(object => object.act())
+        .filter(action => action.type !== 'IDLE');
 
       moves.forEach(({ data: { from, to } }) => {
         viewMove(from, to, 'person');
