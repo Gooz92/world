@@ -42,8 +42,15 @@ export default {
       [ 4, TILE_TYPES.OBSTACLE ]
     ]);
 
-    function gameLoop() {
+    const table = createTable(world.tiles.length, world.tiles[0].length, (cell, y, x) => {
+      const tileType = world.tiles[y][x].type;
 
+      cell.className = classes[tileType];
+
+      cell.id = getCellId(x, y);
+    });
+
+    function tick() {
       const moves = world.objects
         .map(object => object.act())
         .filter(action => action.type !== 'IDLE');
@@ -51,16 +58,18 @@ export default {
       moves.forEach(({ data: { from, to } }) => {
         viewMove(from, to, 'person');
       });
+    }
 
+    function gameLoop() {
+      tick();
       timeoutId = setTimeout(gameLoop, TICK_TIME);
     }
 
-    const table = createTable(world.tiles.length, world.tiles[0].length, (cell, y, x) => {
-      const tileType = world.tiles[y][x].type;
-
-      cell.className = classes[tileType];
-
-      cell.id = getCellId(x, y);
+    const stepButton = createElement('button', {
+      innerHTML: 'Step',
+      onclick: () => {
+        tick();
+      }
     });
 
     const playButton = createElement('button', {
@@ -74,6 +83,7 @@ export default {
 
     const stopButton = createElement('button', {
       innerHTML: 'Stop',
+      disabled: true,
       onclick: () => {
         clearTimeout(timeoutId);
         stopButton.disabled = true;
@@ -84,8 +94,15 @@ export default {
     // const menu = createMenu();
 
     document.body.appendChild(table);
+
+    world.objects
+      .forEach(({ position: [ x, y ] }) => {
+        getCell(x, y).className = 'person';
+      });
+
     document.body.appendChild(playButton);
     document.body.appendChild(stopButton);
+    document.body.appendChild(stepButton);
 
     // gameLoop();
   },
