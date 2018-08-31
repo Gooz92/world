@@ -1,3 +1,12 @@
+import { createElement } from './utils/dom.utils.js';
+
+const brushes = [
+  'erase',
+  'obstacle',
+  'tree',
+  'person'
+];
+
 export default function createMenu() {
   const menu = createElement('ul', { className: 'menu' });
 

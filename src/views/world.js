@@ -2,13 +2,6 @@ import generateWorld from '../generate-world.js';
 import TILE_TYPES from '../model/tile-types.js';
 import { createTable, createElement } from '../utils/dom.utils.js';
 
-const brushes = [
-  'erase',
-  'obstacle',
-  'tree',
-  'person'
-];
-
 const TICK_TIME = 180;
 
 // @ - person, O - tree
