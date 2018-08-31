@@ -1,7 +1,7 @@
 const getPosition = node => node.position;
 
 export default function backtracePath(node, getPathNode = getPosition) {
-  const path = [ getPathNode(node) ];
+  const path = [];
 
   while (node.previous) {
     const pathNode = getPathNode(node);

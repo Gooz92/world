@@ -1,6 +1,6 @@
 import { distributionRandom, randomInt } from './utils/random.utils.js';
 import { generateArray } from './utils/array.utils.js';
-import TILE_TYPES from './tile-types.js';
+import TILE_TYPES from './model/tile-types.js';
 import Person from './model/Person.js';
 
 export const fromTileTypes = tiles => (

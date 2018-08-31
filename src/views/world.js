@@ -1,6 +1,6 @@
 import generateWorld from '../generate-world.js';
 import step from '../step.js';
-import TILE_TYPES from '../tile-types.js';
+import TILE_TYPES from '../model/tile-types.js';
 import { createTable, createElement } from '../utils/dom.utils.js';
 
 const brushes = [
