@@ -7,8 +7,6 @@ const isDiagonal = ([ x1, y1 ], [ x2, y2 ]) => (
 
 export default class MoveAction extends Action {
 
-  static type = 'MOVE';
-
   constructor(actor, position) {
     super(actor, { from: actor.position, to: position });
 
@@ -18,9 +16,7 @@ export default class MoveAction extends Action {
   }
 
   perform() {
-
     this.actor.moveTo(this.data.to);
-
     return super.perform();
   }
 }

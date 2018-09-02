@@ -50,12 +50,12 @@ export default {
         .filter(action => action.type !== 'IDLE');
 
       actions.forEach(action => {
-        if (action.type === 'MOVE') {
+        if (action.type === 'move') {
           const { data: { from, to } } = action;
           viewMove(from, to, 'person');
         }
 
-        if (action.type === 'CUT_TREE') {
+        if (action.type === 'cutTree') {
           const { data: { treePosition: [ x, y ] } } = action;
           getCell(x, y).className = 'empty';
         }

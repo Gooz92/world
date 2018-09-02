@@ -11,17 +11,6 @@ describe('Action', function () {
       assert.isTrue(action.completed);
     });
 
-    it('retun { type, data }', () => {
-      const actor = {};
-      const data = 'info';
-      const type = 'act';
-
-      const action = new Action(actor, data);
-      action.type = type;
-
-      assert.deepStrictEqual(action.perform(), { type, data });
-    });
-
   });
 
 });
