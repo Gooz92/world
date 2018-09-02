@@ -1,5 +1,6 @@
 import SearchTreeStrategy from './SearchTreeStrategy.js';
 import ObjectType from './ObjectType.js';
+import Action from './Action.js';
 
 export default class Person {
 
@@ -33,6 +34,6 @@ export default class Person {
       return action.perform();
     }
 
-    return { type: 'IDLE' };
+    return Action.IDLE;
   }
 }

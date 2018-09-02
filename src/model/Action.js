@@ -4,6 +4,8 @@ export default class Action {
 
   static POSTFIX = 'Action';
 
+  static IDLE = new class IdleAction extends Action {};
+
   get type () {
     const constructor = this.constructor;
 
@@ -17,11 +19,11 @@ export default class Action {
     return constructor.type;
   }
 
-  constructor(actor, data) {
+  constructor(actor = {}, data = {}) {
     this.actor = actor;
-    this.completed = false;
-
     this.data = data;
+
+    this.completed = false;
   }
 
   perform() {

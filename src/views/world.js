@@ -1,6 +1,7 @@
 import generateWorld from '../generate-world.js';
 import ObjectType from '../model/ObjectType.js';
 import { createTable, createElement } from '../utils/dom.utils.js';
+import { noop } from '../utils/fn.utils.js';
 
 const TICK_TIME = 180;
 
@@ -17,15 +18,21 @@ function getCell(x, y) {
 
 let timeoutId;
 
-function viewMove(from, to, objectType) {
-  const startCell = getCell(from[0], from[1]);
-  const endCell = getCell(to[0], to[1]);
+const hadlers = {
+  idle: noop,
 
-  startCell.className = '';
-  endCell.className = objectType;
+  move({ data: { from, to } }) {
+    const startCell = getCell(from[0], from[1]);
+    const endCell = getCell(to[0], to[1]);
 
-  return to;
-}
+    startCell.className = '';
+    endCell.className = 'person';
+  },
+
+  cutTree({ data: { treePosition: [ x, y ] } }) {
+    getCell(x, y).className = 'empty';
+  }
+};
 
 export default {
   enter: _ => {
@@ -45,21 +52,11 @@ export default {
     });
 
     function tick() {
-      const actions = world.objects
-        .map(object => object.act())
-        .filter(action => action.type !== 'IDLE');
-
-      actions.forEach(action => {
-        if (action.type === 'move') {
-          const { data: { from, to } } = action;
-          viewMove(from, to, 'person');
-        }
-
-        if (action.type === 'cutTree') {
-          const { data: { treePosition: [ x, y ] } } = action;
-          getCell(x, y).className = 'empty';
-        }
-      });
+      world.objects
+        .forEach(object => {
+          const event = object.act();
+          hadlers[event.type](event);
+        });
     }
 
     function gameLoop() {
