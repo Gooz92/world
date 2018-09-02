@@ -12,7 +12,21 @@ module.exports = function (config) {
       '**/*.js': [ 'webpack' ]
     },
     webpack: {
-      mode: 'development'
+      mode: 'development',
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: {
+              loader: 'babel-loader',
+              options: {
+                plugins: [require('babel-plugin-transform-class-properties')]
+              }
+            }
+          }
+        ]
+      },
     },
     basePath: './src',
     files: [ '**/*.test.js' ]
