@@ -10,6 +10,7 @@ export default class Action {
   perform() {
     this.completed = true;
 
-    return { type: this.type, data: this.data };
+    // TODO this.constructor.type is bad (
+    return { type: this.type || this.constructor.type, data: this.data };
   }
 }

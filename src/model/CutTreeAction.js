@@ -4,10 +4,9 @@ export default class CutTreeAction extends Action {
 
   static type = 'CUT_TREE';
 
-  static duration = 1;
-
   constructor(actor, treeTile, treePosition) {
     super(actor, { treeTile, treePosition });
+    this.duration = 1; // TODO
   }
 
   perform() {

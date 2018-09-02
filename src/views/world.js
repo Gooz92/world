@@ -45,12 +45,20 @@ export default {
     });
 
     function tick() {
-      const moves = world.objects
+      const actions = world.objects
         .map(object => object.act())
         .filter(action => action.type !== 'IDLE');
 
-      moves.forEach(({ data: { from, to } }) => {
-        viewMove(from, to, 'person');
+      actions.forEach(action => {
+        if (action.type === 'MOVE') {
+          const { data: { from, to } } = action;
+          viewMove(from, to, 'person');
+        }
+        
+        if (action.type === 'CUT_TREE') {
+          const { data: { treePosition: [ x, y ] } } = action;
+          getCell(x, y).className = 'empty';
+        }
       });
     }
 
