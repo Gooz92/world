@@ -1,3 +1,5 @@
+const webackCommon = require('./webpack.common.js');
+
 module.exports = function (config) {
   config.set({
     frameworks: ['mocha'],
@@ -11,23 +13,7 @@ module.exports = function (config) {
     preprocessors: {
       '**/*.js': [ 'webpack' ]
     },
-    webpack: {
-      mode: 'development',
-      module: {
-        rules: [
-          {
-            test: /\.js$/,
-            exclude: /node_modules/,
-            use: {
-              loader: 'babel-loader',
-              options: {
-                plugins: [require('babel-plugin-transform-class-properties')]
-              }
-            }
-          }
-        ]
-      },
-    },
+    webpack :webackCommon,
     basePath: './src',
     files: [ '**/*.test.js' ]
   })
