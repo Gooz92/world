@@ -15,7 +15,7 @@ describe('Action', function () {
       const actor = {};
       const data = 'info';
       const type = 'act';
-  
+
       const action = new Action(actor, data);
       action.type = type;
 

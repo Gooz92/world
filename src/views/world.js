@@ -54,7 +54,7 @@ export default {
           const { data: { from, to } } = action;
           viewMove(from, to, 'person');
         }
-        
+
         if (action.type === 'CUT_TREE') {
           const { data: { treePosition: [ x, y ] } } = action;
           getCell(x, y).className = 'empty';

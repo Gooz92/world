@@ -53,7 +53,7 @@ export default class SearchTreeStrategy {
     const path = this.getPath();
 
     if (path.length === 0) {
-      return new CutTreeAction(this.actor, this.treeTile, this.treePosition); 
+      return new CutTreeAction(this.actor, this.treeTile, this.treePosition);
     }
 
     const position = this.path.shift();
