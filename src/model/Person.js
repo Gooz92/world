@@ -3,7 +3,7 @@ import ObjectType from './ObjectType.js';
 
 export default class Person {
 
-  static type =  ObjectType.PERSON;
+  static type = ObjectType.PERSON;
 
   constructor(world, position) {
     this.world = world;

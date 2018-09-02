@@ -1,28 +1,26 @@
+import Action from './Action.js';
 import { AXIAL_TILE_DISTACE, DIAGONAL_TILE_DISTANCE } from './consts.js';
 
 const isDiagonal = ([ x1, y1 ], [ x2, y2 ]) => (
   Math.abs(x1 - x2) > 0 && Math.abs(y1 - y2) > 0
 );
 
-export default class MoveAction {
+export default class MoveAction extends Action {
+
+  static type = 'MOVE';
 
   constructor(actor, position) {
+    super(actor, { from: actor.position, to: position });
+
     this.duration = isDiagonal(actor.position, position) ?
       DIAGONAL_TILE_DISTANCE :
       AXIAL_TILE_DISTACE;
-
-    this.position = position;
-    this.completed = false;
-    this.actor = actor;
   }
 
   perform() {
-    const from = this.actor.position;
 
-    this.actor.moveTo(this.position);
+    this.actor.moveTo(this.data.to);
 
-    this.completed = true;
-
-    return { type: 'MOVE', data: { from, to: this.position } };
+    return super.perform();
   }
 }
