@@ -18,14 +18,17 @@ export default class MoveAction {
 
     const [ x0, y0 ] = from;
 
-    this.actor.world[y0][x0] = TILE_TYPES.EMPTY;
+    this.actor.world[y0][x0].object = null;
 
     this.completed = true;
     
     this.actor.position = this.position;
 
     const [ x1, y1 ] = this.position;
-    this.actor.world[y1][x1] = TILE_TYPES.PERSON;
+
+    // TOOD ?
+    this.actor.world[y1][x1].type = TILE_TYPES.EMPTY;
+    this.actor.world[y1][x1].object = this.actor;
 
     return { type: 'MOVE', data: { from, to: this.position } };
   }

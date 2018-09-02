@@ -3,32 +3,31 @@ import { generateArray } from './utils/array.utils.js';
 import TILE_TYPES from './model/tile-types.js';
 import Person from './model/Person.js';
 
-export const fromTileTypes = tiles => (
-  tiles.map(row => row.map(type => ({ type })))
-);
-
 const hash = (x, y) => `${x}-${y}`;
 
 function generateRandomPoints(count, minX, maxX, minY, maxY, occupied) {
-  const points = [];
+  const points = new Map();
 
   while (count-- > 0) {
-    let x, y;
+    let x, y, k;
     do {
       x = randomInt(minX, maxX);
       y = randomInt(minY, maxY);
-    } while (!occupied.has(hash(x, y)));
+      k = hash(x, y);
+    } while (!occupied.has(k) && !points.has(k));
 
-    points.push([ x, y ]);
+    points.set(k, [ x, y ]);
   }
 
-  return points;
+  return points.values();;
 }
 
 export default function generateWorld(width, height, obejctDistribution) {
-  const world = generateArray(height, _ => generateArray(width, _ => ({
-    type: TILE_TYPES.EMPTY
-  })));
+  const world = generateArray(height, y => (
+    generateArray(width, x => ({
+      type: TILE_TYPES.EMPTY
+    }))
+  ));
 
   const occupied = new Set();
   const getNextTileType = distributionRandom(obejctDistribution);
@@ -36,10 +35,11 @@ export default function generateWorld(width, height, obejctDistribution) {
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const type = getNextTileType();
-      world[y][x] = { type };
+      world[y][x].type = type;
 
-      if (type !== TILE_TYPES.EMPTY)
+      if (type !== TILE_TYPES.EMPTY) {
         occupied.add(hash(x, y));
+      }
     }
   }
 
@@ -50,7 +50,7 @@ export default function generateWorld(width, height, obejctDistribution) {
 
   people.forEach(person => {
     const [ x, y ] = person.position;
-    world[y][x] = { object: person };
+    world[y][x].object = person;
   });
 
   return {
