@@ -54,4 +54,15 @@ describe('fnUtils', function () {
 
   });
 
+  describe('getObject', function () {
+
+    const getObject = fnUtils.getObject;
+
+    it('create object', () => {
+      assert.deepEqual(getObject(), {});
+      assert.notStrictEqual(getObject(), getObject());
+    });
+
+  });
+
 });

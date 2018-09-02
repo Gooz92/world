@@ -1,5 +1,3 @@
-import TILE_TYPES from './tile-types.js';
-
 const isDiagonal = ([ x1, y1 ], [ x2, y2 ]) => (
   Math.abs(x1 - x2) > 0 && Math.abs(y1 - y2) > 0
 );
@@ -26,8 +24,6 @@ export default class MoveAction {
 
     const [ x1, y1 ] = this.position;
 
-    // TOOD ?
-    this.actor.world[y1][x1].type = TILE_TYPES.EMPTY;
     this.actor.world[y1][x1].object = this.actor;
 
     return { type: 'MOVE', data: { from, to: this.position } };

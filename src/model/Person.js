@@ -1,6 +1,7 @@
 import SearchTreeStrategy from './SearchTreeStrategy.js';
+import ObjectType from './ObjectType.js';
 
-export default class Person {
+const Person = class {
 
   constructor(world, position) {
     this.world = world;
@@ -23,3 +24,7 @@ export default class Person {
     return { type: 'IDLE' };
   }
 }
+
+Person.prototype.type = ObjectType.PERSON;
+
+export default Person;

@@ -1,13 +1,13 @@
 import findPath from '../find-path.js'
-import TILE_TYPES from './tile-types.js';
 import MoveAction from './MoveAction.js';
+import ObjectType from './ObjectType.js';
 
 const isTreeFound = (x, y, tiles) => (
-  tiles[y][x].type === TILE_TYPES.TREE
+  tiles[y][x].object && tiles[y][x].object.type === ObjectType.TREE
 );
 
 const isPassable = (x, y, tiles) => (
-  tiles[y][x].type !== TILE_TYPES.OBSTACLE
+  tiles[y][x].object === null || tiles[y][x].object.type !== ObjectType.OBSTACLE
 );
 
 export default class SearchTreeStrategy {

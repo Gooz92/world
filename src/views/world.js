@@ -1,5 +1,5 @@
 import generateWorld from '../generate-world.js';
-import TILE_TYPES from '../model/tile-types.js';
+import ObjectType from '../model/ObjectType.js';
 import { createTable, createElement } from '../utils/dom.utils.js';
 
 const TICK_TIME = 180;
@@ -30,15 +30,16 @@ function viewMove(from, to, objectType) {
 export default {
   enter: _ => {
     const world = generateWorld(64, 64, [
-      [ 50, TILE_TYPES.EMPTY ],
-      [ 1, TILE_TYPES.TREE ],
-      [ 4, TILE_TYPES.OBSTACLE ]
+      [ 50, () => null ],
+      [ 1, () => ({ type: ObjectType.TREE }) ],
+      [ 4, () => ({ type: ObjectType.OBSTACLE }) ]
     ]);
 
     const table = createTable(world.tiles.length, world.tiles[0].length, (cell, y, x) => {
-      const tileType = world.tiles[y][x].type;
+      const object = world.tiles[y][x].object
+      const objectType = object ? object.type : 0;
 
-      cell.className = classes[tileType];
+      cell.className = classes[objectType];
 
       cell.id = getCellId(x, y);
     });
