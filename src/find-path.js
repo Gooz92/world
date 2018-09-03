@@ -29,6 +29,10 @@ const offsets = Object.keys(direction)
 
 export default function findPath(field, x, y, isFound, isPassable = getTrue) {
 
+  const $isPassable = (x, y, field) => (
+    inBounds(x, y, field) && isPassable(x, y, field)
+  );
+
   const visited = {
     [`${x}-${y}`]: 0
   };
@@ -44,19 +48,23 @@ export default function findPath(field, x, y, isFound, isPassable = getTrue) {
     const [ currentX, currentY ] = currentNode.position;
     const currentKey = hash(currentX, currentY);
 
+    if (isFound(currentX, currentY, field)) {
+      return backtracePath(currentNode);
+    }
+
     for (const [ dx, dy ] of offsets) {
       const nextPosition = [ currentX + dx, currentY + dy ];
-      const [ nextX, nextY ] = nextPosition
+      const [ nextX, nextY ] = nextPosition;
 
-      const isDiagonal = Math.abs(dx) > 0 && Math.abs(dy) > 0;
-
-      if (!inBounds(nextX, nextY, field)) {
+      if (!$isPassable(nextX, nextY, field)) {
         continue;
       }
 
+      const isDiagonal = Math.abs(dx) > 0 && Math.abs(dy) > 0;
+
       if (isDiagonal &&
-        !isPassable(currentX, nextY, field) &&
-        !isPassable(nextX, currentY, field)) {
+        !$isPassable(currentX, nextY, field) &&
+        !$isPassable(nextX, currentY, field)) {
         continue;
       }
 
@@ -66,27 +74,13 @@ export default function findPath(field, x, y, isFound, isPassable = getTrue) {
 
       const key = hash(nextX, nextY);
 
-      const node = {
-        position: nextPosition,
-        previous: currentNode,
-        cost: nextCost
-      };
-
-      if (isFound(nextX, nextY, field)) {
-        if (isPassable(nextX, nextY, field)) {
-          return backtracePath(node);
-        } else {
-          return backtracePath(currentNode);
-        }
-      }
-
-      if (!isPassable(nextX, nextY, field)) {
-        continue;
-      }
-
       if (!visited[key] || nextCost < visited[key]) {
         visited[key] = nextCost;
-        nodes.push(node);
+        nodes.push({
+          position: nextPosition,
+          previous: currentNode,
+          cost: nextCost
+        });
       }
     }
 
