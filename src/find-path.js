@@ -1,7 +1,7 @@
 import direction from './model/direction.js';
 import { getTrue } from './utils/fn.utils.js';
 import backtracePath from './backtrace-path.js';
-import { AXIAL_TILE_DISTACE, DIAGONAL_TILE_DISTANCE } from './model/consts.js'
+import { AXIAL_TILE_DISTANCE, DIAGONAL_TILE_DISTANCE } from './model/consts.js'
 
 const hash = (x, y) => `${x}-${y}`;
 
@@ -69,7 +69,7 @@ export default function findPath(field, x, y, isFound, isPassable = getTrue) {
       }
 
       const nextCost = visited[currentKey] + (
-        isDiagonal ? DIAGONAL_TILE_DISTANCE : AXIAL_TILE_DISTACE
+        isDiagonal ? DIAGONAL_TILE_DISTANCE : AXIAL_TILE_DISTANCE
       );
 
       const key = hash(nextX, nextY);
