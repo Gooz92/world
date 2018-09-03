@@ -1,6 +1,6 @@
 import findPath from '../find-path.js'
-import MoveAction from './MoveAction.js';
-import CutTreeAction from './CutTreeAction.js';
+import MoveAction from './actions/MoveAction.js';
+import CutTreeAction from './actions/CutTreeAction.js';
 import ObjectType from './ObjectType.js';
 import direction from './direction.js';
 

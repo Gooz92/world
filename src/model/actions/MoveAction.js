@@ -1,5 +1,5 @@
 import Action from './Action.js';
-import { AXIAL_TILE_DISTANCE, DIAGONAL_TILE_DISTANCE } from './consts.js';
+import { AXIAL_TILE_DISTANCE, DIAGONAL_TILE_DISTANCE } from '../consts.js';
 
 const isDiagonal = ([ x1, y1 ], [ x2, y2 ]) => (
   Math.abs(x1 - x2) > 0 && Math.abs(y1 - y2) > 0

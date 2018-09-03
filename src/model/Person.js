@@ -1,6 +1,6 @@
 import SearchTreeStrategy from './SearchTreeStrategy.js';
 import ObjectType from './ObjectType.js';
-import Action from './Action.js';
+import Action from './actions/Action.js';
 
 export default class Person {
 
