@@ -1,6 +1,5 @@
-export function line(x1, y1, x2, y2) {
-
-  const line = [];
+export default function line(x1, y1, x2, y2) {
+  const line = [ [ x1, y1 ]];
   const dx = Math.abs(x2 - x1);
   const dy = Math.abs(y2 - y1);
 
@@ -12,9 +11,7 @@ export function line(x1, y1, x2, y2) {
   let x = x1;
   let y = y1;
 
-  while (x === x2 && y === y2) {
-    line.push([ x, y ]);
-
+  while (x !== x2 || y !== y2) {
     const e2 = 2 * err;
 
     if (e2 > -dy) {
@@ -26,6 +23,8 @@ export function line(x1, y1, x2, y2) {
       err += dx;
       y += sy;
     }
+
+    line.push([ x, y ]);
   }
 
   return line;
