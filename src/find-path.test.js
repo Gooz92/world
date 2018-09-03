@@ -20,7 +20,25 @@ describe('findPath', function () {
 
     const path = findPath(emptyWorld, startX, y0, isFound);
 
-    assert.deepEqual(path, [ [ startX + 1, y0], [ endX, y0 ] ]);
+    assert.deepStrictEqual(path, [ [ startX + 1, y0], [ endX, y0 ] ]);
+  });
+
+  it('return path to obstacle without obstacle', () => {
+
+    const world = [
+      [ 0, 0, 0, 0 ],
+      [ 0, 0, 0, 0 ],
+      [ 0, 0, 0, 0 ],
+      [ 0, 0, 0, 1 ]
+    ];
+
+    const isFound = (x, y, tiles) => tiles[y][x] === 1;
+    const isPassable = (x, y, tiles) => tiles[y][x] === 0;
+
+    debugger;
+    const path = findPath(world, 0, 0, isFound, isPassable);
+
+    assert.deepStrictEqual(path, [ [ 1, 1 ], [ 2, 2 ] ])
   });
 
   it('do not pass through diagonal obstacles', () => {

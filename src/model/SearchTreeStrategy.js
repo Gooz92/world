@@ -21,24 +21,16 @@ export default class SearchTreeStrategy {
 
   isTreeFound = (x, y, tiles) => {
 
-    for (let [ dx, dy ] of AXIAL_OFFSETS) {
-      const nextX = x + dx, nextY = y + dy;
-
-      if (nextX < 0 || nextY < 0 ||
-        nextY >= tiles.length || nextX >= tiles[nextY].length) {
-        continue;
-      }
-
-      const tile = tiles[nextY][nextX];
-      if (tile.object && tile.object.type === ObjectType.TREE) {
-        this.treePosition = [ nextX, nextY ];
-        this.treeTile = tile;
-        return true;
-      }
+    // allow diagonal cutting
+    if (tiles[y][x].object && tiles[y][x].object.type === ObjectType.TREE) {
+      const tile = tiles[y][x];
+      this.treeTile = tile;
+      this.treePosition = [ x, y ];
+      return true;
     }
 
     return false;
-  }
+  };
 
   getPath() {
     if (!this.path || this.path.length === 0) {
