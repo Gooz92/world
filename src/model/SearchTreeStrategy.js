@@ -6,7 +6,7 @@ import direction from './direction.js';
 
 const AXIAL_OFFSETS = [
   direction.n, direction.e, direction.s, direction.w
-]
+];
 
 const isPassable = (x, y, tiles) => (
   tiles[y][x].object === null
