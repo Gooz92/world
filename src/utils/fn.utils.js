@@ -4,6 +4,8 @@ export const identity = arg => arg;
 
 export const constant = arg => () => arg;
 
+export const getObject = () => ({});
+
 export const getTrue = () => true;
 
-export const getObject = () => ({});
+export const getFalse = () => false;

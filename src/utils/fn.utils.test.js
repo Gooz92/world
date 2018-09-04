@@ -54,6 +54,16 @@ describe('fnUtils', function () {
 
   });
 
+  describe('getFalse', function () {
+
+    const getFalse = fnUtils.getFalse;
+
+    it('return false', () => {
+      assert.isFalse(getFalse());
+    });
+
+  });
+
   describe('getObject', function () {
 
     const getObject = fnUtils.getObject;
