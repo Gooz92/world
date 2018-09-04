@@ -4,7 +4,7 @@ import CutTreeAction from '../actions/CutTreeAction.js';
 import ObjectType from '../ObjectType.js';
 import Strategy from './Startegy.js';
 
-export default class SearchTreeStrategy extends Strategy {
+export default class CutTreesStrategy extends Strategy {
 
   static treeFinder = new PathFinder({
     onAxialTile(tile, x, y,) {
@@ -20,7 +20,7 @@ export default class SearchTreeStrategy extends Strategy {
     if (!this.path || this.path.length === 0) {
       const [ x, y ] = this.actor.position;
 
-      const result = SearchTreeStrategy.treeFinder.find(this.world, x, y);
+      const result = CutTreesStrategy.treeFinder.find(this.world, x, y);
 
       this.path = result.path;
       this.treePosition = result.goal;

@@ -1,5 +1,5 @@
-import SearchTreeStrategy from './SearchTreeStrategy.js';
+import CutTreesStrategy from './CutTreesStrategy.js';
 
 export default {
-  SearchTreeStrategy
+  CutTreesStrategy
 };

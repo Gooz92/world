@@ -46,7 +46,7 @@ export default function generateWorld(width, height, obejctDistribution) {
 
   const people = points.map(position => {
     const person = new Person(world, position);
-    person.setStrategy('searchTree');
+    person.setStrategy('cutTrees');
 
     return person;
   });
