@@ -32,11 +32,7 @@ const world = generateArray(HEIGHT, y => (
 ));
 
 const finder = new PathFinder({
-  onTile(tile) {
-    if (tile === END) {
-      this.found(tile);
-    }
-  }
+  isTileFound: tile => tile === END
 });
 
 export default function () {

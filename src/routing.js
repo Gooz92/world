@@ -4,12 +4,14 @@ import world from './views/world.js';
 import randomTest from './views/random-test.js';
 import viewDistance from './views/view-distance.js';
 import viewPath from './views/view-path.js'
+import patrols from './views/patrols.js'
 
 const routes = {
   w: world,
   r: randomTest,
   d: viewDistance,
-  p: viewPath
+  p: viewPath,
+  patrols
 };
 
 let currentRoute;
