@@ -1,14 +1,10 @@
-import PathFinder from '../PathFinder.js'
-import MoveAction from './actions/MoveAction.js';
-import CutTreeAction from './actions/CutTreeAction.js';
-import ObjectType from './ObjectType.js';
+import PathFinder from '../../PathFinder.js'
+import MoveAction from '../actions/MoveAction.js';
+import CutTreeAction from '../actions/CutTreeAction.js';
+import ObjectType from '../ObjectType.js';
+import Strategy from './Startegy.js';
 
-export default class SearchTreeStrategy {
-
-  constructor(world, actor) {
-    this.world = world;
-    this.actor = actor;
-  }
+export default class SearchTreeStrategy extends Strategy {
 
   static treeFinder = new PathFinder({
     onAxialTile(tile, x, y,) {
@@ -45,13 +41,5 @@ export default class SearchTreeStrategy {
     const position = this.path.shift();
 
     return new MoveAction(this.actor, position);
-  }
-
-  getAction() {
-    if (!this.action || this.action.completed) {
-      this.action = this.nextAction();
-    }
-
-    return this.action;
   }
 }

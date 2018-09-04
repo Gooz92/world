@@ -44,7 +44,12 @@ export default function generateWorld(width, height, obejctDistribution) {
   const points = generateRandomPoints(3, width / 3, 2 * width / 3,
       height / 3, 2 * height / 3, occupied);
 
-  const people = points.map(position => new Person(world, position));
+  const people = points.map(position => {
+    const person = new Person(world, position);
+    person.setStrategy('searchTree');
+
+    return person;
+  });
 
   people.forEach(person => {
     const [ x, y ] = person.position;

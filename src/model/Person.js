@@ -1,6 +1,7 @@
-import SearchTreeStrategy from './SearchTreeStrategy.js';
+import strategies from './strategies';
 import ObjectType from './ObjectType.js';
 import Action from './actions/Action.js';
+import { upperFirst } from '../utils/string.utils.js';
 
 export default class Person {
 
@@ -8,7 +9,6 @@ export default class Person {
 
   constructor(world, position) {
     this.world = world;
-    this.strategy = new SearchTreeStrategy(world, this);
     this.position = position;
     this.actionPoints = 0;
   }
@@ -21,6 +21,12 @@ export default class Person {
     this.world[y2][x2].object = this;
 
     this.position = position;
+  }
+
+  setStrategy(strategyName) {
+    // TODO
+    const strategy = new strategies[upperFirst(strategyName) + 'Strategy'](this.world, this);
+    this.strategy = strategy;
   }
 
   act() {

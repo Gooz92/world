@@ -13,4 +13,13 @@ describe('stringUtils', function () {
 
   });
 
+  describe('upperFirst', function () {
+
+    const upperFirst = stringUtils.upperFirst;
+
+    it('converts the first character of string to lower case', () => {
+      assert.strictEqual(upperFirst('name'), 'Name');
+    });
+  });
+
 });
