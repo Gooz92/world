@@ -10,25 +10,6 @@ const TICK_TIME = 80;
 
 let timeoutId;
 
-const hadlers = {
-  idle: noop,
-
-  move({ data: { from, to } }) {
-    const [ fromX, fromY ] = from;
-    const [ toX, toY ] = to;
-
-    const startCell = cells[fromY][fromX];
-    const endCell = cells[toY][toX];
-
-    startCell.className = '';
-    endCell.className = 'person';
-  },
-
-  cutTree({ data: { treePosition: [ x, y ] } }) {
-    cells[y][x].className = 'empty';
-  }
-};
-
 export default {
   enter: _ => {
     const world = generateWorld(64, 64, [
@@ -38,6 +19,25 @@ export default {
     ]);
 
     const { table, cells } = createField(world.tiles);
+
+    const hadlers = {
+      idle: noop,
+
+      move({ data: { from, to } }) {
+        const [ fromX, fromY ] = from;
+        const [ toX, toY ] = to;
+
+        const startCell = cells[fromY][fromX];
+        const endCell = cells[toY][toX];
+
+        startCell.className = '';
+        endCell.className = 'person';
+      },
+
+      cutTree({ data: { treePosition: [ x, y ] } }) {
+        cells[y][x].className = 'empty';
+      }
+    };
 
     function tick() {
       world.objects
