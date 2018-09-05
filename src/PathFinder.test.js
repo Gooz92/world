@@ -22,10 +22,10 @@ describe('PathFinder', function () {
 
       const finder = new PathFinder({
         onAxialTile: function (tile) {
-          return found(tile) ? this.found(tile) : 0
+          return found(tile) ? this.found(tile) : 0;
         },
         onDiagonalTile: function (tile) {
-          return found(tile) ? this.found(tile) : 0
+          return found(tile) ? this.found(tile) : 0;
         },
       });
 

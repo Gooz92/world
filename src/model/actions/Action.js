@@ -1,4 +1,4 @@
-import { lowerFirst } from '../../utils/string.utils.js'
+import { lowerFirst } from '../../utils/string.utils.js';
 
 export default class Action {
 
@@ -10,7 +10,7 @@ export default class Action {
     const constructor = this.constructor;
 
     if (!constructor.type) {
-      const name = constructor.name
+      const name = constructor.name;
       constructor.type = lowerFirst(
         name.substr(0, name.length - Action.POSTFIX.length)
       );

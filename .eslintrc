@@ -15,6 +15,12 @@
     "for-direction": 2,
     "getter-return": 2,
     "no-trailing-spaces": 2,
-    "no-multi-spaces": 2
+    "no-multi-spaces": 2,
+    "no-constant-condition": 2,
+    "no-dupe-args": 2,
+    "no-dupe-keys": 2,
+    "no-empty": 2,
+    "no-extra-semi": 2,
+    "semi": 2
   }  
 }

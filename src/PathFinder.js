@@ -1,7 +1,7 @@
 import direction from './model/direction.js';
 import { noop, getTrue, getFalse } from './utils/fn.utils.js';
 import backtracePath from './backtrace-path.js';
-import { AXIAL_TILE_DISTANCE, DIAGONAL_TILE_DISTANCE } from './model/consts.js'
+import { AXIAL_TILE_DISTANCE, DIAGONAL_TILE_DISTANCE } from './model/consts.js';
 
 const hash = (x, y) => `${x}-${y}`;
 
@@ -68,7 +68,7 @@ export default class PathFinder {
     return {
       goal: goal,
       path: backtracePath(node)
-    }
+    };
   }
 
   find(tiles, x, y) {

@@ -25,7 +25,7 @@ export default class Person {
 
   setStrategy(strategyName, options = {}) {
     const Strategy = strategies[`${upperFirst(strategyName)}Strategy`];
-    this.strategy = new Strategy(this.world, this, options);;
+    this.strategy = new Strategy(this.world, this, options);
   }
 
   act() {

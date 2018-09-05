@@ -6,6 +6,6 @@
  *  sqrt(2) = 1.414
  */
 
-export const AXIAL_TILE_DISTANCE = 2
+export const AXIAL_TILE_DISTANCE = 2;
 
 export const DIAGONAL_TILE_DISTANCE = 3;

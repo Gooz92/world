@@ -33,7 +33,7 @@ describe('fnUtils', function () {
 
     it('return function wich return given argument', () => {
       const one = constant(1);
-      assert.strictEqual(one(), 1)
+      assert.strictEqual(one(), 1);
     });
 
     it('returned function not copy given argument', () => {

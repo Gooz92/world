@@ -16,5 +16,5 @@ module.exports = function (config) {
     webpack :webackCommon,
     basePath: './src',
     files: [ '**/*.test.js' ]
-  })
+  });
 };

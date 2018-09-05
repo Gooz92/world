@@ -8,7 +8,7 @@ describe('stringUtils', function () {
     const lowerFirst = stringUtils.lowerFirst;
 
     it('converts the first character of string to lower case', () => {
-      assert.strictEqual(lowerFirst('Name'), 'name')
+      assert.strictEqual(lowerFirst('Name'), 'name');
     });
 
   });

@@ -1,4 +1,4 @@
-import PathFinder from '../../PathFinder.js'
+import PathFinder from '../../PathFinder.js';
 import MoveAction from '../actions/MoveAction.js';
 import CutTreeAction from '../actions/CutTreeAction.js';
 import ObjectType from '../ObjectType.js';

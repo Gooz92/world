@@ -44,7 +44,7 @@ export default {
 
     const tiles = generateArray(48, y => (
       generateArray(48, getObject)
-    ));    
+    ));
 
     const persons = paths.map(path => {
       const person = new Person(tiles, path[0]);
@@ -58,7 +58,7 @@ export default {
     });
 
     const table = createTable(tiles.length, tiles[0].length, (cell, y, x) => {
-      const object = tiles[y][x].object
+      const object = tiles[y][x].object;
       const objectType = object ? object.type : 0;
 
       cell.className = classes[objectType];

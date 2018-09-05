@@ -6,7 +6,7 @@ export default function createField(tiles) {
   const cells = [];
 
   const table = createTable(tiles.length, tiles[0].length, (cell, y, x) => {
-    const object = tiles[y][x].object
+    const object = tiles[y][x].object;
     const objectType = object ? object.type : 0;
 
     cell.className = classes[objectType];
