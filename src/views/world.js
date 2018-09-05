@@ -1,20 +1,12 @@
 import generateWorld from '../generate-world.js';
 import ObjectType from '../model/ObjectType.js';
-import { createTable, createElement } from '../utils/dom.utils.js';
+import { createElement } from '../utils/dom.utils.js';
 import { noop } from '../utils/fn.utils.js';
+import createField from '../create-field.js';
 
-const TICK_TIME = 180;
+const TICK_TIME = 80;
 
 // @ - person, O - tree
-
-const getCellId = (x, y) => `tile-${x}-${y}`;
-
-const classes = [ 'empty', 'obstacle', 'tree', 'person' ];
-
-function getCell(x, y) {
-  const cellId = getCellId(x, y);
-  return document.getElementById(cellId);
-}
 
 let timeoutId;
 
@@ -22,15 +14,18 @@ const hadlers = {
   idle: noop,
 
   move({ data: { from, to } }) {
-    const startCell = getCell(from[0], from[1]);
-    const endCell = getCell(to[0], to[1]);
+    const [ fromX, fromY ] = from;
+    const [ toX, toY ] = to;
+
+    const startCell = cells[fromY][fromX];
+    const endCell = cells[toY][toX];
 
     startCell.className = '';
     endCell.className = 'person';
   },
 
   cutTree({ data: { treePosition: [ x, y ] } }) {
-    getCell(x, y).className = 'empty';
+    cells[y][x].className = 'empty';
   }
 };
 
@@ -42,14 +37,7 @@ export default {
       [ 4, () => ({ type: ObjectType.OBSTACLE }) ]
     ]);
 
-    const table = createTable(world.tiles.length, world.tiles[0].length, (cell, y, x) => {
-      const object = world.tiles[y][x].object
-      const objectType = object ? object.type : 0;
-
-      cell.className = classes[objectType];
-
-      cell.id = getCellId(x, y);
-    });
+    const { table, cells } = createField(world.tiles);
 
     function tick() {
       world.objects
@@ -96,7 +84,7 @@ export default {
 
     world.objects
       .forEach(({ position: [ x, y ] }) => {
-        getCell(x, y).className = 'person';
+        cells[y][x].className = 'person';
       });
 
     document.body.appendChild(playButton);
