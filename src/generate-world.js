@@ -22,7 +22,7 @@ function generateRandomPoints(count, minX, maxX, minY, maxY, occupied) {
 }
 
 export default function generateWorld(width, height, obejctDistribution) {
-  const world = generateArray(height, y => (
+  const tiles = generateArray(height, y => (
     generateArray(width, x => ({}))
   ));
 
@@ -33,7 +33,7 @@ export default function generateWorld(width, height, obejctDistribution) {
     for (let x = 0; x < width; x++) {
       const createObject = getObjectCreator();
       const object = createObject();
-      world[y][x].object = object;
+      tiles[y][x].object = object;
 
       if (object !== null) {
         occupied.add(hash(x, y));
@@ -45,7 +45,7 @@ export default function generateWorld(width, height, obejctDistribution) {
       height / 3, 2 * height / 3, occupied);
 
   const people = points.map(position => {
-    const person = new Person(world, position);
+    const person = new Person(tiles, position);
     person.setStrategy('cutTrees');
 
     return person;
@@ -53,11 +53,11 @@ export default function generateWorld(width, height, obejctDistribution) {
 
   people.forEach(person => {
     const [ x, y ] = person.position;
-    world[y][x].object = person;
+    tiles[y][x].object = person;
   });
 
   return {
     objects: people,
-    tiles: world
+    tiles
   };
 }
