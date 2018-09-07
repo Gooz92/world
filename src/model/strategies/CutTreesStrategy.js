@@ -4,11 +4,16 @@ import CutTreeAction from '../actions/CutTreeAction.js';
 import ObjectType from '../ObjectType.js';
 import Strategy from './Startegy.js';
 
+const trees = new Set();
+
+const hash = (x, y) => `${x}-${y}`;
+
 export default class CutTreesStrategy extends Strategy {
 
   static treeFinder = new PathFinder({
     onAxialTile(tile, x, y,) {
-      if (tile.object && tile.object.type === ObjectType.TREE) {
+      if (tile.object && tile.object.type === ObjectType.TREE && !trees.has(hash(x, y))) {
+        trees.add(hash(x, y));
         this.found([ x, y ]);
       }
     },
@@ -39,6 +44,10 @@ export default class CutTreesStrategy extends Strategy {
     }
 
     const position = this.path.shift();
+
+    if (path.length === 0) {
+      trees.delete(hash(this.treePosition[0], this.treePosition[1]));
+    }
 
     return new MoveAction(this.actor, position);
   }
