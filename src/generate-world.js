@@ -1,6 +1,7 @@
 import { distributionRandom, randomInt } from './utils/random.utils.js';
 import { generateArray } from './utils/array.utils.js';
 import Person from './model/Person.js';
+import { getObject } from './utils/fn.utils.js';
 
 const hash = (x, y) => `${x}-${y}`;
 
@@ -23,7 +24,7 @@ function generateRandomPoints(count, minX, maxX, minY, maxY, occupied) {
 
 export default function generateWorld(width, height, obejctDistribution) {
   const tiles = generateArray(height, y => (
-    generateArray(width, x => ({}))
+    generateArray(width, getObject)
   ));
 
   const occupied = new Set();
