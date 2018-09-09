@@ -1,21 +1,25 @@
-import generateWorld from '../generate-world.js';
+import World from '../model/World.js';
 import ObjectType from '../model/ObjectType.js';
 import { createElement } from '../utils/dom.utils.js';
 import { noop } from '../utils/fn.utils.js';
 import createField from '../create-field.js';
+import Person from '../model/Person.js';
 
-const TICK_TIME = 80;
-
-// @ - person, O - tree
+const TICK_TIME = 120;
 
 let timeoutId;
 
 export default {
-  enter: _ => {
-    const world = generateWorld(64, 64, [
-      [ 50, () => null ],
-      [ 1, () => ({ type: ObjectType.TREE }) ],
-      [ 4, () => ({ type: ObjectType.OBSTACLE }) ]
+  enter: () => {
+    const world = World.createRandomWorld(48, 64, [
+      [ 200, () => null ],
+      [ 4, () => ({ type: ObjectType.TREE }) ],
+      [ 16, () => ({ type: ObjectType.OBSTACLE }) ],
+      [ 1, (x, y, tiles) => {
+        const person = new Person(tiles, [ x, y ]);
+        person.setStrategy('cutTrees');
+        return person;
+      }]
     ]);
 
     const { table, cells } = createField(world.tiles);
@@ -40,9 +44,8 @@ export default {
     };
 
     function tick() {
-      world.objects
-        .forEach(object => {
-          const event = object.act();
+      world.tick()
+        .forEach(event => {
           hadlers[event.type](event);
         });
     }
@@ -78,11 +81,9 @@ export default {
       }
     });
 
-    // const menu = createMenu();
-
     document.body.appendChild(table);
 
-    world.objects
+    world.actors
       .forEach(({ position: [ x, y ] }) => {
         cells[y][x].className = 'person';
       });
@@ -90,11 +91,9 @@ export default {
     document.body.appendChild(playButton);
     document.body.appendChild(stopButton);
     document.body.appendChild(stepButton);
-
-    // gameLoop();
   },
 
-  leave: _ => {
+  leave: () => {
     document.body.innerHTML = '';
     clearTimeout(timeoutId);
   }

@@ -5,8 +5,6 @@ import { upperFirst } from '../utils/string.utils.js';
 
 export default class Person {
 
-  static type = ObjectType.PERSON;
-
   constructor(world, position) {
     this.world = world;
     this.position = position;
@@ -40,5 +38,9 @@ export default class Person {
     }
 
     return Action.IDLE;
+  }
+
+  get type() {
+    return ObjectType.PERSON;
   }
 }

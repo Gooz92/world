@@ -42,11 +42,11 @@ export default class PathFinder {
     this.goal = null;
   }
 
-  onTile(tile, x, y, isDiagonal) {
+  onTile(tile, x, y, isDiagonal, cost) {
     if (isDiagonal) {
-      this.onDiagonalTile(tile, x, y);
+      this.onDiagonalTile(tile, x, y, cost);
     } else {
-      this.onAxialTile(tile, x, y);
+      this.onAxialTile(tile, x, y, cost);
     }
 
     if (this.isTileFound(tile, x, y)) {
@@ -99,7 +99,11 @@ export default class PathFinder {
 
         const isDiagonal = Math.abs(dx) > 0 && Math.abs(dy) > 0;
 
-        this.onTile(tile, nextX, nextY, isDiagonal);
+        const nextCost = visited[currentKey] + (
+          isDiagonal ? DIAGONAL_TILE_DISTANCE : AXIAL_TILE_DISTANCE
+        );
+
+        this.onTile(tile, nextX, nextY, isDiagonal, nextCost);
 
         if (this.isFound) {
           return this.getResult(currentNode);
@@ -108,10 +112,6 @@ export default class PathFinder {
         if (!this.isTilePassable(tile)) {
           continue;
         }
-
-        const nextCost = visited[currentKey] + (
-          isDiagonal ? DIAGONAL_TILE_DISTANCE : AXIAL_TILE_DISTANCE
-        );
 
         const key = hash(nextX, nextY);
 

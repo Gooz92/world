@@ -3,17 +3,26 @@ import MoveAction from '../actions/MoveAction.js';
 import CutTreeAction from '../actions/CutTreeAction.js';
 import ObjectType from '../ObjectType.js';
 import Strategy from './Startegy.js';
+import Action from '../actions/Action.js';
+import { isUndefined } from '../../utils/is.utils.js';
 
-const trees = new Set();
+const trees = {};
 
 const hash = (x, y) => `${x}-${y}`;
 
 export default class CutTreesStrategy extends Strategy {
 
   static treeFinder = new PathFinder({
-    onAxialTile(tile, x, y,) {
-      if (tile.object && tile.object.type === ObjectType.TREE && !trees.has(hash(x, y))) {
-        trees.add(hash(x, y));
+    onAxialTile(tile, x, y, cost) {
+      if (!tile.object || tile.object.type !== ObjectType.TREE) {
+        return;
+      }
+
+      const key = hash(x, y);
+      const distanceToTree = trees[key];
+
+      if (isUndefined(distanceToTree) || cost < distanceToTree) {
+        trees[key] = cost;
         this.found([ x, y ]);
       }
     },
@@ -37,17 +46,18 @@ export default class CutTreesStrategy extends Strategy {
   nextAction() {
     const path = this.getPath();
 
+    if (!this.treePosition) {
+      return Action.IDLE;
+    }
+
     if (path.length === 0) {
       const [ x, y ] = this.treePosition;
       const treeTile = this.world[y][x];
+      trees[hash(this.treePosition[0], this.treePosition[1])] = 0;
       return new CutTreeAction(this.actor, treeTile, this.treePosition);
     }
 
     const position = this.path.shift();
-
-    if (path.length === 0) {
-      trees.delete(hash(this.treePosition[0], this.treePosition[1]));
-    }
 
     return new MoveAction(this.actor, position);
   }
