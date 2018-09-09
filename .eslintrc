@@ -21,6 +21,7 @@
     "no-dupe-keys": 2,
     "no-empty": 2,
     "no-extra-semi": 2,
-    "semi": 2
+    "semi": 2,
+    "eol-last": 2
   }  
 }
