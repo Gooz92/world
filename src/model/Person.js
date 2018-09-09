@@ -5,6 +5,7 @@ import { upperFirst } from '../utils/string.utils.js';
 
 export default class Person {
 
+  // Actually world is tiles in current implementation =()
   constructor(world, position) {
     this.world = world;
     this.position = position;
