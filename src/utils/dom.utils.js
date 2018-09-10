@@ -1,7 +1,19 @@
 import { noop } from './fn.utils.js';
 
 export function createElement(tagName, properties) {
-  return Object.assign(document.createElement(tagName), properties);
+  const element = document.createElement(tagName);
+
+  for (const propertyName in properties) {
+    if (propertyName === 'style') {
+      Object.assign(element.style, style);
+    } else if (propertyName in element) {
+      element[propertyName] = properties[propertyName];
+    }
+
+    element.setAttribute(propertyName, properties[propertyName])
+  }
+
+  return element;
 }
 
 export function createTable(rowCount, colCount, onCellCreated = noop) {

@@ -25,7 +25,7 @@ export default function createField(tiles) {
       const cell = createElement('div', {
         id: `tile-${x}-${y}`,
         className: classes[objectType]
-      });
+      });git
       row.push(cell);
       table.appendChild(cell);
     }
