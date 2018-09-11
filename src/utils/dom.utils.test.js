@@ -19,6 +19,26 @@ describe('domUtils', function () {
       assert.strictEqual(caption.className, className);
     });
 
+    it('create element with given styles', () => {
+      const style = {
+        backgroundColor: 'red',
+        width: '40px',
+        height: '30px'
+      };
+
+      const redRectangle = createElement('div', { style });
+
+      assert.include(redRectangle.style, style);
+    });
+
+    it('auto-detect attributes', () => {
+      // htmlFor property reflects 'for' attribute
+      const id = 'name';
+      const label = createElement('label', { for: id });
+
+      assert.strictEqual(label.htmlFor, id);
+    });
+
   });
 
 });
