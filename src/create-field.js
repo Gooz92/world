@@ -10,11 +10,12 @@ export default function createField(tiles) {
   const cells = [];
 
   const table = createElement('div', {
-    className: 'field'
+    className: 'field',
+    style: {
+      width: width + 'px',
+      height: height + 'px'
+    }
   });
-
-  table.style.width = width + 'px';
-  table.style.height = height + 'px';
 
   for (let y = 0; y < tiles.length; y++) {
     const row = [];
