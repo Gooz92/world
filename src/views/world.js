@@ -9,6 +9,8 @@ const TICK_TIME = 120;
 
 let timeoutId;
 
+const classes = [ 'empty', 'obstacle', 'tree', 'person' ];
+
 export default {
   enter: () => {
     const world = World.createRandomWorld(48, 64, [
@@ -22,7 +24,13 @@ export default {
       }]
     ]);
 
-    const { table, cells } = createField(world.tiles);
+    const { table, cells } = createField(world.tiles, tile => {
+      const objectType = tile.object ? tile.object.type : 0;
+
+      return {
+        className: classes[objectType]
+      };
+    });
 
     const hadlers = {
       idle: noop,

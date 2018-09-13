@@ -1,14 +1,21 @@
 import calculateDistance from '../calculate-distance.js';
-import { createTable } from '../utils/dom.utils.js';
+import { generateArray } from '../utils/array.utils.js';
+import createField from '../create-field.js';
 
 export default function () {
 
-  const table = createTable(61, 61, (cell, x, y) => {
+  const tiles = generateArray(61, () => (
+    generateArray(61, () => 0)
+  ));
+
+  const { table } = createField(tiles, (tile, x, y) => {
     const distance = calculateDistance(30, 30, x, y) / 2;
 
-    if (distance < 30) {
-      cell.style.backgroundColor = 'black';
-    }
+    return {
+      style: {
+        backgroundColor: distance < 30 ? 'black' : 'white'
+      }
+    };
   });
 
   document.body.appendChild(table);

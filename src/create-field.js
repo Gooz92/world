@@ -1,10 +1,9 @@
 import { createElement } from './utils/dom.utils.js';
-
-const classes = [ 'empty', 'obstacle', 'tree', 'person' ];
+import { getObject } from './utils/fn.utils.js';
 
 const TILE_SIZE = 8;
 
-export default function createField(tiles) {
+export default function createField(tiles, getTileSettings = getObject) {
   const height = tiles.length * TILE_SIZE;
   const width = tiles[0].length * TILE_SIZE;
   const cells = [];
@@ -21,12 +20,12 @@ export default function createField(tiles) {
     const row = [];
     cells.push(row);
     for (let x = 0; x < tiles[0].length; x++) {
-      const object = tiles[y][x].object;
-      const objectType = object ? object.type : 0;
+
       const cell = createElement('div', {
         id: `tile-${x}-${y}`,
-        className: classes[objectType]
+        ...getTileSettings(tiles[y][x], x, y)
       });
+
       row.push(cell);
       table.appendChild(cell);
     }

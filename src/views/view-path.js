@@ -1,7 +1,6 @@
 import { createTable } from '../utils/dom.utils.js';
 import { generateArray } from '../utils/array.utils.js';
 import PathFinder from '../PathFinder.js';
-import { getTrue } from '../utils/fn.utils.js';
 
 const WIDTH = 68;
 const HEIGHT = 70;
