@@ -1,9 +1,10 @@
-import { createTable, createElement } from '../utils/dom.utils.js';
+import { createElement } from '../utils/dom.utils.js';
 import { noop, getObject } from '../utils/fn.utils.js';
 import { generateArray } from '../utils/array.utils.js';
 import Person from '../model/Person.js';
+import createField from '../create-field.js';
 
-const TICK_TIME = 180;
+const TICK_TIME = 20;
 
 // @ - person, O - tree
 
@@ -18,29 +19,13 @@ function getCell(x, y) {
 
 let timeoutId;
 
-const hadlers = {
-  idle: noop,
-
-  move({ data: { from, to } }) {
-    const startCell = getCell(from[0], from[1]);
-    const endCell = getCell(to[0], to[1]);
-
-    startCell.className = '';
-    endCell.className = 'person';
-  },
-
-  cutTree({ data: { treePosition: [ x, y ] } }) {
-    getCell(x, y).className = 'empty';
-  }
-};
+const paths = [
+  [ [ 2, 2 ], [ 40, 40 ] ],
+  [ [ 2, 3 ], [ 2, 40 ] ]
+];
 
 export default {
   enter: () => {
-
-    const paths = [
-      [ [ 2, 2 ], [ 40, 40 ] ],
-      [ [ 2, 3 ], [ 2, 40 ] ]
-    ];
 
     const tiles = generateArray(48, y => (
       generateArray(48, getObject)
@@ -57,14 +42,28 @@ export default {
       tiles[y][x].object = person;
     });
 
-    const table = createTable(tiles.length, tiles[0].length, (cell, y, x) => {
-      const object = tiles[y][x].object;
-      const objectType = object ? object.type : 0;
+    const { table, cells } = createField(tiles, tile => {
+      const objectType = tile.object ? tile.object.type : 0;
 
-      cell.className = classes[objectType];
-
-      cell.id = getCellId(x, y);
+      return {
+        className: classes[objectType]
+      };
     });
+
+    const hadlers = {
+      idle: noop,
+
+      move({ data: { from, to } }) {
+        const [ fromX, fromY ] = from;
+        const [ toX, toY ] = to;
+
+        const startCell = cells[fromY][fromX];
+        const endCell = cells[toY][toX];
+
+        startCell.className = '';
+        endCell.className = 'person';
+      }
+    };
 
     function tick() {
       persons
@@ -104,8 +103,6 @@ export default {
         playButton.disabled = false;
       }
     });
-
-    // const menu = createMenu();
 
     document.body.appendChild(table);
 

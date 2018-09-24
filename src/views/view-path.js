@@ -1,6 +1,6 @@
-import { createTable } from '../utils/dom.utils.js';
 import { generateArray } from '../utils/array.utils.js';
 import PathFinder from '../PathFinder.js';
+import createField from '../create-field.js';
 
 const WIDTH = 68;
 const HEIGHT = 70;
@@ -19,7 +19,7 @@ const objects = [
   { position: [ END_X, END_Y ], type: END }
 ];
 
-const world = generateArray(HEIGHT, y => (
+const tiles = generateArray(HEIGHT, y => (
   generateArray(WIDTH, x => {
     const object = objects.find(o => {
       const [ x0, y0 ] = o.position;
@@ -36,18 +36,13 @@ const finder = new PathFinder({
 
 export default function () {
 
-  const { path } = finder.find(world, START_X, START_Y);
-  const cells = [];
+  const { path } = finder.find(tiles, START_X, START_Y);
 
-  const table = createTable(HEIGHT, WIDTH, (cell, y, x) => {
-    const tile = world[y][x];
+  const { table, cells } = createField(tiles, tile => {
+    if (tile === 3) return { style: { backgroundColor: 'red' } };
+    if (tile === 4) return { style: { backgroundColor: 'green' } };
 
-    (cells[y] || (cells[y] = []))[x] = cell;
-
-    if (tile === 0) return;
-
-    if (tile === 3) cell.style.backgroundColor = 'red';
-    if (tile === 4) cell.style.backgroundColor = 'green';
+    return {};
   });
 
   path.forEach(([ x, y ]) => {
