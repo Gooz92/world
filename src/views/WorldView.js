@@ -1,6 +1,9 @@
 import { lowerFirst } from '../utils/string.utils.js';
+import createField from '../create-field.js';
 
 const HADLER_NAME_PATTERN = /^handle(.+)$/;
+
+const classes = [ 'empty', 'obstacle', 'tree', 'person' ];
 
 export default class WorldView {
 
@@ -12,6 +15,7 @@ export default class WorldView {
     this.handlers = Object.getOwnPropertyNames(WorldView.prototype)
       .reduce((handlers, methodName) => {
         const match = HADLER_NAME_PATTERN.exec(methodName);
+
         if (match) {
           const actionName = lowerFirst(match[1]);
           handlers[actionName] = this[methodName];
@@ -21,10 +25,21 @@ export default class WorldView {
       }, {});
   }
 
+  createField() {
+    const field = createField(this.world.tiles, tile => ({
+      className: classes[tile.object ? tile.object.type : 0]
+    }));
+
+    this.field = field.table;
+    this.cells = field.cells;
+
+    return field;
+  }
+
   tick() {
-    world.tick()
+    this.world.tick()
       .forEach(event => {
-        hadlers[event.type](event);
+        this.handlers[event.type].call(this, event);
       });
   }
 

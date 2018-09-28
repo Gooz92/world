@@ -2,15 +2,11 @@ import World from '../model/World.js';
 import WorldView from './WorldView.js';
 import ObjectType from '../model/ObjectType.js';
 import { createElement } from '../utils/dom.utils.js';
-import { noop } from '../utils/fn.utils.js';
-import createField from '../create-field.js';
 import Person from '../model/Person.js';
 
 const TICK_TIME = 120;
 
 let timeoutId;
-
-const classes = [ 'empty', 'obstacle', 'tree', 'person' ];
 
 export default {
   enter: () => {
@@ -26,31 +22,19 @@ export default {
     ]);
 
     const wv = new WorldView(world);
+    wv.init();
 
-    const { table, cells } = createField(world.tiles, tile => {
-      const objectType = tile.object ? tile.object.type : 0;
-
-      return {
-        className: classes[objectType]
-      };
-    });
-
-    function tick() {
-      world.tick()
-        .forEach(event => {
-          hadlers[event.type](event);
-        });
-    }
+    const { table, cells } = wv.createField();
 
     function gameLoop() {
-      tick();
+      wv.tick();
       timeoutId = setTimeout(gameLoop, TICK_TIME);
     }
 
     const stepButton = createElement('button', {
       innerHTML: 'Step',
       onclick: () => {
-        tick();
+        wv.tick();
       }
     });
 
@@ -75,7 +59,7 @@ export default {
 
     document.body.appendChild(table);
 
-    world.actors
+    wv.world.actors
       .forEach(({ position: [ x, y ] }) => {
         cells[y][x].className = 'person';
       });
