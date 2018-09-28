@@ -1,4 +1,5 @@
 import World from '../model/World.js';
+import WorldView from './WorldView.js';
 import ObjectType from '../model/ObjectType.js';
 import { createElement } from '../utils/dom.utils.js';
 import { noop } from '../utils/fn.utils.js';
@@ -24,6 +25,8 @@ export default {
       }]
     ]);
 
+    const wv = new WorldView(world);
+
     const { table, cells } = createField(world.tiles, tile => {
       const objectType = tile.object ? tile.object.type : 0;
 
@@ -31,25 +34,6 @@ export default {
         className: classes[objectType]
       };
     });
-
-    const hadlers = {
-      idle: noop,
-
-      move({ data: { from, to } }) {
-        const [ fromX, fromY ] = from;
-        const [ toX, toY ] = to;
-
-        const startCell = cells[fromY][fromX];
-        const endCell = cells[toY][toX];
-
-        startCell.className = '';
-        endCell.className = 'person';
-      },
-
-      cutTree({ data: { treePosition: [ x, y ] } }) {
-        cells[y][x].className = 'empty';
-      }
-    };
 
     function tick() {
       world.tick()
