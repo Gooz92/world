@@ -5,6 +5,7 @@ module.exports = function (config) {
     frameworks: [ 'mocha' ],
     singleRun: true,
     plugins: [
+      'karma-spec-reporter',
       'karma-mocha',
       'karma-rollup-preprocessor',
       'karma-chrome-launcher'
@@ -13,6 +14,7 @@ module.exports = function (config) {
     preprocessors: {
       '**/*.js': [ 'rollup' ]
     },
+    reporters: [ 'spec' ],
     rollupPreprocessor: {
       onwarn: (warn, defaultOnWarn) => {
         if (![ 'CIRCULAR_DEPENDENCY', 'EVAL' ].includes(warn.code)) {
