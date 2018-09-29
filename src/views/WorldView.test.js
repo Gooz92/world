@@ -9,7 +9,7 @@ describe('WorldView', function () {
       const wv = new WorldView('world');
       wv.init();
 
-      assert.deepStrictEqual(wv.handlers, {
+      assert.include(wv.handlers, {
         cutTree: wv.handleCutTree,
         move: wv.handleMove
       });
