@@ -1,9 +1,9 @@
 import World from '../model/World.js';
 import WorldView from './WorldView.js';
-import { createElement } from '../utils/dom.utils.js';
 import { generateArray } from '../utils/array.utils.js';
 import { getObject } from '../utils/fn.utils.js';
 import Person from '../model/Person.js';
+import createControls from './create-controls.js';
 
 const TICK_TIME = 20;
 
@@ -38,47 +38,16 @@ export default {
 
     const { table, cells } = worldView.createField();
 
-    function gameLoop() {
-      worldView.tick();
-      timeoutId = setTimeout(gameLoop, TICK_TIME);
-    }
-
-    const stepButton = createElement('button', {
-      innerHTML: 'Step',
-      onclick: () => {
-        worldView.tick();
-      }
-    });
-
-    const playButton = createElement('button', {
-      innerHTML: 'Play',
-      onclick: () => {
-        playButton.disabled = true;
-        stopButton.disabled = false;
-        gameLoop();
-      }
-    });
-
-    const stopButton = createElement('button', {
-      innerHTML: 'Stop',
-      disabled: true,
-      onclick: () => {
-        clearTimeout(timeoutId);
-        stopButton.disabled = true;
-        playButton.disabled = false;
-      }
-    });
-
-    document.body.appendChild(table);
-
     world.actors
       .forEach(({ position: [ x, y ] }) => {
         cells[y][x].className = 'person';
       });
 
-    document.body.appendChild(playButton);
-    document.body.appendChild(stopButton);
-    document.body.appendChild(stepButton);
+    document.body.appendChild(table);
+
+    const controls = createControls(worldView, TICK_TIME);
+
+    document.body.appendChild(controls);
   },
 
   leave: () => {
