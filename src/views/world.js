@@ -6,7 +6,7 @@ import createControls from './create-controls.js';
 
 const TICK_TIME = 120;
 
-let timeoutId;
+let controls;
 
 export default {
   enter: () => {
@@ -31,14 +31,14 @@ export default {
         cells[y][x].className = 'person';
       });
 
-    const controls = createControls(wv, TICK_TIME);
+    controls = createControls(wv, TICK_TIME);
 
     document.body.appendChild(table);
-    document.body.appendChild(controls);
+    document.body.appendChild(controls.container);
   },
 
   leave: () => {
     document.body.innerHTML = '';
-    clearTimeout(timeoutId);
+    clearTimeout(controls.timeoutId);
   }
 };

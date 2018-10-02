@@ -44,5 +44,10 @@ export default function createControls(worldView, tickTime) {
       container.appendChild(buttons[buttonName]);
     });
 
-  return container;
+  return {
+    container,
+    get timeoutId() {
+      return timeoutId;
+    }
+  };
 }

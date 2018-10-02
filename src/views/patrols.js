@@ -5,9 +5,9 @@ import { getObject } from '../utils/fn.utils.js';
 import Person from '../model/Person.js';
 import createControls from './create-controls.js';
 
-const TICK_TIME = 20;
+const TICK_TIME = 500;
 
-let timeoutId;
+let controls;
 
 const paths = [
   [ [ 2, 2 ], [ 40, 40 ] ],
@@ -45,13 +45,13 @@ export default {
 
     document.body.appendChild(table);
 
-    const controls = createControls(worldView, TICK_TIME);
+    controls = createControls(worldView, TICK_TIME);
 
-    document.body.appendChild(controls);
+    document.body.appendChild(controls.container);
   },
 
   leave: () => {
     document.body.innerHTML = '';
-    clearTimeout(timeoutId);
+    clearTimeout(controls.timeoutId);
   }
 };
