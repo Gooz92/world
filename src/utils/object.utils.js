@@ -5,4 +5,4 @@ export const omit = (obj, keys) => (
     .reduce((result, key) => (
       keys.includes(key) ? result : { ...result, [key]: obj[key] }
     ), {})
-)
+);

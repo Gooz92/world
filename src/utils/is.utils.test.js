@@ -11,7 +11,7 @@ const types = {
 describe('isUtils', function () {
   Object.keys(types)
     .forEach(typeName => {
-  
+
       const methodName = `is${upperFirst(typeName)}`;
       const method = isUtils[methodName];
       const value = types[typeName];
@@ -19,7 +19,7 @@ describe('isUtils', function () {
       const otherTypes = omit(types, [ typeName ]);
 
       describe(methodName, () => {
-  
+
         it(`should return true for ${typeName}`, () => {
           assert.isTrue(method(value));
         });
