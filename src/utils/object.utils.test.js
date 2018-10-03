@@ -17,4 +17,16 @@ describe('objectUtils', function () {
 
   });
 
+  describe('omit', function () {
+
+    const omit = objectUtils.omit;
+
+    it('return copy of given object without given keys', () => {
+      const rectangle = { x: 1, y: 2, width: 3, height: 4 };
+      const point = omit(rectangle, [ 'width', 'height' ]);
+      assert.deepStrictEqual(point, { x: 1, y: 2 });
+    });
+
+  });
+
 });
