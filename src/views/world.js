@@ -3,10 +3,11 @@ import WorldView from './WorldView.js';
 import ObjectType from '../model/ObjectType.js';
 import Person from '../model/Person.js';
 import createControls from './create-controls.js';
+import createMenu from './create-menu.js';
 
 const TICK_TIME = 120;
 
-let controls;
+let controls, objectType;
 
 export default {
   enter: () => {
@@ -26,7 +27,7 @@ export default {
 
     const { table, cells } = wv.createField();
 
-    wv.world.actors
+    world.actors
       .forEach(({ position: [ x, y ] }) => {
         cells[y][x].className = 'person';
       });
@@ -35,6 +36,14 @@ export default {
 
     document.body.appendChild(table);
     document.body.appendChild(controls.container);
+
+    const menu = createMenu({
+      onChange: newObjectType => {
+        objectType = newObjectType;
+      }
+    });
+
+    document.body.appendChild(menu);
   },
 
   leave: () => {

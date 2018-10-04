@@ -1,5 +1,7 @@
 import { lowerFirst } from '../utils/string.utils.js';
 import createField from '../create-field.js';
+import ObjectType from '../model/ObjectType.js';
+import Person from '../model/Person.js';
 
 const HADLER_NAME_PATTERN = /^handle(.+)$/;
 
@@ -41,6 +43,22 @@ export default class WorldView {
       .forEach(event => {
         this.handlers[event.type].call(this, event);
       });
+  }
+
+  placePerson(x, y) {
+    const person = new Person(this.world, [ x, y ]);
+    this.world.tiles[y][x].object = person;
+    return person;
+  }
+
+  place(x, y, type) {
+    if (type === ObjectType.PERSON) {
+      this.placePerson(x, y);
+    }
+
+    this.world.tiles[y][x].object = { type };
+
+    this.refreshTile(x, y);
   }
 
   handleIdle() {}
