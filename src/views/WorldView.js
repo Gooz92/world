@@ -2,6 +2,7 @@ import { lowerFirst } from '../utils/string.utils.js';
 import createField from '../create-field.js';
 import ObjectType from '../model/ObjectType.js';
 import Person from '../model/Person.js';
+import { getObject } from '../utils/fn.utils.js';
 
 const HADLER_NAME_PATTERN = /^handle(.+)$/;
 
@@ -27,12 +28,10 @@ export default class WorldView {
       }, {});
   }
 
-  createField() {
+  createField(getCellOptions = getObject) {
     const field = createField(this.world.tiles, (tile, x, y) => ({
       className: classes[tile.object ? tile.object.type : 0],
-      onclick: () => {
-        this.place(x, y, ObjectType.OBSTACLE);
-      }
+      ...getCellOptions(tile, x, y)
     }));
 
     this.field = field.table;

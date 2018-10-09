@@ -25,7 +25,11 @@ export default {
     const wv = new WorldView(world);
     wv.init();
 
-    const { table, cells } = wv.createField();
+    const { table, cells } = wv.createField((tile, x, y) => ({
+      onclick: () => {
+        wv.place(x, y, objectType);
+      }
+    }));
 
     world.actors
       .forEach(({ position: [ x, y ] }) => {
