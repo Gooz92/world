@@ -28,8 +28,11 @@ export default class WorldView {
   }
 
   createField() {
-    const field = createField(this.world.tiles, tile => ({
-      className: classes[tile.object ? tile.object.type : 0]
+    const field = createField(this.world.tiles, (tile, x, y) => ({
+      className: classes[tile.object ? tile.object.type : 0],
+      onclick: () => {
+        this.place(x, y, ObjectType.OBSTACLE);
+      }
     }));
 
     this.field = field.table;
@@ -59,6 +62,11 @@ export default class WorldView {
     this.world.tiles[y][x].object = { type };
 
     this.refreshTile(x, y);
+  }
+
+  refreshTile(x, y) {
+    const tile = this.world.tiles[y][x];
+    this.cells[y][x].className = classes[tile.object ? tile.object.type : 0];
   }
 
   handleIdle() {}
