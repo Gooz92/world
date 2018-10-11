@@ -1,5 +1,5 @@
 import World from '../model/World.js';
-import WorldView from './WorldView.js';
+import WorldView from './WorldView';
 import ObjectType from '../model/ObjectType.js';
 import Person from '../model/Person.js';
 import createControls from './create-controls.js';
@@ -23,7 +23,6 @@ export default {
     ]);
 
     const wv = new WorldView(world);
-    wv.init();
 
     const { table, cells } = wv.createField((tile, x, y) => ({
       onclick: () => {

@@ -1,8 +1,8 @@
-import { lowerFirst } from '../utils/string.utils.js';
-import createField from '../create-field.js';
-import ObjectType from '../model/ObjectType.js';
-import Person from '../model/Person.js';
-import { getObject } from '../utils/fn.utils.js';
+import { lowerFirst } from 'utils/string.utils.js';
+import createField from '../../create-field.js';
+import ObjectType from 'model/ObjectType.js';
+import Person from 'model/Person.js';
+import { getObject } from 'utils/fn.utils.js';
 
 const HADLER_NAME_PATTERN = /^handle(.+)$/;
 
@@ -12,20 +12,6 @@ export default class WorldView {
 
   constructor(world) {
     this.world = world;
-  }
-
-  init() {
-    this.handlers = Object.getOwnPropertyNames(WorldView.prototype)
-      .reduce((handlers, methodName) => {
-        const match = HADLER_NAME_PATTERN.exec(methodName);
-
-        if (match) {
-          const actionName = lowerFirst(match[1]);
-          handlers[actionName] = this[methodName];
-        }
-
-        return handlers;
-      }, {});
   }
 
   createField(getCellOptions = getObject) {
@@ -84,5 +70,21 @@ export default class WorldView {
   handleCutTree({ data: { treePosition: [ x, y ] } }) {
     this.cells[y][x].className = 'empty';
   }
-
 }
+
+
+function initHandlers() {
+  WorldView.prototype.handlers = Object.getOwnPropertyNames(WorldView.prototype)
+    .reduce((handlers, methodName) => {
+      const match = HADLER_NAME_PATTERN.exec(methodName);
+
+      if (match) {
+        const actionName = lowerFirst(match[1]);
+        handlers[actionName] = WorldView.prototype[methodName];
+      }
+
+      return handlers;
+    }, {});
+}
+
+initHandlers();

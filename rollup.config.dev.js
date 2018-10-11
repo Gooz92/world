@@ -8,6 +8,10 @@ module.exports = {
     require('rollup-plugin-babel')({
       exclude: 'node_modules/**'
     }),
-    require('rollup-plugin-commonjs')()
+    require('rollup-plugin-commonjs')(),
+    require('rollup-plugin-alias')({
+      utils: 'src/utils',
+      model: 'src/model'
+    })
   ]
 };

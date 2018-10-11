@@ -1,5 +1,5 @@
-import World from '../model/World.js';
-import WorldView from './WorldView.js';
+import World from '../model/World';
+import WorldView from './WorldView';
 import { generateArray } from '../utils/array.utils.js';
 import { getObject } from '../utils/fn.utils.js';
 import Person from '../model/Person.js';
@@ -34,7 +34,6 @@ export default {
 
     const world = new World(tiles, people);
     const worldView = new WorldView(world);
-    worldView.init();
 
     const { table, cells } = worldView.createField();
 
