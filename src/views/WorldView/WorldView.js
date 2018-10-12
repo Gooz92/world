@@ -1,14 +1,12 @@
-import { lowerFirst } from 'utils/string.utils.js';
+import createHandlers from './create-handlers.js';
 import createField from '../../create-field.js';
 import ObjectType from 'model/ObjectType.js';
 import Person from 'model/Person.js';
 import { getObject } from 'utils/fn.utils.js';
 
-const HADLER_NAME_PATTERN = /^handle(.+)$/;
-
 const classes = [ 'empty', 'obstacle', 'tree', 'person' ];
 
-export default class WorldView {
+class WorldView {
 
   constructor(world) {
     this.world = world;
@@ -72,19 +70,6 @@ export default class WorldView {
   }
 }
 
+WorldView.prototype.handlers = createHandlers(WorldView.prototype);
 
-function initHandlers() {
-  WorldView.prototype.handlers = Object.getOwnPropertyNames(WorldView.prototype)
-    .reduce((handlers, methodName) => {
-      const match = HADLER_NAME_PATTERN.exec(methodName);
-
-      if (match) {
-        const actionName = lowerFirst(match[1]);
-        handlers[actionName] = WorldView.prototype[methodName];
-      }
-
-      return handlers;
-    }, {});
-}
-
-initHandlers();
+export default WorldView;
