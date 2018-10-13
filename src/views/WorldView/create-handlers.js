@@ -1,11 +1,11 @@
 import { lowerFirst } from 'utils/string.utils.js';
 
-const HADLER_NAME_PATTERN = /^handle(.+)$/;
+const HANDLER_NAME_PATTERN = /^handle(.+)$/;
 
 export default function createHandlers(proto) {
   return Object.getOwnPropertyNames(proto)
     .reduce((handlers, methodName) => {
-      const match = HADLER_NAME_PATTERN.exec(methodName);
+      const match = HANDLER_NAME_PATTERN.exec(methodName);
 
       if (match) {
         const actionName = lowerFirst(match[1]);
