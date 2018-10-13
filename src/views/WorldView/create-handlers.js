@@ -13,7 +13,7 @@ export default function createHandlers(proto) {
       const match = doMatch(methodName);
 
       if (match) {
-        handlers[match] = proto[match];
+        handlers[match] = proto[methodName];
       }
 
       return handlers;
