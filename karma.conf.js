@@ -30,7 +30,11 @@ module.exports = function (config) {
             'chai': [ 'assert' ]
           }
         }),
-        require('rollup-plugin-node-resolve')()
+        require('rollup-plugin-node-resolve')(),
+        require('rollup-plugin-alias')({
+          utils: 'src/utils',
+          model: 'src/model'
+        })
       ],
       output: {
         format: 'iife'

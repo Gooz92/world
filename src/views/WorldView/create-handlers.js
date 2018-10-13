@@ -2,14 +2,18 @@ import { lowerFirst } from 'utils/string.utils.js';
 
 const HANDLER_NAME_PATTERN = /^handle(.+)$/;
 
+export function doMatch(methodName) {
+  const match = HANDLER_NAME_PATTERN.exec(methodName);
+  return match ? lowerFirst(match[1]) : false;
+}
+
 export default function createHandlers(proto) {
   return Object.getOwnPropertyNames(proto)
     .reduce((handlers, methodName) => {
-      const match = HANDLER_NAME_PATTERN.exec(methodName);
+      const match = doMatch(methodName);
 
       if (match) {
-        const actionName = lowerFirst(match[1]);
-        handlers[actionName] = proto[methodName];
+        handlers[match] = proto[match];
       }
 
       return handlers;
