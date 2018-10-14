@@ -3,32 +3,39 @@ import ObjectType from '../model/ObjectType.js';
 
 export default function createMenu(options) {
 
-  const menu = createElement('ul');
+  const menu = createElement('ul', { className: 'menu' });
+
+  const items = [];
+
+  let value = null;
 
   [
     { name: 'Obstacle', id: ObjectType.OBSTACLE },
     { name: 'Tree', id: ObjectType.TREE },
     { name: 'Person', id: ObjectType.PERSON }
   ].forEach(({ name, id }) => {
-    const li = createElement('li');
 
-    const label = createElement('label', {
+    const li = createElement('li', {
+      id: name.toLowerCase(),
       innerHTML: name,
-      htmlFor: name
-    });
+      onclick: event => {
+        const target = event.currentTarget;
 
-    const radioButton = createElement('input', {
-      id: name,
-      value: id,
-      name: 'object',
-      type: 'radio',
-      onchange: event => {
-        options.onChange(+event.target.value);
+        items
+          .filter(item => item !== target)
+          .forEach(item => {
+            item.style.fontWeight = 'normal';
+          });
+
+        target.style.fontWeight = id !== value ? 'bold' : 'normal';
+
+        value = id;
+
+        options.onChange(value);
       }
     });
 
-    li.appendChild(label);
-    li.appendChild(radioButton);
+    items.push(li);
 
     menu.appendChild(li);
   });
