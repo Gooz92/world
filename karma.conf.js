@@ -1,4 +1,11 @@
 
+const
+  commonRollupConfig = require('./rollup.config.common.js'),
+
+  commonjs = require('rollup-plugin-commonjs'),
+  nodeResolve = require('rollup-plugin-node-resolve'),
+  babel = require('rollup-plugin-babel'),
+  alias = require('rollup-plugin-alias');
 
 module.exports = function (config) {
   config.set({
@@ -22,22 +29,22 @@ module.exports = function (config) {
         }
       },
       plugins: [
-        require('rollup-plugin-babel')({
+        babel({
           exclude: 'node_modules/**'
         }),
-        require('rollup-plugin-commonjs')({
+        alias({
+          utils: 'src/utils',
+          model: 'src/model'
+        }),
+        commonjs({
           namedExports: {
             'chai': [ 'assert' ]
           }
         }),
-        require('rollup-plugin-node-resolve')(),
-        require('rollup-plugin-alias')({
-          utils: 'src/utils',
-          model: 'src/model'
-        })
+        nodeResolve()
       ],
       output: {
-        format: 'iife'
+        format: commonRollupConfig.output.format
 			}
     },
     basePath: './src',

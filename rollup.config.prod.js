@@ -1,9 +1,12 @@
-const config = require('./rollup.config.dev.js');
+const
+  commonConfig = require('./rollup.config.common.js'),
+
+  { uglify } = require('rollup-plugin-uglify');
 
 module.exports = {
-  ...config,
+  ...commonConfig,
   plugins: [
-    ...config.plugins,
-    require('rollup-plugin-uglify').uglify({ keep_fnames: true })
+    ...commonConfig.plugins,
+    uglify({ keep_fnames: true })
   ]
 };
