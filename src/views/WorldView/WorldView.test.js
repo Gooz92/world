@@ -2,6 +2,8 @@ import WorldView from './WorldView.js';
 import { generateArray } from 'utils/array.utils.js';
 import { assert } from 'chai';
 import spyOn from 'test-utils/spy-on.js';
+import { getSize, getPoint } from 'utils/geometry.utils.js';
+import { getObject } from 'utils/fn.utils.js';
 
 const tiles = [
   [ 1, 0, 1, 1, 0, 0, 2, 0 ],
@@ -23,11 +25,11 @@ describe('WorldView', function () {
           object: { type: tiles[y][x] }
         }))
       ))
-    });
-
-    worldView.createField({
+    }, {
       viewport: { size: { width: 4, height: 3 }, position: { x: 0, y: 0 } }
     });
+
+    worldView.createField();
   });
 
   describe('scroll*', function () {
@@ -231,6 +233,73 @@ describe('WorldView', function () {
       const cell = worldView.getCell(2, 1);
       assert.strictEqual(cell, worldView.field.childNodes[6]);
     });
+  });
+
+  describe('inViewport', function () {
+
+    let worldView;
+
+    beforeEach(() => {
+      worldView = new WorldView({
+        tiles: generateArray(18, y => (
+          generateArray(32, getObject)
+        ))
+      }, {
+        viewport: {
+          size: getSize(16, 9),
+          position: getPoint(2, 3)
+        }
+      });
+    });
+
+    it('return true for point === viewport.position', () => {
+      const { x, y } = worldView.viewport.position;
+      assert.isTrue(worldView.inViewport(x, y));
+    });
+
+    it('return true if point placed in bottom right viewport corner', () => {
+      const { width, height } = worldView.viewport.size;
+      const { x, y } = worldView.viewport.position;
+
+      assert.isTrue(worldView.inViewport(x + width - 1, y + height - 1));
+    });
+
+    it('return false if point above viewport', () => {
+      const { x, y } = worldView.viewport.position;
+
+      assert.isFalse(worldView.inViewport(x + 1, y - 1));
+    });
+
+    it('return false if point below viewport', () => {
+      const { height } = worldView.viewport.size;
+      const { x, y } = worldView.viewport.position;
+
+      assert.isFalse(worldView.inViewport(x + 1, y + height + 1));
+    });
+
+    it('return false if point righter than viewport', () => {
+      const { width } = worldView.viewport.size;
+      const { x, y } = worldView.viewport.position;
+
+      assert.isFalse(worldView.inViewport(x + width + 1, y + 1));
+    });
+
+    it('return false if point lefter than viewport', () => {
+      const { x, y } = worldView.viewport.position;
+
+      assert.isFalse(worldView.inViewport(x - 1, y + 1));
+    });
+
+    it('return true if viewport is placed by either (h) side of map', () => {
+      worldView.viewport.position.x = 24;
+      assert.isTrue(worldView.inViewport(4, 4));
+    });
+
+    it('return true if viewport is placed by either (v) side of map', () => {
+      worldView.viewport.position.y = 12;
+      assert.isTrue(worldView.inViewport(0, 2));
+    });
+
   });
 
 });

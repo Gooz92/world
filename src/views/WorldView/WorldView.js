@@ -21,20 +21,20 @@ export default class WorldView {
     }
   };
 
-  constructor(world, options = WorldView.DEFAULT_OPTIONS) {
+  constructor(world, options = {}) {
     this.world = world;
-    this.options = options;
-  }
 
-  createField(options) {
-    const settings = {
+    this.options = {
       ...WorldView.DEFAULT_OPTIONS,
       ...options
     };
 
-    this.viewport = settings.viewport;
+    this.viewport = this.options.viewport;
+  }
 
-    const { width, height } = settings.viewport.size;
+  createField() {
+
+    const { width, height } = this.viewport.size;
 
     this.field = createField(width, height, WorldView.CELL_SIZE, (x, y) => (
       this.createCell(x, y)
@@ -65,19 +65,22 @@ export default class WorldView {
   }
 
   placePerson(x, y) {
-    const person = new Person(this.world, [ x, y ]);
+    const person = new Person(this.world.tiles, [ x, y ]);
     this.world.tiles[y][x].object = person;
+    this.world.actors.push(person);
     return person;
   }
 
   place(x, y, type) {
     if (type === ObjectType.PERSON) {
       this.placePerson(x, y);
+    } else {
+      this.world.tiles[y][x].object = { type };
     }
 
-    this.world.tiles[y][x].object = { type };
-
     this.refreshTile(x, y);
+
+    return this.world.tiles[y][x].object;
   }
 
   refreshTile(x, y) {
@@ -87,10 +90,7 @@ export default class WorldView {
 
     const tile = this.world.tiles[y][x];
 
-    const x0 = x - this.viewport.position.x;
-    const y0 = y - this.viewport.position.y;
-
-    this.getCell(x0, y0).className = classes[tile.object ? tile.object.type : 0];
+    this.getCell(x, y).className = classes[tile.object ? tile.object.type : 0];
   }
 
   scrollDown(delta = 1) {
@@ -220,16 +220,32 @@ export default class WorldView {
     }
   }
 
+  getCycleX(x) {
+    return getCycleCoordinate(x, this.world.tiles[0].length);
+  }
+
+  getCycleY(y) {
+    return getCycleCoordinate(y, this.world.tiles.length);
+  }
+
   getCell(x, y) {
-    const index = y * this.viewport.size.width + x;
+    const y0 = y - this.viewport.position.y;
+    const x0 = x - this.viewport.position.x;
+
+    const index = y0 * this.viewport.size.width + x0;
+
     return this.field.childNodes[index];
   }
 
   inViewport(x, y) {
+    const { position, size } = this.viewport;
+
+    const rightBound = this.getCycleX(position.x + size.width);
+    const bottomBound = this.getCycleY(position.y + size.height);
+
     return (
-      x < this.viewport.position.x + this.viewport.size.width &&
-      y < this.viewport.position.y + this.viewport.size.height &&
-      x >= this.viewport.position.x && y >= this.viewport.position.y
+      x < rightBound && y < bottomBound &&
+      x >= position.x && y >= position.y
     );
   }
 }

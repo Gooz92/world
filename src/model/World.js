@@ -24,7 +24,7 @@ export default class World {
     return new World(tiles, actors);
   }
 
-  constructor(tiles, actors) {
+  constructor(tiles, actors = []) {
     this.tiles = tiles;
     this.actors = actors;
   }
