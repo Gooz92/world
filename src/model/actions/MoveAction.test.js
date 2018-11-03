@@ -1,6 +1,6 @@
 import MoveAction from './MoveAction.js';
 import { assert } from 'chai';
-import sinon from 'sinon';
+import spy from 'test-utils/spy.js';
 
 describe('MoveAction', function () {
 
@@ -8,7 +8,7 @@ describe('MoveAction', function () {
 
     const actor = {
       position: 'here',
-      moveTo: sinon.spy()
+      moveTo: spy()
     };
 
     const to = 'there';
@@ -17,7 +17,7 @@ describe('MoveAction', function () {
 
     it('call actor.moveTo(position)', () => {
       move.perform();
-      assert.isTrue(actor.moveTo.calledWith(to));
+      assert.strictEqual(actor.moveTo.calls[0][0], to);
     });
 
   });

@@ -34,7 +34,9 @@ module.exports = function (config) {
         }),
         alias({
           utils: 'src/utils',
-          model: 'src/model'
+          model: 'src/model',
+          modules: 'src/modules',
+          'test-utils': 'src/test-utils'
         }),
         commonjs({
           namedExports: {

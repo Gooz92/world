@@ -1,4 +1,4 @@
-# Something rogielike
+# Something roguelike
 
 Under construction
 
@@ -20,5 +20,5 @@ There are "@"s. They are are cutting down trees.
 
 ## TODO
   * Add posibility to place object on world (progress ~80%)
-  * World viewport
-  * Colision handling
+  * Scale map viewport
+  * Collision handling

@@ -1,5 +1,6 @@
 import * as fnUtils from './fn.utils.js';
 import { assert } from 'chai';
+import spy from 'test-utils/spy.js';
 
 describe('fnUtils', function () {
 
@@ -73,6 +74,25 @@ describe('fnUtils', function () {
       assert.notStrictEqual(getObject(), getObject());
     });
 
+  });
+
+  describe('debounce', function () {
+
+    const debounce = fnUtils.debounce;
+
+    // TODO improve test async code somehow
+    it('invoke function with delay after last call of returned function', () => {
+      const wait = 42;
+      const original = spy();
+      const fn = debounce(original, wait);
+
+      fn();
+      assert.strictEqual(original.calls.length, 0);
+
+      setTimeout(() => {
+        assert.strictEqual(original.calls.length, 1);
+      }, wait);
+    });
   });
 
 });

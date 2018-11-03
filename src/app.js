@@ -1,1 +1,1 @@
-import './routing.js';
+import './views/world.js';

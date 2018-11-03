@@ -1,3 +1,5 @@
+import { identity } from './fn.utils';
+
 export const property = propertyName => obj => obj[propertyName];
 
 export const omit = (obj, keys) => (
@@ -6,3 +8,14 @@ export const omit = (obj, keys) => (
       keys.includes(key) ? result : { ...result, [key]: obj[key] }
     ), {})
 );
+
+export function map(obj, cd = identity) {
+  const result = {};
+
+  Object.keys(obj)
+    .forEach(key => {
+      result[key] = cd(obj[key], key);
+    });
+
+  return result;
+}

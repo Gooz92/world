@@ -10,3 +10,9 @@ export function generateArray(length = 0, generateItem = identity) {
 
   return array;
 }
+
+export const remove = (array, index) => array.splice(index, 1)[0];
+
+export function insert(array, item, index) {
+  array.splice(index, 0, item);
+}

@@ -1,6 +1,6 @@
 import * as arrayUtils from './array.utils.js';
 import { assert } from 'chai';
-import sinon from 'sinon';
+import spy from 'test-utils/spy.js';
 
 describe('arrayUtils', function () {
 
@@ -34,26 +34,56 @@ describe('arrayUtils', function () {
     });
 
     it('call itemGenerator for each array index', () => {
-      const itemGenerator = sinon.spy();
+      const itemGenerator = spy();
       const length = 4;
       generateArray(length, itemGenerator);
-      assert.strictEqual(itemGenerator.callCount, length);
+      assert.strictEqual(itemGenerator.calls.length, length);
     });
 
     it('call itemGenerator with index as first argument', () => {
-      const itemGenerator = sinon.spy();
+      const itemGenerator = spy();
       generateArray(3, itemGenerator);
 
-      assert.strictEqual(itemGenerator.firstCall.args[0], 0);
-      assert.strictEqual(itemGenerator.secondCall.args[0], 1);
-      assert.strictEqual(itemGenerator.thirdCall.args[0], 2);
+      assert.strictEqual(itemGenerator.calls[0][0], 0);
+      assert.strictEqual(itemGenerator.calls[1][0], 1);
+      assert.strictEqual(itemGenerator.calls[2][0], 2);
     });
 
     it('call itemGenerator with generated array as second argument', () => {
-      const itemGenerator = sinon.spy(index => index);
+      const itemGenerator = spy(index => index);
       const array = generateArray(1, itemGenerator);
 
-      assert.strictEqual(itemGenerator.firstCall.args[1], array);
+      assert.strictEqual(itemGenerator.calls[0][1], array);
+    });
+
+  });
+
+  describe('remove', function () {
+
+    const remove = arrayUtils.remove;
+
+    it('remove element with given index from array', () => {
+      const colors = [ 'red', 'green', 'blue', 'black', 'white' ];
+      remove(colors, 3);
+      assert.deepStrictEqual(colors, [ 'red', 'green', 'blue', 'white' ]);
+    });
+
+    it('return removed item', () => {
+      const removed = 'a';
+      const array = [ 1, 2, 'a', 3];
+      assert.strictEqual(remove(array, 2), removed);
+    });
+
+  });
+
+  describe('insert', function () {
+
+    const insert = arrayUtils.insert;
+
+    it('insert element in given position', () => {
+      const numbers = [ 1, 2, 3 ];
+      insert(numbers, 'second', 1);
+      assert.deepStrictEqual(numbers, [ 1, 'second', 2, 3 ]);
     });
 
   });
