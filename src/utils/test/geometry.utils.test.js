@@ -1,4 +1,4 @@
-import * as geometryUtils from './geometry.utils.js';
+import * as geometryUtils from '../geometry.utils.js';
 import { assert } from 'chai';
 
 describe('geom-helpers', function () {

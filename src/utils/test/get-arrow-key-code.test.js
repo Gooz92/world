@@ -1,4 +1,4 @@
-import getArrowKeyCode from './get-arrow-key-code.js';
+import getArrowKeyCode from '../get-arrow-key-code.js';
 import { assert } from 'chai';
 
 const cases = {

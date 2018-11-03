@@ -1,4 +1,4 @@
-import * as randomUtils from './random.utils.js';
+import * as randomUtils from '../random.utils.js';
 import { assert } from 'chai';
 
 describe('randomUtils', function () {

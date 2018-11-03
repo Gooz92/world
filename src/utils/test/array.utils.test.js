@@ -1,4 +1,4 @@
-import * as arrayUtils from './array.utils.js';
+import * as arrayUtils from '../array.utils.js';
 import { assert } from 'chai';
 import spy from 'test-utils/spy.js';
 

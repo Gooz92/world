@@ -1,4 +1,4 @@
-import * as mathUtils from './math.utils.js';
+import * as mathUtils from '../math.utils.js';
 import { assert } from 'chai';
 
 describe('mathUtils', function () {

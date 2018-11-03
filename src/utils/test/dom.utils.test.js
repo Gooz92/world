@@ -1,4 +1,4 @@
-import * as domUtils from './dom.utils.js';
+import * as domUtils from '../dom.utils.js';
 import { assert } from 'chai';
 
 describe('domUtils', function () {

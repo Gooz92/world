@@ -1,22 +1,8 @@
-import * as objectUtils from './object.utils.js';
+import * as objectUtils from '../object.utils.js';
 import { assert } from 'chai';
 import spy from 'test-utils/spy.js';
 
 describe('objectUtils', function () {
-
-  describe('property', function () {
-
-    const property = objectUtils.property;
-
-    it('return a function that returns the value of object property', () => {
-      const liquid = 'coffee';
-      const cup = { liquid };
-      const getLiquid = property('liquid');
-
-      assert.strictEqual(getLiquid(cup), liquid);
-    });
-
-  });
 
   describe('omit', function () {
 

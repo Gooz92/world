@@ -1,7 +1,5 @@
 import { identity } from './fn.utils';
 
-export const property = propertyName => obj => obj[propertyName];
-
 export const omit = (obj, keys) => (
   Object.keys(obj)
     .reduce((result, key) => (

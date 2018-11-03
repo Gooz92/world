@@ -1,4 +1,4 @@
-import * as stringUtils from './string.utils.js';
+import * as stringUtils from '../string.utils.js';
 import { assert } from 'chai';
 
 describe('stringUtils', function () {

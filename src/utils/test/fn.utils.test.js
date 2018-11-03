@@ -1,4 +1,4 @@
-import * as fnUtils from './fn.utils.js';
+import * as fnUtils from '../fn.utils.js';
 import { assert } from 'chai';
 import spy from 'test-utils/spy.js';
 
