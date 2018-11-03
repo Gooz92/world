@@ -19,15 +19,15 @@ export default class Action {
     return constructor.type;
   }
 
-  constructor(actor = {}, data = {}) {
+  constructor(actor = {}, tiles = []) {
     this.actor = actor;
-    this.data = data;
+    this.tiles = tiles;
 
     this.completed = false;
   }
 
   perform() {
     this.completed = true;
-    return { type: this.type, data: this.data };
+    return { type: this.type, tiles: this.tiles };
   }
 }

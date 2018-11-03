@@ -54,7 +54,7 @@ export default class CutTreesStrategy extends Strategy {
       const [ x, y ] = this.treePosition;
       const treeTile = this.world[y][x];
       trees[hash(this.treePosition[0], this.treePosition[1])] = 0;
-      return new CutTreeAction(this.actor, treeTile, this.treePosition);
+      return new CutTreeAction(this.actor, this.treePosition);
     }
 
     const position = this.path.shift();

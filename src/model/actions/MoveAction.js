@@ -8,7 +8,7 @@ const isDiagonal = ([ x1, y1 ], [ x2, y2 ]) => (
 export default class MoveAction extends Action {
 
   constructor(actor, position) {
-    super(actor, { from: actor.position, to: position });
+    super(actor, [ actor.position, position ]);
 
     this.duration = isDiagonal(actor.position, position) ?
       DIAGONAL_TILE_DISTANCE :
@@ -16,7 +16,8 @@ export default class MoveAction extends Action {
   }
 
   perform() {
-    this.actor.moveTo(this.data.to);
+    const destination = this.tiles[1];
+    this.actor.moveTo(destination);
     return super.perform();
   }
 }

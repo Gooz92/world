@@ -1,4 +1,3 @@
-import createHandlers from './create-handlers.js';
 import createField from '../../create-field.js';
 import ObjectType from 'model/ObjectType.js';
 import Person from 'model/Person.js';
@@ -10,7 +9,7 @@ import { getCycleCoordinate } from 'utils/math.utils.js';
 
 const classes = [ 'empty', 'obstacle', 'tree', 'person' ];
 
-class WorldView {
+export default class WorldView {
 
   static CELL_SIZE = 12;
 
@@ -59,7 +58,9 @@ class WorldView {
   tick() {
     this.world.tick()
       .forEach(event => {
-        this.handlers[event.type].call(this, event);
+        event.tiles.forEach(([ x, y ]) => {
+          this.refreshTile(x, y);
+        });
       });
   }
 
@@ -231,22 +232,4 @@ class WorldView {
       x >= this.viewport.position.x && y >= this.viewport.position.y
     );
   }
-
-  handleIdle() {}
-
-  handleMove({ data: { from, to } }) {
-    const [ fromX, fromY ] = from;
-    const [ toX, toY ] = to;
-
-    this.refreshTile(fromX, fromY);
-    this.refreshTile(toX, toY);
-  }
-
-  handleCutTree({ data: { treePosition: [ x, y ] } }) {
-    this.refreshTile(x, y);
-  }
 }
-
-WorldView.prototype.handlers = createHandlers(WorldView.prototype);
-
-export default WorldView;

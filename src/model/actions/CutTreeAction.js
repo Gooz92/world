@@ -2,13 +2,14 @@ import Action from './Action.js';
 
 export default class CutTreeAction extends Action {
 
-  constructor(actor, treeTile, treePosition) {
-    super(actor, { treeTile, treePosition });
+  constructor(actor, treePosition) {
+    super(actor, [ treePosition ]);
     this.duration = 1; // TODO
   }
 
   perform() {
-    this.data.treeTile.object = null;
+    const [ [ x, y ] ] = this.tiles;
+    this.actor.world[y][x].object = null;
     return super.perform();
   }
 }
