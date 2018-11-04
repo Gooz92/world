@@ -5,7 +5,7 @@ import { createElement } from 'utils/dom.utils.js';
 import { getObject } from 'utils/fn.utils.js';
 import { getSize, getPoint } from 'utils/geometry.utils.js';
 import { map } from 'utils/object.utils.js';
-import { getCycleCoordinate } from 'utils/math.utils.js';
+import { getCycleCoordinate, inCycleRange } from 'utils/math.utils.js';
 
 const classes = [ 'empty', 'obstacle', 'tree', 'person' ];
 
@@ -229,8 +229,8 @@ export default class WorldView {
   }
 
   getCell(x, y) {
-    const y0 = y - this.viewport.position.y;
-    const x0 = x - this.viewport.position.x;
+    const y0 = this.getCycleY(y - this.viewport.position.y);
+    const x0 = this.getCycleX(x - this.viewport.position.x);
 
     const index = y0 * this.viewport.size.width + x0;
 
@@ -244,8 +244,9 @@ export default class WorldView {
     const bottomBound = this.getCycleY(position.y + size.height);
 
     return (
-      x < rightBound && y < bottomBound &&
-      x >= position.x && y >= position.y
+      inCycleRange(x, position.x, rightBound, this.world.tiles[0].length)
+        &&
+      inCycleRange(y, position.y, bottomBound, this.world.tiles.length)
     );
   }
 }

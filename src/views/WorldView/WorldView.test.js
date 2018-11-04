@@ -297,7 +297,7 @@ describe('WorldView', function () {
 
     it('return true if viewport is placed by either (v) side of map', () => {
       worldView.viewport.position.y = 12;
-      assert.isTrue(worldView.inViewport(0, 2));
+      assert.isTrue(worldView.inViewport(3, 2));
     });
 
   });

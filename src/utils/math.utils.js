@@ -7,3 +7,14 @@ export function getCycleCoordinate(actualCoordinate, bound) {
 
   return coordinate;
 }
+
+export function inCycleRange(value, left, right, maxBound = right) {
+  if (value < 0 || value >= maxBound) {
+    return false;
+  }
+
+  const gteLeft = value >= left;
+  const ltRight = value < right;
+
+  return (left < right) ? (gteLeft && ltRight) : (gteLeft || ltRight);
+}

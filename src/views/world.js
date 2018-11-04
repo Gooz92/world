@@ -17,8 +17,8 @@ const viewport = document.getElementById('viewport');
 const panel = document.getElementById('panel');
 
 const world = new World(
-  generateArray(72, y => (
-    generateArray(96, getObject)
+  generateArray(128, y => (
+    generateArray(128, getObject)
   ))
 );
 

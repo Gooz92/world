@@ -2,12 +2,9 @@ import direction from './model/direction.js';
 import { noop, getTrue, getFalse } from './utils/fn.utils.js';
 import backtracePath from './backtrace-path.js';
 import { AXIAL_TILE_DISTANCE, DIAGONAL_TILE_DISTANCE } from './model/consts.js';
+import { getCycleCoordinate } from 'utils/math.utils.js';
 
 const hash = (x, y) => `${x}-${y}`;
-
-const inBounds = (x, y, field) => (
-  x >= 0 && y >= 0 && y < field.length && x < field[y].length
-);
 
 function pickMin(array, getValue) {
   let value = getValue(array[0]);
@@ -88,12 +85,12 @@ export default class PathFinder {
       const currentKey = hash(currentX, currentY);
 
       for (const [ dx, dy ] of offsets) {
-        const nextPosition = [ currentX + dx, currentY + dy ];
-        const [ nextX, nextY ] = nextPosition;
+        const nextPosition = [
+          getCycleCoordinate(currentX + dx, tiles[0].length),
+          getCycleCoordinate(currentY + dy, tiles.length)
+        ];
 
-        if (!inBounds(nextX, nextY, tiles)) {
-          continue;
-        }
+        const [ nextX, nextY ] = nextPosition;
 
         const tile = tiles[nextY][nextX];
 
