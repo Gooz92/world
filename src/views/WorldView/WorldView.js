@@ -93,40 +93,32 @@ export default class WorldView {
     this.getCell(x, y).className = classes[tile.object ? tile.object.type : 0];
   }
 
-  scrollDown(delta = 1) {
+  scrollDown() {
     this.removeEdgeCells('up');
     this.$appendBottomCells(1);
 
-    const y = getCycleCoordinate(this.viewport.position.y + delta, this.world.tiles.length);
-
-    this.viewport.position.y = y;
+    this.viewport.position.y = this.getCycleY(this.viewport.position.y + 1);
   }
 
-  scrollUp(delta = 1) {
+  scrollUp() {
     this.removeEdgeCells('down');
     this.$appendTopCells(1);
 
-    const y = getCycleCoordinate(this.viewport.position.y - delta, this.world.tiles.length);
-
-    this.viewport.position.y = y;
+    this.viewport.position.y = this.getCycleY(this.viewport.position.y - 1);
   }
 
   scrollRight() {
     this.removeEdgeCells('left');
     this.$appendRightCells(1, 1);
 
-    const x = getCycleCoordinate(this.viewport.position.x + 1, this.world.tiles[0].length);
-
-    this.viewport.position.x = x;
+    this.viewport.position.x = this.getCycleX(this.viewport.position.x + 1);
   }
 
   scrollLeft() {
     this.removeEdgeCells('right');
     this.$appendLeftCells(1, 1);
 
-    const x = getCycleCoordinate(this.viewport.position.x - 1, this.world.tiles[0].length);
-
-    this.viewport.position.x = x;
+    this.viewport.position.x = this.getCycleX(this.viewport.position.x - 1);
   }
 
   // === VIEWPORT SCALING ===
