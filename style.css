@@ -19,6 +19,11 @@ html, body {
 
 #viewport {
   flex: 1;
+  overflow: hidden;
+}
+
+#info {
+  flex: 1;
 }
 
 #panel {
@@ -29,7 +34,6 @@ html, body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: flex;
   flex-wrap: wrap;
-  border: 1px solid #eee;
 }
 
 .field div {

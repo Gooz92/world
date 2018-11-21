@@ -88,4 +88,16 @@ describe('arrayUtils', function () {
 
   });
 
+  describe('last', function () {
+
+    const last = arrayUtils.last;
+
+    it('get last element of array', () => {
+      const tail = 'tail';
+      const array = [ 'head', 'body', tail ];
+      assert.strictEqual(last(array), tail);
+    });
+
+  });
+
 });

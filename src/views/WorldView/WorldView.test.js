@@ -126,49 +126,12 @@ describe('WorldView', function () {
 
   });
 
-  describe.skip('setViewportSize', function () {
-
-    const setViewportSize = WorldView.prototype.setViewportSize;
-
-    it('change viewport size', () => {
-      const worldView = {
-        viewport: {
-          size: { width: 64, height: 48 },
-          position: { x: 0, y: 0 }
-        }
-      };
-
-      const newViewportSize = { width: 32, height: 24 };
-
-      setViewportSize.call(worldView, newViewportSize.width, newViewportSize.height);
-
-      assert.deepStrictEqual(worldView.viewport.size, newViewportSize);
-    });
-
-    it('recentre viewport if it decrease', () => {
-      const worldView = {
-        viewport: {
-          position: { x: 3, y: 2 },
-          size: { width: 4, height: 3 }
-        }
-      };
-
-      const newViewportSize = { width: 2, height: 1 };
-      const newViewportPosition = { x: 4, y: 3 };
-
-      setViewportSize.call(worldView, newViewportSize.width, newViewportSize.height);
-
-      assert.deepStrictEqual(worldView.viewport.position, newViewportPosition);
-    });
-
-  });
-
-  describe('removeEdgeCells', function () {
+  describe('removeCells', function () {
 
     it('decrease cells count when removing top cells', () => {
       const childCount = worldView.field.childNodes.length;
 
-      worldView.removeEdgeCells('up');
+      worldView.removeCells('up');
 
       assert.strictEqual(
         worldView.field.childNodes.length,
@@ -179,7 +142,7 @@ describe('WorldView', function () {
     it('remove bottom row', () => {
       const childCount = worldView.field.childNodes.length;
 
-      worldView.removeEdgeCells('down');
+      worldView.removeCells('down');
 
       assert.strictEqual(
         worldView.field.childNodes.length,
@@ -191,7 +154,7 @@ describe('WorldView', function () {
 
       const childCount = worldView.field.childNodes.length;
 
-      worldView.removeEdgeCells('left');
+      worldView.removeCells('left');
 
       assert.strictEqual(
         worldView.field.childNodes.length,
@@ -203,7 +166,7 @@ describe('WorldView', function () {
 
       const childCount = worldView.field.childNodes.length;
 
-      worldView.removeEdgeCells('right');
+      worldView.removeCells('right');
 
       assert.strictEqual(
         worldView.field.childNodes.length,
@@ -216,13 +179,32 @@ describe('WorldView', function () {
 
       const childCount = worldView.field.childNodes.length;
 
-      worldView.removeEdgeCells('right', 2);
+      worldView.removeCells('right', 2);
 
       assert.strictEqual(
         worldView.field.childNodes.length,
         childCount - worldView.viewport.size.height * 2
       );
 
+    });
+
+  });
+
+  describe('insertCells', function () {
+
+    it('correctly insert several right columns', () => {
+      const spy = spyOn(worldView, 'createCell');
+      worldView.insertCells('right', 2, 0);
+
+      assert.deepStrictEqual(spy.calls, [
+        [ 4, 0 ],
+        [ 4, 1 ],
+        [ 4, 2 ],
+
+        [ 5, 0 ],
+        [ 5, 1 ],
+        [ 5, 2 ]
+      ]);
     });
 
   });

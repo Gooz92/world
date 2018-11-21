@@ -39,6 +39,20 @@ describe('domUtils', function () {
       assert.strictEqual(label.htmlFor, id);
     });
 
+    it('should assign data attributes', () => {
+      const x = 12, y = 2;
+
+      const cell = createElement('div', {
+        dataset: { x, y }
+      });
+
+      const xAttr = cell.getAttribute('data-x');
+      const yAttr = cell.getAttribute('data-y');
+
+      assert.strictEqual(xAttr, x.toString());
+      assert.strictEqual(yAttr, y.toString());
+    });
+
   });
 
 });

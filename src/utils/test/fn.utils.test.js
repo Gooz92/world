@@ -32,7 +32,7 @@ describe('fnUtils', function () {
 
     const constant = fnUtils.constant;
 
-    it('return function wich return given argument', () => {
+    it('return function which return given argument', () => {
       const one = constant(1);
       assert.strictEqual(one(), 1);
     });
@@ -41,6 +41,26 @@ describe('fnUtils', function () {
       const box = {};
       const getBox = constant(box);
       assert.notEqual(getBox(), {});
+    });
+
+  });
+
+  describe('getNull', function () {
+
+    const getNull = fnUtils.getNull;
+
+    it('return null', () => {
+      assert.isNull(getNull());
+    });
+
+  });
+
+  describe('getZero', function () {
+
+    const getZero = fnUtils.getZero;
+
+    it('return zero', () => {
+      assert.strictEqual(getZero(), 0);
     });
 
   });

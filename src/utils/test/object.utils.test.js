@@ -36,4 +36,33 @@ describe('objectUtils', function () {
 
   });
 
+  describe('forIn', function () {
+
+    const forIn = objectUtils.forIn;
+
+    it('invoke callback for each object property', () => {
+
+      const rectangle = {
+        x: 1,
+        y: 3,
+
+        width: 3,
+        height: 4
+      };
+
+      const spyCallback = spy();
+
+      forIn(rectangle, spyCallback);
+
+      assert.deepStrictEqual(spyCallback.calls, [
+        [ 1, 'x' ],
+        [ 3, 'y' ],
+        [ 3, 'width' ],
+        [ 4, 'height' ]
+      ]);
+
+    });
+
+  });
+
 });

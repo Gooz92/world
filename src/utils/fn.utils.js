@@ -10,6 +10,10 @@ export const getTrue = () => true;
 
 export const getFalse = () => false;
 
+export const getNull = () => null;
+
+export const getZero = () => 0;
+
 export function debounce(fn, wait = 0) {
   let timeoutId;
 

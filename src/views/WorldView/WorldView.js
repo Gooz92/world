@@ -4,8 +4,8 @@ import Person from 'model/Person.js';
 import { createElement } from 'utils/dom.utils.js';
 import { getObject } from 'utils/fn.utils.js';
 import { getSize, getPoint } from 'utils/geometry.utils.js';
-import { map } from 'utils/object.utils.js';
 import { getCycleCoordinate, inCycleRange } from 'utils/math.utils.js';
+import { insertionOptions, removementOptions } from './viewport.js';
 
 const classes = [ 'empty', 'obstacle', 'tree', 'person' ];
 
@@ -64,6 +64,34 @@ export default class WorldView {
       });
   }
 
+  setViewportWidth(width) {
+    const deltaWidth = width - this.viewport.size.width;
+
+    if (deltaWidth > 0) {
+      this.insertCells('right', deltaWidth);
+    } else {
+      this.removeCells('right', -deltaWidth);
+    }
+
+    this.viewport.size.width += deltaWidth;
+
+    this.field.style.width = (this.viewport.size.width * WorldView.CELL_SIZE) + 'px';
+  }
+
+  setViewportHeight(height) {
+    const deltaHeight = height - this.viewport.size.height;
+
+    if (deltaHeight > 0) {
+      this.insertCells('down', deltaHeight);
+    } else {
+      this.removeCells('down', -deltaHeight);
+    }
+
+    this.viewport.size.height += deltaHeight;
+
+    this.field.style.height = (this.viewport.size.height * WorldView.CELL_SIZE) + 'px';
+  }
+
   placePerson(x, y) {
     const person = new Person(this.world.tiles, [ x, y ]);
     this.world.tiles[y][x].object = person;
@@ -94,121 +122,73 @@ export default class WorldView {
   }
 
   scrollDown() {
-    this.removeEdgeCells('up');
-    this.$appendBottomCells(1);
+    this.removeCells('up');
+    this.insertCells('down');
 
     this.viewport.position.y = this.getCycleY(this.viewport.position.y + 1);
   }
 
   scrollUp() {
-    this.removeEdgeCells('down');
-    this.$appendTopCells(1);
+    this.removeCells('down');
+    this.insertCells('up');
 
     this.viewport.position.y = this.getCycleY(this.viewport.position.y - 1);
   }
 
   scrollRight() {
-    this.removeEdgeCells('left');
-    this.$appendRightCells(1, 1);
+    this.removeCells('left');
+    this.insertCells('right', 1, 1);
 
     this.viewport.position.x = this.getCycleX(this.viewport.position.x + 1);
   }
 
   scrollLeft() {
-    this.removeEdgeCells('right');
-    this.$appendLeftCells(1, 1);
+    this.removeCells('right');
+    this.insertCells('left', 1, 1);
 
     this.viewport.position.x = this.getCycleX(this.viewport.position.x - 1);
   }
 
   // === VIEWPORT SCALING ===
 
-  appendEdgeCells(direction, delta, shift) {
+  insertCells(direction, delta = 1, shift = 0) {
     const { x, y } = this.viewport.position;
     const { width, height } = this.viewport.size;
 
-    const options = {
-      up: [ (i, j) => [ x + width - j - 1, y - 1 - i ], () => 0 ],
-      down: [ (i, j) => [ x + j, y + height + i ], () => null ],
-
-      left: [
-        (i, j) => [ x - 1, y + j ],
-        (i, j, insertionCount) => (width - shift) * j + insertionCount
-      ],
-
-      right: [
-        (i, j) => [ x + width, y + j ],
-        (i, j, insertionCount) => (width - shift) * (j + 1) + insertionCount
-      ]
-    };
-
-    const [ getCellCoords, getReferenceIndex ] = options[direction];
-
-    const sideName = [ 'up', 'down' ].includes(direction) ? 'width' : 'height';
-    let side = this.viewport.size[sideName];
-
-    let insertionCount = 0;
+    const [
+      getCellCoords,
+      getReferenceIndex,
+      side
+    ] = insertionOptions[direction](x, y, width, height, shift);
 
     for (let i = 0; i < delta; i++) {
       for (let j = 0; j < side; j++) {
         const [ x, y ] = getCellCoords(i, j);
         const cell = this.createCell(x, y);
-        const referenceIndex = getReferenceIndex(i, j, insertionCount++);
-        this.field.insertBefore(cell, this.field.childNodes[referenceIndex]);
+        const referenceIndex = getReferenceIndex(i, j);
+
+        const referenceCell = referenceIndex === -1 ? null :
+          this.field.childNodes[referenceIndex];
+
+        this.field.insertBefore(cell, referenceCell);
       }
     }
   }
 
-  $appendTopCells() {
-    this.appendEdgeCells('up', 1);
-  }
+  removeCells(direction, delta = 1) {
+    const { width, height } = this.viewport.size;
 
-  $appendBottomCells() {
-    this.appendEdgeCells('down', 1);
-  }
-
-  $appendRightCells(delta, shift) {
-    this.appendEdgeCells('right', delta, shift);
-  }
-
-  $appendLeftCells(delta, shift) {
-    this.appendEdgeCells('left', delta, shift);
-  }
-
-  getRemovementOptions() {
-
-    return map({
-      up: [ () => this.field.firstChild, 'width' ],
-      down: [ () => this.field.lastChild, 'width' ],
-
-      left: [
-        (index, width) => this.field.childNodes[index * (width - 1)],
-        'height'
-      ],
-      right: [
-        (index, width) => this.field.childNodes[index * (width - 1) + width - 1],
-        'height'
-      ]
-    }, ([ getCellToRemove, dimension ]) => ({
-      getCellToRemove,
-      dimension
-    }));
-  }
-
-  removeEdgeCells(direction, delta = 1) {
-    const { getCellToRemove, dimension } = this.getRemovementOptions()[direction];
-    let side = this.viewport.size[dimension];
-
-    let decreasedSide = this.viewport.size[
-      dimension === 'width' ? 'height' : 'width'
-    ];
+    const [
+      getRemovementIndex,
+      side, decreasedSide
+    ] = removementOptions[direction](width, height);
 
     for (let i = 0; i < delta; i++) {
       for (let j = 0; j < side; j++) {
-        const cellToRemove = getCellToRemove(j, decreasedSide);
-        this.field.removeChild(cellToRemove);
+        const removementIndex = getRemovementIndex(j, decreasedSide - i);
+        const cell = this.field.childNodes[removementIndex];
+        this.field.removeChild(cell);
       }
-      --decreasedSide;
     }
   }
 

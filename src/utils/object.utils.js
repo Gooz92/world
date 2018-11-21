@@ -7,13 +7,19 @@ export const omit = (obj, keys) => (
     ), {})
 );
 
-export function map(obj, cd = identity) {
+export function map(obj, cb = identity) {
   const result = {};
 
-  Object.keys(obj)
-    .forEach(key => {
-      result[key] = cd(obj[key], key);
-    });
+  forIn(obj, (value, key) => {
+    result[key] = cb(value, key);
+  });
 
   return result;
+}
+
+export function forIn(obj, cb) {
+  Object.keys(obj)
+    .forEach(key => {
+      cb(obj[key], key);
+    });
 }

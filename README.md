@@ -20,5 +20,6 @@ There are "@"s. They are are cutting down trees.
 
 ## TODO
   * Add posibility to place object on world (progress ~80%)
-  * Scale map viewport
+  * Scale map viewport (~progeress 80%, need to recentre, improve test)
+  * Enum (class) for direction
   * Collision handling
