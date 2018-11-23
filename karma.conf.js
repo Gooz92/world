@@ -47,7 +47,7 @@ module.exports = function (config) {
       ],
       output: {
         format: commonRollupConfig.output.format
-			}
+		  }
     },
     basePath: './src',
     files: [ '**/*.test.js' ]

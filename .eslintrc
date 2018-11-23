@@ -22,6 +22,10 @@
     "no-empty": 2,
     "no-extra-semi": 2,
     "semi": 2,
-    "eol-last": 2
+    "eol-last": 2,
+    "no-unreachable": 2,
+    "linebreak-style": [ 2, "unix" ],
+    "max-len": [ 2, { "code": 80 } ],
+    "indent": [2, 2]
   }  
 }

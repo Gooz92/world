@@ -13,7 +13,8 @@ export default class PatrolStrategy extends Strategy {
   getPath() {
     if (!this.path || this.path.length === 0) {
       const [ x, y ] = this.actor.position;
-      const [ nextX, nextY ] = this.positions[this.positionIndex++ % this.positions.length];
+      const positionIndex = this.positionIndex++ % this.positions.length;
+      const [ nextX, nextY ] = this.positions[positionIndex];
 
       this.path = line(x, y, nextX, nextY);
     }
