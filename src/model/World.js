@@ -1,6 +1,7 @@
 import { generateArray } from '../utils/array.utils.js';
 import { distributionRandom } from '../utils/random.utils.js';
 import ObjectType from './ObjectType.js';
+import diamondSquare from 'utils/diamond-square.js';
 
 export default class World {
 
@@ -27,6 +28,10 @@ export default class World {
   constructor(tiles, actors = []) {
     this.tiles = tiles;
     this.actors = actors;
+  }
+
+  placeTrees() {
+    
   }
 
   tick() {

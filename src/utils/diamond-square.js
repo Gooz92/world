@@ -125,41 +125,30 @@ function square(arr, r, distance) {
   }
 }
 
-let arr = generateArray(3, () => generateArray(3, () => randomInt(0, 255)));
 
-let distance = 128;
-let i = 8;
+export default function () {
 
-const r = 4;
+  let arr = generateArray(3, () => generateArray(3, () => randomInt(0, 255)));
 
-while (i-- > 0) {
-  arr = inflate2(arr);
-  diamond(arr, r, distance);
-  square(arr, r, distance);
-  distance /= 2;
-}
+  let distance = 128;
+  let i = 8;
 
-normalize(arr, 100);
+  const r = 4;
 
-function draw(arr) {
-  const canv = document.getElementById('canv'),
-    ctx = canv.getContext('2d');
+  while (i-- > 0) {
+    arr = inflate2(arr);
+    diamond(arr, r, distance);
+    square(arr, r, distance);
+    distance /= 2;
+  }
 
-  const imageData = ctx.getImageData(0, 0, canv.width, canv.height);
+  normalize(arr, 100);
 
   for (let i = 0; i < arr.length; i++) {
     for (let j = 0; j < arr[i].length; j++) {
-      const k = (i * arr[i].length + j) * 4;
-      const c = Math.random() * 100 < arr[i][j] ? 0 : 255;
-
-      imageData.data[k] = c;
-      imageData.data[k + 1] = c;
-      imageData.data[k + 2] = c;
-      imageData.data[k + 3] = 255;
+      arr[i][j] = Math.random() * 100 < arr[i][j];
     }
   }
 
-  ctx.putImageData(imageData, 0, 0);
+  return arr;
 }
-
-draw(arr);
