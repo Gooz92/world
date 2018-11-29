@@ -125,6 +125,23 @@ function square(arr, r, distance) {
   }
 }
 
+const n = 9;
+const side = (2 << (n - 1)) + 1;
+const length = side * side;
+
+const map = generateArray(length, getZero);
+
+const corners = [
+  0, side - 1,
+  length - side, length - 1
+];
+
+corners.forEach(index => {
+  map[index] = 10;
+});
+
+const map = generateArray(length, getZero);
+
 let arr = generateArray(3, () => generateArray(3, () => randomInt(0, 255)));
 
 let distance = 128;

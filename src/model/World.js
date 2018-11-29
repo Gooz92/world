@@ -31,7 +31,15 @@ export default class World {
   }
 
   placeTrees() {
-    
+    const treeMap = diamondSquare();
+
+    for (let i = 0; i < treeMap.length; i++) {
+      for (let j = 0; j < treeMap[i].length; j++) {
+        if (treeMap[i][j]) {
+          this.tiles[i][j].object = {type: ObjectType.TREE };
+        }
+      }
+    }
   }
 
   tick() {

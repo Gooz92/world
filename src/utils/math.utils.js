@@ -1,3 +1,41 @@
+export function normalize(arr, minBound, maxBound) {
+  const min = findMin(arr), max = findMax(arr);
+
+  const d = Math.abs(min - max);
+  const t = Math.abs(maxBound - minBound);
+
+  const dMin = minBound - min;
+  const dMax = maxBound - max;
+
+  return arr.map(item => {
+    return item / t * d + dMin - dMax;
+  });
+}
+
+export function findMin(arr) {
+  let m = arr[0];
+
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i] < m) m = arr[i];
+  }
+
+  return m;
+}
+
+export function findMax(arr) {
+  let m = arr[0];
+
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i] > m) m = arr[i];
+  }
+
+  return m;
+}
+
+export function sum(array) {
+  return array.reduce((sum, a) => sum + a, 0);
+}
+
 export function getCycleCoordinate(actualCoordinate, bound) {
   const coordinate = actualCoordinate % bound;
 

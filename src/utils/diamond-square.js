@@ -1,6 +1,7 @@
 import { last, generateArray } from 'utils/array.utils.js';
 import { getZero } from 'utils/fn.utils.js';
 import { randomInt } from 'utils/random.utils.js';
+import { normalize } from 'utils/math.utils.js';
 
 function findMax(arr) {
   let max = arr[0][0];

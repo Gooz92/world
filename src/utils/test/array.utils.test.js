@@ -100,4 +100,21 @@ describe('arrayUtils', function () {
 
   });
 
+  describe('rollUp', function () {
+
+    const rollUp = arrayUtils.rollUp;
+
+    it('rolled up one-dimensional array into two-dimensional', () => {
+      const array = [ 1, 2, 3, 4, 5, 6, 7 ];
+
+      const rolledUp = [
+        [ 1, 2, 3 ],
+        [ 4, 5, 6 ],
+        [ 7 ]
+      ];
+
+      assert.deepEqual(rollUp(array, 3), rolledUp);
+    });
+  });
+
 });

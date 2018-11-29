@@ -54,4 +54,15 @@ describe('mathUtils', function () {
 
   });
 
+  describe('normalize', function () {
+
+    const normalize = mathUtils.normalize;
+
+    it('works properly in normal case', () => {
+      const arr = [ 2, 4, 8, 9 ];
+      const n = normalize(arr, 0, 1);
+      assert.deepEqual(n, [ 0.2, 0.4, 0.8, 0.9 ]);
+    });
+  });
+
 });

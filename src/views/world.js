@@ -27,10 +27,12 @@ function getViewportSize() {
 }
 
 const world = new World(
-  generateArray(256, y => (
-    generateArray(256, getObject)
+  generateArray(513, y => (
+    generateArray(513, getObject)
   ))
 );
+
+world.placeTrees();
 
 const wv = new WorldView(world, {
   getCellOptions: (x, y) => ({

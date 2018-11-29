@@ -18,3 +18,22 @@ export const remove = (array, index) => array.splice(index, 1)[0];
 export function insert(array, item, index) {
   array.splice(index, 0, item);
 }
+
+// chunk ?
+export function rollUp(array, rowLength) {
+  const result = [];
+
+  const rowCount = Math.ceil(array.length / rowLength);
+
+  for (let i = 0; i < rowCount; i++) {
+    const row = [];
+
+    let index = i * rowLength;
+    while (row.length < rowLength && index < array.length) {
+      row.push(array[index++]);
+    }
+    result.push(row);
+  }
+
+  return result;
+}
