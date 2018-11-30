@@ -27,6 +27,6 @@ export function random(seed) {
 
   return () => {
     seed = (a * seed + c) % m;
-    return seed;
+    return seed / m;
   };
 }

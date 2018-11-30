@@ -1,7 +1,7 @@
 import { getCycleCoordinate, sum, normalize } from 'utils/math.utils.js';
 import { generateArray, rollUp } from './array.utils.js';
 import { getZero } from './fn.utils.js';
-import { randomInt } from './random.utils.js';
+import { random } from './random.utils.js';
 
 function getIndex(x, y, w, h) {
   const x0 = getCycleCoordinate(x, w);
@@ -59,7 +59,13 @@ function square(arr, width, height, side, next) {
   }
 }
 
-export default function generate() {
+export default function generate(seed) {
+
+  const nextRnd = random(seed);
+
+  const randomInt = (min, max) => (
+    Math.floor((min + (max - min + 1) * nextRnd()))
+  );
 
   const next = (neighbors, distance, roughness) => {
     const bound = roughness * distance;

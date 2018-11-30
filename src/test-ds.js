@@ -1,8 +1,13 @@
 import generate from 'utils/diamond-square.js';
 import { createElement } from 'utils/dom.utils.js';
+import { desirialize } from 'utils/query-params.utils.js';
+
+const query = location.hash.substr(1);
+
+const params = desirialize(query, { seed: parseInt });
 
 const side = 513;
-const map = generate();
+const map = generate(params.seed || 42);
 
 const canvas = createElement('canvas', {
   width: side,
