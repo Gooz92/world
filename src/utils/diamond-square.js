@@ -1,155 +1,93 @@
-import { last, generateArray } from 'utils/array.utils.js';
-import { getZero } from 'utils/fn.utils.js';
-import { randomInt } from 'utils/random.utils.js';
-import { normalize } from 'utils/math.utils.js';
+import { getCycleCoordinate, sum, normalize } from 'utils/math.utils.js';
+import { generateArray, rollUp } from './array.utils.js';
+import { getZero } from './fn.utils.js';
+import { randomInt } from './random.utils.js';
 
-function findMax(arr) {
-  let max = arr[0][0];
+function getIndex(x, y, w, h) {
+  const x0 = getCycleCoordinate(x, w);
+  const y0 = getCycleCoordinate(y, h);
 
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr[i].length; j++) {
-      if (arr[i][j] > max) max = arr[i][j];
-    }
-  }
-
-  return max;
+  return y0 * w + x0;
 }
 
-function findMin(arr) {
-  let min = arr[0][0];
+const getSide = n => Math.pow(2, n) + 1;
 
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = 0 ; j < arr[i].length; j++) {
-      if (arr[i][j] < min) min = arr[i][j];
-    }
-  }
+function diamond(arr, width, height, side, next) {
 
-  return min;
-}
+  const step = side - 1;
+  const half = Math.floor(step / 2);
 
-function normalize(arr, n = 1) {
+  for (let y0 = half; y0 < height - half; y0 += step) {
+    for (let x0 = half; x0 < width - half; x0 += step) {
+      const index = getIndex(x0, y0, width, height);
 
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr[i].length; j++) {
-      arr[i][j] = arr[i][j] * arr[i][j];
-    }
-  }
+      const neighbors = [
+        [ x0 - half, y0 - half ],
+        [ x0 + half, y0 - half ],
+        [ x0 - half, y0 + half ],
+        [ x0 + half, y0 + half ]
+      ].map(([ x, y ]) => {
+        const i = getIndex(x, y, width, height);
+        return arr[i];
+      });
 
-  const max = findMax(arr), min = findMin(arr);
-
-  const d = Math.abs(max - min);
-
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr[i].length; j++) {
-      arr[i][j] = Math.round((arr[i][j] - min) / d * n);
+      arr[index] = next(neighbors, side * 1.5, 10);
     }
   }
 }
 
-function inflate(arr, generateItem = getZero) {
-  const inflated = [];
+function square(arr, width, height, side, next) {
 
-  for (let i = 0; i < arr.length - 1; i++) {
-    inflated.push(arr[i], generateItem(i));
-  }
+  const step = (side - 1) / 2;
 
-  inflated.push(last(arr));
+  for (let y0 = 0; y0 < height; y0 += step) {
+    for (let x0 = ((y0 / step + 1) % 2) * step; x0 < width; x0 += side - 1) {
+      const index = getIndex(x0, y0, width, height);
 
-  return inflated;
-}
+      const neighbors = [
+        [ x0, y0 - step ],
+        [ x0 + step, y0 ],
+        [ x0, y0 + step ],
+        [ x0 - step, y0 ]
+      ].map(([ x, y ]) => {
+        const i = getIndex(x, y, width, height);
+        return arr[i];
+      });
 
-function inflate2(arr) {
-  const inflated = [];
-
-  for (let i = 0; i < arr.length; i++) {
-    inflated.push(inflate(arr[i]));
-  }
-
-  return inflate(inflated, i => generateArray(inflated[i].length, getZero));
-}
-
-function diamond(arr, r, distance) {
-
-  const min = - r * distance * 1.5, max = r * distance * 1.5;
-  const rnd = () => randomInt(min, max);
-
-  for (let i = 1; i < arr.length; i += 2) {
-    for (let j = 1; j < arr[i].length; j += 2) {
-      arr[i][j] = [
-        [ i - 1, j - 1 ],
-        [ i - 1, j + 1 ],
-        [ i + 1, j - 1 ],
-        [ i + 1, j + 1 ]
-      ]
-        .map(([ i0, j0 ]) => arr[i0][j0])
-        .reduce((sum, item) => sum + item, 0) / 4 + rnd();
+      arr[index] = next(neighbors, side, 10);
     }
   }
 }
 
-function square(arr, r, distance) {
+export default function generate() {
 
-  const firstRow = arr[0];
-  const lastRow = last(arr);
+  const next = (neighbors, distance, roughness) => {
+    const bound = roughness * distance;
+    return sum(neighbors) / 4 + randomInt(-bound, bound);
+  };
 
-  const min = - r * distance * 1.5, max = r * distance * 1.5;
-  const rnd = () => randomInt(min, max);
+  const n = 9;
+  const side = getSide(n);
+  const length = side * side;
 
-  for (let i = 1; i < firstRow.length; i += 2) {
-    firstRow[i] = (firstRow[i - 1] + firstRow[i + 1] + arr[1][i] + arr[arr.length - 2][i]) / 4 + rnd();
+  const map = generateArray(length, getZero);
+
+  const corners = [
+    0, side - 1,
+    length - side, length - 1
+  ];
+
+  corners.forEach(index => {
+    map[index] = randomInt(2, 16);
+  });
+
+  let chunkSize = side;
+
+  while (chunkSize > 2) {
+    diamond(map, side, side, chunkSize, next);
+    square(map, side, side, chunkSize, next);
+    chunkSize = Math.ceil(chunkSize / 2);
   }
 
-  for (let i = 1; i < lastRow.length; i += 2) {
-    lastRow[i] = (lastRow[i - 1] + lastRow[i + 1] + arr[arr.length - 2][i] + arr[1][i]) / 4 + rnd();
-  }
-
-  for (let i = 1; i < arr.length; i += 2) {
-    arr[i][0] = (arr[i - 1][0] + arr[i + 1][0] + arr[i][1] + arr[i][arr.length - 2]) / 4 + rnd();
-  }
-
-  for (let i = 1; i < arr.length; i += 2) {
-    arr[i][arr.length - 1] = (arr[i - 1][arr.length - 1] + arr[i + 1][arr.length - 1] +
-      arr[i][arr.length - 2] + arr[i][1]) / 4; + rnd();
-  }
-
-  for (let i = 1; i < arr.length - 1; i++) {
-    for (let j = 2 - (i + 1) % 2; j < arr[i].length - 1; j += 2) {
-      arr[i][j] = [
-        [ i - 1, j ],
-        [ i, j - 1 ],
-        [ i, j + 1 ],
-        [ i + 1, j ]
-      ]
-        .map(([ i0, j0 ]) => arr[i0][j0])
-        .reduce((sum, item) => sum + item, 0) / 4 + rnd();
-    }
-  }
-}
-
-
-export default function () {
-
-  let arr = generateArray(3, () => generateArray(3, () => randomInt(0, 255)));
-
-  let distance = 128;
-  let i = 8;
-
-  const r = 4;
-
-  while (i-- > 0) {
-    arr = inflate2(arr);
-    diamond(arr, r, distance);
-    square(arr, r, distance);
-    distance /= 2;
-  }
-
-  normalize(arr, 100);
-
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr[i].length; j++) {
-      arr[i][j] = Math.random() * 100 < arr[i][j];
-    }
-  }
-
-  return arr;
+  return normalize(map, 255);
 }

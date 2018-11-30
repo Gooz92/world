@@ -18,3 +18,15 @@ export function distributionRandom (distribution) {
     }
   };
 }
+
+const m = Math.pow(2, 32);
+const a = 1664525;
+const c = 1013904223;
+
+export function random(seed) {
+
+  return () => {
+    seed = (a * seed + c) % m;
+    return seed;
+  };
+}

@@ -1,15 +1,9 @@
-export function normalize(arr, minBound, maxBound) {
+export function normalize(arr, upperBound) {
   const min = findMin(arr), max = findMax(arr);
 
-  const d = Math.abs(min - max);
-  const t = Math.abs(maxBound - minBound);
+  const d = Math.abs(max - min);
 
-  const dMin = minBound - min;
-  const dMax = maxBound - max;
-
-  return arr.map(item => {
-    return item / t * d + dMin - dMax;
-  });
+  return arr.map(item => Math.round((item - min) / d * upperBound));
 }
 
 export function findMin(arr) {
