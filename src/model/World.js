@@ -31,7 +31,7 @@ export default class World {
   }
 
   placeTrees() {
-    const treeMap = diamondSquare();
+    const treeMap = diamondSquare(42);
 
     for (let i = 0; i < treeMap.length; i++) {
       for (let j = 0; j < treeMap[i].length; j++) {

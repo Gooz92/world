@@ -23,7 +23,9 @@ const m = Math.pow(2, 32);
 const a = 1664525;
 const c = 1013904223;
 
-export function random(seed) {
+export const getSeed = () => randomInt(0, m);
+
+export function random(seed = getSeed()) {
 
   return () => {
     seed = (a * seed + c) % m;

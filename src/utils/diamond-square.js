@@ -59,7 +59,7 @@ function square(arr, width, height, side, next) {
   }
 }
 
-export default function generate(seed) {
+export default function generate(n, seed = 42) {
 
   const nextRnd = random(seed);
 
@@ -72,7 +72,6 @@ export default function generate(seed) {
     return sum(neighbors) / 4 + randomInt(-bound, bound);
   };
 
-  const n = 9;
   const side = getSide(n);
   const length = side * side;
 
@@ -84,7 +83,7 @@ export default function generate(seed) {
   ];
 
   corners.forEach(index => {
-    map[index] = randomInt(2, 16);
+    map[index] = randomInt(0, 100); // ?
   });
 
   let chunkSize = side;
@@ -95,5 +94,5 @@ export default function generate(seed) {
     chunkSize = Math.ceil(chunkSize / 2);
   }
 
-  return normalize(map, 255);
+  return map;
 }

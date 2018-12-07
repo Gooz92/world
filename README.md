@@ -19,6 +19,7 @@ There is a trees (green "o") and some obstacles (grey "#").
 There are "@"s. They are are cutting down trees.
 
 ## TODO
+  * Split utils to common utils and other
   * Add posibility to place object on world (progress ~80%)
   * Scale map viewport (~progeress 80%, need to recentre, improve test)
   * Enum (class) for direction
