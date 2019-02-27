@@ -25,7 +25,7 @@
     "eol-last": 2,
     "no-unreachable": 2,
     "linebreak-style": [ 2, "unix" ],
-    "max-len": [ 2, { "code": 80 } ],
+    "max-len": [ 2, { "code": 90 } ],
     "indent": [2, 2]
   }  
 }
