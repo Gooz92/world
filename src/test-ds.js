@@ -1,7 +1,7 @@
 import generate from 'utils/diamond-square.js';
 import { createElement } from 'utils/dom.utils.js';
 import { normalize } from 'utils/math.utils.js';
-import { getSeed } from 'utils/random.utils';
+import { getSeed } from 'utils/random.utils.js';
 
 const side = 513;
 
@@ -46,5 +46,5 @@ window.onhashchange = function () {
   context.putImageData(image, 0, 0);
 };
 
-document.getElementById('viewport')
+document.body
   .appendChild(canvas);

@@ -31,7 +31,7 @@ function diamond(arr, width, height, side, next) {
         return arr[i];
       });
 
-      arr[index] = next(neighbors, side * 1.5, 10);
+      arr[index] = next(neighbors, side * 1.5, 0.5);
     }
   }
 }

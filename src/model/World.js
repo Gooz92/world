@@ -2,6 +2,7 @@ import { generateArray } from '../utils/array.utils.js';
 import { distributionRandom } from '../utils/random.utils.js';
 import ObjectType from './ObjectType.js';
 import diamondSquare from 'utils/diamond-square.js';
+import { rollUp } from 'utils/array.utils.js';
 
 export default class World {
 
@@ -31,7 +32,11 @@ export default class World {
   }
 
   placeTrees() {
-    const treeMap = diamondSquare(42);
+    const treeMap = rollUp(
+      diamondSquare(8)
+        .map(h => h > 60),
+      this.tiles.length
+    );
 
     for (let i = 0; i < treeMap.length; i++) {
       for (let j = 0; j < treeMap[i].length; j++) {

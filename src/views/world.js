@@ -27,8 +27,8 @@ function getViewportSize() {
 }
 
 const world = new World(
-  generateArray(513, y => (
-    generateArray(513, getObject)
+  generateArray(257, y => (
+    generateArray(257, getObject)
   ))
 );
 
