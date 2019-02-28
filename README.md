@@ -24,3 +24,16 @@ There are "@"s. They are are cutting down trees.
   * Scale map viewport (~progeress 80%, need to recentre, improve test)
   * Enum (class) for direction
   * Collision handling
+
+## Roadmap
+
+  ### v 0.0.1 (MVP)
+
+  * Resources: wood and food
+  * Building: house, barn, stock (area)
+
+  Trees is not renewable and static. Food somehow respawn (near trees?)
+
+  Two jobs: Geatherer and woodcutter
+
+  Geatheres heather food to barn
