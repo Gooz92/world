@@ -10,15 +10,15 @@ function getIndex(x, y, w, h) {
   return y0 * w + x0;
 }
 
-const getSide = n => Math.pow(2, n) + 1;
+const getSide = n => Math.pow(2, n + 1);
 
 function diamond(arr, width, height, side, next) {
 
-  const step = side - 1;
-  const half = Math.floor(step / 2);
+  const step = side;
+  const half = Math.floor(side / 2);
 
-  for (let y0 = half; y0 < height - half; y0 += step) {
-    for (let x0 = half; x0 < width - half; x0 += step) {
+  for (let y0 = half; y0 < height; y0 += step) {
+    for (let x0 = half; x0 < width; x0 += step) {
       const index = getIndex(x0, y0, width, height);
 
       const neighbors = [
@@ -37,11 +37,10 @@ function diamond(arr, width, height, side, next) {
 }
 
 function square(arr, width, height, side, next) {
-
-  const step = (side - 1) / 2;
+  const step = side / 2;
 
   for (let y0 = 0; y0 < height; y0 += step) {
-    for (let x0 = ((y0 / step + 1) % 2) * step; x0 < width; x0 += side - 1) {
+    for (let x0 = ((y0 / step + 1) % 2) * step; x0 < width; x0 += side) {
       const index = getIndex(x0, y0, width, height);
 
       const neighbors = [
@@ -59,7 +58,7 @@ function square(arr, width, height, side, next) {
   }
 }
 
-export default function generate(n, seed = 42) {
+export default function generate(n, seed = 12) {
 
   const nextRnd = random(seed);
 
@@ -76,19 +75,21 @@ export default function generate(n, seed = 42) {
   const length = side * side;
 
   const map = generateArray(length, getZero);
+  const half = side / 2;
 
   const corners = [
-    0, side - 1,
-    length - side, length - 1
+    [ 0, 0 ], [ half, 0 ],
+    [ 0, half ], [ half, half ]
   ];
 
-  corners.forEach(index => {
+  corners.forEach(([ x, y ]) => {
+    const index = getIndex(x, y, side, side);
     map[index] = randomInt(0, 100); // ?
   });
 
-  let chunkSize = side;
+  let chunkSize = half;
 
-  while (chunkSize > 2) {
+  while (chunkSize > 1) {
     diamond(map, side, side, chunkSize, next);
     square(map, side, side, chunkSize, next);
     chunkSize = Math.ceil(chunkSize / 2);
