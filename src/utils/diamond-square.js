@@ -14,11 +14,10 @@ const getSide = n => Math.pow(2, n + 1);
 
 function diamond(arr, width, height, side, next) {
 
-  const step = side;
   const half = Math.floor(side / 2);
 
-  for (let y0 = half; y0 < height; y0 += step) {
-    for (let x0 = half; x0 < width; x0 += step) {
+  for (let y0 = half; y0 < height; y0 += side) {
+    for (let x0 = half; x0 < width; x0 += side) {
       const index = getIndex(x0, y0, width, height);
 
       const neighbors = [
@@ -62,9 +61,7 @@ export default function generate(n, roughness, seed = 12) {
 
   const nextRnd = random(seed);
 
-  const randomInt = (min, max) => (
-    Math.floor((min + (max - min + 1) * nextRnd()))
-  );
+  const randomInt = (min, max) => min + (max - min) * nextRnd();
 
   const next = (neighbors, distance) => {
     const bound = roughness * distance;
