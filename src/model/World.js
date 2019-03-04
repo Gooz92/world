@@ -42,7 +42,7 @@ export default class World {
     for (let i = 0; i < treeMap.length; i++) {
       for (let j = 0; j < treeMap[i].length; j++) {
         if (treeMap[i][j]) {
-          this.tiles[i][j].object = {type: ObjectType.TREE };
+          this.tiles[i][j].object = { type: ObjectType.TREE };
         }
       }
     }

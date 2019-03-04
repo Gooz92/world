@@ -31,7 +31,7 @@ function diamond(arr, width, height, side, next) {
         return arr[i];
       });
 
-      arr[index] = next(neighbors, side * 1.5, 0.5);
+      arr[index] = next(neighbors, side * 1.5);
     }
   }
 }
@@ -53,12 +53,12 @@ function square(arr, width, height, side, next) {
         return arr[i];
       });
 
-      arr[index] = next(neighbors, side, 10);
+      arr[index] = next(neighbors, side);
     }
   }
 }
 
-export default function generate(n, seed = 12) {
+export default function generate(n, roughness, seed = 12) {
 
   const nextRnd = random(seed);
 
@@ -66,7 +66,7 @@ export default function generate(n, seed = 12) {
     Math.floor((min + (max - min + 1) * nextRnd()))
   );
 
-  const next = (neighbors, distance, roughness) => {
+  const next = (neighbors, distance) => {
     const bound = roughness * distance;
     return sum(neighbors) / 4 + randomInt(-bound, bound);
   };

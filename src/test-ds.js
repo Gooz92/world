@@ -1,30 +1,31 @@
 import generate from 'utils/diamond-square.js';
-import { createElement } from 'utils/dom.utils.js';
 import { normalize } from 'utils/math.utils.js';
+import createCanvas from './views/canvas.js';
+import createForm from './views/form.js';
 
-const side = 256;
+const side = 512;
 
-const canvas = createElement('canvas', {
-  width: side,
-  height: side
-});
+const canvas = createCanvas(side);
 
-const context = canvas.getContext('2d');
+const seed = 42, roughness = 0.5;
 
-const image = context.getImageData(0, 0, side, side);
+const form = createForm(
+  [
+    { id: 'seed', value: seed, parse: value => +value },
+    { id: 'roughness', value: roughness, parse: value => +value }
+  ],
 
-const map = normalize(generate(7), 100);
+  ({ seed, roughness }) => {
+    draw(roughness, seed);
+  }
+);
 
-map.forEach((item, index) => {
-  const startIndex = index * 4;
-  const b = item > 60 ? 0 : 255;
+function draw(roughness, seed) {
+  const map = normalize(generate(8, roughness, seed), 255);
+  canvas.update(map);
+}
 
-  image.data[startIndex] = b;
-  image.data[startIndex + 1] = b;
-  image.data[startIndex + 2] = b;
-  image.data[startIndex + 3] = 255;
-});
+draw(roughness, seed);
 
-context.putImageData(image, 0, 0);
-
-document.body.appendChild(canvas);
+document.body.appendChild(canvas.element);
+document.body.appendChild(form.element);
