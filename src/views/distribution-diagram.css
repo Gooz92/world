@@ -1,0 +1,10 @@
+.diagram {
+  outline: 1px solid #888;
+  display: flex;
+}
+
+.diagram div {
+  background-color: #000;
+  flex: 1;
+  align-self: baseline;
+}

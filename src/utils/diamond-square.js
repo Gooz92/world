@@ -10,7 +10,7 @@ function getIndex(x, y, w, h) {
   return y0 * w + x0;
 }
 
-const getSide = n => Math.pow(2, n + 1);
+export const getSide = n => Math.pow(2, n + 1);
 
 function diamond(arr, width, height, side, next) {
 
@@ -57,7 +57,7 @@ function square(arr, width, height, side, next) {
   }
 }
 
-export default function generate(n, roughness, seed = 12) {
+export function generate(n, roughness, seed = 12) {
 
   const nextRnd = random(seed);
 
