@@ -1,12 +1,11 @@
-import World from '../model/World.js';
+import createWorld from '../model/create-world.js';
 import WorldView from './WorldView';
 import ObjectType from '../model/ObjectType.js';
 import createControls from './create-controls.js';
 import createMenu from './create-menu.js';
 import getArrowKeyCode from 'utils/get-arrow-key-code.js';
 import { upperFirst } from 'utils/string.utils.js';
-import { generateArray } from 'utils/array.utils.js';
-import { getObject, debounce } from 'utils/fn.utils.js';
+import { debounce } from 'utils/fn.utils.js';
 import { getSize } from 'utils/geometry.utils.js';
 import { createElement } from 'utils/dom.utils.js';
 
@@ -26,13 +25,7 @@ function getViewportSize() {
   );
 }
 
-const world = new World(
-  generateArray(256, y => (
-    generateArray(256, getObject)
-  ))
-);
-
-world.placeTrees();
+const world = createWorld(12);
 
 const wv = new WorldView(world, {
   getCellOptions: (x, y) => ({

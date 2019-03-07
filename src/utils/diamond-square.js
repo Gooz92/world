@@ -1,5 +1,5 @@
 import { getCycleCoordinate, sum, normalize } from 'utils/math.utils.js';
-import { generateArray, rollUp } from './array.utils.js';
+import { generateArray } from './array.utils.js';
 import { getZero } from './fn.utils.js';
 import { random } from './random.utils.js';
 

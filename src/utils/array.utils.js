@@ -1,10 +1,30 @@
-import { identity } from './fn.utils';
+import { getNull } from './fn.utils.js';
+import { isFunction } from './is.utils.js';
 
-export function generateArray(length = 0, generateItem = identity) {
+export function generateArray(...args) {
   const array = [];
 
-  for (let i = 0; i < length; i++) {
-    const item = generateItem(i, array);
+  const lastArgument = last(args);
+
+  let generateItem, dimsCount;
+
+  if (isFunction(lastArgument)) {
+    generateItem = lastArgument;
+    dimsCount = args.length - 1;
+  } else {
+    dimsCount = args.length;
+    generateItem = getNull;
+  }
+
+  const dims = args.slice(0, dimsCount);
+
+  // improve callback arguments
+  const $generateItem = dimsCount === 1 ? generateItem : (
+    (i, array) => generateArray(...dims.slice(0, dimsCount - 1), generateItem)
+  );
+
+  for (let i = 0; i < args[0]; i++) {
+    const item = $generateItem(i, array);
     array.push(item);
   }
 
@@ -19,8 +39,7 @@ export function insert(array, item, index) {
   array.splice(index, 0, item);
 }
 
-// chunk ?
-export function rollUp(array, rowLength) {
+export function chunk(array, rowLength) {
   const result = [];
 
   const rowCount = Math.ceil(array.length / rowLength);

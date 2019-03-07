@@ -20,10 +20,10 @@ describe('arrayUtils', function () {
       assert.lengthOf(array, length);
     });
 
-    it('return [0; length) if second argument is omit', () => {
-      const length = 5;
+    it('return array of nulls if generateItem function is ommit', () => {
+      const length = 4;
       const array = generateArray(length);
-      assert.deepEqual(array, [ 0, 1, 2, 3, 4 ]);
+      assert.deepEqual(array, [ null, null, null, null ]);
     });
 
     it('use itemGenerator for array filling', () => {
@@ -54,6 +54,11 @@ describe('arrayUtils', function () {
       const array = generateArray(1, itemGenerator);
 
       assert.strictEqual(itemGenerator.calls[0][1], array);
+    });
+
+    it('can create 2-dim array', () => {
+      const arr = generateArray(1, 1);
+      assert.deepEqual(arr, [ [ null ] ]);
     });
 
   });
@@ -100,11 +105,11 @@ describe('arrayUtils', function () {
 
   });
 
-  describe('rollUp', function () {
+  describe('chunk', function () {
 
-    const rollUp = arrayUtils.rollUp;
+    const chunk = arrayUtils.chunk;
 
-    it('rolled up one-dimensional array into two-dimensional', () => {
+    it('roll up one-dimensional array into two-dimensional', () => {
       const array = [ 1, 2, 3, 4, 5, 6, 7 ];
 
       const rolledUp = [
@@ -113,7 +118,7 @@ describe('arrayUtils', function () {
         [ 7 ]
       ];
 
-      assert.deepEqual(rollUp(array, 3), rolledUp);
+      assert.deepEqual(chunk(array, 3), rolledUp);
     });
   });
 

@@ -1,9 +1,6 @@
 import { generateArray } from '../utils/array.utils.js';
 import { distributionRandom } from '../utils/random.utils.js';
 import ObjectType from './ObjectType.js';
-import { generate } from 'utils/diamond-square.js';
-import { normalize } from 'utils/math.utils.js';
-import { rollUp } from 'utils/array.utils.js';
 
 export default class World {
 
@@ -30,22 +27,6 @@ export default class World {
   constructor(tiles, actors = []) {
     this.tiles = tiles;
     this.actors = actors;
-  }
-
-  placeTrees() {
-    const treeMap = rollUp(
-      normalize(generate(7), 5)
-        .map(h => Math.random() * 5 < h - 2),
-      this.tiles.length
-    );
-
-    for (let i = 0; i < treeMap.length; i++) {
-      for (let j = 0; j < treeMap[i].length; j++) {
-        if (treeMap[i][j]) {
-          this.tiles[i][j].object = { type: ObjectType.TREE };
-        }
-      }
-    }
   }
 
   tick() {
