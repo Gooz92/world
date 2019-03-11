@@ -53,6 +53,13 @@ describe('domUtils', function () {
       assert.strictEqual(yAttr, y.toString());
     });
 
+    it.skip('can create elements with children', () => {
+      const child = createElement('div');
+      const parent = createElement('div', [ child ]);
+
+      assert.strictEqual(parent.firstChild, child);
+    });
+
   });
 
 });

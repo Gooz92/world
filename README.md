@@ -2,6 +2,14 @@
 
 Under construction
 
+## Code organization
+
+### Modules
+* Common (core or lang) utils
+* Test utils
+* Game Engine
+* ui-components
+
 ## Physics
 
 ### Space
