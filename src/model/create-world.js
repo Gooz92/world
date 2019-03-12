@@ -22,7 +22,7 @@ export default function createWorld(seed) {
         tiles[i][j].object = { type: ObjectType.TREE };
       }
     }
-  }  
+  }
 
   return new World(tiles);
 }

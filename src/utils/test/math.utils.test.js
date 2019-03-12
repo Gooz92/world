@@ -61,7 +61,7 @@ describe('mathUtils', function () {
     it('works', () => {
       const arr = [ 0, 20, 50, 80, 100 ];
       const n = normalize(arr, 20);
-      assert.deepEqual(n, [ 0, 4, 10, 16, 20]);
+      assert.deepEqual(n, [ 0, 4, 10, 16, 20 ]);
     });
   });
 

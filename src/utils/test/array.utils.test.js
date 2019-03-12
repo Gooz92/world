@@ -75,7 +75,7 @@ describe('arrayUtils', function () {
 
     it('return removed item', () => {
       const removed = 'a';
-      const array = [ 1, 2, 'a', 3];
+      const array = [ 1, 2, 'a', 3 ];
       assert.strictEqual(remove(array, 2), removed);
     });
 
