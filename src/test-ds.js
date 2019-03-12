@@ -13,11 +13,16 @@ const side = getSide(size);
 const canvas = createCanvas(side);
 const diagram = distributionDiagram(480, 480);
 
-const rangeComponent = range({ min: 0, max: 1, step: 0.01 }, value => {
-  console.log(value);
-});
+let seed = 42, roughness = 0.5;
 
-const seed = 42, roughness = 0.5;
+const onRoughnessChange = value => {
+  draw(value, seed);
+  roughness = value;
+};
+
+const rangeComponent = range('roughness', 'Roughness', {
+  min: 0, max: 1, step: 0.01
+}, onRoughnessChange);
 
 const form = createForm(
   [

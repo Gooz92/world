@@ -1,31 +1,37 @@
 import { createElement } from 'utils/dom.utils.js';
 import { noop } from 'utils/fn.utils.js';
 
-export default function range({ min = 0, max = 100, step = 1 } = {}, onChange = noop) {
+export default function range(id, name, properties, onChange = noop) {
 
-  // const element = createElement('div', [
-  //   createElement('label', {
-  //     for: id
-  //   }),
-  //   createElement('input', {
-  //     type: 'range',
-  //     onchange(e) {
-  //       onChange(e.target.value);
-  //     },
-  //     min, max, step
-  //   }),
-  //   createElement('span', )
-  // ]);
+  const valueContainer = createElement('span');
 
-  const element = createElement('input', {
-    type: 'range',
-    onchange(e) {
-      onChange(e.target.value);
+  const input = createElement('input', {
+    ...properties,
+    onchange: e => {
+      const value = e.target.value;
+      onChange(value);
+      valueContainer.innerHTML = value;
+
     },
-    min, max, step
+    type: 'range',
+    id
   });
 
+  valueContainer.innerHTML = input.value;
+
+  const label = createElement('label', {
+    for: id,
+    innerHTML: `${name}:`
+  });
+
+  const element = createElement('div', [
+    label,
+    input,
+    valueContainer
+  ]);
+
   return {
+    input,
     element
   };
 }

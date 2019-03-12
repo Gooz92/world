@@ -6,7 +6,7 @@ describe('range', function () {
   it('create input element with type="range"', () => {
     const component = range();
 
-    assert.include(component.element, {
+    assert.include(component.input, {
       type: 'range',
       tagName: 'INPUT'
     });
