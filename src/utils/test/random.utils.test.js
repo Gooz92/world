@@ -12,17 +12,39 @@ describe('randomUtils', function () {
     });
   });
 
-  describe('randomElement', function () {
-    const randomElement = randomUtils.randomElement;
+  describe('seeding random generator', function () {
 
-    it('return element if given array is [ element ]', () => {
-      const element = 'element';
+    let random;
 
-      assert.deepStrictEqual(randomElement([ element ]), element);
+    beforeEach(() => {
+      random = randomUtils.randomGenerator();
+    });
+
+    describe('.next()', function () {
+
+      it('return number', () => {
+        assert.isNumber(random.next());
+      });
+
+    });
+
+    describe('.nextInt()', function () {
+
+      it('return min (max) if min === max', () => {
+        const bound = 42;
+        assert.strictEqual(random.nextInt(bound, bound), bound);
+      });
+
+    });
+
+    describe('.nextBoolean()', function () {
+
+      it('return boolean', () => {
+        assert.isBoolean(random.nextBoolean());
+      });
+
     });
 
   });
-
-  describe.skip('distributionRandom');
 
 });

@@ -1,7 +1,7 @@
 import { getCycleCoordinate, sum, normalize } from 'utils/math.utils.js';
 import { generateArray } from './array.utils.js';
 import { getZero } from './fn.utils.js';
-import { random } from './random.utils.js';
+import { randomGenerator } from './random.utils.js';
 
 function getIndex(x, y, w, h) {
   const x0 = getCycleCoordinate(x, w);
@@ -59,13 +59,11 @@ function square(arr, width, height, side, next) {
 
 export function generate(n, roughness, seed = 12) {
 
-  const nextRnd = random(seed);
-
-  const randomInt = (min, max) => min + (max - min) * nextRnd();
+  const random = randomGenerator(seed);
 
   const next = (neighbors, distance) => {
     const bound = roughness * distance;
-    return sum(neighbors) / 4 + randomInt(-bound, bound);
+    return sum(neighbors) / 4 + random.nextInt(-bound, bound);
   };
 
   const side = getSide(n);
@@ -81,7 +79,7 @@ export function generate(n, roughness, seed = 12) {
 
   corners.forEach(([ x, y ]) => {
     const index = getIndex(x, y, side, side);
-    map[index] = randomInt(0, 100); // ?
+    map[index] = random.nextInt(0, 100); // ?
   });
 
   let chunkSize = half;
