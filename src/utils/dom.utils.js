@@ -1,8 +1,6 @@
 import { forIn } from './object.utils.js';
 
-export function createElement(tagName, properties) {
-  const element = document.createElement(tagName);
-
+function assignProperties(element, properties) {
   for (const propertyName in properties) {
     if (propertyName === 'style') {
       Object.assign(element.style, properties.style);
@@ -16,6 +14,26 @@ export function createElement(tagName, properties) {
       element.setAttribute(propertyName, properties[propertyName]);
     }
   }
+}
+
+function appendChildren(element, children) {
+  children.forEach(child => {
+    element.appendChild(child);
+  });
+}
+
+export function createElement(tagName = 'div', ...args) {
+  const element = document.createElement(tagName);
+
+  args.forEach(arg => {
+    if (Array.isArray(arg)) {
+      appendChildren(element, arg);
+    } else if (typeof arg === 'object') {
+      assignProperties(element, arg);
+    } else if (typeof arg === 'function') {
+      arg(element);
+    }
+  });
 
   return element;
 }
