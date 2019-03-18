@@ -12,7 +12,13 @@ module.exports = {
     format: 'iife'
   },
   plugins: [
-    template(),
+    template({
+      input: 'index.tpl.html',
+      output: 'index.html',
+      data: {
+        title: 'Title'
+      }
+    }),
     babel({
       exclude: 'node_modules/**'
     }),
