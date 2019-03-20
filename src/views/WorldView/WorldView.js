@@ -1,24 +1,33 @@
-import createField from '../../create-field.js';
 import ObjectType from 'model/ObjectType.js';
 import Person from 'model/Person.js';
 import { createElement } from 'utils/dom.utils.js';
-import { getObject } from 'utils/fn.utils.js';
-import { getSize, getPoint } from 'utils/geometry.utils.js';
-import { getCycleCoordinate, inCycleRange } from 'utils/math.utils.js';
-import { insertionOptions, removementOptions } from './viewport.js';
+import { getObject, noop } from 'utils/fn.utils.js';
+import { getCycleCoordinate } from 'utils/math.utils.js';
 
-const classes = [ 'empty', 'obstacle', 'tree', 'person' ];
+const renderers = [
+  (ctx, x, y, size) => {
+    ctx.clearRect(x, y, size, size);
+  },
+  (ctx, x, y, size) => {
+    ctx.fillStyle = 'grey';
+    ctx.fillRect(x, y, size, size);
+  },
+  (ctx, x, y, size) => {
+    ctx.fillStyle = 'green';
+    ctx.fillRect(x, y, size, size);
+  },
+  (ctx, x, y, size) => {
+    ctx.fillStyle = 'red';
+    ctx.fillRect(x, y, size, size);
+  }
+];
 
 export default class WorldView {
 
   static CELL_SIZE = 12;
 
   static DEFAULT_OPTIONS = {
-    getCellOptions: getObject,
-    viewport: {
-      size: getSize(64, 36),
-      position: getPoint(0, 0)
-    }
+    getCellOptions: getObject
   };
 
   constructor(world, options = {}) {
@@ -28,68 +37,50 @@ export default class WorldView {
       ...WorldView.DEFAULT_OPTIONS,
       ...options
     };
-
-    this.viewport = this.options.viewport;
   }
 
-  createField() {
+  createCanvas() {
 
-    const { width, height } = this.viewport.size;
+    const width = this.world.tiles[0].length * WorldView.CELL_SIZE;
+    const height = this.world.tiles.length * WorldView.CELL_SIZE;
 
-    this.field = createField(width, height, WorldView.CELL_SIZE, (x, y) => (
-      this.createCell(x, y)
-    ));
+    const canvas = createElement('canvas', {
+      width, height,
+      onclick: e => {
+        const x = Math.floor(e.clientX / WorldView.CELL_SIZE);
+        const y = Math.floor(e.clientY / WorldView.CELL_SIZE);
 
-    return this.field;
+        this.options.onclick(x, y);
+      }
+    });
+
+    this.canvas = canvas;
+    this.context = canvas.getContext('2d');
+
+    return canvas;
   }
 
-  createCell(x, y) {
+  drawCell(x, y) {
     const y0 = getCycleCoordinate(y, this.world.tiles.length);
     const x0 = getCycleCoordinate(x, this.world.tiles[y0].length);
 
     const tile = this.world.tiles[y0][x0];
 
-    return createElement('div', {
-      ...this.options.getCellOptions(x0, y0),
-      className: classes[tile.object ? tile.object.type : 0],
-    });
+    renderers[tile.object ? (tile.object.type || 0) : 0](
+      this.context,
+      x0 * WorldView.CELL_SIZE,
+      y0 * WorldView.CELL_SIZE,
+      WorldView.CELL_SIZE
+    );
   }
 
   tick() {
     this.world.tick()
       .forEach(event => {
         event.tiles.forEach(([ x, y ]) => {
-          this.refreshTile(x, y);
+          this.drawCell(x, y);
         });
       });
-  }
-
-  setViewportWidth(width) {
-    const deltaWidth = width - this.viewport.size.width;
-
-    if (deltaWidth > 0) {
-      this.insertCells('right', deltaWidth);
-    } else {
-      this.removeCells('right', -deltaWidth);
-    }
-
-    this.viewport.size.width += deltaWidth;
-
-    this.field.style.width = (this.viewport.size.width * WorldView.CELL_SIZE) + 'px';
-  }
-
-  setViewportHeight(height) {
-    const deltaHeight = height - this.viewport.size.height;
-
-    if (deltaHeight > 0) {
-      this.insertCells('down', deltaHeight);
-    } else {
-      this.removeCells('down', -deltaHeight);
-    }
-
-    this.viewport.size.height += deltaHeight;
-
-    this.field.style.height = (this.viewport.size.height * WorldView.CELL_SIZE) + 'px';
   }
 
   placePerson(x, y) {
@@ -106,90 +97,9 @@ export default class WorldView {
       this.world.tiles[y][x].object = { type };
     }
 
-    this.refreshTile(x, y);
+    this.drawCell(x, y);
 
     return this.world.tiles[y][x].object;
-  }
-
-  refreshTile(x, y) {
-    if (!this.inViewport(x, y)) {
-      return false;
-    }
-
-    const tile = this.world.tiles[y][x];
-
-    this.getCell(x, y).className = classes[tile.object ? tile.object.type : 0];
-  }
-
-  scrollDown() {
-    this.removeCells('up');
-    this.insertCells('down');
-
-    this.viewport.position.y = this.getCycleY(this.viewport.position.y + 1);
-  }
-
-  scrollUp() {
-    this.removeCells('down');
-    this.insertCells('up');
-
-    this.viewport.position.y = this.getCycleY(this.viewport.position.y - 1);
-  }
-
-  scrollRight() {
-    this.removeCells('left');
-    this.insertCells('right', 1, 1);
-
-    this.viewport.position.x = this.getCycleX(this.viewport.position.x + 1);
-  }
-
-  scrollLeft() {
-    this.removeCells('right');
-    this.insertCells('left', 1, 1);
-
-    this.viewport.position.x = this.getCycleX(this.viewport.position.x - 1);
-  }
-
-  // === VIEWPORT SCALING ===
-
-  insertCells(direction, delta = 1, shift = 0) {
-    const { x, y } = this.viewport.position;
-    const { width, height } = this.viewport.size;
-
-    const [
-      getCellCoords,
-      getReferenceIndex,
-      side
-    ] = insertionOptions[direction](x, y, width, height, shift);
-
-    for (let i = 0; i < delta; i++) {
-      for (let j = 0; j < side; j++) {
-        const [ x, y ] = getCellCoords(i, j);
-        const cell = this.createCell(x, y);
-        const referenceIndex = getReferenceIndex(i, j);
-
-        const referenceCell = referenceIndex === -1 ? null :
-          this.field.childNodes[referenceIndex];
-
-        this.field.insertBefore(cell, referenceCell);
-      }
-    }
-  }
-
-  removeCells(direction, delta = 1) {
-    const { width, height } = this.viewport.size;
-
-    const [
-      getRemovementIndex,
-      side, decreasedSide
-    ] = removementOptions[direction](width, height);
-
-    for (let i = 0; i < delta; i++) {
-      for (let j = 0; j < side; j++) {
-        const removementIndex = getRemovementIndex(j, decreasedSide - i);
-        const cell = this.field.childNodes[removementIndex];
-        this.field.removeChild(cell);
-      }
-    }
   }
 
   getCycleX(x) {
@@ -198,27 +108,5 @@ export default class WorldView {
 
   getCycleY(y) {
     return getCycleCoordinate(y, this.world.tiles.length);
-  }
-
-  getCell(x, y) {
-    const y0 = this.getCycleY(y - this.viewport.position.y);
-    const x0 = this.getCycleX(x - this.viewport.position.x);
-
-    const index = y0 * this.viewport.size.width + x0;
-
-    return this.field.childNodes[index];
-  }
-
-  inViewport(x, y) {
-    const { position, size } = this.viewport;
-
-    const rightBound = this.getCycleX(position.x + size.width);
-    const bottomBound = this.getCycleY(position.y + size.height);
-
-    return (
-      inCycleRange(x, position.x, rightBound, this.world.tiles[0].length)
-        &&
-      inCycleRange(y, position.y, bottomBound, this.world.tiles.length)
-    );
   }
 }

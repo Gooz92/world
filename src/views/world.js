@@ -4,8 +4,6 @@ import ObjectType from '../model/ObjectType.js';
 import createControls from './create-controls.js';
 import createMenu from './create-menu.js';
 import getArrowKeyCode from 'utils/get-arrow-key-code.js';
-import { upperFirst } from 'utils/string.utils.js';
-import { debounce } from 'utils/fn.utils.js';
 import { getSize } from 'utils/geometry.utils.js';
 import { createElement } from 'utils/dom.utils.js';
 
@@ -25,22 +23,15 @@ function getViewportSize() {
   );
 }
 
-const world = createWorld(12);
+const world = createWorld();
 
 const wv = new WorldView(world, {
-  getCellOptions: (x, y) => ({
-    dataset: { x, y },
-    onclick: () => {
-      const object = wv.place(x, y, objectType);
+  onclick: (x, y) => {
+    const object = wv.place(x, y, objectType);
 
-      if (objectType === ObjectType.PERSON) {
-        object.setStrategy('cutTrees');
-      }
+    if (objectType === ObjectType.PERSON) {
+      object.setStrategy('cutTrees');
     }
-  }),
-  viewport: {
-    position: { x: 0, y: 0 },
-    size: getViewportSize()
   }
 });
 
@@ -48,11 +39,6 @@ const info = createElement('span', {
   id: 'info'
 });
 
-window.addEventListener('resize', debounce(() => {
-  const { width, height } = getViewportSize();
-  wv.setViewportWidth(width);
-  wv.setViewportHeight(height);
-}, 200));
 
 window.addEventListener('keydown', event => {
 
@@ -64,13 +50,11 @@ window.addEventListener('keydown', event => {
   const direction = getArrowKeyCode(event.key);
 
   if (direction) {
-    console.time('scroll');
-    wv[`scroll${upperFirst(direction)}`]();
-    console.timeEnd('scroll');
+    console.log(direction);
   }
 });
 
-const table = wv.createField();
+const canvas = wv.createCanvas();
 
 world.actors
   .forEach(({ position: [ x, y ] }) => {
@@ -81,22 +65,13 @@ world.actors
 
 controls = createControls(wv, TICK_TIME);
 
-viewport.appendChild(table);
+viewport.appendChild(canvas);
 panel.appendChild(controls.container);
 
 const menu = createMenu({
   onChange: newObjectType => {
     objectType = newObjectType;
   }
-});
-
-wv.field.addEventListener('mouseleave', e => {
-  info.innerHTML = '-';
-});
-
-wv.field.addEventListener('mouseover', e => {
-  const { x, y } = e.target.dataset;
-  info.innerHTML = x + ';' + y;
 });
 
 panel.appendChild(info);
