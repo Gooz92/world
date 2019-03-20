@@ -1,6 +1,6 @@
 
 const
-  commonRollupConfig = require('./rollup.config.common.js'),
+  commonRollupConfig = require('./rollup.config/rollup.config.common.js'),
 
   commonjs = require('rollup-plugin-commonjs'),
   nodeResolve = require('rollup-plugin-node-resolve'),

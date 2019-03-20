@@ -1,7 +1,7 @@
 const { readFile, writeFile } = require('fs');
 const substitute = require('../utils/substitute.js');
 
-module.exports = function template({ input, output }) {
+module.exports = function template({ input, output, data }) {
 
   return {
     name: 'rollup-temlate',
