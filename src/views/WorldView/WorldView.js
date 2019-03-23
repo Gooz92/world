@@ -24,7 +24,7 @@ const renderers = [
 
 export default class WorldView {
 
-  static CELL_SIZE = 12;
+  static CELL_SIZE = 10;
 
   static DEFAULT_OPTIONS = {
     getCellOptions: getObject
@@ -36,6 +36,11 @@ export default class WorldView {
     this.options = {
       ...WorldView.DEFAULT_OPTIONS,
       ...options
+    };
+
+    this.viewport = {
+      position: [ 0, 0 ],
+      size: [ 128, 96 ]
     };
   }
 
@@ -60,19 +65,26 @@ export default class WorldView {
     return canvas;
   }
 
-  drawCell(x, y) {
-    const y0 = getCycleCoordinate(y, this.world.tiles.length);
-    const x0 = getCycleCoordinate(x, this.world.tiles[y0].length);
+  getTile(x, y) {
+    const x0 = this.getCycleX(x);
+    const y0 = this.getCycleY(y);
 
-    const tile = this.world.tiles[y0][x0];
+    return this.world.tiles[y0][x0];
+  }
+
+  drawCell(x, y) {
+    const tile = this.getTile(x, y);
+
+    const x0 = this.getCycleX(x - this.viewport.position[0]);
+    const y0 = this.getCycleY(y - this.viewport.position[1]);
 
     renderers[tile.object ? (tile.object.type || 0) : 0](
       this.context,
-      x0 * WorldView.CELL_SIZE,
-      y0 * WorldView.CELL_SIZE,
+      x0 * WorldView.CELL_SIZE, y0 * WorldView.CELL_SIZE,
       WorldView.CELL_SIZE
     );
   }
+
 
   tick() {
     this.world.tick()
@@ -83,6 +95,55 @@ export default class WorldView {
       });
   }
 
+  clear() {
+    const { width, height } = this.canvas;
+    this.context.clearRect(0, 0, width, height);
+  }
+
+  scrollHorizontal(dx) {
+    const { width, height } = this.canvas;
+    const { position, size } = this.viewport;
+
+    position[0] = this.getCycleX(position[0] + dx);
+
+    const [ vx, vy ] = position;
+    const [ vw, vh ] = size;
+
+    const endY = vy + vh;
+
+    const dwx = WorldView.CELL_SIZE * dx;
+
+    if (dx > 0) {
+      const imageData = this.context.getImageData(dwx, 0, width - dwx, height);
+      this.context.putImageData(imageData, 0, 0);
+
+      const endX = vx + vw;
+
+      for (let y = vy; y < endY; y++) {
+        for (let x = endX - dx; x < endX; x++) {
+          this.drawCell(x, y);
+        }
+      }
+    } else {
+      const imageData = this.context.getImageData(0, 0, width + dwx, height);
+      this.context.putImageData(imageData, -dwx, 0);
+
+      for (let y = vy; y < endY; y++) {
+        for (let x = vx; x < vx - dx; x++) {
+          this.drawCell(x, y);
+        }
+      }
+    }
+  }
+
+  scrollLeft(dx = 4) {
+    this.scrollHorizontal(-dx);
+  }
+
+  scrollRight(dx = 4) {
+    this.scrollHorizontal(dx);
+  }
+
   placePerson(x, y) {
     const person = new Person(this.world.tiles, [ x, y ]);
     this.world.tiles[y][x].object = person;
@@ -90,7 +151,13 @@ export default class WorldView {
     return person;
   }
 
-  place(x, y, type) {
+  place(x0, y0, type) {
+
+    const [ vx, vy ] = this.viewport.position;
+
+    const x = this.getCycleX(vx + x0);
+    const y = this.getCycleY(vy + y0);
+
     if (type === ObjectType.PERSON) {
       this.placePerson(x, y);
     } else {

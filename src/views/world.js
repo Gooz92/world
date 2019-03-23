@@ -6,6 +6,7 @@ import createMenu from './create-menu.js';
 import getArrowKeyCode from 'utils/get-arrow-key-code.js';
 import { getSize } from 'utils/geometry.utils.js';
 import { createElement } from 'utils/dom.utils.js';
+import { upperFirst } from 'utils/string.utils.js';
 
 const TICK_TIME = 120;
 
@@ -40,6 +41,13 @@ const info = createElement('span', {
 });
 
 
+function time(label, fn) {
+  console.time(label);
+  const result = fn();
+  console.timeEnd(label);
+  return result;
+}
+
 window.addEventListener('keydown', event => {
 
   /*
@@ -50,7 +58,11 @@ window.addEventListener('keydown', event => {
   const direction = getArrowKeyCode(event.key);
 
   if (direction) {
-    console.log(direction);
+    const m = wv[`scroll${upperFirst(direction)}`];
+
+    if (m) {
+      time(direction, () => m.call(wv));
+    }
   }
 });
 

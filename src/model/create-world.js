@@ -3,9 +3,9 @@ import { getObject } from 'utils/fn.utils.js';
 
 import World from './World.js';
 
-export default function createWorld(seed) {
+export default function createWorld() {
 
-  const tiles = generateArray(48, () => generateArray(64, getObject));
+  const tiles = generateArray(96, () => generateArray(128, getObject));
 
   return new World(tiles);
 }
