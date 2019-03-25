@@ -100,6 +100,41 @@ export default class WorldView {
     this.context.clearRect(0, 0, width, height);
   }
 
+  repaint(x0, y0, width, height) {
+    const endX = x0 + width,
+      endY = y0 + height;
+
+    for (let x = x0; x < endX; x++) {
+      for (let y = y0; y < endY; y++) {
+        this.drawCell(x, y);
+      }
+    }
+  }
+
+  scrollVertical(dy) {
+    const { width, height } = this.canvas;
+    const { position, size } = this.viewport;
+
+    position[1] = this.getCycleY(position[1] + dy);
+
+    const [ vx, vy ] = position;
+    const [ vw, vh ] = size;
+
+    const dwy = WorldView.CELL_SIZE * dy;
+
+    if (dy > 0) { // move to down
+      const imageData = this.context.getImageData(0, dwy, width, height - dwy);
+      this.context.putImageData(imageData, 0, 0);
+
+      this.repaint(vx, vy + vh - dwy, vw, dwy);
+    } else {
+      const imageData = this.context.getImageData(0, 0, width, height + dwy);
+      this.context.putImageData(imageData, 0, -dwy);
+
+      this.repaint(vx, vy, vw, -dwy);
+    }
+  }
+
   scrollHorizontal(dx) {
     const { width, height } = this.canvas;
     const { position, size } = this.viewport;
@@ -109,38 +144,34 @@ export default class WorldView {
     const [ vx, vy ] = position;
     const [ vw, vh ] = size;
 
-    const endY = vy + vh;
-
     const dwx = WorldView.CELL_SIZE * dx;
 
-    if (dx > 0) {
+    if (dx > 0) { // move to right
       const imageData = this.context.getImageData(dwx, 0, width - dwx, height);
       this.context.putImageData(imageData, 0, 0);
 
-      const endX = vx + vw;
-
-      for (let y = vy; y < endY; y++) {
-        for (let x = endX - dx; x < endX; x++) {
-          this.drawCell(x, y);
-        }
-      }
+      this.repaint(vx + vw - dx, vy, dx, vh);
     } else {
       const imageData = this.context.getImageData(0, 0, width + dwx, height);
       this.context.putImageData(imageData, -dwx, 0);
 
-      for (let y = vy; y < endY; y++) {
-        for (let x = vx; x < vx - dx; x++) {
-          this.drawCell(x, y);
-        }
-      }
+      this.repaint(vx, vy, -dx, vh);
     }
   }
 
-  scrollLeft(dx = 4) {
+  scrollUp(dy = 1) {
+    this.scrollVertical(-dy);
+  }
+
+  scrollDown(dy = 1) {
+    this.scrollVertical(dy);
+  }
+
+  scrollLeft(dx = 1) {
     this.scrollHorizontal(-dx);
   }
 
-  scrollRight(dx = 4) {
+  scrollRight(dx = 1) {
     this.scrollHorizontal(dx);
   }
 
