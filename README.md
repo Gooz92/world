@@ -29,7 +29,8 @@ There are "@"s. They are are cutting down trees.
 ## TODO
   * Split utils to common utils and other
   * Add posibility to place object on world (progress ~80%)
-  * Scale map viewport (~progeress 80%, need to recentre, improve test)
+  * Scale map viewport (in process of migration to canvas)
+  * Viwport layers
   * Enum (class) for direction
   * Collision handling
 

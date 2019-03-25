@@ -33,4 +33,12 @@ export default class World {
     return this.actors
       .map(actor => actor.act());
   }
+
+  get width() {
+    return this.tiles[0].length;
+  }
+
+  get height() {
+    return this.tiles.length;
+  }
 }
