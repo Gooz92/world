@@ -1,17 +1,36 @@
 import { createElement } from 'utils/dom.utils.js';
 
+const renderers = [
+  (ctx, x, y, size) => {
+    ctx.clearRect(x, y, size, size);
+  },
+  (ctx, x, y, size) => {
+    ctx.fillStyle = 'grey';
+    ctx.fillRect(x, y, size, size);
+  },
+  (ctx, x, y, size) => {
+    ctx.fillStyle = 'green';
+    ctx.fillRect(x, y, size, size);
+  },
+  (ctx, x, y, size) => {
+    ctx.fillStyle = 'red';
+    ctx.fillRect(x, y, size, size);
+  }
+];
+
 export default class Viewport {
 
-  static DEFAULT_CELL_SIZE = 16;
+  static DEFAULT_CELL_SIZE = 8;
 
-  constructor(position, size, options = {}) {
+  constructor(world, position, size, options = {}) {
     this.position = position;
     this.size = size;
     this.cellSize = Viewport.DEFAULT_CELL_SIZE;
     this.options = options;
+    this.world = world;
   }
 
-  initCanvas() {
+  createCanvas() {
     const [ w, h ] = this.size;
 
     const width = w * this.cellSize,
@@ -29,44 +48,38 @@ export default class Viewport {
 
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
+
+    return canvas;
   }
 
-  drawTile(tileX, tileY, render) {
+  drawTile(tileX, tileY) {
+
+    const tile = this.world.getTile(tileX + this.position[0], tileY + this.position[1]);
 
     const x = tileX * this.cellSize;
     const y = tileY * this.cellSize;
 
-    render(this.context, this.cellSize, x, y);
+    renderers[tile.object ? (tile.object.type || 0) : 0](
+      this.context, x, y, this.cellSize
+    );
   }
 
   draw(x = 0, y = 0, width = this.width, height = this.height) {
     const endX = x + width, endY = y + height;
 
     for (let tileX = x; tileX < endX; tileX++) {
-      for (let tileY = y0; tileY < endY; tileY++) {
+      for (let tileY = y; tileY < endY; tileY++) {
         this.drawTile(tileX, tileY);
       }
     }
   }
 
-  getImageData(tileX, tileY, width, height) {
-
-    const x = tileX * this.cellSize;
-    const y = tileY * this.cellSize;
-
-    const w = width * this.cellSize;
-    const h = height * this.cellSize;
-
-    return this.context.getImageData(x, y, w, h);
-  }
-
   scrollVertical(dy) {
     const { width, height } = this.canvas;
-    const { position, size } = this.viewport;
+    const { position, size } = this;
 
-    position[1] = this.getCycleY(position[1] + dy);
+    position[1] = this.world.getCycleY(position[1] + dy);
 
-    const [ vx, vy ] = position;
     const [ vw, vh ] = size;
 
     const dwy = this.cellSize * dy;
@@ -75,36 +88,35 @@ export default class Viewport {
       const imageData = this.context.getImageData(0, dwy, width, height - dwy);
       this.context.putImageData(imageData, 0, 0);
 
-      this.repaint(vx, vy + vh - dwy, vw, dwy);
+      this.draw(0, vh - dwy, vw, dwy);
     } else {
       const imageData = this.context.getImageData(0, 0, width, height + dwy);
       this.context.putImageData(imageData, 0, -dwy);
 
-      this.repaint(vx, vy, vw, -dwy);
+      this.draw(0, 0, vw, -dwy);
     }
   }
 
   scrollHorizontal(dx) {
     const { width, height } = this.canvas;
-    const { position, size } = this.viewport;
+    const { position, size } = this;
 
-    position[0] = this.getCycleX(position[0] + dx);
+    position[0] = this.world.getCycleX(position[0] + dx);
 
-    const [ vx, vy ] = position;
     const [ vw, vh ] = size;
 
-    const dwx = WorldView.CELL_SIZE * dx;
+    const dwx = this.cellSize * dx;
 
     if (dx > 0) { // move to right
       const imageData = this.context.getImageData(dwx, 0, width - dwx, height);
       this.context.putImageData(imageData, 0, 0);
 
-      this.repaint(vx + vw - dx, vy, dx, vh);
+      this.draw(vw - dx, 0, dx, vh);
     } else {
       const imageData = this.context.getImageData(0, 0, width + dwx, height);
       this.context.putImageData(imageData, -dwx, 0);
 
-      this.repaint(vx, vy, -dx, vh);
+      this.draw(0, 0, -dx, vh);
     }
   }
 

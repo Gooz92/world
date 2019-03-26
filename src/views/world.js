@@ -3,10 +3,12 @@ import WorldView from './WorldView';
 import ObjectType from '../model/ObjectType.js';
 import createControls from './create-controls.js';
 import createMenu from './create-menu.js';
+
 import getArrowKeyCode from 'utils/get-arrow-key-code.js';
-import { getSize } from 'utils/geometry.utils.js';
 import { createElement } from 'utils/dom.utils.js';
 import { upperFirst } from 'utils/string.utils.js';
+
+import { time } from 'utils/dev.utils.js';
 
 const TICK_TIME = 120;
 
@@ -15,19 +17,10 @@ let controls, objectType;
 const viewport = document.getElementById('viewport');
 const panel = document.getElementById('panel');
 
-function getViewportSize() {
-  const { width, height } = viewport.getBoundingClientRect();
-
-  return getSize(
-    Math.ceil(width / WorldView.CELL_SIZE),
-    Math.ceil(height / WorldView.CELL_SIZE)
-  );
-}
-
 const world = createWorld();
 
 const wv = new WorldView(world, {
-  onclick: (x, y) => {
+  onTileClick: (x, y) => {
     const object = wv.place(x, y, objectType);
 
     if (objectType === ObjectType.PERSON) {
@@ -39,14 +32,6 @@ const wv = new WorldView(world, {
 const info = createElement('span', {
   id: 'info'
 });
-
-
-function time(label, fn) {
-  console.time(label);
-  const result = fn();
-  console.timeEnd(label);
-  return result;
-}
 
 window.addEventListener('keydown', event => {
 
@@ -66,14 +51,7 @@ window.addEventListener('keydown', event => {
   }
 });
 
-const canvas = wv.createCanvas();
-
-world.actors
-  .forEach(({ position: [ x, y ] }) => {
-    if (wv.inViewport(x, y)) {
-      wv.getCell(x, y).className = 'person';
-    }
-  });
+const canvas = wv.viewport.createCanvas();
 
 controls = createControls(wv, TICK_TIME);
 

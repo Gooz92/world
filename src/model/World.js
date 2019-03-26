@@ -1,28 +1,9 @@
-import { generateArray } from '../utils/array.utils.js';
-import { distributionRandom } from '../utils/random.utils.js';
 import ObjectType from './ObjectType.js';
+import Person from 'model/Person.js';
+
+import { getCycleCoordinate } from 'utils/math.utils.js';
 
 export default class World {
-
-  static createRandomWorld(width, height, objectDistribution) {
-    const random = distributionRandom(objectDistribution);
-    const actors = [];
-
-    const tiles = generateArray(height, (y, tls) => (
-      generateArray(width, x => {
-        const getNextObject = random();
-        const object = getNextObject(x, y, tls);
-
-        if (object && object.type === ObjectType.PERSON) {
-          actors.push(object);
-        }
-
-        return { object };
-      })
-    ));
-
-    return new World(tiles, actors);
-  }
 
   constructor(tiles, actors = []) {
     this.tiles = tiles;
@@ -32,6 +13,41 @@ export default class World {
   tick() {
     return this.actors
       .map(actor => actor.act());
+  }
+
+  // TODO: get rid of this in future =)
+  placePerson(x, y) {
+    const person = new Person(this.tiles, [ x, y ]);
+    this.tiles[y][x].object = person;
+    this.actors.push(person);
+
+    return person;
+  }
+
+  place(x, y, type) {
+    if (type === ObjectType.PERSON) {
+      return this.placePerson(x, y);
+    }
+
+    const object = { type };
+    this.tiles[y][x].object = object;
+
+    return object;
+  }
+
+  getTile(x, y) {
+    const x0 = this.getCycleX(x);
+    const y0 = this.getCycleY(y);
+
+    return this.tiles[y0][x0];
+  }
+
+  getCycleX(x) {
+    return getCycleCoordinate(x, this.tiles[0].length);
+  }
+
+  getCycleY(y) {
+    return getCycleCoordinate(y, this.tiles.length);
   }
 
   get width() {

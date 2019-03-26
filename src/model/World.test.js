@@ -30,6 +30,16 @@ describe('World', function () {
       assert.strictEqual(world.height, H);
     });
 
-  })
+  });
+
+  describe('#place', function () {
+
+    it('return placed object', () => {
+      const type = 'thing';
+      const object = world.place(1, 2, type);
+      assert.strictEqual(object.type, type);
+    });
+
+  });
 
 });
