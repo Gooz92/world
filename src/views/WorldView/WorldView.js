@@ -1,12 +1,6 @@
 import Viewport from './Viewport';
 
-import { getObject } from 'utils/fn.utils.js';
-
 export default class WorldView {
-
-  static DEFAULT_OPTIONS = {
-    getCellOptions: getObject
-  };
 
   constructor(world, options = {}) {
     this.world = world;
@@ -17,7 +11,10 @@ export default class WorldView {
     this.world.tick()
       .forEach(event => {
         event.tiles.forEach(([ x, y ]) => {
-          this.viewport.drawTile(x, y);
+          const vx = this.world.getCycleX(x - this.viewport.position[0]);
+          const vy = this.world.getCycleY(y - this.viewport.position[1]);
+
+          this.viewport.drawTile(vx, vy);
         });
       });
   }
@@ -39,7 +36,10 @@ export default class WorldView {
   }
 
   place(x, y, type) {
-    const object = this.world.place(x, y, type);
+    const globalX = this.world.getCycleX(this.viewport.position[0] + x);
+    const globalY = this.world.getCycleY(this.viewport.position[1] + y);
+
+    const object = this.world.place(globalX, globalY, type);
 
     this.viewport.drawTile(x, y);
 
