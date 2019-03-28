@@ -1,10 +1,12 @@
-import Viewport from './Viewport';
+import Viewport from './Viewport.js';
 
 export default class WorldView {
 
-  constructor(world, options = {}) {
+  constructor(world, viewportOptions = {}) {
     this.world = world;
-    this.viewport = new Viewport(world, [ 0, 0 ], [ 128, 96 ], options);
+
+    const viewportSize = viewportOptions.viewportSize;
+    this.viewport = new Viewport(world, viewportSize, viewportOptions);
   }
 
   tick() {

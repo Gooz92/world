@@ -9,6 +9,7 @@ import { createElement } from 'utils/dom.utils.js';
 import { upperFirst } from 'utils/string.utils.js';
 
 import { time } from 'utils/dev.utils.js';
+import { debounce } from 'utils/fn.utils.js';
 
 const TICK_TIME = 120;
 
@@ -19,19 +20,39 @@ const panel = document.getElementById('panel');
 
 const world = createWorld();
 
+function getViewportSize() {
+  const { width, height } = viewport.getBoundingClientRect();
+
+  return {
+    width: Math.ceil(width / wv.viewport.cellSize),
+    height: Math.ceil(height / wv.viewport.cellSize)
+  };
+}
+
 const wv = new WorldView(world, {
+  viewportSize: [ 128, 96 ],
   onTileClick: (x, y) => {
+    debugger;
     const object = wv.place(x, y, objectType);
 
     if (objectType === ObjectType.PERSON) {
       object.setStrategy('cutTrees');
     }
+  },
+  onTileEnter: (x, y) => {
+    const gx = world.getCycleX(wv.viewport.position[0] + x);
+    const gy = world.getCycleY(wv.viewport.position[1] + y);
+    info.innerHTML = gx + ';' + gy;
   }
 });
 
 const info = createElement('span', {
   id: 'info'
 });
+
+window.addEventListener('resize', debounce(event => {
+  console.log(getViewportSize());
+}, 150));
 
 window.addEventListener('keydown', event => {
 
@@ -50,6 +71,8 @@ window.addEventListener('keydown', event => {
     }
   }
 });
+
+window.viewport = wv.viewport;
 
 const canvas = wv.viewport.createCanvas();
 

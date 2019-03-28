@@ -1,29 +1,29 @@
+import {
+  greyRenderer,
+  clearRenderer,
+  treeRenderer,
+  personRenderer } from './renderers.js';
+
 import { createElement } from 'utils/dom.utils.js';
+import { noop } from 'utils/fn.utils.js';
 
 const renderers = [
-  (ctx, x, y, size) => {
-    ctx.clearRect(x, y, size, size);
-  },
-  (ctx, x, y, size) => {
-    ctx.fillStyle = 'grey';
-    ctx.fillRect(x, y, size, size);
-  },
-  (ctx, x, y, size) => {
-    ctx.fillStyle = 'green';
-    ctx.fillRect(x, y, size, size);
-  },
-  (ctx, x, y, size) => {
-    ctx.fillStyle = 'red';
-    ctx.fillRect(x, y, size, size);
-  }
+  noop, // empty space
+  greyRenderer, // obstacle
+  treeRenderer,
+  personRenderer // person
 ];
+
+/**
+ * viewport.size <= world.size
+ */
 
 export default class Viewport {
 
-  static DEFAULT_CELL_SIZE = 8;
+  static DEFAULT_CELL_SIZE = 12;
 
-  constructor(world, position, size, options = {}) {
-    this.position = position;
+  constructor(world, size, options = {}) {
+    this.position = [ 0, 0 ];
     this.size = size;
     this.cellSize = Viewport.DEFAULT_CELL_SIZE;
     this.options = options;
@@ -38,12 +38,12 @@ export default class Viewport {
 
     const canvas = createElement('canvas', {
       width, height,
-      onclick: event => {
-        const tileX = this.getTileCoordinate(event.clientX);
-        const tileY = this.getTileCoordinate(event.clientY);
-
-        this.options.onTileClick(tileX, tileY);
-      }
+      onclick: this.handleMouseEvent((x, y) => {
+        this.options.onTileClick(x, y);
+      }),
+      onmousemove: this.handleMouseEvent((x, y) => {
+        this.options.onTileEnter(x, y);
+      })
     });
 
     this.canvas = canvas;
@@ -52,12 +52,57 @@ export default class Viewport {
     return canvas;
   }
 
+  handleMouseEvent(handler) {
+
+
+    return event => {
+      const { left, top } = event.target.getBoundingClientRect();
+      const tileX = this.getTileCoordinate(event.clientX - left);
+      const tileY = this.getTileCoordinate(event.clientY - top);
+
+      handler(tileX, tileY);
+    };
+  }
+
+  setHeight(height) {
+    const dh = this.height - height;
+
+    this.canvas.height = height * this.cellSize;
+
+    if (height > this.height) {
+      this.draw(0, height - this.height, this.width, dh);
+    }
+
+    this.size[1] = height;
+  }
+
+  setWidth(width) {
+    const dw = this.width - width;
+
+    this.canvas.width = width * this.cellSize;
+
+    if (width > this.width) {
+      this.draw(width - this.width, 0, dw, this.height);
+    }
+
+    this.size[0] = width;
+  }
+
+  clearTile(tileX, tileY) {    
+    const x = tileX * this.cellSize;
+    const y = tileY * this.cellSize;
+
+    clearRenderer(this.context, x, y, this.cellSize);
+  }
+
   drawTile(tileX, tileY) {
 
     const tile = this.world.getTile(tileX + this.position[0], tileY + this.position[1]);
 
     const x = tileX * this.cellSize;
     const y = tileY * this.cellSize;
+
+    clearRenderer(this.context, x, y, this.cellSize);
 
     renderers[tile.object ? (tile.object.type || 0) : 0](
       this.context, x, y, this.cellSize
