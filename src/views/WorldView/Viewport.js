@@ -64,13 +64,22 @@ export default class Viewport {
     };
   }
 
+  getSizeInPX(tiles) {
+    return this.cellSize * tiles;
+  }
+
   setHeight(height) {
     const dh = this.height - height;
 
-    this.canvas.height = height * this.cellSize;
+    const imageData = this.context.getImageData(
+      0, 0, this.canvas.width, dh > 0 ? this.getSizeInPX(height) : this.canvas.height
+    );
+
+    this.canvas.height = this.getSizeInPX(height);
+    this.context.putImageData(imageData, 0, 0);
 
     if (height > this.height) {
-      this.draw(0, height - this.height, this.width, dh);
+      this.draw(0, -dh, this.width, -dh);
     }
 
     this.size[1] = height;
@@ -79,18 +88,23 @@ export default class Viewport {
   setWidth(width) {
     const dw = this.width - width;
 
-    this.canvas.width = width * this.cellSize;
+    const imageData = this.context.getImageData(
+      0, 0, dw > 0 ? this.getSizeInPX(width) : this.canvas.width, this.canvas.height
+    );
+
+    this.canvas.width = this.getSizeInPX(width);
+    this.context.putImageData(imageData, 0, 0);
 
     if (width > this.width) {
-      this.draw(width - this.width, 0, dw, this.height);
+      this.draw(-dw, 0, -dw, this.height);
     }
 
     this.size[0] = width;
   }
 
-  clearTile(tileX, tileY) {    
-    const x = tileX * this.cellSize;
-    const y = tileY * this.cellSize;
+  clearTile(tileX, tileY) {
+    const x = this.getSizeInPX(tileX);
+    const y = this.getSizeInPX(tileY);
 
     clearRenderer(this.context, x, y, this.cellSize);
   }

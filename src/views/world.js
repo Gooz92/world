@@ -1,5 +1,5 @@
-import createWorld from '../model/create-world.js';
 import WorldView from './WorldView';
+import createWorld from '../model/create-world.js';
 import ObjectType from '../model/ObjectType.js';
 import createControls from './create-controls.js';
 import createMenu from './create-menu.js';
@@ -10,8 +10,9 @@ import { upperFirst } from 'utils/string.utils.js';
 
 import { time } from 'utils/dev.utils.js';
 import { debounce } from 'utils/fn.utils.js';
+import Viewport from './WorldView/Viewport';
 
-const TICK_TIME = 120;
+const TICK_TIME = 80;
 
 let controls, objectType;
 
@@ -23,16 +24,17 @@ const world = createWorld();
 function getViewportSize() {
   const { width, height } = viewport.getBoundingClientRect();
 
-  return {
-    width: Math.ceil(width / wv.viewport.cellSize),
-    height: Math.ceil(height / wv.viewport.cellSize)
-  };
+  return [
+    Math.ceil(width / Viewport.DEFAULT_CELL_SIZE),
+    Math.ceil(height / Viewport.DEFAULT_CELL_SIZE)
+  ];
 }
 
+const vs = getViewportSize();
+
 const wv = new WorldView(world, {
-  viewportSize: [ 128, 96 ],
+  viewportSize: vs,
   onTileClick: (x, y) => {
-    debugger;
     const object = wv.place(x, y, objectType);
 
     if (objectType === ObjectType.PERSON) {
@@ -51,7 +53,10 @@ const info = createElement('span', {
 });
 
 window.addEventListener('resize', debounce(event => {
-  console.log(getViewportSize());
+  const [ w, h ] = getViewportSize();
+
+  wv.viewport.setWidth(w);
+  wv.viewport.setHeight(h);
 }, 150));
 
 window.addEventListener('keydown', event => {
@@ -71,8 +76,6 @@ window.addEventListener('keydown', event => {
     }
   }
 });
-
-window.viewport = wv.viewport;
 
 const canvas = wv.viewport.createCanvas();
 

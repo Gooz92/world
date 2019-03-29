@@ -14,7 +14,10 @@ const _2PI = 2 * Math.PI;
 export function personRenderer(ctx, x, y, size) {
   const half = size / 2;
   ctx.fillStyle = 'red';
+  ctx.beginPath();
   ctx.arc(x + half, y + half, half, 0, _2PI);
+  ctx.closePath();
+  ctx.fill();
 }
 
 export function treeRenderer(ctx, x, y, size) {
