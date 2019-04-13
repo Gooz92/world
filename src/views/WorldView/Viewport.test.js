@@ -8,7 +8,7 @@ describe('Viewport', function () {
 
     it('set default cell size', () => {
       const world = {};
-      const viewport = new Viewport(world, [ 0, 0 ], [ 16, 12 ]);
+      const viewport = new Viewport(world, [ 16, 12 ]);
 
       assert.strictEqual(viewport.cellSize, Viewport.DEFAULT_CELL_SIZE);
     });
@@ -19,7 +19,7 @@ describe('Viewport', function () {
 
     it('create canvas', () => {
       const world = {};
-      const viewport = new Viewport(world, [ 0, 0 ], [ 16, 12 ]);
+      const viewport = new Viewport(world, [ 16, 12 ]);
       const canvas = viewport.createCanvas();
 
       assert.strictEqual(canvas.tagName, 'CANVAS');
@@ -31,7 +31,7 @@ describe('Viewport', function () {
 
     it('change viewport width', () => {
       const world = {};
-      const viewport = new Viewport(world, [ 0, 0 ], [ 16, 12 ]);
+      const viewport = new Viewport(world, [ 16, 12 ]);
       viewport.createCanvas();
 
       const width = 10;
@@ -47,7 +47,7 @@ describe('Viewport', function () {
 
     it('change viewport height', () => {
       const world = {};
-      const viewport = new Viewport(world, [ 0, 0 ], [ 16, 12 ]);
+      const viewport = new Viewport(world, [ 16, 12 ]);
       viewport.createCanvas();
 
       const height = 10;

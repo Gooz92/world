@@ -68,19 +68,32 @@ export default class Viewport {
     return this.cellSize * tiles;
   }
 
+  cloneCanvas() {
+    const clonedCanvas = this.canvas.cloneNode();
+    const ctx = clonedCanvas.getContext('2d');
+
+    ctx.drawImage(this.canvas, 0, 0);
+
+    return clonedCanvas;
+  }
+
   setHeight(height) {
+
     const dh = this.height - height;
 
-    const imageData = this.context.getImageData(
-      0, 0, this.canvas.width, dh > 0 ? this.getSizeInPX(height) : this.canvas.height
-    );
+    if (dh === 0) {
+      return;
+    }
+
+    const previousCanvas = this.cloneCanvas();
 
     this.canvas.height = this.getSizeInPX(height);
-    this.context.putImageData(imageData, 0, 0);
 
     if (height > this.height) {
-      this.draw(0, -dh, this.width, -dh);
+      this.draw(0, height + dh, this.width, -dh);
     }
+
+    this.context.drawImage(previousCanvas, 0, 0);
 
     this.size[1] = height;
   }
@@ -88,16 +101,19 @@ export default class Viewport {
   setWidth(width) {
     const dw = this.width - width;
 
-    const imageData = this.context.getImageData(
-      0, 0, dw > 0 ? this.getSizeInPX(width) : this.canvas.width, this.canvas.height
-    );
+    if (dw === 0) {
+      return;
+    }
+
+    const previousCanvas = this.cloneCanvas();
 
     this.canvas.width = this.getSizeInPX(width);
-    this.context.putImageData(imageData, 0, 0);
 
     if (width > this.width) {
-      this.draw(-dw, 0, -dw, this.height);
+      this.draw(width + dw, 0, -dw, this.height);
     }
+
+    this.context.drawImage(previousCanvas, 0, 0);
 
     this.size[0] = width;
   }
