@@ -1,4 +1,4 @@
-import { createElement } from '../utils/dom.utils.js';
+import { createElement } from '../utils/common/dom.utils.js';
 import ObjectType from '../model/ObjectType.js';
 
 export default function createMenu(options) {

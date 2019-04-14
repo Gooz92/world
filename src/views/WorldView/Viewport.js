@@ -4,8 +4,8 @@ import {
   treeRenderer,
   personRenderer } from './renderers.js';
 
-import { createElement } from 'utils/dom.utils.js';
-import { noop } from 'utils/fn.utils.js';
+import { createElement } from 'utils/common/dom.utils.js';
+import { noop } from 'utils/common/fn.utils.js';
 
 const renderers = [
   noop, // empty space

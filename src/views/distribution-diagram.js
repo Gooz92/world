@@ -1,5 +1,5 @@
-import { normalize } from 'utils/math.utils.js';
-import { createElement } from 'utils/dom.utils.js';
+import { normalize } from 'utils/common/math.utils.js';
+import { createElement } from 'utils/common/dom.utils.js';
 
 export default function distributionDiagram (width, height) {
 

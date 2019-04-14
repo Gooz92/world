@@ -1,4 +1,4 @@
-import { createElement } from 'utils/dom.utils.js';
+import { createElement } from 'utils/common/dom.utils.js';
 
 const green = [ 0, 255, 0 ];
 const gray = [ 127, 127, 127 ];

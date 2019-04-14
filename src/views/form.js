@@ -1,5 +1,5 @@
-import { createElement } from 'utils/dom.utils.js';
-import { identity } from 'utils/fn.utils.js';
+import { createElement } from 'utils/common/dom.utils.js';
+import { identity } from 'utils/common/fn.utils.js';
 
 function createFormRow(id, name, value) {
   const row = createElement('div');

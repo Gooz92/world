@@ -1,5 +1,5 @@
-import { generateArray } from 'utils/array.utils.js';
-import { getObject } from 'utils/fn.utils.js';
+import { generateArray } from 'utils/common/array.utils.js';
+import { getObject } from 'utils/common/fn.utils.js';
 
 import World from './World.js';
 

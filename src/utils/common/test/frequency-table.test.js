@@ -1,5 +1,5 @@
 import getFrequencyTable from '../frequency-table.js';
-import { generateArray } from 'utils/array.utils.js';
+import { generateArray } from 'utils/common/array.utils.js';
 import { assert } from 'chai';
 
 describe('getFrequencyTable()', function () {

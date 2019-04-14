@@ -1,4 +1,4 @@
-import { lowerFirst } from '../../utils/string.utils.js';
+import { lowerFirst } from '../../utils/common/string.utils.js';
 
 export default class Action {
 

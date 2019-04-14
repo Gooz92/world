@@ -1,7 +1,7 @@
 import strategies from './strategies';
 import ObjectType from './ObjectType.js';
 import Action from './actions/Action.js';
-import { upperFirst } from '../utils/string.utils.js';
+import { upperFirst } from '../utils/common/string.utils.js';
 
 export default class Person {
 

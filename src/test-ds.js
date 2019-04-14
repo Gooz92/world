@@ -1,8 +1,8 @@
-import { generate, getSide } from 'utils/diamond-square.js';
-import { normalize } from 'utils/math.utils.js';
+import { generate, getSide } from 'utils/common/diamond-square.js';
+import { normalize } from 'utils/common/math.utils.js';
 import createCanvas from './views/canvas.js';
 import createForm from './views/form.js';
-import getFrequencyTable from 'utils/frequency-table.js';
+import getFrequencyTable from 'utils/common/frequency-table.js';
 import distributionDiagram from './views/distribution-diagram.js';
 import range from './views/components/range';
 

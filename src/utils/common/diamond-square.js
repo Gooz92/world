@@ -1,4 +1,4 @@
-import { getCycleCoordinate, sum, normalize } from 'utils/math.utils.js';
+import { getCycleCoordinate, sum, normalize } from 'utils/common/math.utils.js';
 import { generateArray } from './array.utils.js';
 import { getZero } from './fn.utils.js';
 import { randomGenerator } from './random.utils.js';

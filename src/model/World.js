@@ -1,7 +1,7 @@
 import ObjectType from './ObjectType.js';
 import Person from 'model/Person.js';
 
-import { getCycleCoordinate } from 'utils/math.utils.js';
+import { getCycleCoordinate } from 'utils/common/math.utils.js';
 
 export default class World {
 

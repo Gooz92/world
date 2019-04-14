@@ -1,10 +1,10 @@
-import PathFinder from '../../PathFinder.js';
+import PathFinder from 'utils/path-finding/PathFinder.js';
 import MoveAction from '../actions/MoveAction.js';
 import CutTreeAction from '../actions/CutTreeAction.js';
 import ObjectType from '../ObjectType.js';
 import Strategy from './Startegy.js';
 import Action from '../actions/Action.js';
-import { isUndefined } from '../../utils/is.utils.js';
+import { isUndefined } from 'utils/common/is.utils.js';
 
 const trees = {};
 

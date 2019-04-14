@@ -4,12 +4,12 @@ import ObjectType from '../model/ObjectType.js';
 import createControls from './create-controls.js';
 import createMenu from './create-menu.js';
 
-import getArrowKeyCode from 'utils/get-arrow-key-code.js';
-import { createElement } from 'utils/dom.utils.js';
-import { upperFirst } from 'utils/string.utils.js';
+import getArrowKeyCode from 'utils/common/get-arrow-key-code.js';
+import { createElement } from 'utils/common/dom.utils.js';
+import { upperFirst } from 'utils/common/string.utils.js';
 
-import { time } from 'utils/dev.utils.js';
-import { debounce } from 'utils/fn.utils.js';
+import { time } from 'utils/common/dev.utils.js';
+import { debounce } from 'utils/common/fn.utils.js';
 import Viewport from './WorldView/Viewport';
 
 const TICK_TIME = 80;

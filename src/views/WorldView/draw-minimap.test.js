@@ -1,6 +1,6 @@
 import drawMinimap from './draw-minimap.js';
+import { generateArray } from 'utils/common/array.utils.js';
 import { assert } from 'chai';
-import { generateArray } from 'utils/array.utils.js';
 
 describe('drawMinimap', function () {
 
