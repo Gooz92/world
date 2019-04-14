@@ -122,4 +122,15 @@ describe('arrayUtils', function () {
     });
   });
 
+  describe('swap', function () {
+
+    const swap = arrayUtils.swap;
+
+    it('should swap elements with given indexes in array', () => {
+      const array = [ 'a', 'b', 'c', 'd' ];
+      swap(array, 1, 2);
+      assert.deepEqual(array, [ 'a', 'c', 'b', 'd' ]);
+    });
+  });
+
 });
