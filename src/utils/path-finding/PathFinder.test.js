@@ -26,7 +26,7 @@ describe('PathFinder', function () {
         },
         onDiagonalTile: function (tile) {
           return found(tile) ? this.found(tile) : 0;
-        },
+        }
       });
 
       const { path } = finder.find(emptyWorld, startX, startY);

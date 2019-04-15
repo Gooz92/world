@@ -3,23 +3,9 @@ import { noop, getTrue, getFalse } from 'utils/common/fn.utils.js';
 import backtracePath from './backtrace-path.js';
 import { AXIAL_TILE_DISTANCE, DIAGONAL_TILE_DISTANCE } from 'model/consts.js';
 import { getCycleCoordinate } from 'utils/common/math.utils.js';
+import PriorityQueue from 'utils/common/PriorityQueue.js';
 
 const hash = (x, y) => `${x}-${y}`;
-
-function pickMin(array, getValue) {
-  let value = getValue(array[0]);
-  let index = 0;
-
-  for (let i = 0; i < array.length; i++) {
-    const nextValue = getValue(array[i]);
-    if (nextValue < value) {
-      value = nextValue;
-      index = i;
-    }
-  }
-
-  return array.splice(index, 1)[0];
-}
 
 const offsets = Object.keys(direction)
   .reduce((acc, directionName) => [ ...acc, direction[directionName] ], []);
@@ -32,7 +18,8 @@ export default class PathFinder {
       onAxialTile: noop,
       onDiagonalTile: noop,
       isTilePassable: getTrue,
-      isTileFound: getFalse
+      isTileFound: getFalse,
+      createQueue: () => new PriorityQueue((a, b) => a < b)
     }, options);
 
     this.isFound = false;
@@ -73,15 +60,14 @@ export default class PathFinder {
       [`${x}-${y}`]: 0
     };
 
-    const nodes = [{
-      position: [ x, y ],
-      cost: 0
-    }];
+    const queue = this.createQueue();
+
+    queue.enqueue({ position: [ x, y ] }, 0);
 
     do {
-      // TODO: use priority queue
-      const currentNode = pickMin(nodes, node => node.cost);
-      const [ currentX, currentY ] = currentNode.position;
+
+      const currentNode = queue.dequeue();
+      const { position: [ currentX, currentY ] } = currentNode;
       const currentKey = hash(currentX, currentY);
 
       for (const [ dx, dy ] of offsets) {
@@ -114,14 +100,13 @@ export default class PathFinder {
 
         if (!visited[key] || nextCost < visited[key]) {
           visited[key] = nextCost;
-          nodes.push({
+          queue.enqueue({
             position: nextPosition,
-            previous: currentNode,
-            cost: nextCost
-          });
+            previous: currentNode
+          }, nextCost);
         }
       }
-    } while (nodes.length > 0);
+    } while (!queue.isEmpty);
 
     return { path: [] };
   }
