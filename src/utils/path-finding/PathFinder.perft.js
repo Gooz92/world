@@ -65,7 +65,7 @@ const isFound = tile => tile === 'end';
 const pf1 = new PathFinder({
   onAxialTile: function (tile) { return isFound(tile) && this.found(tile); },
   onDiagonalTile: function (tile) { return isFound(tile) && this.found(tile); },
-  createQueue: () => new PriorityQueue((a, b) => a < b)
+  createQueue: () => new SimplePriorityQueue((a, b) => a < b)
 });
 
 const pf2 = new PathFinder({
