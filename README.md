@@ -30,8 +30,7 @@ There are "@"s. They are are cutting down trees.
   * Split utils to common utils and other
   * Add posibility to place object on world (progress ~80%)
   * Scale map viewport (in process of migration to canvas)
-  * Viwport layers
-  * Enum (class) for direction
+  * Viewport layers
   * Collision handling
 
 ## Roadmap

@@ -1,14 +1,10 @@
-import direction from 'model/direction.js';
 import { noop, getTrue, getFalse } from 'utils/common/fn.utils.js';
 import backtracePath from './backtrace-path.js';
-import { AXIAL_TILE_DISTANCE, DIAGONAL_TILE_DISTANCE } from 'model/consts.js';
 import { getCycleCoordinate } from 'utils/common/math.utils.js';
 import PriorityQueue from 'utils/common/PriorityQueue.js';
+import Direction from 'model/Direction.enum.js';
 
 const hash = (x, y) => `${x}-${y}`;
-
-const offsets = Object.keys(direction)
-  .reduce((acc, directionName) => [ ...acc, direction[directionName] ], []);
 
 export default class PathFinder {
 
@@ -70,7 +66,12 @@ export default class PathFinder {
       const { position: [ currentX, currentY ] } = currentNode;
       const currentKey = hash(currentX, currentY);
 
-      for (const [ dx, dy ] of offsets) {
+      for (let i = 0; i < Direction.members.length; i++) {
+
+        const direction = Direction.members[i];
+
+        const { dx, dy } = direction;
+
         const nextPosition = [
           getCycleCoordinate(currentX + dx, tiles[0].length),
           getCycleCoordinate(currentY + dy, tiles.length)
@@ -80,13 +81,9 @@ export default class PathFinder {
 
         const tile = tiles[nextY][nextX];
 
-        const isDiagonal = Math.abs(dx) > 0 && Math.abs(dy) > 0;
+        const nextCost = visited[currentKey] + direction.distance;
 
-        const nextCost = visited[currentKey] + (
-          isDiagonal ? DIAGONAL_TILE_DISTANCE : AXIAL_TILE_DISTANCE
-        );
-
-        this.onTile(tile, nextX, nextY, isDiagonal, nextCost);
+        this.onTile(tile, nextX, nextY, direction.isDiagonal, nextCost);
 
         if (this.isFound) {
           return this.getResult(currentNode);
