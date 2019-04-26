@@ -18,15 +18,8 @@ describe('PathFinder', function () {
       const startY = 2;
       const startX = 1;
 
-      const found = tile => tile === 2;
-
       const finder = new PathFinder({
-        onAxialTile: function (tile) {
-          return found(tile) ? this.found(tile) : 0;
-        },
-        onDiagonalTile: function (tile) {
-          return found(tile) ? this.found(tile) : 0;
-        }
+        isTileFound: tile => tile === 2
       });
 
       const { path } = finder.find(emptyWorld, startX, startY);

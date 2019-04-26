@@ -53,7 +53,7 @@ export default class PathFinder {
 
   find(tiles, x, y) {
     const visited = {
-      [`${x}-${y}`]: 0
+      [hash(x, y)]: 0
     };
 
     const queue = this.createQueue();
@@ -72,12 +72,8 @@ export default class PathFinder {
 
         const { dx, dy } = direction;
 
-        const nextPosition = [
-          getCycleCoordinate(currentX + dx, tiles[0].length),
-          getCycleCoordinate(currentY + dy, tiles.length)
-        ];
-
-        const [ nextX, nextY ] = nextPosition;
+        const nextX = getCycleCoordinate(currentX + dx, tiles[0].length);
+        const nextY = getCycleCoordinate(currentY + dy, tiles.length);
 
         const tile = tiles[nextY][nextX];
 
@@ -98,7 +94,7 @@ export default class PathFinder {
         if (!visited[key] || nextCost < visited[key]) {
           visited[key] = nextCost;
           queue.enqueue({
-            position: nextPosition,
+            position: [ nextX, nextY ],
             previous: currentNode
           }, nextCost);
         }
