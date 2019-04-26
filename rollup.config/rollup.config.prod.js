@@ -7,6 +7,6 @@ module.exports = {
   ...commonConfig,
   plugins: [
     ...commonConfig.plugins,
-    uglify({ keep_fnames: true })
+    uglify()
   ]
 };
