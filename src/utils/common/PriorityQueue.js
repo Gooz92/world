@@ -29,7 +29,7 @@ export default class PriorityQueue {
     let indexOfMax = index;
 
     const leftIndex = index * 2 + 1;
-    const rightIndex = index * 2 + 2;
+    const rightIndex = leftIndex + 1;
 
     if (leftIndex < this.size && this.$compareByIndexes(leftIndex, indexOfMax)) {
       indexOfMax = leftIndex;

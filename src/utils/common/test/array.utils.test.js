@@ -1,6 +1,7 @@
 import * as arrayUtils from '../array.utils.js';
 import { assert } from 'chai';
 import spy from 'test-utils/spy.js';
+import { identity } from '../fn.utils.js';
 
 describe('arrayUtils', function () {
 
@@ -57,10 +58,20 @@ describe('arrayUtils', function () {
     });
 
     it('can create 2-dim array', () => {
-      const arr = generateArray(1, 1);
-      assert.deepEqual(arr, [ [ null ] ]);
+      const arr = generateArray(1, 1, () => 1);
+      assert.deepEqual(arr, [ [ 1 ] ]);
     });
 
+    it('can create n x m array', () => {
+      const arr = generateArray(4, 3, identity);
+
+      assert.deepEqual(arr, [
+        [ 0, 1, 2 ],
+        [ 0, 1, 2 ],
+        [ 0, 1, 2 ],
+        [ 0, 1, 2 ]
+      ]);
+    });
   });
 
   describe('remove', function () {

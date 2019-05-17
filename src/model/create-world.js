@@ -5,7 +5,7 @@ import World from './World.js';
 
 export default function createWorld() {
 
-  const tiles = generateArray(288, () => generateArray(384, getObject));
+  const tiles = generateArray(288, 384, getObject);
 
   return new World(tiles);
 }

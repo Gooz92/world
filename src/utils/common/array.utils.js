@@ -20,7 +20,7 @@ export function generateArray(...args) {
 
   // improve callback arguments
   const $generateItem = dimsCount === 1 ? generateItem : (
-    (i, array) => generateArray(...dims.slice(0, dimsCount - 1), generateItem)
+    (i, array) => generateArray(...dims.slice(1, dimsCount), generateItem)
   );
 
   for (let i = 0; i < args[0]; i++) {

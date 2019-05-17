@@ -54,7 +54,6 @@ export default class Viewport {
 
   handleMouseEvent(handler) {
 
-
     return event => {
       const { left, top } = event.target.getBoundingClientRect();
       const tileX = this.getTileCoordinate(event.clientX - left);
