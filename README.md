@@ -27,6 +27,7 @@ There is a trees (green "o") and some obstacles (grey "#").
 There are "@"s. They are are cutting down trees.
 
 ## TODO
+  * Debug test from IDE
   * Add posibility to place object on world (progress ~80%)
   * Scale map viewport (almost done)
   * Viewport layers

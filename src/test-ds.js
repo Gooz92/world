@@ -6,11 +6,8 @@ import getFrequencyTable from 'utils/common/frequency-table.js';
 import distributionDiagram from './views/distribution-diagram.js';
 import range from './views/components/range';
 
-const size = 8;
 
-const side = getSide(size);
-
-const canvas = createCanvas(side);
+const canvas = createCanvas(576, 512);
 const diagram = distributionDiagram(480, 480);
 
 let seed = 42, roughness = 0.5;
@@ -35,7 +32,7 @@ const form = createForm(
 );
 
 function draw(roughness, seed) {
-  const map = normalize(generate(8, roughness, seed), 255);
+  const map = normalize(generate(8, 7, 64, roughness, seed), 255);
 
   const distribution = getFrequencyTable(map, 255);
   diagram.update(distribution);

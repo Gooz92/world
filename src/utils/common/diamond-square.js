@@ -3,6 +3,18 @@ import { generateArray } from './array.utils.js';
 import { getZero } from './fn.utils.js';
 import { randomGenerator } from './random.utils.js';
 
+
+/**
+ * Input params
+ *
+ *  width in regions
+ *  height in regions
+ *
+ *  region size
+ *
+ * roughness
+ */
+
 function getIndex(x, y, w, h) {
   const x0 = getCycleCoordinate(x, w);
   const y0 = getCycleCoordinate(y, h);
@@ -10,7 +22,7 @@ function getIndex(x, y, w, h) {
   return y0 * w + x0;
 }
 
-export const getSide = n => Math.pow(2, n + 1);
+export const getSide = (regions, regionSize) => regionSize * (regions + 1);
 
 function diamond(arr, width, height, side, next) {
 
@@ -57,7 +69,20 @@ function square(arr, width, height, side, next) {
   }
 }
 
-export function generate(n, roughness, seed = 12) {
+export function generateStartPoints(hr, vr, rs) {
+
+  const points = [];
+
+  for (let i = 0; i < vr; i++) {
+    for (let j = 0; j < hr; j++) {
+      points.push([ j * rs, i * rs ]);
+    }
+  }
+
+  return points;
+}
+
+export function generate(hr, vr, rs, roughness, seed = 12) {
 
   const random = randomGenerator(seed);
 
@@ -66,27 +91,22 @@ export function generate(n, roughness, seed = 12) {
     return sum(neighbors) / 4 + random.nextInt(-bound, bound);
   };
 
-  const side = getSide(n);
-  const length = side * side;
+  const width = getSide(hr, rs);
+  const height = getSide(vr, rs);
 
-  const map = generateArray(length, getZero);
-  const half = side / 2;
+  const map = generateArray(width * height, getZero);
+  const startPoints = generateStartPoints(hr, vr, rs);
 
-  const corners = [
-    [ 0, 0 ], [ half, 0 ],
-    [ 0, half ], [ half, half ]
-  ];
-
-  corners.forEach(([ x, y ]) => {
-    const index = getIndex(x, y, side, side);
-    map[index] = random.nextInt(0, 100); // ?
+  startPoints.forEach(([ x, y ]) => {
+    const index = getIndex(x, y, width, height);
+    map[index] = random.nextInt(0, 300);
   });
 
-  let chunkSize = half;
+  let chunkSize = rs;
 
   while (chunkSize > 1) {
-    diamond(map, side, side, chunkSize, next);
-    square(map, side, side, chunkSize, next);
+    diamond(map, width, height, chunkSize, next);
+    square(map, width, height, chunkSize, next);
     chunkSize = Math.ceil(chunkSize / 2);
   }
 

@@ -1,10 +1,9 @@
 import { createElement } from 'utils/common/dom.utils.js';
 
-export default function createCanvas(side) {
+export default function createCanvas(width, height) {
 
   const canvas = createElement('canvas', {
-    width: side,
-    height: side
+    width, height
   });
 
   const context = canvas.getContext('2d');
