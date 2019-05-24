@@ -6,7 +6,6 @@ import getFrequencyTable from 'utils/common/frequency-table.js';
 import distributionDiagram from './views/distribution-diagram.js';
 import range from './views/components/range';
 
-
 const canvas = createCanvas(576, 512);
 const diagram = distributionDiagram(480, 480);
 
