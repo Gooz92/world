@@ -1,6 +1,6 @@
 import MoveAction from './MoveAction.js';
-import { assert } from 'chai';
 import spy from 'test-utils/spy.js';
+import { equal } from 'utils/common/assertion.js';
 
 describe('MoveAction', function () {
 
@@ -17,7 +17,7 @@ describe('MoveAction', function () {
 
     it('call actor.moveTo(position)', () => {
       move.perform();
-      assert.strictEqual(actor.moveTo.calls[0][0], to);
+      equal(actor.moveTo.calls[0][0], to);
     });
 
   });

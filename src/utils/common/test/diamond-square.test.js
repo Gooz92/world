@@ -1,5 +1,5 @@
 import { generateStartPoints } from '../diamond-square';
-import { assert } from 'chai';
+import { deepEqual } from '../assertion.js';
 
 describe('Diamond Square', function () {
   describe('generateStartPoints()', function () {
@@ -8,7 +8,7 @@ describe('Diamond Square', function () {
 
       const points = generateStartPoints(3, 2, rs);
 
-      assert.deepEqual(points, [
+      deepEqual(points, [
         [ 0, 0 ], [ rs, 0 ], [ rs * 2, 0 ],
         [ 0, rs ], [ rs, rs ], [ rs * 2, rs ]
       ]);

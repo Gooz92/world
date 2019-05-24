@@ -1,5 +1,5 @@
 import * as domUtils from '../dom.utils.js';
-import { assert } from 'chai';
+import { equal } from '../assertion.js';
 
 describe('domUtils', function () {
 
@@ -9,14 +9,14 @@ describe('domUtils', function () {
     it('create html element with given tag name', () => {
       const tagName = 'div';
       const element = createElement(tagName);
-      assert.strictEqual(element.tagName.toLowerCase(), tagName);
+      equal(element.tagName.toLowerCase(), tagName);
     });
 
     it('create html element with given className', () => {
       const className = 'title';
       const caption = createElement('h1', { className });
 
-      assert.strictEqual(caption.className, className);
+      equal(caption.className, className);
     });
 
     it('create element with given styles', () => {
@@ -28,7 +28,9 @@ describe('domUtils', function () {
 
       const redRectangle = createElement('div', { style });
 
-      assert.include(redRectangle.style, style);
+      Object.keys(style)
+        .forEach(key => equal(redRectangle.style[key], style[key]));
+
     });
 
     it('auto-detect attributes', () => {
@@ -36,7 +38,7 @@ describe('domUtils', function () {
       const id = 'name';
       const label = createElement('label', { for: id });
 
-      assert.strictEqual(label.htmlFor, id);
+      equal(label.htmlFor, id);
     });
 
     it('should assign data attributes', () => {
@@ -49,15 +51,15 @@ describe('domUtils', function () {
       const xAttr = cell.getAttribute('data-x');
       const yAttr = cell.getAttribute('data-y');
 
-      assert.strictEqual(xAttr, x.toString());
-      assert.strictEqual(yAttr, y.toString());
+      equal(xAttr, x.toString());
+      equal(yAttr, y.toString());
     });
 
     it('can create elements with children', () => {
       const child = createElement('div');
       const parent = createElement('div', [ child ]);
 
-      assert.strictEqual(parent.firstChild, child);
+      equal(parent.firstChild, child);
     });
 
   });

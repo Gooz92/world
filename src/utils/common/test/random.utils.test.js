@@ -1,5 +1,5 @@
 import * as randomUtils from '../random.utils.js';
-import { assert } from 'chai';
+import { equal } from '../assertion.js';
 
 describe('randomUtils', function () {
 
@@ -8,7 +8,7 @@ describe('randomUtils', function () {
 
     it('return min (max) if min === max', () => {
       const bound = 42;
-      assert.strictEqual(randomInt(bound, bound), bound);
+      equal(randomInt(bound, bound), bound);
     });
   });
 
@@ -23,7 +23,7 @@ describe('randomUtils', function () {
     describe('.next()', function () {
 
       it('return number', () => {
-        assert.isNumber(random.next());
+        equal(typeof random.next(), 'number');
       });
 
     });
@@ -32,7 +32,7 @@ describe('randomUtils', function () {
 
       it('return min (max) if min === max', () => {
         const bound = 42;
-        assert.strictEqual(random.nextInt(bound, bound), bound);
+        equal(random.nextInt(bound, bound), bound);
       });
 
     });
@@ -40,7 +40,7 @@ describe('randomUtils', function () {
     describe('.nextBoolean()', function () {
 
       it('return boolean', () => {
-        assert.isBoolean(random.nextBoolean());
+        equal(typeof random.nextBoolean(), 'boolean');
       });
 
     });

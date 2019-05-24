@@ -1,6 +1,13 @@
 import * as fnUtils from '../fn.utils.js';
-import { assert } from 'chai';
 import spy from 'test-utils/spy.js';
+import {
+  equal,
+  notEqual,
+  isTrue,
+  isFalse,
+  isNull,
+  deepEqual
+} from '../assertion.js';
 
 describe('fnUtils', function () {
 
@@ -18,12 +25,12 @@ describe('fnUtils', function () {
 
     it('return given argument', () => {
       const variable = 'value';
-      assert.strictEqual(identity(variable), variable);
+      equal(identity(variable), variable);
     });
 
     it('not copy given argument', () => {
       const box = {};
-      assert.notEqual(identity(box), {});
+      notEqual(identity(box), {});
     });
 
   });
@@ -34,13 +41,13 @@ describe('fnUtils', function () {
 
     it('return function which return given argument', () => {
       const one = constant(1);
-      assert.strictEqual(one(), 1);
+      equal(one(), 1);
     });
 
     it('returned function not copy given argument', () => {
       const box = {};
       const getBox = constant(box);
-      assert.notEqual(getBox(), {});
+      notEqual(getBox(), {});
     });
 
   });
@@ -50,7 +57,7 @@ describe('fnUtils', function () {
     const getNull = fnUtils.getNull;
 
     it('return null', () => {
-      assert.isNull(getNull());
+      isNull(getNull());
     });
 
   });
@@ -60,7 +67,7 @@ describe('fnUtils', function () {
     const getZero = fnUtils.getZero;
 
     it('return zero', () => {
-      assert.strictEqual(getZero(), 0);
+      equal(getZero(), 0);
     });
 
   });
@@ -70,7 +77,7 @@ describe('fnUtils', function () {
     const getTrue = fnUtils.getTrue;
 
     it('return true', () => {
-      assert.isTrue(getTrue());
+      isTrue(getTrue());
     });
 
   });
@@ -80,7 +87,7 @@ describe('fnUtils', function () {
     const getFalse = fnUtils.getFalse;
 
     it('return false', () => {
-      assert.isFalse(getFalse());
+      isFalse(getFalse());
     });
 
   });
@@ -90,8 +97,8 @@ describe('fnUtils', function () {
     const getObject = fnUtils.getObject;
 
     it('create object', () => {
-      assert.deepEqual(getObject(), {});
-      assert.notStrictEqual(getObject(), getObject());
+      deepEqual(getObject(), {});
+      notEqual(getObject(), getObject());
     });
 
   });
@@ -107,10 +114,10 @@ describe('fnUtils', function () {
       const fn = debounce(original, wait);
 
       fn();
-      assert.strictEqual(original.calls.length, 0);
+      equal(original.calls.length, 0);
 
       setTimeout(() => {
-        assert.strictEqual(original.calls.length, 1);
+        equal(original.calls.length, 1);
       }, wait);
     });
   });

@@ -1,5 +1,5 @@
 import getArrowKeyCode from '../get-arrow-key-code.js';
-import { assert } from 'chai';
+import { equal } from '../assertion.js';
 
 const cases = {
   ArrowUp: 'up',
@@ -29,7 +29,7 @@ describe('getArrowKeyCode', function () {
     .forEach(input => {
       const output = cases[input];
       it(`${input} => ${output}`, () => {
-        assert.strictEqual(getArrowKeyCode(input), output);
+        equal(getArrowKeyCode(input), output);
       });
     });
 });

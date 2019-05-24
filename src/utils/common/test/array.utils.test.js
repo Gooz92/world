@@ -1,7 +1,7 @@
 import * as arrayUtils from '../array.utils.js';
-import { assert } from 'chai';
 import spy from 'test-utils/spy.js';
 import { identity } from '../fn.utils.js';
+import { deepEqual, equal, isTrue } from '../assertion.js';
 
 describe('arrayUtils', function () {
 
@@ -11,61 +11,61 @@ describe('arrayUtils', function () {
 
     it('return empty array by default', () => {
       const empty = generateArray();
-      assert.lengthOf(empty, 0);
-      assert.isArray(empty);
+      equal(empty.length, 0);
+      isTrue(Array.isArray(empty));
     });
 
     it('return array with given length', () => {
       const length = 7;
       const array = generateArray(length);
-      assert.lengthOf(array, length);
+      equal(array.length, length);
     });
 
     it('return array of nulls if generateItem function is ommit', () => {
       const length = 4;
       const array = generateArray(length);
-      assert.deepEqual(array, [ null, null, null, null ]);
+      deepEqual(array, [ null, null, null, null ]);
     });
 
     it('use itemGenerator for array filling', () => {
       const x2 = index => index * 2;
       const length = 3;
       const array = generateArray(length, x2);
-      assert.deepEqual(array, [ 0, 2, 4 ]);
+      deepEqual(array, [ 0, 2, 4 ]);
     });
 
     it('call itemGenerator for each array index', () => {
       const itemGenerator = spy();
       const length = 4;
       generateArray(length, itemGenerator);
-      assert.strictEqual(itemGenerator.calls.length, length);
+      equal(itemGenerator.calls.length, length);
     });
 
     it('call itemGenerator with index as first argument', () => {
       const itemGenerator = spy();
       generateArray(3, itemGenerator);
 
-      assert.strictEqual(itemGenerator.calls[0][0], 0);
-      assert.strictEqual(itemGenerator.calls[1][0], 1);
-      assert.strictEqual(itemGenerator.calls[2][0], 2);
+      equal(itemGenerator.calls[0][0], 0);
+      equal(itemGenerator.calls[1][0], 1);
+      equal(itemGenerator.calls[2][0], 2);
     });
 
     it('call itemGenerator with generated array as second argument', () => {
       const itemGenerator = spy(index => index);
       const array = generateArray(1, itemGenerator);
 
-      assert.strictEqual(itemGenerator.calls[0][1], array);
+      equal(itemGenerator.calls[0][1], array);
     });
 
     it('can create 2-dim array', () => {
       const arr = generateArray(1, 1, () => 1);
-      assert.deepEqual(arr, [ [ 1 ] ]);
+      deepEqual(arr, [ [ 1 ] ]);
     });
 
     it('can create n x m array', () => {
       const arr = generateArray(4, 3, identity);
 
-      assert.deepEqual(arr, [
+      deepEqual(arr, [
         [ 0, 1, 2 ],
         [ 0, 1, 2 ],
         [ 0, 1, 2 ],
@@ -81,13 +81,13 @@ describe('arrayUtils', function () {
     it('remove element with given index from array', () => {
       const colors = [ 'red', 'green', 'blue', 'black', 'white' ];
       remove(colors, 3);
-      assert.deepStrictEqual(colors, [ 'red', 'green', 'blue', 'white' ]);
+      deepEqual(colors, [ 'red', 'green', 'blue', 'white' ]);
     });
 
     it('return removed item', () => {
       const removed = 'a';
       const array = [ 1, 2, 'a', 3 ];
-      assert.strictEqual(remove(array, 2), removed);
+      equal(remove(array, 2), removed);
     });
 
   });
@@ -99,7 +99,7 @@ describe('arrayUtils', function () {
     it('insert element in given position', () => {
       const numbers = [ 1, 2, 3 ];
       insert(numbers, 'second', 1);
-      assert.deepStrictEqual(numbers, [ 1, 'second', 2, 3 ]);
+      deepEqual(numbers, [ 1, 'second', 2, 3 ]);
     });
 
   });
@@ -111,7 +111,7 @@ describe('arrayUtils', function () {
     it('get last element of array', () => {
       const tail = 'tail';
       const array = [ 'head', 'body', tail ];
-      assert.strictEqual(last(array), tail);
+      equal(last(array), tail);
     });
 
   });
@@ -129,7 +129,7 @@ describe('arrayUtils', function () {
         [ 7 ]
       ];
 
-      assert.deepEqual(chunk(array, 3), rolledUp);
+      deepEqual(chunk(array, 3), rolledUp);
     });
   });
 
@@ -140,7 +140,7 @@ describe('arrayUtils', function () {
     it('should swap elements with given indexes in array', () => {
       const array = [ 'a', 'b', 'c', 'd' ];
       swap(array, 1, 2);
-      assert.deepEqual(array, [ 'a', 'c', 'b', 'd' ]);
+      deepEqual(array, [ 'a', 'c', 'b', 'd' ]);
     });
   });
 

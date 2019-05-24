@@ -1,5 +1,5 @@
 import PriorityQueue from '../PriorityQueue.js';
-import { assert } from 'chai';
+import { equal, deepEqual } from '../assertion.js';
 
 describe('PriorityQueue', function () {
 
@@ -9,7 +9,7 @@ describe('PriorityQueue', function () {
 
       const q = new PriorityQueue();
       q.enqueue(1);
-      assert.strictEqual(q.size, 1);
+      equal(q.size, 1);
     });
   });
 
@@ -23,7 +23,7 @@ describe('PriorityQueue', function () {
       q.enqueue('five', 5);
       q.enqueue('three', 3);
 
-      assert.strictEqual(q.dequeue(), 'five');
+      equal(q.dequeue(), 'five');
     });
   });
 
@@ -41,7 +41,7 @@ describe('PriorityQueue', function () {
       sorted.push(q.dequeue());
     }
 
-    assert.deepEqual(sorted, [ 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 ]);
+    deepEqual(sorted, [ 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 ]);
   });
 
 });

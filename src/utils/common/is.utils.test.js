@@ -1,11 +1,13 @@
 import * as isUtils from './is.utils.js';
 import { omit } from './object.utils.js';
 import { upperFirst } from './string.utils.js';
-import { assert } from 'chai';
+import { isTrue, isFalse } from './assertion.js';
 
 const types = {
   'undefined': void 0,
-  'function': () => 0
+  'function': () => 0,
+  'array': [],
+  'object': {}
 };
 
 describe('isUtils', function () {
@@ -21,14 +23,14 @@ describe('isUtils', function () {
       describe(methodName, () => {
 
         it(`should return true for ${typeName}`, () => {
-          assert.isTrue(method(value));
+          isTrue(method(value));
         });
 
         Object.keys(otherTypes)
           .forEach(otherTypeName => (
             it(`should return false for ${otherTypeName}`, () => {
               const value = otherTypes[otherTypeName];
-              assert.isFalse(method(value));
+              isFalse(method(value));
             })
           ));
 

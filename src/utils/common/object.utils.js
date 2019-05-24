@@ -1,4 +1,4 @@
-import { identity } from './fn.utils';
+import { identity } from './fn.utils.js';
 
 export const omit = (obj, keys) => (
   Object.keys(obj)

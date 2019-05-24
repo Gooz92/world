@@ -1,15 +1,13 @@
 import range from './Range.js';
-import { assert } from 'chai';
+import { equal } from 'utils/common/assertion.js';
 
 describe('range', function () {
 
   it('create input element with type="range"', () => {
     const component = range();
 
-    assert.include(component.input, {
-      type: 'range',
-      tagName: 'INPUT'
-    });
+    equal(component.input.type, 'range');
+    equal(component.input.tagName, 'INPUT');
   });
 
 });

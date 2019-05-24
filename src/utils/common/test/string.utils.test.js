@@ -1,5 +1,5 @@
 import * as stringUtils from '../string.utils.js';
-import { assert } from 'chai';
+import { equal } from '../assertion.js';
 
 describe('stringUtils', function () {
 
@@ -8,7 +8,7 @@ describe('stringUtils', function () {
     const lowerFirst = stringUtils.lowerFirst;
 
     it('converts the first character of string to lower case', () => {
-      assert.strictEqual(lowerFirst('Name'), 'name');
+      equal(lowerFirst('Name'), 'name');
     });
 
   });
@@ -18,7 +18,7 @@ describe('stringUtils', function () {
     const upperFirst = stringUtils.upperFirst;
 
     it('converts the first character of string to lower case', () => {
-      assert.strictEqual(upperFirst('name'), 'Name');
+      equal(upperFirst('name'), 'Name');
     });
   });
 

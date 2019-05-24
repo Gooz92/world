@@ -1,5 +1,5 @@
 import PathFinder from './PathFinder';
-import { assert } from 'chai';
+import { deepEqual } from 'utils/common/assertion.js';
 
 const emptyWorld = [
   [ 0, 0, 0, 0, 0 ],
@@ -23,8 +23,7 @@ describe('PathFinder', function () {
       });
 
       const { path } = finder.find(emptyWorld, startX, startY);
-
-      assert.deepStrictEqual(path, [ [ 2, 2 ] ]);
+      deepEqual(path, [ [ 2, 2 ] ]);
     });
 
   });

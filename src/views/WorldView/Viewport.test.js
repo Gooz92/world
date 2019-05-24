@@ -1,6 +1,5 @@
 import Viewport from './Viewport.js';
-
-import { assert } from 'chai';
+import { equal } from 'utils/common/assertion.js';
 
 describe('Viewport', function () {
 
@@ -10,7 +9,7 @@ describe('Viewport', function () {
       const world = {};
       const viewport = new Viewport(world, [ 16, 12 ]);
 
-      assert.strictEqual(viewport.cellSize, Viewport.DEFAULT_CELL_SIZE);
+      equal(viewport.cellSize, Viewport.DEFAULT_CELL_SIZE);
     });
 
   });
@@ -22,7 +21,7 @@ describe('Viewport', function () {
       const viewport = new Viewport(world, [ 16, 12 ]);
       const canvas = viewport.createCanvas();
 
-      assert.strictEqual(canvas.tagName, 'CANVAS');
+      equal(canvas.tagName, 'CANVAS');
     });
 
   });
@@ -38,7 +37,7 @@ describe('Viewport', function () {
 
       viewport.setWidth(width);
 
-      assert.strictEqual(viewport.width, width);
+      equal(viewport.width, width);
     });
 
   });
@@ -54,7 +53,7 @@ describe('Viewport', function () {
 
       viewport.setHeight(height);
 
-      assert.strictEqual(viewport.height, height);
+      equal(viewport.height, height);
     });
 
   });

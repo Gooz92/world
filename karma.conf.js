@@ -38,11 +38,7 @@ module.exports = function (config) {
           modules: 'src/modules',
           'test-utils': 'src/test-utils'
         }),
-        commonjs({
-          namedExports: {
-            'chai': [ 'assert' ]
-          }
-        }),
+        commonjs(),
         nodeResolve()
       ],
       output: {

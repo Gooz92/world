@@ -3,7 +3,7 @@ import World from './World.js';
 import { generateArray } from 'utils/common/array.utils.js';
 import { getObject } from 'utils/common/fn.utils.js';
 
-import { assert } from 'chai';
+import { equal } from 'utils/common/assertion.js';
 
 describe('World', function () {
 
@@ -19,7 +19,7 @@ describe('World', function () {
   describe('#width', function () {
 
     it('return width of world', () => {
-      assert.strictEqual(world.width, W);
+      equal(world.width, W);
     });
 
   });
@@ -27,7 +27,7 @@ describe('World', function () {
   describe('#height', function () {
 
     it('return height of world', () => {
-      assert.strictEqual(world.height, H);
+      equal(world.height, H);
     });
 
   });
@@ -37,7 +37,7 @@ describe('World', function () {
     it('return placed object', () => {
       const type = 'thing';
       const object = world.place(1, 2, type);
-      assert.strictEqual(object.type, type);
+      equal(object.type, type);
     });
 
   });
