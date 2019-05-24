@@ -55,4 +55,56 @@ describe('deepEqual', function () {
     isTrue(deepEqual(a, b));
   });
 
+  it('empty objects are equals', () => {
+    isTrue(deepEqual({}, {}));
+  });
+
+  it('objects with different keys are not equal', () => {
+    const box = { content: 'lamb' };
+    const cup = { liquid: 'tea' };
+    isFalse(deepEqual(box, cup));
+  });
+
+  it('object with same keys but different values are not equal', () => {
+    isFalse(deepEqual({ liquid: 'beer' }, { liquid: 'coffee' }));
+  });
+
+  it('nested objects can be equal', () => {
+    isTrue(deepEqual(
+      { so: { deep: { deeper: { nesting: {} } } } },
+      { so: { deep: { deeper: { nesting: {} } } } }
+    ));
+  });
+
+  it('mixed object-array structure can be equal', () => {
+    isTrue(deepEqual(
+      { list: [{ id: 1 }, { id: 2 }] },
+      { list: [{ id: 1 }, { id: 2 }] }
+    ));
+  });
+
+  it('mixed object-array structure might not be equal', () => {
+    isFalse(deepEqual(
+      { list: [{ id: 1 }, { id: 3 }] },
+      { list: [{ id: 1 }, { id: 2 }] }
+    ));
+
+    isFalse(deepEqual(
+      { list: [{ id: 1 } ] },
+      { list: [{ id: 1 }, { id: 2 }] }
+    ));
+  });
+
+  it.skip('circle references', () => {
+
+    const getLoop = () => {
+      const a = {};
+      const b = { a };
+      a.b = b;
+      return a;
+    };
+
+    isTrue(deepEqual(getLoop(), getLoop()));
+  });
+
 });
