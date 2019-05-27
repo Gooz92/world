@@ -22,8 +22,6 @@ function getIndex(x, y, w, h) {
   return y0 * w + x0;
 }
 
-export const getSide = (regions, regionSize) => regionSize * (regions + 1);
-
 function diamond(arr, width, height, side, next) {
 
   const half = Math.floor(side / 2);
@@ -82,6 +80,13 @@ export function generateStartPoints(hr, vr, rs) {
   return points;
 }
 
+export const getSide = (regions, regionSize) => regionSize * (regions + 1);
+
+const calculateSize = (hr, vr, rs) => ({
+  width: getSide(hr, rs),
+  height: getSide(vr, rs)
+});
+
 export function generate(hr, vr, rs, roughness, seed = 12) {
 
   const random = randomGenerator(seed);
@@ -91,8 +96,7 @@ export function generate(hr, vr, rs, roughness, seed = 12) {
     return sum(neighbors) / 4 + random.nextInt(-bound, bound);
   };
 
-  const width = getSide(hr, rs);
-  const height = getSide(vr, rs);
+  const { width, height } = calculateSize(hr, vr, rs);
 
   const map = generateArray(width * height, getZero);
   const startPoints = generateStartPoints(hr, vr, rs);

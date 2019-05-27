@@ -90,7 +90,7 @@ describe('deepEqual', function () {
     ));
 
     isFalse(deepEqual(
-      { list: [{ id: 1 } ] },
+      { list: [{ id: 1 }] },
       { list: [{ id: 1 }, { id: 2 }] }
     ));
   });
