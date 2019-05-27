@@ -3,7 +3,6 @@ const
   commonRollupConfig = require('./rollup.config/rollup.config.common.js'),
 
   commonjs = require('rollup-plugin-commonjs'),
-  nodeResolve = require('rollup-plugin-node-resolve'),
   babel = require('rollup-plugin-babel'),
   alias = require('rollup-plugin-alias');
 
@@ -38,8 +37,7 @@ module.exports = function (config) {
           modules: 'src/modules',
           'test-utils': 'src/test-utils'
         }),
-        commonjs(),
-        nodeResolve()
+        commonjs()
       ],
       output: {
         format: commonRollupConfig.output.format

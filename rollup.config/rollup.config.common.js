@@ -1,8 +1,7 @@
 const
   babel = require('rollup-plugin-babel'),
   commonjs = require('rollup-plugin-commonjs'),
-  alias = require('rollup-plugin-alias'),
-  nodeResolve = require('rollup-plugin-node-resolve');
+  alias = require('rollup-plugin-alias');
 
 module.exports = {
   input: 'src/app.js',
@@ -15,7 +14,6 @@ module.exports = {
       exclude: 'node_modules/**'
     }),
     commonjs(),
-    nodeResolve(),
     alias({
       utils: 'src/utils',
       model: 'src/model'

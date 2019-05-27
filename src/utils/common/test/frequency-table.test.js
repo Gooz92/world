@@ -11,4 +11,14 @@ describe('getFrequencyTable()', function () {
     equal(frequencies.length, length);
   });
 
+  it('can return normal distribution (every col == CONST)', () => {
+    const n = 42;
+    const m = 7;
+
+    const data = generateArray(n * m, index => index % m);
+    const frequencies = getFrequencyTable(data, m);
+
+    frequencies.every(f => equal(f, n));
+  });
+
 });
