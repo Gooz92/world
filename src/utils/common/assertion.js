@@ -1,23 +1,31 @@
 import isDeepEqual from './deep-equal.js';
 
-export function isTrue(condition) {
-  if (condition !== true) {
-    throw 'Assertion error';
+const ERROR_MESSAGE = 'Assertion error';
+
+function throwAssertionError(message) {
+  throw message ? `${ERROR_MESSAGE}: ${message}`: ERROR_MESSAGE;
+}
+
+function assert(expression, message) {
+  if (!expression) {
+    throwAssertionError(message);
   }
 }
 
-export function isFalse(condition) {
-  if (condition !== false) {
-    throw 'Assertion error';
-  }
+export function isTrue(condition, message) {
+  assert(condition === true, message);
+}
+
+export function isFalse(condition, message) {
+  assert(condition === false, message);
 }
 
 export function equal(a, b) {
-  isTrue(a === b);
+  assert(a === b, `${a} === ${b}`);
 }
 
 export function notEqual(a, b) {
-  isTrue(a !== b);
+  assert(a !== b, `${a} !== ${b}`);
 }
 
 export function isNull(arg) {

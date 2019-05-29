@@ -8,10 +8,12 @@
 
   "env": {
     "browser": true,
-    "es6": true
+    "es6": true,
+    "commonjs": true
   },
 
   "rules": {
+    "no-undef": 2,
     "for-direction": 2,
     "getter-return": 2,
     "no-trailing-spaces": 2,
@@ -33,5 +35,14 @@
     "array-bracket-spacing": [ 2, "always", {
       "objectsInArrays": false
     }]
-  }  
+  },
+
+  "overrides": [
+    {
+      "files": [ "*.test.js" ],
+      "env": {
+        "mocha": true
+      }
+    }
+  ]
 }
