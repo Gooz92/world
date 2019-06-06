@@ -92,6 +92,22 @@ describe('arrayUtils', function () {
 
   });
 
+  describe('take', function () {
+
+    const take = arrayUtils.take;
+
+    it('return first n elements of given array', () => {
+      const fruits = [ 'banana', 'orange', 'apple' ];
+      deepEqual(take(fruits, 2), [ 'banana', 'orange' ]);
+    });
+
+    it('not mutate array', () => {
+      const numbers = [ 1, 2, 3, 4 ];
+      take(numbers, 3);
+      deepEqual(numbers, [ 1, 2, 3, 4 ]);
+    });
+  });
+
   describe('insert', function () {
 
     const insert = arrayUtils.insert;

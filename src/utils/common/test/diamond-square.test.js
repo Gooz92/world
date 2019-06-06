@@ -1,7 +1,83 @@
-import { generateStartPoints } from '../diamond-square';
-import { equal } from '../assertion.js';
+import { diamond, square, generateStartPoints } from '../diamond-square.js';
+import { equal, deepEqual } from '../assertion.js';
+import spy from 'test-utils/spy.js';
 
 describe('Diamond Square', function () {
+
+  describe('diamond()', function () {
+
+    it('#1', () => {
+      const width = 4, height = 4, side = 2;
+      const next = spy();
+      const map = [
+        1, 0, 2, 0,
+        0, 0, 0, 0,
+        3, 0, 4, 0,
+        0, 0, 0, 0
+      ];
+
+      diamond(map, width, height, side, next);
+
+      const neighbors = next.calls.map(args => args[0]);
+
+      deepEqual(neighbors, [
+        [ 1, 2, 3, 4 ],
+        [ 2, 1, 4, 3 ],
+        [ 3, 4, 1, 2 ],
+        [ 4, 3, 2, 1 ]
+      ]);
+    });
+
+    it('#2', () => {
+
+      const width = 8, height = 8, side = 4;
+      const next = spy();
+      const _ = 0;
+      const x = 42;
+      const map = [
+        _, _, _, _, _, _, _, _,
+        _, 1, _, _, _, 2, _, _,
+        _, _, _, _, _, _, _, _,
+        _, _, _, x, _, _, _, x,
+        _, _, _, _, _, _, _, _,
+        _, 3, _, _, _, 4, _, _,
+        _, _, _, _, _, _, _, _,
+        _, _, _, x, _, _, _, x
+      ];
+
+      diamond(map, width, height, side, next);
+
+      const neighbors = next.calls.map(args => args[0]);
+
+      deepEqual(neighbors, [
+        [ 1, 2, 3, 4 ],
+        [ 2, 1, 4, 3 ],
+        [ 3, 4, 1, 2 ],
+        [ 4, 3, 2, 1 ]
+      ]);
+
+    });
+
+  });
+
+  describe('square()', function () {
+
+    it('#1', () => {
+      const _ = 0;
+      const o = 2;
+
+      const map = [
+        o, _, o, _,
+        _, 1, _, 2,
+        o, _, o, _,
+        _, 3, _, 4
+      ];
+
+      square(map, )
+    });
+
+  });
+
   describe('generateStartPoints()', function () {
 
     it('distance between neighbors points should be equal to region size', () => {
@@ -33,4 +109,5 @@ describe('Diamond Square', function () {
 
     });
   });
+
 });

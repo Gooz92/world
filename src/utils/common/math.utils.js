@@ -40,6 +40,14 @@ export function getCycleCoordinate(actualCoordinate, bound) {
   return coordinate;
 }
 
+// get index by 2d-coordinates
+export function getIndex(x, y, width, height) {
+  const x0 = getCycleCoordinate(x, width);
+  const y0 = getCycleCoordinate(y, height);
+
+  return y0 * width + x0;
+}
+
 export function inCycleRange(value, left, right, maxBound = right) {
   if (value < 0 || value >= maxBound) {
     return false;

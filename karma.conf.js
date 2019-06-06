@@ -16,7 +16,7 @@ module.exports = function (config) {
       'karma-rollup-preprocessor',
       'karma-chrome-launcher'
     ],
-    browsers: [ 'Chrome' ],
+    browsers: [ 'ChromeHeadless' ],
     preprocessors: {
       '**/*.js': [ 'rollup' ]
     },

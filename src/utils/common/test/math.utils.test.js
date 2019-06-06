@@ -65,4 +65,70 @@ describe('mathUtils', function () {
     });
   });
 
+  describe('getIndex', function () {
+
+    const getIndex = mathUtils.getIndex;
+
+    function test(x, y, width, height, index) {
+      equal(getIndex(x, y, width, height), index);
+    }
+
+
+    it('return index by coordinates in bounds', () => {
+
+      /*
+       *     2
+       * 0 1 2 3
+       * 4 5 6 7 1
+       * 8 9 a b
+       */
+
+      test(2, 1, 4, 3, 6);
+
+      /*
+       *   1
+       * 0 1 2
+       * 3 4 5
+       * 6 7 8 2
+       * 9 a b
+       */
+
+      test(1, 2, 3, 4, 7);
+    });
+
+    it('return index by coordinates out of bounds', () => {
+
+      /*
+       *   1     4 5
+       * 0 1 2 3 0
+       * 4 5 6 7 1
+       * 8 9 a b
+       *         3
+       *         4
+       */
+
+      test(5, 4, 4, 3, 5);
+
+      /*
+       * 6
+       * 4 5
+       *     2 3
+       * 0 1
+       */
+
+      test(6, 0, 2, 1, 0);
+    });
+
+    it('return index by negative coordinates', () => {
+
+      /*     2 (-1)
+       * 0 1 2 0 (-2)
+       * 3 4 5
+       */
+
+      test(-1, -2, 3, 2, 2);
+    });
+
+  });
+
 });

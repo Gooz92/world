@@ -1,13 +1,13 @@
-const noop = () => {};
+import { noop } from 'utils/common/fn.utils.js';
 
 export default function spy(fn = noop) {
 
-  const s = function (...args) {
-    s.calls.push(args);
+  const $spy = function (...args) {
+    $spy.calls.push(args);
     return fn(...args);
   };
 
-  s.calls = [];
+  $spy.calls = [];
 
-  return s;
+  return $spy;
 }

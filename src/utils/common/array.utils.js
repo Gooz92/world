@@ -39,6 +39,8 @@ export function insert(array, item, index) {
   array.splice(index, 0, item);
 }
 
+export const take = (array, n) => array.slice(0, n);
+
 export function chunk(array, rowLength) {
   const result = [];
 

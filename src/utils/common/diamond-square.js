@@ -1,4 +1,4 @@
-import { getCycleCoordinate, sum, normalize } from 'utils/common/math.utils.js';
+import { sum, getIndex } from 'utils/common/math.utils.js';
 import { generateArray } from './array.utils.js';
 import { getZero } from './fn.utils.js';
 import { randomGenerator } from './random.utils.js';
@@ -15,19 +15,24 @@ import { randomGenerator } from './random.utils.js';
  * roughness
  */
 
-function getIndex(x, y, w, h) {
-  const x0 = getCycleCoordinate(x, w);
-  const y0 = getCycleCoordinate(y, h);
 
-  return y0 * w + x0;
-}
+/**
+ * .     .
+ *  \   /
+ *    x
+ *  /   \
+ * .     .
+ *
+ * side = pow(2, n)
+ */
 
-function diamond(arr, width, height, side, next) {
+export function diamond(arr, width, height, side, next) {
 
-  const half = Math.floor(side / 2);
+  const half = side / 2;
+  const margin = half - 1;
 
-  for (let y0 = half; y0 < height; y0 += side) {
-    for (let x0 = half; x0 < width; x0 += side) {
+  for (let y0 = half + margin; y0 < height; y0 += side) {
+    for (let x0 = half + margin; x0 < width; x0 += side) {
       const index = getIndex(x0, y0, width, height);
 
       const neighbors = [
@@ -40,12 +45,21 @@ function diamond(arr, width, height, side, next) {
         return arr[i];
       });
 
-      arr[index] = next(neighbors, side * 1.5);
+      arr[index] = next(neighbors, side * Math.SQRT2);
     }
   }
 }
 
-function square(arr, width, height, side, next) {
+/**
+ * 
+ *     .
+ *     |
+ * . - + - .
+ *     |
+ *     .
+ */
+
+export function square(arr, width, height, side, next) {
   const step = side / 2;
 
   for (let y0 = 0; y0 < height; y0 += step) {
@@ -70,10 +84,11 @@ function square(arr, width, height, side, next) {
 export function generateStartPoints(hr, vr, rs) {
 
   const points = [];
+  const margin = rs / 2 - 1;
 
   for (let i = 0; i < vr; i++) {
     for (let j = 0; j < hr; j++) {
-      points.push([ j * rs, i * rs ]);
+      points.push([ j * rs + margin, i * rs + margin ]);
     }
   }
 
