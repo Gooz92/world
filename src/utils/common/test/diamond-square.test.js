@@ -1,6 +1,7 @@
 import { diamond, square, generateStartPoints } from '../diamond-square.js';
 import { equal, deepEqual } from '../assertion.js';
 import spy from 'test-utils/spy.js';
+import { first } from '../array.utils.js';
 
 describe('Diamond Square', function () {
 
@@ -47,7 +48,7 @@ describe('Diamond Square', function () {
 
       diamond(map, width, height, side, next);
 
-      const neighbors = next.calls.map(args => args[0]);
+      const neighbors = next.calls.map(first);
 
       deepEqual(neighbors, [
         [ 1, 2, 3, 4 ],
@@ -63,17 +64,30 @@ describe('Diamond Square', function () {
   describe('square()', function () {
 
     it('#1', () => {
+      const width = 4, height = 4;
       const _ = 0;
-      const o = 2;
+      const next = spy();
 
       const map = [
-        o, _, o, _,
-        _, 1, _, 2,
-        o, _, o, _,
-        _, 3, _, 4
+        1, _, 2, _,
+        _, 3, _, 4,
+        5, _, 6, _,
+        _, 7, _, 8
       ];
 
-      square(map, )
+      square(map, width, height, 2, next);
+
+      const neighbors = next.calls.map(first);
+
+      deepEqual(neighbors, [
+        [ 7, 2, 3, 1 ],
+        [ 8, 1, 4, 2 ],
+        [ 1, 3, 5, 4 ],
+        [ 2, 4, 6, 3 ],
+        [ 3, 6, 7, 5 ],
+        [ 4, 5, 8, 6 ],
+        [ 5, 7, 1, 8 ]
+      ]);
     });
 
   });

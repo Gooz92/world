@@ -122,6 +122,18 @@ describe('arrayUtils', function () {
 
   describe('last', function () {
 
+    const first = arrayUtils.first;
+
+    it('get first element of array', () => {
+      const head = 'head';
+      const array = [ head, 'body', 'tail' ];
+      equal(first(array), head);
+    });
+
+  });
+
+  describe('last', function () {
+
     const last = arrayUtils.last;
 
     it('get last element of array', () => {

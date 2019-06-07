@@ -31,6 +31,8 @@ export function generateArray(...args) {
   return array;
 }
 
+export const first = array => array[0];
+
 export const last = array => array[array.length - 1];
 
 export const remove = (array, index) => array.splice(index, 1)[0];
