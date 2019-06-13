@@ -2,8 +2,6 @@ import PathFinder from './PathFinder.js';
 
 import { generateArray } from 'utils/common/array.utils.js';
 import { getZero } from 'utils/common/fn.utils.js';
-import PriorityQueue from 'utils/common/PriorityQueue.js';
-
 // Naive implementations for testing purpose
 class SimplePriorityQueue {
 

@@ -31,6 +31,7 @@
     "indent": [2, 2],
     "max-depth": [ 2, 4 ],
     "complexity": [ 2, 12 ],
+    "no-unused-vars": [ 2, { "args": "none" } ],
     "object-curly-spacing": [ 2, "always" ],
     "array-bracket-spacing": [ 2, "always", {
       "objectsInArrays": false

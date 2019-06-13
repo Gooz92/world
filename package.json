@@ -24,7 +24,7 @@
   },
   "scripts": {
     "test": "node run-tests.js start",
-    "test:dev": "node run-tests.js start --browsers Chrome --no-single-run",
+    "test:dbg": "node run-tests.js start --browsers Chrome --no-single-run",
     "lint": "node node_modules/eslint/bin/eslint.js .",
     "build": "rollup -c rollup.config/rollup.config.prod.js",
     "build:dev": "rollup -c rollup.config/rollup.config.dev.js",

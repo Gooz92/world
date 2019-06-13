@@ -1,4 +1,5 @@
 import { forIn } from './object.utils.js';
+import { isObject, isFunction } from './is.utils.js';
 
 function assignProperties(element, properties) {
   for (const propertyName in properties) {
@@ -22,16 +23,52 @@ function appendChildren(element, children) {
   });
 }
 
-export function createElement(tagName = 'div', ...args) {
-  const element = document.createElement(tagName);
+function createElementByQuery(query) {
+
+  const { tag, id, className } = parseQuery(query);
+  const element = document.createElement(tag);
+
+  if (id) {
+    element.id = id;
+  }
+
+  if (className) {
+    element.className = className;
+  }
+
+  return element;
+}
+
+export function createElement(query = 'div', ...args) {
+
+  const element = createElementByQuery(query);
 
   args.forEach(arg => {
     if (Array.isArray(arg)) {
       appendChildren(element, arg);
-    } else if (typeof arg === 'object') {
+    } else if (isObject(arg)) {
       assignProperties(element, arg);
-    } else if (typeof arg === 'function') {
+    } else if (isFunction(arg)) {
       arg(element);
+    }
+  });
+
+  return element;
+}
+
+const PATTERNS = {
+  id: /#([^#\.]+)/,
+  className: /\.([^#\.]+)/,
+  tag: /^(\w+)/
+};
+
+export function parseQuery(query) {
+  const element = { tag: 'div' };
+
+  forIn(PATTERNS, (pattern, tokenName) => {
+    const match = query.match(pattern);
+    if (match) {
+      element[tokenName] = match[1];
     }
   });
 

@@ -1,18 +1,19 @@
 import * as domUtils from '../dom.utils.js';
 import { equal } from '../assertion.js';
+import deepEqual from '../deep-equal.js';
 
 describe('domUtils', function () {
 
   describe('createElement', function () {
     const createElement = domUtils.createElement;
 
-    it('create html element with given tag name', () => {
+    it('create element with given tag name', () => {
       const tagName = 'div';
       const element = createElement(tagName);
       equal(element.tagName.toLowerCase(), tagName);
     });
 
-    it('create html element with given className', () => {
+    it('create element with given className', () => {
       const className = 'title';
       const caption = createElement('h1', { className });
 
@@ -62,6 +63,48 @@ describe('domUtils', function () {
       equal(parent.firstChild, child);
     });
 
+  });
+
+  describe('parseQuery', function () {
+
+    const parseQuery = domUtils.parseQuery;
+
+    it('default tag is div', () => {
+      const { tag } = parseQuery('');
+      equal(tag, 'div');
+    });
+
+    it('extract tag name', () => {
+      const tagName = 'main';
+      const { tag } = parseQuery(`${tagName}.container`);
+      equal(tag, tagName);
+    });
+
+    it('extract single class name', () => {
+      const className = 'panel';
+      const parsed = parseQuery(`details.${className}`);
+      equal(parsed.className, className);
+    });
+
+    it('extract list of class names', () => {
+      const classes = 'large red square';
+      const parsed = parseQuery(`figure.${classes}`);
+      equal(parsed.className, classes);
+    });
+
+    it('extract id', () => {
+      const id = 'header-1';
+      const parsed = parseQuery(`header#${id}`);
+      equal(parsed.id, id);
+    });
+
+    it('exctract tag, id and class list', () => {
+      const tag = 'figure';
+      const id = 'fig-42';
+      const classes = 'small green circle';
+      const figure = parseQuery(`${tag}#${id}.${classes}`);
+      deepEqual(figure, { tag, id, classes });
+    });
   });
 
 });
