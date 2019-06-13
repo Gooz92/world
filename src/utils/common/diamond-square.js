@@ -29,10 +29,9 @@ import { randomGenerator } from './random.utils.js';
 export function diamond(arr, width, height, side, next) {
 
   const half = side / 2;
-  const margin = half - 1;
 
-  for (let y0 = half + margin; y0 < height; y0 += side) {
-    for (let x0 = half + margin; x0 < width; x0 += side) {
+  for (let y0 = half; y0 < height; y0 += side) {
+    for (let x0 = half; x0 < width; x0 += side) {
       const index = getIndex(x0, y0, width, height);
 
       const neighbors = [
@@ -51,7 +50,7 @@ export function diamond(arr, width, height, side, next) {
 }
 
 /**
- * 
+ *
  *     .
  *     |
  * . - + - .
@@ -84,11 +83,10 @@ export function square(arr, width, height, side, next) {
 export function generateStartPoints(hr, vr, rs) {
 
   const points = [];
-  const margin = rs / 2 - 1;
 
   for (let i = 0; i < vr; i++) {
     for (let j = 0; j < hr; j++) {
-      points.push([ j * rs + margin, i * rs + margin ]);
+      points.push([ j * rs, i * rs ]);
     }
   }
 

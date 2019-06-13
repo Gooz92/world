@@ -19,7 +19,7 @@ describe('Diamond Square', function () {
 
       diamond(map, width, height, side, next);
 
-      const neighbors = next.calls.map(args => args[0]);
+      const neighbors = next.calls.map(first);
 
       deepEqual(neighbors, [
         [ 1, 2, 3, 4 ],
@@ -36,14 +36,14 @@ describe('Diamond Square', function () {
       const _ = 0;
       const x = 42;
       const map = [
+        1, _, _, _, 2, _, _, _,
         _, _, _, _, _, _, _, _,
-        _, 1, _, _, _, 2, _, _,
+        _, _, x, _, _, _, x, _,
         _, _, _, _, _, _, _, _,
-        _, _, _, x, _, _, _, x,
+        3, _, _, _, 4, _, _, _,
         _, _, _, _, _, _, _, _,
-        _, 3, _, _, _, 4, _, _,
-        _, _, _, _, _, _, _, _,
-        _, _, _, x, _, _, _, x
+        _, _, x, _, _, _, x, _,
+        _, _, _, _, _, _, _, _
       ];
 
       diamond(map, width, height, side, next);
@@ -86,7 +86,8 @@ describe('Diamond Square', function () {
         [ 2, 4, 6, 3 ],
         [ 3, 6, 7, 5 ],
         [ 4, 5, 8, 6 ],
-        [ 5, 7, 1, 8 ]
+        [ 5, 7, 1, 8 ],
+        [ 6, 8, 2, 7 ]
       ]);
     });
 
