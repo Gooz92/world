@@ -92,3 +92,12 @@ canvas {
   margin: 4px;
   cursor: pointer;
 }
+
+
+main {
+  margin: 8px;
+  display: grid;
+  grid-template-columns: max-content auto;
+  grid-template-rows: auto;
+  grid-column-gap: 12px;
+}

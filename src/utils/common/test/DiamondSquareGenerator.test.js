@@ -1,4 +1,8 @@
-import { diamond, square, generateStartPoints } from '../diamond-square.js';
+import {
+  diamond, square,
+  default as diamondSquareGenerator
+} from '../DiamondSquareGenerator.js';
+
 import { equal, deepEqual } from '../assertion.js';
 import spy from 'test-utils/spy.js';
 import { first } from '../array.utils.js';
@@ -96,29 +100,28 @@ describe('Diamond Square', function () {
   describe('generateStartPoints()', function () {
 
     it('distance between neighbors points should be equal to region size', () => {
-      const hr = 3;
-      const vr = 2;
-      const rs = 42;
+      const rows = 3;
+      const cols = 2;
+      const cellSize = 42;
 
-      const points = generateStartPoints(hr, vr, rs);
-      const width = hr * rs;
+      const generator = diamondSquareGenerator()
+        .setRows(rows)
+        .setCols(cols)
+        .setCellSize(cellSize)
+        .build();
 
-      for (let i = 0; i < vr; i++) {
+      const points = generator.$generateStartPoints();
 
-        const firstInRowIndex = i * hr;
-        const lastInRowIndex = firstInRowIndex + hr - 1;
+      for (let i = 0; i < rows; i++) {
 
-        const firstInRow = points[firstInRowIndex];
-        const lastInRow = points[lastInRowIndex];
+        const firstInRowIndex = i * cols;
 
-        equal(width - lastInRow[0] + firstInRow[0], rs);
-
-        for (let j = 1; j < hr - 1; j++) {
+        for (let j = 1; j < cols - 1; j++) {
           const index = firstInRowIndex + j;
           const p1 = points[index];
           const p2 = points[index + 1];
 
-          equal(p2[0] - p1[0], rs);
+          equal(p2[0] - p1[0], cellSize);
         }
       }
 

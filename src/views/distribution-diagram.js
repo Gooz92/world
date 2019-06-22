@@ -1,13 +1,13 @@
 import { normalize } from 'utils/common/math.utils.js';
 import { createElement } from 'utils/common/dom.utils.js';
 
-export default function distributionDiagram (width, height) {
+export default function distributionDiagram (side) {
 
   const element = createElement('div', {
     className: 'diagram',
     style: {
-      width: `${width}px`,
-      height: `${height}px`
+      width: `${side}px`,
+      height: `${side}px`
     }
   });
 
@@ -17,7 +17,7 @@ export default function distributionDiagram (width, height) {
 
       this.element.innerHTML = '';
 
-      const normolized = normalize(data, height);
+      const normolized = normalize(data, side);
 
       normolized.forEach(h => {
         const col = createElement('div', {
