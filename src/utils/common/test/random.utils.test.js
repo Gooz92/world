@@ -43,6 +43,13 @@ describe('randomUtils', function () {
         equal(typeof random.nextBoolean(), 'boolean');
       });
 
+      it('return false if treshold is 0', () => {
+        equal(random.nextBoolean(0), false);
+      });
+
+      it('return true id trheshold is 1', () => {
+        equal(random.nextBoolean(1), true);
+      });
     });
 
   });

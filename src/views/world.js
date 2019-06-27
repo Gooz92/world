@@ -48,9 +48,7 @@ const wv = new WorldView(world, {
   }
 });
 
-const info = createElement('span', {
-  id: 'info'
-});
+const info = createElement('span#info');
 
 window.addEventListener('resize', debounce(event => {
   const [ w, h ] = getViewportSize();
@@ -78,6 +76,8 @@ window.addEventListener('keydown', event => {
 });
 
 const canvas = wv.viewport.createCanvas();
+
+wv.viewport.draw();
 
 controls = createControls(wv, TICK_TIME);
 

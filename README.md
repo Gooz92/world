@@ -21,7 +21,7 @@ Under construction
   * Discrete =)
 
 ## Nature
-There is a trees (green "o") and some obstacles (grey "#").
+There is a trees
 
 ## Population
 There are "@"s. They are are cutting down trees.
@@ -44,4 +44,4 @@ There are "@"s. They are are cutting down trees.
 
   Two jobs: Geatherer and woodcutter
 
-  Geatheres heather food to barn
+  Geatheres geather food to barn

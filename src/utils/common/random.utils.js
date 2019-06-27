@@ -36,8 +36,8 @@ export function randomGenerator(seed = getSeed()) {
       return Math.floor((min + (max - min + 1) * next));
     },
 
-    nextBoolean() {
-      return self.next() < 0.5;
+    nextBoolean(threshold = 0.5) {
+      return self.next() < threshold;
     }
   };
 
