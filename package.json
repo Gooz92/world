@@ -28,7 +28,8 @@
     "lint": "node node_modules/eslint/bin/eslint.js .",
     "build": "rollup -c rollup.config/rollup.config.prod.js",
     "build:dev": "rollup -c rollup.config/rollup.config.dev.js",
-    "build:ds": "rollup -c rollup.config/rollup.config.test-ds.js -i src/test-ds.js --file dist/ds.js"
+    "build:ds": "rollup -c rollup.config/rollup.config.test-ds.js -i src/test-ds.js --file dist/ds.js",
+    "build:pf-test": "rollup -c rollup.config/rollup.config.dev.js -i src/pf-test.js --file dist/pf-test.js"
   },
   "author": "Gooz",
   "license": "MIT"

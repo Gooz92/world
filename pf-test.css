@@ -1,0 +1,9 @@
+.map {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.map div {
+  width: 14px;
+  height: 14px;
+}
