@@ -1,6 +1,9 @@
 import { createElement } from 'utils/common/dom.utils.js';
 import diamondSquareGenerator from 'utils/common/DiamondSquareGenerator.js';
 import { normalize, getIndex } from 'utils/common/math.utils.js';
+import * as objectUtils from 'utils/common/object.utils.js';
+import PathFinder from 'utils/path-finding/PathFinder.js';
+import { chunk } from 'utils/common/array.utils.js';
 
 const TILE_SIZE = 14;
 
@@ -23,6 +26,8 @@ const map = normalize(
   generator.generate(1, 42).map(i => Math.sqrt(i * i * i)), 1
 );
 
+const tiles = chunk(map, width);
+
 for (let y = 0; y < height; y++) {
   for (let x = 0; x < width; x++) {
     const index = getIndex(x, y, width, height);
@@ -37,8 +42,42 @@ for (let y = 0; y < height; y++) {
   }
 }
 
-mapContainer.addEventListener('click', e => {
-  console.log(e.target.dataset);
+const pf = {
+  setPoint(point) {
+    if (this.isStartSetted) {
+      this.setEnd(point);
+    } else {
+      this.setStart(point);
+    }
+  },
+
+  setStart(point) {
+    this.isStartSetted = true;
+    this.start = point;
+  },
+
+  setEnd(point) {
+    this.isStartSetted = false;
+    this.end = point;
+
+    const pf = new PathFinder({
+      isTileFound: (tile, x, y) => (
+        x === this.end.x && y === this.end.y
+      ),
+      isTilePassable: tile => !tile
+    });
+
+    const { path } = pf.find(tiles, this.start.x, this.start.y);
+
+    path.forEach(([ x, y ]) => {
+      document.getElementById(`tile-${x}-${y}`).innerHTML = '*';
+    });
+  }
+};
+
+mapContainer.addEventListener('click', ({ target: { dataset } }) => {
+  const point = objectUtils.map(dataset, value => parseInt(value));
+  pf.setPoint(point);
 });
 
 document.body.appendChild(mapContainer);

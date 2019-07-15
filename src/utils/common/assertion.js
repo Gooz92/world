@@ -20,8 +20,8 @@ export function isFalse(condition, message) {
   assert(condition === false, message);
 }
 
-export function equal(a, b) {
-  assert(a === b, `${a} === ${b}`);
+export function equal(a, b, message) {
+  assert(a === b, message || `${a} === ${b}`);
 }
 
 export function notEqual(a, b) {
