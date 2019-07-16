@@ -1,15 +1,15 @@
-import line from './line.js';
+import interpolate from './interpolate.js';
 import { deepEqual } from 'utils/common/assertion.js';
 
-describe('line', function () {
+describe('interpolate', function () {
 
   it('generate one-point line', () => {
-    const points = line(1, 1, 1, 1);
+    const points = interpolate(1, 1, 1, 1);
     deepEqual(points, [ [ 1, 1 ] ]);
   });
 
   it('generate horizontal line', () => {
-    const points = line(1, 2, 3, 2);
+    const points = interpolate(1, 2, 3, 2);
     deepEqual(points, [
       [ 1, 2 ],
       [ 2, 2 ],
@@ -18,7 +18,7 @@ describe('line', function () {
   });
 
   it('generate vertical line', () => {
-    const points = line(0, 1, 0, 3);
+    const points = interpolate(0, 1, 0, 3);
     deepEqual(points, [
       [ 0, 1 ],
       [ 0, 2 ],
@@ -27,7 +27,7 @@ describe('line', function () {
   });
 
   it('generate diagonal line', () => {
-    const points = line(2, 1, 4, 3);
+    const points = interpolate(2, 1, 4, 3);
     deepEqual(points, [
       [ 2, 1 ],
       [ 3, 2 ],

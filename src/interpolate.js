@@ -1,10 +1,11 @@
-export default function line(x1, y1, x2, y2) {
+export default function interpolate(x1, y1, x2, y2) {
   const line = [ [ x1, y1 ] ];
+
   const dx = Math.abs(x2 - x1);
   const dy = Math.abs(y2 - y1);
 
-  const sx = (x1 < x2) ? 1 : -1;
-  const sy = (y1 < y2) ? 1 : -1;
+  const sx = x1 < x2 ? 1 : -1;
+  const sy = y1 < y2 ? 1 : -1;
 
   let err = dx - dy;
 

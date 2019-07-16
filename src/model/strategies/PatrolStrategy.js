@@ -1,6 +1,6 @@
 import Strategy from './Startegy.js';
 import MoveAction from '../actions/MoveAction.js';
-import line from '../../line.js';
+import interpolate from '../../interpolate.js';
 
 export default class PatrolStrategy extends Strategy {
 
@@ -16,7 +16,7 @@ export default class PatrolStrategy extends Strategy {
       const positionIndex = this.positionIndex++ % this.positions.length;
       const [ nextX, nextY ] = this.positions[positionIndex];
 
-      this.path = line(x, y, nextX, nextY);
+      this.path = interpolate(x, y, nextX, nextY);
     }
 
     return this.path;
