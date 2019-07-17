@@ -1,7 +1,8 @@
 import PathFinder from './PathFinder';
-import { deepEqual, equal } from 'utils/common/assertion.js';
-import { generateArray } from 'utils/common/array.utils.js';
+import { deepEqual, equal, isTrue } from 'utils/common/assertion.js';
+import { generateArray, last } from 'utils/common/array.utils.js';
 import { identity, getFalse } from 'utils/common/fn.utils.js';
+import Direction from 'model/Direction.enum.js';
 
 const emptyWorld = [
   [ 0, 0, 0, 0, 0 ],
@@ -24,7 +25,9 @@ describe('PathFinder', function () {
         isTileFound: tile => tile === 2
       });
 
-      const { path } = finder.find(emptyWorld, startX, startY);
+      const path = finder.find(emptyWorld, startX, startY).path
+        .map(node => node.position);
+
       deepEqual(path, [ [ 2, 2 ] ]);
     });
 
@@ -49,6 +52,54 @@ describe('PathFinder', function () {
       const bPath = finder.find(world, x1, y1);
 
       equal(aPath.path.length, bPath.path.length);
+    });
+
+    it('calcuate directions in path', () => {
+
+      const world = generateArray(12, 8, getFalse);
+
+      const x0 = 5, y0 = 2;
+      const x1 = 5, y1 = 10;
+
+      world[y1][x1] = true;
+
+      const finder = new PathFinder({
+        isTileFound: identity
+      });
+
+      const { path } = finder.find(world, x0, y0);
+
+      isTrue(path.every(node => node.direction === Direction.NORTH));
+    });
+  });
+
+  describe('#find path control points', () => {
+
+    const find = () => {
+      const world = generateArray(14, 12, getFalse);
+
+      const x0 = 5, y0 = 2;
+      const x1 = 5, y1 = 10;
+
+      world[y1][x1] = true;
+
+      const finder = new PathFinder({
+        isTileFound: identity
+      });
+
+      const { path } = finder.find(world, x0, y0);
+
+      return path;
+    };
+
+    it('start point is control', () => {
+      const path = find();
+      isTrue(path[0].isControl);
+    });
+
+    it('end point is control', () => {
+      const path = find();
+      isTrue(last(path).isControl);
     });
 
   });

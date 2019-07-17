@@ -56,7 +56,7 @@ export default class CutTreesStrategy extends Strategy {
       return new CutTreeAction(this.actor, this.treePosition);
     }
 
-    const position = this.path.shift();
+    const { position } = this.path.shift();
 
     return new MoveAction(this.actor, position);
   }

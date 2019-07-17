@@ -2,16 +2,28 @@ import Direction from 'model/Direction.enum.js';
 import { last } from 'utils/common/array.utils.js';
 import interpolate from '../../interpolate.js';
 
-const getPosition = node => node.position;
-
-export function backtracePath(node, getPathNode = getPosition) {
+export function backtracePath(node) {
   const path = [];
 
-  while (node.previous) {
-    const pathNode = getPathNode(node);
-    path.unshift(pathNode);
+  let direction = node.direction, isControl = true;
+
+  do {
+
+    path.unshift({
+      direction: node.direction,
+      position: node.position,
+      // TODO
+      isControl: isControl || !node.previous.previous
+    });
+
+    isControl = direction !== node.previous.direction;
+
+    if (isControl) {
+      direction = node.previous.direction;
+    }
+
     node = node.previous;
-  }
+  } while (node.previous);
 
   return path;
 }
