@@ -42,6 +42,21 @@ export function compressPath(path) {
   return compressed;
 }
 
+export function expandPath(path, width, height) {
+  const expanded = [];
+
+  for (let i = 0; i < path.length - 1; i++) {
+    const [ x0, y0 ] = path[i];
+    const [ x1, y1 ] = path[i + 1];
+
+    const segment = interpolate(x0, y0, x1, y1);
+
+    expanded.push(...segment);
+  }
+
+  return expanded;
+}
+
 // assumption: movement cost is const
 export function smoothPath(path, isTilePassable) {
   const smoothed = [ path[0] ];
@@ -65,19 +80,11 @@ export function smoothPath(path, isTilePassable) {
 
     if (blocked) {
       start = path[i];
+      smoothed.push(start);
     }
   }
 
   smoothed.push(last(path));
 
-  const result = [];
-
-  for (let i = 0; i < smoothed.length - 1; i++) {
-    const [ x0, y0 ] = smoothed[i];
-    const [ x1, y1 ] = smoothed[i + 1];
-    const line = interpolate(x0, y0, x1, y1);
-    result.push(...line);
-  }
-
-  return result;
+  return smoothed;
 }

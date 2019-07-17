@@ -1,4 +1,4 @@
-import { compressPath, smoothPath } from './path-finding.utils.js';
+import { compressPath, smoothPath, expandPath } from './path-finding.utils.js';
 
 import { deepEqual } from 'utils/common/assertion.js';
 
@@ -67,4 +67,13 @@ describe('smoothPath', function () {
 
 });
 
+describe('expandPath', function () {
 
+  it('expand horizontal path', () => {
+    const path = [ [ 4, 2 ], [ 7, 2 ] ];
+    const expanded = expandPath(path);
+
+    deepEqual(expanded, [ [ 4, 2 ], [ 5, 2 ], [ 6, 2 ], [ 7, 2 ] ]);
+  });
+
+});

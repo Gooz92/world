@@ -4,12 +4,13 @@ import { normalize, getIndex } from 'utils/common/math.utils.js';
 import * as objectUtils from 'utils/common/object.utils.js';
 import PathFinder from 'utils/path-finding/PathFinder.js';
 import { chunk } from 'utils/common/array.utils.js';
+import { smoothPath, expandPath } from 'utils/path-finding/path-finding.utils.js';
 
 const TILE_SIZE = 14;
 
 const generator = diamondSquareGenerator()
   .setCellSize(8)
-  .setRows(9)
+  .setRows(6)
   .setCols(8)
   .build();
 
@@ -18,7 +19,8 @@ const { width, height } = generator.size;
 const mapContainer = createElement('.map', {
   style: {
     width: `${TILE_SIZE * width}px`,
-    height: `${TILE_SIZE * height}px`
+    height: `${TILE_SIZE * height}px`,
+    outline: '1px solid #777'
   }
 });
 
@@ -68,8 +70,9 @@ const pf = {
     });
 
     const { path } = pf.find(tiles, this.start.x, this.start.y);
+    const smoothed = expandPath(smoothPath(path, (x, y) => !tiles[y][x]));
 
-    path.forEach(([ x, y ]) => {
+    smoothed.forEach(([ x, y ]) => {
       document.getElementById(`tile-${x}-${y}`).innerHTML = '*';
     });
   }
