@@ -1,5 +1,5 @@
 import { noop, getTrue, getFalse } from 'utils/common/fn.utils.js';
-import backtracePath from './backtrace-path.js';
+import { backtracePath } from './path-finding.utils.js';
 import { getCycleCoordinate } from 'utils/common/math.utils.js';
 import PriorityQueue from 'utils/common/PriorityQueue.js';
 import Direction from 'model/Direction.enum.js';
@@ -95,7 +95,8 @@ export default class PathFinder {
           visited[key] = nextCost;
           queue.enqueue({
             position: [ nextX, nextY ],
-            previous: currentNode
+            previous: currentNode,
+            direction
           }, nextCost);
         }
       }

@@ -1,6 +1,9 @@
-import compressPath from './compress-path.js';
+import { compressPath, smoothPath } from './path-finding.utils.js';
+
 import { deepEqual } from 'utils/common/assertion.js';
+
 import { last } from 'utils/common/array.utils.js';
+import { getTrue } from 'utils/common/fn.utils.js';
 
 describe('compressPath', function () {
 
@@ -43,8 +46,25 @@ describe('compressPath', function () {
 
     const compressed = compressPath(path);
 
-    debugger;
     deepEqual(compressed, [ [ 1, 2 ], [ 5, 6 ], [ 5, 3 ], [ 1, 3 ] ]);
   });
 
 });
+
+describe('smoothPath', function () {
+  // cost or length ?
+  it('should not start and end points', () => {
+
+    const path = [
+      [ 1, 7 ], [ 1, 4 ], [ 4, 1 ]
+    ];
+
+    const smoothed = smoothPath(path, getTrue);
+
+    deepEqual(smoothed[0], path[0]);
+    deepEqual(last(smoothed), last(path));
+  });
+
+});
+
+
