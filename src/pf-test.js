@@ -4,17 +4,19 @@ import { normalize, getIndex } from 'utils/common/math.utils.js';
 import * as objectUtils from 'utils/common/object.utils.js';
 import PathFinder from 'utils/path-finding/PathFinder.js';
 import { chunk } from 'utils/common/array.utils.js';
-// import { smoothPath, expandPath } from 'utils/path-finding/path-finding.utils.js';
+import { smoothPath, expandPath } from 'utils/path-finding/path-finding.utils.js';
 
 const TILE_SIZE = 14;
 
 const generator = diamondSquareGenerator()
-  .setCellSize(8)
-  .setRows(6)
-  .setCols(8)
+  .setCellSize(4)
+  .setRows(4)
+  .setCols(3)
   .build();
 
 const { width, height } = generator.size;
+
+console.log(width, height);
 
 const mapContainer = createElement('.map', {
   style: {
@@ -70,13 +72,15 @@ const pf = {
     });
 
     const { path } = pf.find(tiles, this.start.x, this.start.y);
+    console.log('path: ', path);
 
-    // const smoothed = expandPath(smoothPath(path, (x, y) => !tiles[y][x]));
+    const smoothed = smoothPath(path, (x, y) => !tiles[y][x], width, height);
+    console.log('smoothed: ', smoothed);
+    const expanded = expandPath(smoothed, width, height);
+    console.log('expanded:', expanded);
 
-    path.forEach(node => {
-      const [ x, y ] = node.position;
-      const sign = node.isControl ? '+' : '*';
-      document.getElementById(`tile-${x}-${y}`).innerHTML = sign;
+    expanded.forEach(([ x, y ]) => {
+      document.getElementById(`tile-${x}-${y}`).innerHTML = '*';
     });
   }
 };

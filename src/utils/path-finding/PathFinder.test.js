@@ -73,35 +73,4 @@ describe('PathFinder', function () {
     });
   });
 
-  describe('#find path control points', () => {
-
-    const find = () => {
-      const world = generateArray(14, 12, getFalse);
-
-      const x0 = 5, y0 = 2;
-      const x1 = 5, y1 = 10;
-
-      world[y1][x1] = true;
-
-      const finder = new PathFinder({
-        isTileFound: identity
-      });
-
-      const { path } = finder.find(world, x0, y0);
-
-      return path;
-    };
-
-    it('start point is control', () => {
-      const path = find();
-      isTrue(path[0].isControl);
-    });
-
-    it('end point is control', () => {
-      const path = find();
-      isTrue(last(path).isControl);
-    });
-
-  });
-
 });
