@@ -1,18 +1,19 @@
-import {
-  greyRenderer,
-  clearRenderer,
-  treeRenderer,
-  personRenderer } from './renderers.js';
-
 import { createElement } from 'utils/common/dom.utils.js';
-import { noop } from 'utils/common/fn.utils.js';
+import { clearRenderer } from './renderers.js';
 
-const renderers = [
-  noop, // empty space
-  greyRenderer, // obstacle
-  treeRenderer,
-  personRenderer // person
-];
+const TILE_SIZE = 16;
+
+class TileRenderer {
+
+  constructor(tilesSprite) {
+    this.tilesSprite = tilesSprite;
+  }
+
+  render(ctx, tile, x, y) {
+    const sx = tile.object ? 2 * TILE_SIZE : (((x + y) / TILE_SIZE) % 2) * TILE_SIZE;
+    ctx.drawImage(this.tilesSprite, sx, 0, TILE_SIZE, TILE_SIZE, x, y, TILE_SIZE, TILE_SIZE);
+  }
+}
 
 /**
  * viewport.size <= world.size
@@ -20,13 +21,16 @@ const renderers = [
 
 export default class Viewport {
 
-  static DEFAULT_CELL_SIZE = 12;
+  static DEFAULT_CELL_SIZE = 16;
 
   constructor(world, size, options = {}) {
     this.position = [ 0, 0 ];
     this.size = size;
     this.cellSize = Viewport.DEFAULT_CELL_SIZE;
     this.options = options;
+
+    const tilesSprite = document.getElementById('tiles-sprite');
+    this.tileRenderer = new TileRenderer(tilesSprite);
     this.world = world;
   }
 
@@ -133,9 +137,7 @@ export default class Viewport {
 
     clearRenderer(this.context, x, y, this.cellSize);
 
-    renderers[tile.object ? (tile.object.type || 0) : 0](
-      this.context, x, y, this.cellSize
-    );
+    this.tileRenderer.render(this.context, tile, x, y);
   }
 
   draw(x = 0, y = 0, width = this.width, height = this.height) {
