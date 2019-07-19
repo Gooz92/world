@@ -26,7 +26,12 @@ There is a trees
 ## Population
 There are "@"s. They are are cutting down trees.
 
+## Known issues
+  * Path smoothing somethimes dosen't work with border-crossing paths.
+
 ## TODO
+  * Run single test
+  * Improve assertion error messages
   * Debug test from IDE
   * Add posibility to place object on world (progress ~80%)
   * Scale map viewport (almost done)

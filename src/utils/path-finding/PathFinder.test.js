@@ -1,32 +1,27 @@
 import PathFinder from './PathFinder';
-import { deepEqual, equal, isTrue } from 'utils/common/assertion.js';
-import { generateArray, last } from 'utils/common/array.utils.js';
+import { deepEqual, equal } from 'utils/common/assertion.js';
+import { generateArray } from 'utils/common/array.utils.js';
 import { identity, getFalse } from 'utils/common/fn.utils.js';
-import Direction from 'model/Direction.enum.js';
-
-const emptyWorld = [
-  [ 0, 0, 0, 0, 0 ],
-  [ 0, 0, 0, 0, 0 ],
-  [ 0, 1, 0, 2, 0 ],
-  [ 0, 0, 0, 0, 0 ],
-  [ 0, 0, 0, 0, 0 ]
-];
 
 describe('PathFinder', function () {
 
   describe('#find', function () {
 
+    const createFinder = () => new PathFinder({
+      isTileFound: identity
+    });
+
     it('return shortest path between points on same horizontal', () => {
 
-      const startY = 2;
-      const startX = 1;
+      const world = generateArray(5, 5, getFalse);
 
-      const finder = new PathFinder({
-        isTileFound: tile => tile === 2
-      });
+      const y0 = 2, startX = 1, endX = 3;
 
-      const path = finder.find(emptyWorld, startX, startY).path
-        .map(node => node.position);
+      world[y0][endX] = true;
+
+      const finder = createFinder();
+
+      const { path } = finder.find(world, startX, y0);
 
       deepEqual(path, [ [ 2, 2 ] ]);
     });
@@ -38,9 +33,7 @@ describe('PathFinder', function () {
       const x0 = 40, y1 = 42;
       const x1 = 62, y0 = 58;
 
-      const finder = new PathFinder({
-        isTileFound: identity
-      });
+      const finder = createFinder();
 
       world[y1][x1] = true;
 
@@ -54,23 +47,6 @@ describe('PathFinder', function () {
       equal(aPath.path.length, bPath.path.length);
     });
 
-    it('calcuate directions in path', () => {
-
-      const world = generateArray(12, 8, getFalse);
-
-      const x0 = 5, y0 = 2;
-      const x1 = 5, y1 = 10;
-
-      world[y1][x1] = true;
-
-      const finder = new PathFinder({
-        isTileFound: identity
-      });
-
-      const { path } = finder.find(world, x0, y0);
-
-      isTrue(path.every(node => node.direction === Direction.NORTH));
-    });
   });
 
 });

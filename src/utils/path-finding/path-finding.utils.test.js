@@ -1,55 +1,10 @@
-import { compressPath, smoothPath, expandPath } from './path-finding.utils.js';
+import { smoothPath, expandPath, getNextCoordinate } from './path-finding.utils.js';
 
-import { deepEqual } from 'utils/common/assertion.js';
+import { deepEqual, equal } from 'utils/common/assertion.js';
 
 import { last } from 'utils/common/array.utils.js';
 import { getTrue } from 'utils/common/fn.utils.js';
 import Direction from 'model/Direction.enum.js';
-
-describe('compressPath', function () {
-
-  it('compress horizontal path', () => {
-    const path = [
-      [ 4, 2 ], [ 5, 2 ], [ 6, 2 ], [ 7, 2 ], [ 8, 2 ], [ 9, 2 ]
-    ];
-
-    const compressed = compressPath(path);
-
-    deepEqual(compressed, [ path[0], last(path) ]);
-  });
-
-  it('compress vertical path', () => {
-    const path = [
-      [ 2, 4 ], [ 2, 5 ], [ 2, 6 ], [ 2, 7 ], [ 2, 8 ], [ 2, 9 ]
-    ];
-
-    const compressed = compressPath(path);
-
-    deepEqual(compressed, [ path[0], last(path) ]);
-  });
-
-  it('compress diagonal path', () => {
-    const path = [
-      [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 4, 5 ], [ 5, 6 ]
-    ];
-
-    const compressed = compressPath(path);
-
-    deepEqual(compressed, [ path[0], last(path) ]);
-  });
-
-  it('compress complex path', () => {
-    const path = [
-      [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 4, 5 ], [ 5, 6 ],
-      [ 5, 5 ], [ 5, 4 ], [ 5, 3 ],
-      [ 4, 3 ], [ 3, 3 ], [ 2, 3 ], [ 1, 3 ]
-    ];
-
-    const compressed = compressPath(path);
-
-    deepEqual(compressed, [ [ 1, 2 ], [ 5, 6 ], [ 5, 3 ], [ 1, 3 ] ]);
-  });
-});
 
 describe('smoothPath', function () {
   // cost or length ?
@@ -99,9 +54,51 @@ describe('expandPath', function () {
       { position: [ 4, 2 ], direction: Direction.EAST },
       { position: [ 7, 2 ], direction: null }
     ];
+
     const expanded = expandPath(path, 10, 10);
 
     deepEqual(expanded, [ [ 4, 2 ], [ 5, 2 ], [ 6, 2 ], [ 7, 2 ] ]);
+  });
+
+  it('work with cycled coordinates', () => {
+    const path = [
+      { position: [ 2, 2 ], direction: Direction.WEST },
+      { position: [ 4, 2 ] }
+    ];
+
+    const expaned = expandPath(path, 6, 4);
+
+    deepEqual(expaned, [ [ 2, 2 ], [ 1, 2 ], [ 0, 2 ], [ 5, 2 ], [ 4, 2 ] ]);
+  });
+
+});
+
+describe('getNextCoordinate()', function () {
+
+  it('do no change coordinate if direction not changed', () => {
+    const start = 1, end = 2, direction = 1, bound = 3;
+
+    const next = getNextCoordinate(start, end, direction, bound);
+
+    equal(next, end);
+  });
+
+  it('get relative next less than zero', () => {
+    const start = 2, end = 8, direction = -1, bound = 10;
+
+    const actualNext = getNextCoordinate(start, end, direction, bound);
+    const expectedNext = end - bound;
+
+    equal(actualNext, expectedNext);
+  });
+
+  it('get relative next great than upper bound', () => {
+    const start = 8, end = 3, direction = 1, bound = 10;
+
+    const actualNext = getNextCoordinate(start, end, direction, bound);
+    const expectedNext = end + bound;
+
+    equal(actualNext, expectedNext);
   });
 
 });

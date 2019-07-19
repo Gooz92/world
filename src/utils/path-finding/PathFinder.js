@@ -1,5 +1,5 @@
 import { noop, getTrue, getFalse } from 'utils/common/fn.utils.js';
-import { backtracePath } from './path-finding.utils.js';
+import { postProcess } from './path-finding.utils.js';
 import { getCycleCoordinate } from 'utils/common/math.utils.js';
 import PriorityQueue from 'utils/common/PriorityQueue.js';
 import Direction from 'model/Direction.enum.js';
@@ -39,15 +39,20 @@ export default class PathFinder {
     this.isFound = true;
   }
 
-  getResult(node) {
+  getResult(node, tiles) {
     const goal = this.goal;
 
     this.goal = null;
     this.isFound = false;
 
+    const isTilePassable = (x, y) => {
+      const tile = tiles[y][x];
+      return this.isTilePassable(tile);
+    };
+
     return {
       goal: goal,
-      path: backtracePath(node)
+      path: postProcess(node, isTilePassable, tiles[0].length, tiles.length)
     };
   }
 
@@ -82,7 +87,7 @@ export default class PathFinder {
         this.onTile(tile, nextX, nextY, direction.isDiagonal, nextCost);
 
         if (this.isFound) {
-          return this.getResult(currentNode);
+          return this.getResult(currentNode, tiles);
         }
 
         if (!this.isTilePassable(tile)) {
