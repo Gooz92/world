@@ -1,5 +1,5 @@
 import { createElement } from 'utils/common/dom.utils.js';
-import { clearRenderer } from './renderers.js';
+import { clearRenderer, greenRenderer, greyRenderer } from './renderers.js';
 
 const TILE_SIZE = 16;
 
@@ -10,8 +10,24 @@ class TileRenderer {
   }
 
   render(ctx, tile, x, y) {
-    const sx = tile.object ? 2 * TILE_SIZE : (((x + y) / TILE_SIZE) % 2) * TILE_SIZE;
-    ctx.drawImage(this.tilesSprite, sx, 0, TILE_SIZE, TILE_SIZE, x, y, TILE_SIZE, TILE_SIZE);
+
+    if (tile.object && tile.object.type === 1) {
+      greyRenderer(ctx, x, y, TILE_SIZE);
+      return;
+    }
+
+    greenRenderer(ctx, x, y, TILE_SIZE);
+
+    if (tile.object) {
+      const [ sx, sy ] = tile.object.type == 3 ? [ 0, 0 ] : [ 2, 3 ];
+      const sxd = sx * TILE_SIZE;
+      const syd = sy * TILE_SIZE;
+
+      ctx.drawImage(
+        this.tilesSprite, sxd, syd, TILE_SIZE, TILE_SIZE,
+        x, y, TILE_SIZE, TILE_SIZE
+      );
+    }
   }
 }
 

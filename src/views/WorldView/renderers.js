@@ -35,3 +35,6 @@ export const redRenderer = createColorRenderer('red');
 export const blueRenderer = createColorRenderer('blue');
 
 export const greyRenderer = createColorRenderer('grey');
+
+export const greenRenderer = createColorRenderer('#6daa2c');
+
