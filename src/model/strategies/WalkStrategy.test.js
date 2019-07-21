@@ -3,14 +3,14 @@ import { getObject } from 'utils/common/fn.utils.js';
 import World from 'model/World.js';
 import { equal } from 'utils/common/assertion.js';
 
-describe('MoveStrategy', function () {
+describe('WalkStrategy', function () {
 
   it('actor with this strategy should follow given path', () => {
     const tiles = generateArray(12, 8, getObject);
     const world = new World(tiles);
     const person = world.placePerson(2, 3);
 
-    person.setStrategy('move', {
+    person.setStrategy('walk', {
       path: [ [ 3, 4 ] ]
     });
 

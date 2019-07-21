@@ -32,6 +32,14 @@ function getViewportSize() {
 
 const vs = getViewportSize();
 
+const getTileInfo = tile => {
+  if (!tile.object) {
+    return 'empty';
+  }
+
+  return [ 'obstacle', 'tree', 'person' ][tile.object.type - 1];
+};
+
 const wv = new WorldView(world, {
   viewportSize: vs,
   onTileClick: (x, y) => {
@@ -50,7 +58,9 @@ const wv = new WorldView(world, {
   onTileEnter: (x, y) => {
     const gx = world.getCycleX(wv.viewport.position[0] + x);
     const gy = world.getCycleY(wv.viewport.position[1] + y);
-    info.innerHTML = gx + ';' + gy;
+
+    const tile = world.getTile(gx, gy);
+    info.innerHTML = gx + ';' + gy + ' ' + getTileInfo(tile);
   }
 });
 

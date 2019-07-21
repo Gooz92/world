@@ -6,7 +6,7 @@ import Strategy from './Startegy.js';
 import Action from '../actions/Action.js';
 import { isUndefined } from 'utils/common/is.utils.js';
 
-const trees = {};
+const trees = new Map();
 
 const hash = (x, y) => `${x}-${y}`;
 
@@ -19,10 +19,10 @@ export default class CutTreesStrategy extends Strategy {
       }
 
       const key = hash(x, y);
-      const distanceToTree = trees[key];
+      const distanceToTree = trees.get(key);
 
       if (isUndefined(distanceToTree) || cost < distanceToTree) {
-        trees[key] = cost;
+        trees.set(key, cost);
         this.found([ x, y ]);
       }
     },
@@ -47,12 +47,12 @@ export default class CutTreesStrategy extends Strategy {
     const path = this.getPath();
 
     if (!this.treePosition) {
-      return Action.IDLE;
+      return Action.IDLE; // !!
     }
 
     if (path.length === 0) {
       const [ x, y ] = this.treePosition;
-      trees[hash(x, y)] = 0;
+      trees.delete(hash(x, y));
       return new CutTreeAction(this.actor, this.treePosition);
     }
 

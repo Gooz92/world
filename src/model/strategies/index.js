@@ -1,9 +1,9 @@
 import CutTreesStrategy from './CutTreesStrategy.js';
 import PatrolStrategy from './PatrolStrategy.js';
-import MoveStrategy from './MoveStartegy.js';
+import WalkStrategy from './WalkStartegy.js';
 
 export default {
   CutTreesStrategy,
   PatrolStrategy,
-  MoveStrategy
+  WalkStrategy
 };

@@ -50,3 +50,7 @@ There are "@"s. They are are cutting down trees.
   Two jobs: Geatherer and woodcutter
 
   Geatheres geather food to barn
+
+  Population eat food
+
+  House contains max 5 people
