@@ -12,7 +12,8 @@ export default function createMenu(options) {
   [
     { name: 'Obstacle', id: ObjectType.OBSTACLE },
     { name: 'Tree', id: ObjectType.TREE },
-    { name: 'Person', id: ObjectType.PERSON }
+    { name: 'Person', id: ObjectType.PERSON },
+    { name: 'Erase', id: ObjectType.EMPTY }
   ].forEach(({ name, id }) => {
 
     const li = createElement('li', {

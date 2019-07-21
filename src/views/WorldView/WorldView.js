@@ -47,4 +47,13 @@ export default class WorldView {
 
     return object;
   }
+
+  clearTile(x, y) {
+    const globalX = this.world.getCycleX(this.viewport.position[0] + x);
+    const globalY = this.world.getCycleY(this.viewport.position[1] + y);
+
+    this.world.clearTile(globalX, globalY);
+
+    this.viewport.drawTile(x, y);
+  }
 }

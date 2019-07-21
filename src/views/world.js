@@ -35,6 +35,12 @@ const vs = getViewportSize();
 const wv = new WorldView(world, {
   viewportSize: vs,
   onTileClick: (x, y) => {
+
+    if (objectType === ObjectType.EMPTY) {
+      wv.clearTile(x, y);
+      return;
+    }
+
     const object = wv.place(x, y, objectType);
 
     if (objectType === ObjectType.PERSON) {

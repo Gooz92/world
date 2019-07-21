@@ -38,7 +38,7 @@ export default class Person {
       return action.perform();
     }
 
-    return Action.IDLE;
+    return Action.IDLE.perform();
   }
 
   get type() {

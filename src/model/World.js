@@ -24,6 +24,20 @@ export default class World {
     return person;
   }
 
+  removeActor(actor) {
+    this.actors = this.actors.filter(a => a !== actor);
+  }
+
+  clearTile(x, y) {
+    const object = this.tiles[y][x].object;
+
+    if (object.type === ObjectType.PERSON) {
+      this.removeActor(object);
+    }
+
+    this.tiles[y][x].object = null;
+  }
+
   place(x, y, type) {
     if (type === ObjectType.PERSON) {
       return this.placePerson(x, y);
