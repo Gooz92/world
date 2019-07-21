@@ -5,7 +5,7 @@ export default class Action {
   constructor(actor = {}, tiles = []) {
     this.actor = actor;
     this.tiles = tiles;
-
+    this.duration = 1;
     this.completed = false;
   }
 

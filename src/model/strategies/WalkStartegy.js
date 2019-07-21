@@ -4,14 +4,14 @@ import Action from 'model/actions/Action.js';
 
 export default class WalkStrategy extends Strategy {
 
-  constructor(world, actor, { path }) {
+  constructor(world, actor, { path = [] }) {
     super(world, actor);
     this.path = path;
   }
 
   nextAction() {
 
-    if (this.path.length < 0) {
+    if (this.path.length === 0) {
       return Action.IDLE;
     }
 

@@ -21,4 +21,8 @@ export default class Strategy {
 
     return this.action;
   }
+
+  nextAction() {
+    return Action.IDLE;
+  }
 }
