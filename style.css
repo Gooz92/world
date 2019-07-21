@@ -26,6 +26,10 @@ canvas {
   overflow: hidden;
 }
 
+#viewport canvas {
+  position: fixed;
+}
+
 #info {
   flex: 1;
 }

@@ -5,7 +5,7 @@ describe('WorldView', function () {
   describe('#new()', function () {
 
     it('it works', () => {
-      new WorldView();
+      new WorldView(null, { viewportSize: [ 4, 3 ] });
     });
 
   });

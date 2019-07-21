@@ -81,13 +81,11 @@ window.addEventListener('keydown', event => {
   }
 });
 
-const canvas = wv.viewport.createCanvas();
-
 wv.viewport.draw();
 
 controls = createControls(wv, TICK_TIME);
 
-viewport.appendChild(canvas);
+viewport.appendChild(wv.viewport.container);
 panel.appendChild(controls.container);
 
 const menu = createMenu({

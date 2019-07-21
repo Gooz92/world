@@ -14,24 +14,11 @@ describe('Viewport', function () {
 
   });
 
-  describe('#createCanvas()', function () {
-
-    it('create canvas', () => {
-      const world = {};
-      const viewport = new Viewport(world, [ 16, 12 ]);
-      const canvas = viewport.createCanvas();
-
-      equal(canvas.tagName, 'CANVAS');
-    });
-
-  });
-
   describe('#setWidth()', function () {
 
     it('change viewport width', () => {
       const world = {};
       const viewport = new Viewport(world, [ 16, 12 ]);
-      viewport.createCanvas();
 
       const width = 10;
 
@@ -47,7 +34,6 @@ describe('Viewport', function () {
     it('change viewport height', () => {
       const world = {};
       const viewport = new Viewport(world, [ 16, 12 ]);
-      viewport.createCanvas();
 
       const height = 10;
 
