@@ -1,12 +1,12 @@
 import { createElement } from '../utils/common/dom.utils.js';
 import { time } from 'utils/common/dev.utils.js';
 
-export default function createControls(worldView, tickTime) {
+export default function createControls(tick, tickTime) {
 
   let timeoutId;
 
   const gameLoop = () => {
-    time('tick', () => worldView.tick());
+    time('tick', () => tick);
     timeoutId = setTimeout(gameLoop, tickTime);
   };
 
@@ -14,7 +14,7 @@ export default function createControls(worldView, tickTime) {
     step: createElement('button', {
       innerHTML: 'Step',
       onclick: () => {
-        worldView.tick();
+        tick();
       }
     }),
 

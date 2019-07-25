@@ -11,6 +11,12 @@ describe('ViewportLayer', function () {
       equal(canvas.tagName, 'CANVAS');
     });
 
+    it('set created canvas in `canvas` property', () => {
+      const layer = new ViewportLayer( { size: [ 16, 12 ] });
+      const canvas = layer.createCanvas();
+
+      equal(canvas, layer.canvas);
+    });
   });
 
 });

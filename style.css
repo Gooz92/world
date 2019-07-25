@@ -6,11 +6,6 @@
 html, body {
   height: 100%
 }
-
-canvas {
-  outline: 1px solid #aaa;
-}
-
 #main, #panel {
   display: flex;
   overflow: hidden;
@@ -27,7 +22,9 @@ canvas {
 }
 
 #viewport canvas {
-  position: fixed;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 #info {
@@ -36,6 +33,7 @@ canvas {
 
 #panel {
   background-color: #aaa;
+  z-index: 1;
 }
 
 .field {

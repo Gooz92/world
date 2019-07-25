@@ -46,34 +46,18 @@ export default class ViewportLayer {
   createCanvas() {
     const [ w, h ] = this.viewport.size;
 
-    const width = w * TILE_SIZE, height = h * TILE_SIZE;
+    const width = w * this.viewport.cellSize,
+      height = h * this.viewport.cellSize;
 
     const canvas = createElement('canvas', {
       id: `viewport-${this.name}-layer`,
-      width, height,
-      onclick: this.handleMouseEvent((x, y) => {
-        this.viewport.options.onTileClick(x, y);
-      }),
-      onmousemove: this.handleMouseEvent((x, y) => {
-        this.viewport.options.onTileEnter(x, y);
-      })
+      width, height
     });
 
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
 
     return canvas;
-  }
-
-  handleMouseEvent(handler) {
-
-    return event => {
-      const { left, top } = event.target.getBoundingClientRect();
-      const tileX = this.viewport.getTileCoordinate(event.clientX - left);
-      const tileY = this.viewport.getTileCoordinate(event.clientY - top);
-
-      handler(tileX, tileY);
-    };
   }
 
   setWidth(width) {

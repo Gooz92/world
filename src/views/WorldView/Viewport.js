@@ -1,5 +1,6 @@
 import ViewportLayer from './ViewportLayer.js';
 import { clearRenderer } from './renderers.js';
+import { createElement } from 'utils/common/dom.utils.js';
 
 /**
  * viewport.size <= world.size
@@ -13,16 +14,38 @@ export default class Viewport {
     this.position = [ 0, 0 ];
     this.size = size;
     this.cellSize = Viewport.DEFAULT_CELL_SIZE;
-    this.options = options;
 
     this.world = world;
 
     this.layers = [];
 
-    this.container = document.createDocumentFragment();
+    this.container = createElement('#viewport');
 
     this.addLayer('main');
     this.addLayer('guide');
+
+    if (options.onTileClick) {
+      this.container.onclick = this.handleMouseEvent((x, y) => {
+        options.onTileClick(x, y);
+      });
+    }
+
+    if (options.onTileEnter) {
+      this.container.onmousemove = this.handleMouseEvent((x, y) => {
+        options.onTileEnter(x, y);
+      });
+    }
+  }
+
+  handleMouseEvent(handler) {
+
+    return event => {
+      const { left, top } = event.target.getBoundingClientRect();
+      const tileX = this.getTileCoordinate(event.clientX - left);
+      const tileY = this.getTileCoordinate(event.clientY - top);
+
+      handler(tileX, tileY);
+    };
   }
 
   addLayer(name) {
@@ -40,6 +63,11 @@ export default class Viewport {
 
   getSizeInPX(tiles) {
     return this.cellSize * tiles;
+  }
+
+  setSize(width, height) {
+    this.setWidth(width);
+    this.setHeight(height);
   }
 
   setHeight(height) {
@@ -74,9 +102,11 @@ export default class Viewport {
     const x = tileX * this.cellSize;
     const y = tileY * this.cellSize;
 
-    clearRenderer(this.getBottomLayer().context, x, y, this.cellSize);
+    const mainLayer = this.getBottomLayer();
 
-    this.getBottomLayer().tileRenderer.render(this.getBottomLayer().context, tile, x, y);
+    clearRenderer(mainLayer.context, x, y, this.cellSize);
+
+    mainLayer.tileRenderer.render(mainLayer.context, tile, x, y);
   }
 
   draw(x = 0, y = 0, width = this.width, height = this.height) {
