@@ -1,1 +1,1 @@
-import './views/world.js';
+import './views/game.js';
