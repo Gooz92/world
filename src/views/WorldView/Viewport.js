@@ -1,6 +1,7 @@
 import ViewportLayer from './ViewportLayer.js';
-import { clearRenderer } from './renderers.js';
+import { clearRenderer, selectionRenderer } from './renderers.js';
 import { createElement } from 'utils/common/dom.utils.js';
+import { last } from 'utils/common/array.utils.js';
 
 /**
  * viewport.size <= world.size
@@ -78,6 +79,10 @@ export default class Viewport {
     return this.layers[0];
   }
 
+  getTopLayer() {
+    return last(this.layers);
+  }
+
   getSizeInPX(tiles) {
     return this.cellSize * tiles;
   }
@@ -124,6 +129,15 @@ export default class Viewport {
     clearRenderer(mainLayer.context, x, y, this.cellSize);
 
     mainLayer.tileRenderer.render(mainLayer.context, tile, x, y);
+  }
+
+  drawSelection(tileX, tileY) {
+    const x = tileX * this.cellSize;
+    const y = tileY * this.cellSize;
+
+    const guideLayer = this.getTopLayer();
+
+    selectionRenderer(guideLayer.context, x, y, this.cellSize);
   }
 
   draw(x = 0, y = 0, width = this.width, height = this.height) {

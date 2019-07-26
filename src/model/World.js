@@ -24,6 +24,19 @@ export default class World {
     return person;
   }
 
+  select(x, y) {
+    const tile = this.tiles[y][x];
+
+    if (tile.object) {
+      this.selected = {
+        position: [ x, y ],
+        object: tile.object
+      };
+
+      return this.selected;
+    }
+  }
+
   removeActor(actor) {
     this.actors = this.actors.filter(a => a !== actor);
   }

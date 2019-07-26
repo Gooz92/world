@@ -61,6 +61,7 @@ const wv = new WorldView(world, {
   onTileClick: (x, y) => {
 
     if (panel.objectType === null) {
+      wv.select(x, y);
       return;
     }
 

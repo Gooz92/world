@@ -21,6 +21,17 @@ export default class WorldView {
       });
   }
 
+  select(x, y) {
+    const globalX = this.world.getCycleX(this.viewport.position[0] + x);
+    const globalY = this.world.getCycleY(this.viewport.position[1] + y);
+
+    const selected = this.world.select(globalX, globalY);
+
+    if (selected) {
+      this.viewport.drawSelection(x, y);
+    }
+  }
+
   scrollUp(dy = 1) {
     this.viewport.scrollVertical(-dy);
   }

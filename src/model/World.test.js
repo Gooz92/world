@@ -54,6 +54,27 @@ describe('World', function () {
 
   });
 
+  describe('select', function () {
+
+    it('store selected object in "selected" field', () => {
+      const tiles = generateArray(12, 8, getObject);
+      const world = new World(tiles);
+      const thing = world.place(2, 1, 'thing');
+
+      world.select(2, 1);
+
+      equal(world.selected.object, thing);
+    });
+
+    it('return selected obejct', () => {
+      const tiles = generateArray(12, 8, getObject);
+      const world = new World(tiles);
+      const thing = world.place(2, 1, 'thing');
+
+      equal(world.select(2, 1).object, thing);
+    });
+  });
+
   describe('#clearTile', function () {
 
     it('remove object from tile', () => {
