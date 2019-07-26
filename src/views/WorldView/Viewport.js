@@ -31,10 +31,27 @@ export default class Viewport {
     }
 
     if (options.onTileEnter) {
-      this.container.onmousemove = this.handleMouseEvent((x, y) => {
+      this.container.onmousemove = this.handleMouseMove((x, y) => {
         options.onTileEnter(x, y);
       });
     }
+  }
+
+  handleMouseMove(handler) {
+
+    let prevTileX, prevTileY;
+
+    return event => {
+      const { left, top } = event.target.getBoundingClientRect();
+      const tileX = this.getTileCoordinate(event.clientX - left);
+      const tileY = this.getTileCoordinate(event.clientY - top);
+
+      if (prevTileX !== tileX || prevTileY !== tileY) {
+        handler(tileX, tileY);
+        prevTileX = tileX;
+        prevTileY = tileY;
+      }
+    };
   }
 
   handleMouseEvent(handler) {

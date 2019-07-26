@@ -28,9 +28,13 @@ export default function createMenu(options) {
             item.style.fontWeight = 'normal';
           });
 
-        target.style.fontWeight = id !== value ? 'bold' : 'normal';
-
-        value = id;
+        if (id === value) {
+          target.style.fontWeight = 'normal';
+          value = null;
+        } else {
+          target.style.fontWeight = 'bold';
+          value = id;
+        }
 
         options.onChange(value);
       }

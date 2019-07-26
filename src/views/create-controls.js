@@ -6,16 +6,14 @@ export default function createControls(tick, tickTime) {
   let timeoutId;
 
   const gameLoop = () => {
-    time('tick', () => tick);
+    time('tick', tick);
     timeoutId = setTimeout(gameLoop, tickTime);
   };
 
   const buttons = {
     step: createElement('button', {
       innerHTML: 'Step',
-      onclick: () => {
-        tick();
-      }
+      onclick: tick
     }),
 
     play: createElement('button', {

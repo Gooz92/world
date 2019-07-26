@@ -60,6 +60,10 @@ const wv = new WorldView(world, {
   viewportSize: [ 40, 30 ],
   onTileClick: (x, y) => {
 
+    if (panel.objectType === null) {
+      return;
+    }
+
     if (panel.objectType === ObjectType.EMPTY) {
       wv.clearTile(x, y);
       return;
