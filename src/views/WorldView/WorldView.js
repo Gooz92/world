@@ -1,4 +1,5 @@
 import Viewport from './Viewport.js';
+import { clearRenderer } from './renderers.js';
 
 export default class WorldView {
 
@@ -22,12 +23,25 @@ export default class WorldView {
   }
 
   select(x, y) {
-    const globalX = this.world.getCycleX(this.viewport.position[0] + x);
-    const globalY = this.world.getCycleY(this.viewport.position[1] + y);
+    const [ gx, gy ] = this.getGlobalPosition(x, y);
 
-    const selected = this.world.select(globalX, globalY);
+    if (this.world.isTileOccupied(gx, gy)) {
 
-    if (selected) {
+      if (this.world.selected) {
+        const guideLayer = this.viewport.getTopLayer();
+        const [ sx, sy ] = this.world.selected.position;
+
+        const vx = this.world.getCycleX(sx - this.viewport.position[0]);
+        const vy = this.world.getCycleY(sy - this.viewport.position[1]);
+
+        clearRenderer(
+          guideLayer.context,
+          this.viewport.cellSize * vx, this.viewport.cellSize * vy,
+          this.viewport.cellSize
+        );
+      }
+
+      this.world.select(gx, gy);
       this.viewport.drawSelection(x, y);
     }
   }
@@ -49,10 +63,9 @@ export default class WorldView {
   }
 
   place(x, y, type) {
-    const globalX = this.world.getCycleX(this.viewport.position[0] + x);
-    const globalY = this.world.getCycleY(this.viewport.position[1] + y);
+    const [ gx, gy ] = this.getGlobalPosition(x, y);
 
-    const object = this.world.place(globalX, globalY, type);
+    const object = this.world.place(gx, gy, type);
 
     this.viewport.drawTile(x, y);
 
@@ -60,11 +73,17 @@ export default class WorldView {
   }
 
   clearTile(x, y) {
-    const globalX = this.world.getCycleX(this.viewport.position[0] + x);
-    const globalY = this.world.getCycleY(this.viewport.position[1] + y);
+    const [ gx, gy ] = this.getGlobalPosition(x, y);
 
-    this.world.clearTile(globalX, globalY);
+    this.world.clearTile(gx, gy);
 
     this.viewport.drawTile(x, y);
+  }
+
+  getGlobalPosition(x, y) {
+    return [
+      this.world.getCycleX(this.viewport.position[0] + x),
+      this.world.getCycleY(this.viewport.position[1] + y)
+    ];
   }
 }

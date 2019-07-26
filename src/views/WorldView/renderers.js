@@ -31,8 +31,8 @@ export function treeRenderer(ctx, x, y, size) {
 }
 
 export function selectionRenderer(ctx, x, y, size) {
-  ctx.strokeStyle = 'yellow';
-  ctx.strokeRect(x, y, size, size);
+  ctx.strokeStyle = 'blue';
+  ctx.strokeRect(x + 1, y + 1, size - 2, size - 2);
 }
 
 export const redRenderer = createColorRenderer('red');

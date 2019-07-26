@@ -62,6 +62,12 @@ export default class World {
     return object;
   }
 
+  isTileOccupied(x, y) {
+    const tile = this.getTile(x, y);
+
+    return !!tile.object;
+  }
+
   getTile(x, y) {
     const x0 = this.getCycleX(x);
     const y0 = this.getCycleY(y);
