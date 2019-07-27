@@ -30,7 +30,7 @@ export default class World {
 
   // TODO: get rid of this in future =)
   placePerson(x, y) {
-    const person = new Person(this.tiles, [ x, y ]);
+    const person = new Person(this, [ x, y ]);
     this.tiles[y][x].object = person;
     this.actors.push(person);
 
@@ -72,7 +72,7 @@ export default class World {
   clearTile(x, y) {
     const object = this.tiles[y][x].object;
 
-    if (object.type === ObjectType.PERSON) {
+    if (object && object.type === ObjectType.PERSON) {
       this.removeActor(object);
     }
 

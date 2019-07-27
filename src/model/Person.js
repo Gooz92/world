@@ -20,8 +20,10 @@ export default class Person {
     const [ x1, y1 ] = this.position;
     const [ x2, y2 ] = position;
 
-    this.world[y1][x1].object = null;
-    this.world[y2][x2].object = this;
+    this.world.getTile(x1, y1).object = null;
+
+    const nextTile = this.world.getTile(x2, y2);
+    nextTile.object = this;
 
     this.position = position;
   }

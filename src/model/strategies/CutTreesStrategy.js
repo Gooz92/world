@@ -38,7 +38,7 @@ export default class CutTreesStrategy extends Strategy {
 
     const [ x, y ] = this.actor.position;
 
-    return CutTreesStrategy.treeFinder.find(this.world, x, y);
+    return CutTreesStrategy.treeFinder.find(this.world.tiles, x, y);
   }
 
   nextAction() {

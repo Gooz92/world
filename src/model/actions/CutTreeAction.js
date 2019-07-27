@@ -9,7 +9,13 @@ export default class CutTreeAction extends Action {
 
   perform() {
     const [ [ x, y ] ] = this.tiles;
-    this.actor.world[y][x].object = null;
+
+    /*
+     * TODO: there is a bug in CutTreeStrategy and actor sometimes
+     * try to cut tree non existing tree
+     */
+
+    this.actor.world.clearTile(x, y);
     return super.perform();
   }
 }
