@@ -3,6 +3,8 @@ import ObjectType from './ObjectType.js';
 import Action from './actions/Action.js';
 import { upperFirst } from 'utils/common/string.utils.js';
 
+let count = 0;
+
 export default class Person {
 
   // Actually world is tiles in current implementation =()
@@ -10,6 +12,8 @@ export default class Person {
     this.world = world;
     this.position = position;
     this.actionPoints = 0;
+
+    this.name = `person-${count++}`;
   }
 
   moveTo(position) {
@@ -25,6 +29,7 @@ export default class Person {
   setStrategy(strategyName, options = {}) {
     const Strategy = strategies[`${upperFirst(strategyName)}Strategy`];
     this.strategy = new Strategy(this.world, this, options);
+    this.strategyName = strategyName;
   }
 
   act() {

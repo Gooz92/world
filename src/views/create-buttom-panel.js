@@ -3,6 +3,11 @@ import createControls from './create-controls.js';
 
 import { createElement } from 'utils/common/dom.utils.js';
 
+const presentors = [
+  tree => 'tree',
+  person => person.name + ' : ' + person.strategyName
+];
+
 const TICK_TIME = 80;
 
 export default function createButtomPanel(tick) {
@@ -18,11 +23,15 @@ export default function createButtomPanel(tick) {
 
   const info = createElement('span#info');
 
+  const selectionInfo = createElement('span#selection-info');
+
   const controls = createControls(tick, TICK_TIME);
 
   panel.appendChild(controls.container);
 
   panel.appendChild(info);
+
+  panel.appendChild(selectionInfo);
 
   panel.appendChild(menu);
 
@@ -30,6 +39,11 @@ export default function createButtomPanel(tick) {
     element: panel,
     updateTileInfo(text) {
       info.innerHTML = text;
+    },
+    updateSelectionInfo(selection) {
+      const [ x, y ] = selection.position;
+      const object = selection.object;
+      selectionInfo.innerHTML = `${x};${y} - ${presentors[object.type - 2](object)}`;
     },
     get objectType() {
       return objectType;

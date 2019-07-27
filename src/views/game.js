@@ -61,7 +61,8 @@ const wv = new WorldView(world, {
   onTileClick: (x, y) => {
 
     if (panel.objectType === null) {
-      wv.select(x, y);
+      const selection = wv.select(x, y);
+      panel.updateSelectionInfo(selection);
       return;
     }
 
@@ -86,6 +87,9 @@ const wv = new WorldView(world, {
 });
 
 panel = createButtomPanel(() => {
+  if (wv.world.selected) {
+    panel.updateSelectionInfo(wv.world.selected);
+  }
   wv.tick();
 });
 

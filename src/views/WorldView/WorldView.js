@@ -61,8 +61,9 @@ export default class WorldView {
       }
 
       this.selectedPosition = [ x, y ];
-      this.world.select(gx, gy);
       this.viewport.drawSelection(x, y);
+
+      return this.world.select(gx, gy);
     }
   }
 
