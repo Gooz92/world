@@ -41,6 +41,12 @@ export default function createButtomPanel(tick) {
       info.innerHTML = text;
     },
     updateSelectionInfo(selection) {
+
+      if (!selection) {
+        selectionInfo.innerHTML = '';
+        return;
+      }
+
       const [ x, y ] = selection.position;
       const object = selection.object;
       selectionInfo.innerHTML = `${x};${y} - ${presentors[object.type - 2](object)}`;

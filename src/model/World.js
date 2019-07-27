@@ -8,6 +8,8 @@ export default class World {
   constructor(tiles, actors = []) {
     this.tiles = tiles;
     this.actors = actors;
+
+    this.selected = null;
   }
 
   tick() {
@@ -48,6 +50,10 @@ export default class World {
     }
   }
 
+  resetSelection() {
+    this.selected = null;
+  }
+
   isSelectionMoved() {
     if (!this.selected || !this.selected.object.position) {
       return false;
@@ -57,7 +63,6 @@ export default class World {
     const [ x1, y1 ] = this.selected.object.position;
 
     return x0 !== x1 || y0 !== y1;
-
   }
 
   removeActor(actor) {
@@ -69,6 +74,10 @@ export default class World {
 
     if (object.type === ObjectType.PERSON) {
       this.removeActor(object);
+    }
+
+    if (this.isTileSelected(x, y)) {
+      this.resetSelection();
     }
 
     this.tiles[y][x].object = null;
@@ -83,6 +92,16 @@ export default class World {
     this.tiles[y][x].object = object;
 
     return object;
+  }
+
+  isTileSelected(x, y) {
+    if (!this.selected) {
+      return false;
+    }
+
+    const [ sx, sy ] = this.selected.position;
+
+    return sx === x && sy === y;
   }
 
   isTileOccupied(x, y) {

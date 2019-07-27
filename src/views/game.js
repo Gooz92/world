@@ -69,6 +69,7 @@ const wv = new WorldView(world, {
 
     if (panel.objectType === ObjectType.EMPTY) {
       wv.clearTile(x, y);
+      panel.updateSelectionInfo(wv.world.selection);
       return;
     }
 
@@ -88,9 +89,7 @@ const wv = new WorldView(world, {
 });
 
 panel = createButtomPanel(() => {
-  if (wv.world.selected) {
-    panel.updateSelectionInfo(wv.world.selected);
-  }
+  panel.updateSelectionInfo(wv.world.selected);
   wv.tick();
 });
 

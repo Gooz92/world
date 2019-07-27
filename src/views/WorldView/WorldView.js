@@ -42,6 +42,11 @@ export default class WorldView {
   }
 
   clearSelection() {
+
+    if (!this.selectedPosition) {
+      return;
+    }
+
     const guideLayer = this.viewport.getTopLayer();
 
     const [ vx, vy ] = this.selectedPosition;
@@ -53,19 +58,26 @@ export default class WorldView {
     );
   }
 
+  resetSelection() {
+    this.clearSelection();
+
+    this.selectedPosition = null;
+    this.world.resetSelection();
+  }
+
   select(x, y) {
     const [ gx, gy ] = this.getGlobalPosition(x, y);
 
     if (this.world.isTileOccupied(gx, gy)) {
 
-      if (this.selectedPosition) {
-        this.clearSelection();
-      }
+      this.clearSelection();
 
       this.selectedPosition = [ x, y ];
       this.viewport.drawSelection(x, y);
 
       return this.world.select(gx, gy);
+    } else {
+      this.resetSelection();
     }
   }
 
@@ -98,6 +110,7 @@ export default class WorldView {
   clearTile(x, y) {
     const [ gx, gy ] = this.getGlobalPosition(x, y);
 
+    this.clearSelection();
     this.world.clearTile(gx, gy);
 
     this.viewport.drawTile(x, y);
