@@ -6,8 +6,10 @@ export default class WorldView {
   constructor(world, viewportOptions = {}) {
     this.world = world;
 
-    const viewportSize = viewportOptions.viewportSize;
-    this.viewport = new Viewport(world, viewportSize, viewportOptions);
+    this.viewport = new Viewport(world, {
+      size: viewportOptions.viewportSize,
+      ...viewportOptions
+    });
 
     this.selectedPosition = null;
   }

@@ -1,7 +1,14 @@
 import ViewportLayer from './ViewportLayer.js';
-import { clearRenderer, selectionRenderer } from './renderers.js';
+
+import {
+  clearRenderer,
+  selectionRenderer
+} from './renderers.js';
+
 import { createElement } from 'utils/common/dom.utils.js';
 import { last } from 'utils/common/array.utils.js';
+
+import TileRenderer from './TileRenderer.js';
 
 /**
  * viewport.size <= world.size
@@ -11,9 +18,9 @@ export default class Viewport {
 
   static DEFAULT_CELL_SIZE = 16;
 
-  constructor(world, size, options = {}) {
+  constructor(world, options = {}) {
     this.position = [ 0, 0 ];
-    this.size = size;
+    this.size = options.size;
     this.cellSize = Viewport.DEFAULT_CELL_SIZE;
 
     this.world = world;
@@ -35,6 +42,10 @@ export default class Viewport {
       this.container.onmousemove = this.handleMouseMove((x, y) => {
         options.onTileEnter(x, y);
       });
+    }
+
+    if (options.tilesSprite) {
+      this.tileRenderer = new TileRenderer(options.tilesSprite);
     }
   }
 
@@ -128,7 +139,7 @@ export default class Viewport {
 
     clearRenderer(mainLayer.context, x, y, this.cellSize);
 
-    mainLayer.tileRenderer.render(mainLayer.context, tile, x, y);
+    this.tileRenderer.render(mainLayer.context, tile, x, y);
   }
 
   drawSelection(tileX, tileY) {

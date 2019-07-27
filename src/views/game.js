@@ -58,6 +58,7 @@ const getTileInfo = tile => {
 
 const wv = new WorldView(world, {
   viewportSize: [ 40, 30 ],
+  tilesSprite: document.getElementById('tiles-sprite'),
   onTileClick: (x, y) => {
 
     if (panel.objectType === null) {
