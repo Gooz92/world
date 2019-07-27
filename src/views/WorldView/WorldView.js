@@ -8,10 +8,14 @@ export default class WorldView {
 
     const viewportSize = viewportOptions.viewportSize;
     this.viewport = new Viewport(world, viewportSize, viewportOptions);
+
+    this.selectedPosition = null;
   }
 
   tick() {
-    this.world.tick()
+    const tick = this.world.tick();
+
+    tick.actions
       .forEach(event => {
         event.tiles.forEach(([ x, y ]) => {
           const vx = this.world.getCycleX(x - this.viewport.position[0]);
@@ -20,6 +24,31 @@ export default class WorldView {
           this.viewport.drawTile(vx, vy);
         });
       });
+
+    if (tick.isSelectionMoved) {
+      this.clearSelection();
+
+      const [ x, y ] = this.world.selected.position;
+
+      const vx = this.world.getCycleX(x - this.viewport.position[0]);
+      const vy = this.world.getCycleY(y - this.viewport.position[1]);
+
+      this.selectedPosition = [ vx, vy ];
+      this.viewport.drawSelection(x, y);
+    }
+
+  }
+
+  clearSelection() {
+    const guideLayer = this.viewport.getTopLayer();
+
+    const [ vx, vy ] = this.selectedPosition;
+
+    clearRenderer(
+      guideLayer.context,
+      this.viewport.cellSize * vx, this.viewport.cellSize * vy,
+      this.viewport.cellSize
+    );
   }
 
   select(x, y) {
@@ -27,20 +56,11 @@ export default class WorldView {
 
     if (this.world.isTileOccupied(gx, gy)) {
 
-      if (this.world.selected) {
-        const guideLayer = this.viewport.getTopLayer();
-        const [ sx, sy ] = this.world.selected.position;
-
-        const vx = this.world.getCycleX(sx - this.viewport.position[0]);
-        const vy = this.world.getCycleY(sy - this.viewport.position[1]);
-
-        clearRenderer(
-          guideLayer.context,
-          this.viewport.cellSize * vx, this.viewport.cellSize * vy,
-          this.viewport.cellSize
-        );
+      if (this.selectedPosition) {
+        this.clearSelection();
       }
 
+      this.selectedPosition = [ x, y ];
       this.world.select(gx, gy);
       this.viewport.drawSelection(x, y);
     }

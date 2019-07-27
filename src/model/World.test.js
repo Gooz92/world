@@ -3,7 +3,7 @@ import World from './World.js';
 import { generateArray } from 'utils/common/array.utils.js';
 import { getObject } from 'utils/common/fn.utils.js';
 
-import { equal } from 'utils/common/assertion.js';
+import { equal, isFalse, isTrue } from 'utils/common/assertion.js';
 import ObjectType from './ObjectType.js';
 
 describe('World', function () {
@@ -50,6 +50,46 @@ describe('World', function () {
       place();
       const tile = world.getTile(x, y);
       equal(tile.object.type, type);
+    });
+
+  });
+
+  describe('isSelectionMoved()', function () {
+
+    let world;
+
+    beforeEach(() => {
+      const tiles = generateArray(H, W, getObject);
+      world = new World(tiles);
+    });
+
+    it('return false if there is no selection', () => {
+      isFalse(world.isSelectionMoved());
+    });
+
+    it('return false if selected object has no position (can not moved)', () => {
+      const x = 2, y = 3;
+      world.place(x, y, 'stone');
+      world.select(x, y);
+
+      isFalse(world.isSelectionMoved());
+    });
+
+    it('return true if selected object is moved', () => {
+      const x = 3, y = 2;
+      const walker = world.place(x, y, ObjectType.PERSON);
+      world.select(x, y);
+      walker.moveTo([ x + 1, y - 1 ]);
+
+      isTrue(world.isSelectionMoved());
+    });
+
+    it('return false if selected object is moved', () => {
+      const x = 1, y = 2;
+      world.place(x, y, ObjectType.PERSON);
+      world.select(x, y);
+
+      isFalse(world.isSelectionMoved());
     });
 
   });

@@ -11,8 +11,19 @@ export default class World {
   }
 
   tick() {
-    return this.actors
+    const actions = this.actors
       .map(actor => actor.act());
+
+    const isSelectionMoved = this.isSelectionMoved();
+
+    if (isSelectionMoved) {
+      this.selected.position = this.selected.object.position;
+    }
+
+    return {
+      actions,
+      isSelectionMoved
+    };
   }
 
   // TODO: get rid of this in future =)
@@ -35,6 +46,18 @@ export default class World {
 
       return this.selected;
     }
+  }
+
+  isSelectionMoved() {
+    if (!this.selected || !this.selected.object.position) {
+      return false;
+    }
+
+    const [ x0, y0 ] = this.selected.position;
+    const [ x1, y1 ] = this.selected.object.position;
+
+    return x0 !== x1 || y0 !== y1;
+
   }
 
   removeActor(actor) {
