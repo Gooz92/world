@@ -18,19 +18,46 @@ export default class Viewport {
 
   static DEFAULT_CELL_SIZE = 16;
 
-  constructor(world, options = {}) {
+  constructor(world, worldView, options = {}) {
     this.position = [ 0, 0 ];
     this.size = options.size;
     this.cellSize = Viewport.DEFAULT_CELL_SIZE;
 
     this.world = world;
+    this.worldView = worldView;
 
     this.layers = [];
 
     this.container = createElement('#viewport');
 
-    this.addLayer('main');
-    this.addLayer('guide');
+    this.addLayer('main', {
+      draw: this.draw
+    });
+
+    this.addLayer('guide', {
+      draw: (x, y, width, height) => {
+        if (!this.worldView.selection) {
+          return;
+        }
+
+        const [ gx, gy ] = this.worldView.selection.position;
+
+        const vx = this.world.getCycleX(gx - this.position[0]);
+        const vy = this.world.getCycleY(gy - this.position[1]);
+
+        if (vx >= x && vx < width + x && vy >= y && vy < height + y) {
+          this.drawSelection(vx, vy);
+        } else {
+          // TODO
+          const px = this.getSizeInPX(x),
+            py = this.getSizeInPX(y),
+            pw = this.getSizeInPX(width),
+            ph = this.getSizeInPX(height);
+
+          this.getTopLayer().context.clearRect(px, py, pw, ph);
+        }
+      }
+    });
 
     if (options.onTileClick) {
       this.container.onclick = this.handleMouseEvent((x, y) => {
@@ -77,8 +104,8 @@ export default class Viewport {
     };
   }
 
-  addLayer(name) {
-    const layer = new ViewportLayer(this, name);
+  addLayer(name, options) {
+    const layer = new ViewportLayer(this, name, options);
     this.layers.push(layer);
 
     const canvas = layer.createCanvas();
@@ -128,6 +155,7 @@ export default class Viewport {
     clearRenderer(this.getBottomLayer().context, x, y, this.cellSize);
   }
 
+  // TODO: rename ro refreshTile
   drawTile(tileX, tileY) {
 
     const tile = this.world.getTile(tileX + this.position[0], tileY + this.position[1]);
@@ -162,53 +190,25 @@ export default class Viewport {
   }
 
   scrollVertical(dy) {
-    const { width, height } = this.getBottomLayer().canvas;
-    const { position, size } = this;
+
+    const { position } = this;
 
     position[1] = this.world.getCycleY(position[1] + dy);
 
-    const [ vw, vh ] = size;
-
-    const dwy = this.cellSize * dy;
-
-    const context = this.getBottomLayer().context;
-
-    if (dy > 0) { // move to down
-      const imageData = context.getImageData(0, dwy, width, height - dwy);
-      context.putImageData(imageData, 0, 0);
-
-      this.draw(0, vh - dwy, vw, dwy);
-    } else {
-      const imageData = context.getImageData(0, 0, width, height + dwy);
-      context.putImageData(imageData, 0, -dwy);
-
-      this.draw(0, 0, vw, -dwy);
-    }
+    this.layers.forEach(layer => {
+      layer.scrollVertical(dy);
+    });
   }
 
   scrollHorizontal(dx) {
-    const { width, height } = this.getBottomLayer().canvas;
-    const { position, size } = this;
+
+    const { position } = this;
 
     position[0] = this.world.getCycleX(position[0] + dx);
 
-    const [ vw, vh ] = size;
-
-    const dwx = this.cellSize * dx;
-
-    const context = this.getBottomLayer().context;
-
-    if (dx > 0) { // move to right
-      const imageData = context.getImageData(dwx, 0, width - dwx, height);
-      context.putImageData(imageData, 0, 0);
-
-      this.draw(vw - dx, 0, dx, vh);
-    } else {
-      const imageData = context.getImageData(0, 0, width + dwx, height);
-      context.putImageData(imageData, -dwx, 0);
-
-      this.draw(0, 0, -dx, vh);
-    }
+    this.layers.forEach(layer => {
+      layer.scrollHorizontal(dx);
+    });
   }
 
   scrollUp(dy = 1) {

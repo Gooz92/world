@@ -4,9 +4,11 @@ export default class ViewportLayer {
 
   static ID_PREFIX = 'viewport-layer';
 
-  constructor(viewport, name) {
+  constructor(viewport, name, { draw }) {
     this.viewport = viewport;
     this.name = name;
+
+    this.draw = draw; // TODO: ????
   }
 
   createCanvas() {
@@ -26,6 +28,52 @@ export default class ViewportLayer {
     return canvas;
   }
 
+  scrollVertical(dy) {
+    const { width, height } = this.canvas;
+    const { size } = this.viewport;
+
+    const [ vw, vh ] = size;
+
+    const dwy = this.viewport.cellSize * dy;
+
+    const context = this.context;
+
+    if (dy > 0) { // move to down
+      const imageData = context.getImageData(0, dwy, width, height - dwy);
+      context.putImageData(imageData, 0, 0);
+
+      this.draw.call(this.viewport, 0, vh - dy, vw, dy);
+    } else {
+      const imageData = context.getImageData(0, 0, width, height + dwy);
+      context.putImageData(imageData, 0, -dwy);
+
+      this.draw.call(this.viewport, 0, 0, vw, -dy);
+    }
+  }
+
+  scrollHorizontal(dx) {
+    const { width, height } = this.canvas;
+    const { size } = this.viewport;
+
+    const [ vw, vh ] = size;
+
+    const dwx = this.viewport.cellSize * dx;
+
+    const context = this.context;
+
+    if (dx > 0) { // move to right
+      const imageData = context.getImageData(dwx, 0, width - dwx, height);
+      context.putImageData(imageData, 0, 0);
+
+      this.draw.call(this.viewport, vw - dx, 0, dx, vh);
+    } else {
+      const imageData = context.getImageData(0, 0, width + dwx, height);
+      context.putImageData(imageData, -dwx, 0);
+
+      this.draw.call(this.viewport, 0, 0, -dx, vh);
+    }
+  }
+
   setWidth(width) {
     const dw = this.viewport.width - width;
 
@@ -33,15 +81,20 @@ export default class ViewportLayer {
       return;
     }
 
-    const previousCanvas = this.cloneCanvas();
+    const newCanvWidth = this.viewport.getSizeInPX(width);
 
-    this.canvas.width = this.viewport.getSizeInPX(width);
+    const canvWidth = this.canvas.width,
+      canvHeight = this.canvas.height;
+
+    const previousImage = this.context.getImageData(0, 0, canvWidth, canvHeight);
+
+    this.canvas.width = newCanvWidth;
 
     if (width > this.viewport.width) {
-      this.viewport.draw(width + dw, 0, -dw, this.height);
+      this.draw.call(this.viewport, width + dw, 0, -dw, this.viewport.height);
     }
 
-    this.context.drawImage(previousCanvas, 0, 0);
+    this.context.putImageData(previousImage, 0, 0);
   }
 
   setHeight(height) {
@@ -52,23 +105,19 @@ export default class ViewportLayer {
       return;
     }
 
-    const previousCanvas = this.cloneCanvas();
+    const newCanvHeight = this.viewport.getSizeInPX(height);
 
-    this.canvas.height = this.viewport.getSizeInPX(height);
+    const canvWidth = this.canvas.width,
+      canvHeight = this.canvas.height;
+
+    const previousImage = this.context.getImageData(0, 0, canvWidth, canvHeight);
+
+    this.canvas.height = newCanvHeight;
 
     if (height > this.viewport.height) {
-      this.viewport.draw(0, height + dh, this.width, -dh);
+      this.draw.call(this.viewport, 0, height + dh, this.viewport.width, -dh);
     }
 
-    this.context.drawImage(previousCanvas, 0, 0);
-  }
-
-  cloneCanvas() {
-    const clonedCanvas = this.canvas.cloneNode();
-    const ctx = clonedCanvas.getContext('2d');
-
-    ctx.drawImage(this.canvas, 0, 0);
-
-    return clonedCanvas;
+    this.context.putImageData(previousImage, 0, 0);
   }
 }

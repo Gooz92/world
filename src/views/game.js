@@ -57,34 +57,36 @@ const getTileInfo = tile => {
 };
 
 const wv = new WorldView(world, {
-  viewportSize: [ 40, 30 ],
-  tilesSprite: document.getElementById('tiles-sprite'),
-  onTileClick: (x, y) => {
+  viewport: {
+    size: [ 40, 30 ],
+    tilesSprite: document.getElementById('tiles-sprite'),
+    onTileClick: (x, y) => {
 
-    if (panel.objectType === null) {
-      const selection = wv.select(x, y);
-      panel.updateSelectionInfo(selection);
-      return;
+      if (panel.objectType === null) {
+        const selection = wv.select(x, y);
+        panel.updateSelectionInfo(selection);
+        return;
+      }
+
+      if (panel.objectType === ObjectType.EMPTY) {
+        wv.clearTile(x, y);
+        panel.updateSelectionInfo(wv.world.selection);
+        return;
+      }
+
+      const object = wv.place(x, y, panel.objectType);
+
+      if (panel.objectType === ObjectType.PERSON) {
+        object.setStrategy('cutTrees');
+      }
+    },
+    onTileEnter: (x, y) => {
+      const gx = world.getCycleX(wv.viewport.position[0] + x);
+      const gy = world.getCycleY(wv.viewport.position[1] + y);
+
+      const tile = world.getTile(gx, gy);
+      panel.updateTileInfo(gx + ';' + gy + ' - ' + getTileInfo(tile));
     }
-
-    if (panel.objectType === ObjectType.EMPTY) {
-      wv.clearTile(x, y);
-      panel.updateSelectionInfo(wv.world.selection);
-      return;
-    }
-
-    const object = wv.place(x, y, panel.objectType);
-
-    if (panel.objectType === ObjectType.PERSON) {
-      object.setStrategy('cutTrees');
-    }
-  },
-  onTileEnter: (x, y) => {
-    const gx = world.getCycleX(wv.viewport.position[0] + x);
-    const gy = world.getCycleY(wv.viewport.position[1] + y);
-
-    const tile = world.getTile(gx, gy);
-    panel.updateTileInfo(gx + ';' + gy + ' - ' + getTileInfo(tile));
   }
 });
 

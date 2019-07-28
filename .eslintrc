@@ -14,6 +14,7 @@
 
   "rules": {
     "no-undef": 2,
+    "no-debugger": 2,
     "for-direction": 2,
     "getter-return": 2,
     "no-trailing-spaces": 2,
