@@ -1,6 +1,6 @@
 import PathFinder from 'utils/path-finding/PathFinder.js';
 import CutTreeAction from '../actions/CutTreeAction.js';
-import ObjectType from '../ObjectType.js';
+import ObjectType from '../ObjectType.enum.js';
 import Strategy from './Startegy.js';
 import { isUndefined } from 'utils/common/is.utils.js';
 import WalkStrategy from './WalkStartegy.js';

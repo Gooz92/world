@@ -1,5 +1,5 @@
 import strategies from './strategies';
-import ObjectType from './ObjectType.js';
+import ObjectType from './ObjectType.enum.js';
 import Action from './actions/Action.js';
 import { upperFirst } from 'utils/common/string.utils.js';
 

@@ -1,6 +1,6 @@
 import WorldView from './WorldView';
 import createWorld from '../model/create-world.js';
-import ObjectType from '../model/ObjectType.js';
+import ObjectType from '../model/ObjectType.enum.js';
 
 import getArrowKeyCode from 'utils/common/get-arrow-key-code.js';
 import { upperFirst } from 'utils/common/string.utils.js';
@@ -53,7 +53,8 @@ const getTileInfo = tile => {
     return 'empty';
   }
 
-  return [ 'obstacle', 'tree', 'person' ][tile.object.type - 1];
+  // TODO
+  return [ 'obstacle', 'tree', 'person' ][tile.object.type.id - 1];
 };
 
 const wv = new WorldView(world, {
@@ -68,13 +69,14 @@ const wv = new WorldView(world, {
         return;
       }
 
-      if (panel.objectType === ObjectType.EMPTY) {
+      if (panel.objectType === 0) {
         wv.clearTile(x, y);
         panel.updateSelectionInfo(wv.world.selection);
         return;
       }
 
-      const object = wv.place(x, y, panel.objectType);
+      debugger;
+      const object = wv.place(x, y, ObjectType.fromId(panel.objectType));
 
       if (panel.objectType === ObjectType.PERSON) {
         object.setStrategy('cutTrees');

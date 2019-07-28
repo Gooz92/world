@@ -1,6 +1,8 @@
 import { createElement } from '../utils/common/dom.utils.js';
 import ObjectType from '../model/ObjectType.js';
 
+debugger;
+
 export default function createMenu(options) {
 
   const menu = createElement('ul', { className: 'menu' });
@@ -10,10 +12,10 @@ export default function createMenu(options) {
   let value = null;
 
   [
-    { name: 'Obstacle', id: ObjectType.OBSTACLE },
-    { name: 'Tree', id: ObjectType.TREE },
-    { name: 'Person', id: ObjectType.PERSON },
-    { name: 'Erase', id: ObjectType.EMPTY }
+    { name: 'Obstacle', id: ObjectType.OBSTACLE.id },
+    { name: 'Tree', id: ObjectType.TREE.id },
+    { name: 'Person', id: ObjectType.PERSON.id },
+    { name: 'Erase', id: 0 }
   ].forEach(({ name, id }) => {
 
     const li = createElement('li', {

@@ -3,8 +3,8 @@ import World from './World.js';
 import { generateArray } from 'utils/common/array.utils.js';
 import { getObject } from 'utils/common/fn.utils.js';
 
-import { equal, isFalse, isTrue } from 'utils/common/assertion.js';
-import ObjectType from './ObjectType.js';
+import { equal, } from 'utils/common/assertion.js';
+import ObjectType from './ObjectType.enum.js';
 
 describe('World', function () {
 
