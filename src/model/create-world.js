@@ -3,7 +3,7 @@ import { normalize, getIndex } from 'utils/common/math.utils.js';
 import { generateArray } from 'utils/common/array.utils.js';
 
 import World from './World.js';
-import ObjectType from './ObjectType.enum.js';
+import ObjectType from 'model/ObjectType.enum.js';
 import { randomGenerator } from 'utils/common/random.utils.js';
 
 const generator = diamondSquareGenerator()

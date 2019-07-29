@@ -1,4 +1,4 @@
-import { createElement } from '../utils/common/dom.utils.js';
+import { createElement } from 'utils/common/dom.utils.js';
 import { time } from 'utils/common/dev.utils.js';
 
 export default function createControls(tick, tickTime) {

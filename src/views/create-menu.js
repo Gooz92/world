@@ -1,7 +1,5 @@
-import { createElement } from '../utils/common/dom.utils.js';
-import ObjectType from '../model/ObjectType.js';
-
-debugger;
+import { createElement } from 'utils/common/dom.utils.js';
+import ObjectType from 'model/ObjectType.enum.js';
 
 export default function createMenu(options) {
 

@@ -2,6 +2,7 @@ import { forIn } from './object.utils.js';
 
 export default function createEnum(constructor, meta) {
 
+  debugger;
   let init = false;
   const members = [];
 

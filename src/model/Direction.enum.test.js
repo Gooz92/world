@@ -1,4 +1,4 @@
-import Direction from './Direction.enum.js';
+import Direction from 'model/Direction.enum.js';
 import { equal } from 'utils/common/assertion.js';
 
 describe('Direction.enum', function () {

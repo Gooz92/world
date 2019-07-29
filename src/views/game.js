@@ -1,6 +1,6 @@
 import WorldView from './WorldView';
 import createWorld from '../model/create-world.js';
-import ObjectType from '../model/ObjectType.enum.js';
+import ObjectType from 'model/ObjectType.enum.js';
 
 import getArrowKeyCode from 'utils/common/get-arrow-key-code.js';
 import { upperFirst } from 'utils/common/string.utils.js';
@@ -75,10 +75,11 @@ const wv = new WorldView(world, {
         return;
       }
 
-      debugger;
-      const object = wv.place(x, y, ObjectType.fromId(panel.objectType));
+      const type = ObjectType.fromId(panel.objectType);
 
-      if (panel.objectType === ObjectType.PERSON) {
+      const object = wv.place(x, y, type);
+
+      if (type === ObjectType.PERSON) {
         object.setStrategy('cutTrees');
       }
     },

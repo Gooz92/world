@@ -1,4 +1,4 @@
-import ObjectType from './ObjectType.enum.js';
+import ObjectType from 'model/ObjectType.enum.js';
 import Person from 'model/Person.js';
 
 import { getCycleCoordinate } from 'utils/common/math.utils.js';

@@ -4,7 +4,7 @@ import { generateArray } from 'utils/common/array.utils.js';
 import { getObject } from 'utils/common/fn.utils.js';
 
 import { equal, } from 'utils/common/assertion.js';
-import ObjectType from './ObjectType.enum.js';
+import ObjectType from 'model/ObjectType.enum.js';
 
 describe('World', function () {
 
