@@ -2,8 +2,7 @@ const { rollup } = require('rollup');
 
 const
   babel = require('rollup-plugin-babel'),
-  commonjs = require('rollup-plugin-commonjs'),
-  alias = require('rollup-plugin-alias');
+  resolve = require('rollup-plugin-node-resolve');
 
 const bundle = rollup({
   input: 'src/utils/path-finding/PathFinder.perft.js',
@@ -11,10 +10,10 @@ const bundle = rollup({
     babel({
       exclude: 'node_modules/**'
     }),
-    commonjs(),
-    alias({
-      utils: 'src/utils',
-      model: 'src/model'
+    resolve({
+      customResolveOptions: {
+        moduleDirectory: 'src'
+      }
     })
   ]
 });

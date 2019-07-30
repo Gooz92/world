@@ -1,10 +1,11 @@
 import { createElement } from 'utils/common/dom.utils.js';
+import { noop } from 'utils/common/fn.utils.js';
 
 export default class ViewportLayer {
 
   static ID_PREFIX = 'viewport-layer';
 
-  constructor(viewport, name, { draw }) {
+  constructor(viewport, name, { draw = noop } = {}) {
     this.viewport = viewport;
     this.name = name;
 

@@ -2,9 +2,7 @@
 const
   commonRollupConfig = require('./rollup.config/rollup.config.common.js'),
 
-  commonjs = require('rollup-plugin-commonjs'),
-  babel = require('rollup-plugin-babel'),
-  alias = require('rollup-plugin-alias');
+  commonjs = require('rollup-plugin-commonjs');
 
 module.exports = function (config) {
   config.set({
@@ -28,15 +26,7 @@ module.exports = function (config) {
         }
       },
       plugins: [
-        babel({
-          exclude: 'node_modules/**'
-        }),
-        alias({
-          utils: 'src/utils',
-          model: 'src/model',
-          modules: 'src/modules',
-          'test-utils': 'src/test-utils'
-        }),
+        ...commonRollupConfig.plugins,
         commonjs()
       ],
       output: {
