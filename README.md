@@ -30,7 +30,6 @@ There are "@"s. They are are cutting down trees.
   * Path smoothing somethimes dosen't work with border-crossing paths.
 
 ## TODO
-  * display selected object info
   * Run single test
   * Improve assertion error messages
   * Debug test from IDE

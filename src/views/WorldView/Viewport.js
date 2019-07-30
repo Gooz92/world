@@ -18,46 +18,16 @@ export default class Viewport {
 
   static DEFAULT_CELL_SIZE = 16;
 
-  constructor(world, worldView, options = {}) {
+  constructor(world, options = {}) {
     this.position = [ 0, 0 ];
     this.size = options.size;
     this.cellSize = Viewport.DEFAULT_CELL_SIZE;
 
     this.world = world;
-    this.worldView = worldView;
 
     this.layers = [];
 
     this.container = createElement('#viewport');
-
-    this.addLayer('main', {
-      draw: this.draw
-    });
-
-    this.addLayer('guide', {
-      draw: (x, y, width, height) => {
-        if (!this.worldView.selection) {
-          return;
-        }
-
-        const [ gx, gy ] = this.worldView.selection.position;
-
-        const vx = this.world.getCycleX(gx - this.position[0]);
-        const vy = this.world.getCycleY(gy - this.position[1]);
-
-        if (vx >= x && vx < width + x && vy >= y && vy < height + y) {
-          this.drawSelection(vx, vy);
-        } else {
-          // TODO
-          const px = this.getSizeInPX(x),
-            py = this.getSizeInPX(y),
-            pw = this.getSizeInPX(width),
-            ph = this.getSizeInPX(height);
-
-          this.getTopLayer().context.clearRect(px, py, pw, ph);
-        }
-      }
-    });
 
     if (options.onTileClick) {
       this.container.onclick = this.handleMouseEvent((x, y) => {
@@ -111,6 +81,8 @@ export default class Viewport {
     const canvas = layer.createCanvas();
 
     this.container.appendChild(canvas);
+
+    return this;
   }
 
   getBottomLayer() {

@@ -57,45 +57,45 @@ const getTileInfo = tile => {
   return [ 'obstacle', 'tree', 'person' ][tile.object.type.id - 1];
 };
 
-const wv = new WorldView(world, {
-  viewport: {
-    size: [ 40, 30 ],
-    tilesSprite: document.getElementById('tiles-sprite'),
-    onTileClick: (x, y) => {
+const wv = new WorldView(world, new Viewport(world, {
+  size: [ 40, 30 ],
+  tilesSprite: document.getElementById('tiles-sprite'),
+  onTileClick: (x, y) => {
 
-      if (panel.objectType === null) {
-        const selection = wv.select(x, y);
-        panel.updateSelectionInfo(selection);
-        return;
-      }
-
-      if (panel.objectType === 0) {
-        wv.clearTile(x, y);
-        panel.updateSelectionInfo(wv.world.selection);
-        return;
-      }
-
-      const type = ObjectType.fromId(panel.objectType);
-
-      const object = wv.place(x, y, type);
-
-      if (type === ObjectType.PERSON) {
-        object.setStrategy('cutTrees');
-      }
-    },
-    onTileEnter: (x, y) => {
-      const gx = world.getCycleX(wv.viewport.position[0] + x);
-      const gy = world.getCycleY(wv.viewport.position[1] + y);
-
-      const tile = world.getTile(gx, gy);
-      panel.updateTileInfo(gx + ';' + gy + ' - ' + getTileInfo(tile));
+    if (panel.objectType === null) {
+      const selection = wv.select(x, y);
+      panel.updateSelectionInfo(selection);
+      return;
     }
+
+    if (panel.objectType === 0) {
+      wv.clearTile(x, y);
+      panel.updateSelectionInfo(wv.selection);
+      return;
+    }
+
+    const type = ObjectType.fromId(panel.objectType);
+
+    const object = wv.place(x, y, type);
+
+    if (type === ObjectType.PERSON) {
+      object.setStrategy('cutTrees');
+    }
+  },
+  onTileEnter: (x, y) => {
+    const gx = world.getCycleX(wv.viewport.position[0] + x);
+    const gy = world.getCycleY(wv.viewport.position[1] + y);
+
+    const tile = world.getTile(gx, gy);
+    panel.updateTileInfo(gx + ';' + gy + ' - ' + getTileInfo(tile));
   }
-});
+}));
+
+wv.initLayers();
 
 panel = createButtomPanel(() => {
-  panel.updateSelectionInfo(wv.world.selected);
   wv.tick();
+  panel.updateSelectionInfo(wv.selection);
 });
 
 const main = document.getElementById('main');

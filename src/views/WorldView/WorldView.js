@@ -1,7 +1,3 @@
-import Viewport from './Viewport.js';
-import { clearRenderer } from './renderers.js';
-
-
 /**
  * TODO: Create world view controller or smth like that
  * to handle selection, object placing etc ?
@@ -11,13 +7,43 @@ import { clearRenderer } from './renderers.js';
 
 export default class WorldView {
 
-  constructor(world, { viewport }) {
+  constructor(world, viewport) {
     this.world = world;
-
-    // TODO: passin worldView to viewport it's a bad idea ?
-    this.viewport = new Viewport(world, this, viewport);
+    this.viewport = viewport;
 
     this.selection = null;
+  }
+
+  initLayers() {
+
+    this.viewport
+      .addLayer('main', {
+        draw: this.viewport.draw
+      })
+      .addLayer('guide', {
+        draw: (x, y, width, height) => {
+          if (!this.selection) {
+            return;
+          }
+
+          const [ gx, gy ] = this.selection.position;
+
+          const vx = this.world.getCycleX(gx - this.viewport.position[0]);
+          const vy = this.world.getCycleY(gy - this.viewport.position[1]);
+
+          if (vx >= x && vx < width + x && vy >= y && vy < height + y) {
+            this.viewport.drawSelection(vx, vy);
+          } else {
+            // TODO
+            const px = this.viewport.getSizeInPX(x),
+              py = this.viewport.getSizeInPX(y),
+              pw = this.viewport.getSizeInPX(width),
+              ph = this.viewport.getSizeInPX(height);
+
+            this.viewport.getTopLayer().context.clearRect(px, py, pw, ph);
+          }
+        }
+      });
   }
 
   tick() {
@@ -43,6 +69,10 @@ export default class WorldView {
 
       this.viewport.drawSelection(vx, vy);
     }
+
+    if (this.isSelectedObjectRemoved()) {
+      this.resetSelection();
+    }
   }
 
   clearSelection() {
@@ -58,11 +88,7 @@ export default class WorldView {
     const vx = this.world.getCycleX(gx - this.viewport.position[0]);
     const vy = this.world.getCycleY(gy - this.viewport.position[1]);
 
-    clearRenderer(
-      guideLayer.context,
-      this.viewport.cellSize * vx, this.viewport.cellSize * vy,
-      this.viewport.cellSize
-    );
+    guideLayer.clearTile(vx, vy);
   }
 
   resetSelection() {
@@ -73,9 +99,7 @@ export default class WorldView {
   select(x, y) {
     const [ gx, gy ] = this.getGlobalPosition(x, y);
 
-    const { object } = this.world.getTile(gx, gy);
-
-    if (!object) {
+    if (!this.world.isTileOccupied(gx, gy)) { // TODO ?
       this.resetSelection();
       return;
     }
@@ -86,10 +110,21 @@ export default class WorldView {
 
     this.selection = {
       position: [ gx, gy ],
-      object
+      object: this.world.getTile(gx, gy).object
     };
 
     return this.selection;
+  }
+
+  // TODO: Handle manually selection changes is too error-prone (
+  isSelectedObjectRemoved() {
+    if (!this.selection) {
+      return false;
+    }
+
+    const [ x, y ] = this.selection.position;
+
+    return !this.world.isTileOccupied(x, y);
   }
 
   isSelectionMoved() {
@@ -140,7 +175,6 @@ export default class WorldView {
   clearTile(x, y) {
     const [ gx, gy ] = this.getGlobalPosition(x, y);
 
-    this.clearSelection();
     this.world.clearTile(gx, gy);
 
     this.viewport.drawTile(x, y);

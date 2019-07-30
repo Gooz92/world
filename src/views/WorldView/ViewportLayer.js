@@ -1,9 +1,9 @@
 import { createElement } from 'utils/common/dom.utils.js';
 import { noop } from 'utils/common/fn.utils.js';
 
-export default class ViewportLayer {
+import { clearRenderer } from './renderers';
 
-  static ID_PREFIX = 'viewport-layer';
+export default class ViewportLayer {
 
   constructor(viewport, name, { draw = noop } = {}) {
     this.viewport = viewport;
@@ -27,6 +27,13 @@ export default class ViewportLayer {
     this.context = canvas.getContext('2d');
 
     return canvas;
+  }
+
+  clearTile(tileX, tileY) {
+    const x = this.viewport.getSizeInPX(tileX),
+      y = this.viewport.getSizeInPX(tileY);
+
+    clearRenderer(this.context, x, y, this.viewport.cellSize);
   }
 
   scrollVertical(dy) {

@@ -3,10 +3,10 @@ import createControls from './create-controls.js';
 
 import { createElement } from 'utils/common/dom.utils.js';
 
-const presentors = [
-  tree => 'tree',
-  person => person.name + ' : ' + person.strategyName
-];
+const presentors = {
+  tree: tree => 'tree',
+  person: person => person.name + ' : ' + person.strategyName
+};
 
 const TICK_TIME = 80;
 
@@ -49,8 +49,7 @@ export default function createButtomPanel(tick) {
 
       const [ x, y ] = selection.position;
       const object = selection.object;
-      // TODO
-      selectionInfo.innerHTML = `${x};${y} - ${presentors[object.type.id - 2](object)}`;
+      selectionInfo.innerHTML = `${x};${y} - ${presentors[object.type.name](object)}`;
     },
     get objectType() {
       return objectType;

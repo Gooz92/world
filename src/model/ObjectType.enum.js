@@ -3,7 +3,7 @@ import createEnum from 'utils/common/create-enum.js';
 const ObjectType = createEnum(
   function(id, name) {
     this.id = id;
-    this.name = name;
+    this.name = name.toLowerCase();
   },
   {
     OBSTACLE: [ 1 ],
