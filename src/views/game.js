@@ -9,6 +9,11 @@ import { time } from 'utils/common/dev.utils.js';
 import { debounce } from 'utils/common/fn.utils.js';
 import Viewport from './WorldView/Viewport';
 import createButtomPanel from './create-buttom-panel';
+import { paramsHandler } from '../app.utils.js';
+
+paramsHandler(({ seed, empty }) => {
+  console.log(seed, empty);
+});
 
 const world = createWorld();
 
