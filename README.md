@@ -39,7 +39,18 @@ There are "@"s. They are are cutting down trees.
 
 ## Roadmap
 
-  ### v 0.0.1 (MVP)
+  ### v 0.0.x
+    * Sandbox (ui, user interaction improvements, refactor)
+    * Collision handling (one person per tile)
+    * Place stock area
+    * Woodcutting mechanics impovement (take a wood and bring to storage)
+    * Place house
+    * Display resource count and populcation
+    * Assign jobs (for start idle and cut trees)
+    * Game run ( not sandbox as now )
+    * Game saving ( in local storage)
+
+  ### v 0.1.0 (MVP)
 
   * Resources: wood and food
   * Building: house, barn, stock (area)
