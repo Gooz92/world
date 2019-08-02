@@ -22,8 +22,9 @@ describe('PathFinder', function () {
       const finder = createFinder();
 
       const { path } = finder.find(world, startX, y0);
+      const positions = path.map(node => node.position);
 
-      deepEqual(path, [ [ 2, 2 ] ]);
+      deepEqual(positions, [ [ 2, 2 ] ]);
     });
 
     // strairs, hills ?

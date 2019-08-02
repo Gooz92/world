@@ -6,6 +6,8 @@ import { last } from 'utils/common/array.utils.js';
 import { getTrue } from 'utils/common/fn.utils.js';
 import Direction from 'model/Direction.enum.js';
 
+const getPosition = node => node.position;
+
 describe('smoothPath', function () {
   // cost or length ?
   it('smoothed path contains start and end points', () => {
@@ -40,7 +42,7 @@ describe('smoothPath', function () {
       { position: end, direction: null }
     ];
 
-    const smoothed = smoothPath(path, getTrue, width, height).map(node => node.position);
+    const smoothed = smoothPath(path, getTrue, width, height).map(getPosition);
     deepEqual(smoothed, [ [ 3, 0 ], [ 2, 18 ] ]);
 
   });
@@ -56,8 +58,9 @@ describe('expandPath', function () {
     ];
 
     const expanded = expandPath(path, 10, 10);
+    const positions = expanded.map(getPosition);
 
-    deepEqual(expanded, [ [ 4, 2 ], [ 5, 2 ], [ 6, 2 ], [ 7, 2 ] ]);
+    deepEqual(positions, [ [ 4, 2 ], [ 5, 2 ], [ 6, 2 ], [ 7, 2 ] ]);
   });
 
   it('work with cycled coordinates', () => {
@@ -66,9 +69,10 @@ describe('expandPath', function () {
       { position: [ 4, 2 ] }
     ];
 
-    const expaned = expandPath(path, 6, 4);
+    const expanded = expandPath(path, 6, 4);
+    const positions = expanded.map(getPosition);
 
-    deepEqual(expaned, [ [ 2, 2 ], [ 1, 2 ], [ 0, 2 ], [ 5, 2 ], [ 4, 2 ] ]);
+    deepEqual(positions, [ [ 2, 2 ], [ 1, 2 ], [ 0, 2 ], [ 5, 2 ], [ 4, 2 ] ]);
   });
 
 });

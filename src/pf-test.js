@@ -72,7 +72,7 @@ const pf = {
 
     const { path } = pf.find(tiles, this.start.x, this.start.y);
 
-    path.forEach(([ x, y ]) => {
+    path.forEach(({ position: [ x, y ] }) => {
       document.getElementById(`tile-${x}-${y}`).innerHTML = '*';
     });
   }

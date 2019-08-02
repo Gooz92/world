@@ -102,7 +102,7 @@ export function smoothPath(path, isTilePassable, width, height) {
 export function expandPath(path, width, height) {
 
   if (path.length < 2) {
-    return path.map(node => node.position);
+    return path;
   }
 
   const expanded = [];
@@ -117,10 +117,12 @@ export function expandPath(path, width, height) {
     const segment = interpolate(x0, y0, x1, y1);
 
     segment.forEach(([ x, y ]) => {
-      expanded.push([
-        getCycleCoordinate(x, width),
-        getCycleCoordinate(y, height)
-      ]);
+      expanded.push({
+        position: [
+          getCycleCoordinate(x, width),
+          getCycleCoordinate(y, height)
+        ]
+      });
     });
 
   }

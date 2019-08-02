@@ -11,7 +11,7 @@ describe('WalkStrategy', function () {
     const person = world.placePerson(2, 3);
 
     person.setStrategy('walk', {
-      path: [ [ 3, 4 ] ]
+      path: [{ position: [ 3, 4 ] }]
     });
 
     const strategy = person.strategy;

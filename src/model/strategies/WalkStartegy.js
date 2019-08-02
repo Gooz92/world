@@ -15,7 +15,7 @@ export default class WalkStrategy extends Strategy {
       return Action.IDLE;
     }
 
-    const position = this.path.shift();
+    const { position } = this.path.shift();
 
     return new MoveAction(this.actor, position);
   }
