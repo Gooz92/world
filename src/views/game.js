@@ -9,7 +9,7 @@ import { time } from 'utils/common/dev.utils.js';
 import { debounce } from 'utils/common/fn.utils.js';
 import Viewport from './WorldView/Viewport';
 import createButtomPanel from './create-buttom-panel';
-import { paramsHandler } from '../app.utils.js';
+import { paramsHandler, getViewportSize } from '../app.utils.js';
 
 paramsHandler(({ seed, empty }) => {
   console.log(seed, empty);
@@ -17,17 +17,8 @@ paramsHandler(({ seed, empty }) => {
 
 const world = createWorld();
 
-function getViewportSize() {
-  const { width, height } = wv.viewport.container.getBoundingClientRect();
-
-  return [
-    Math.ceil(width / Viewport.DEFAULT_CELL_SIZE),
-    Math.ceil(height / Viewport.DEFAULT_CELL_SIZE)
-  ];
-}
-
 window.addEventListener('resize', debounce(event => {
-  const [ w, h ] = getViewportSize();
+  const [ w, h ] = getViewportSize(wv.viewport.container, wv.viewport.cellSize);
 
   wv.viewport.setWidth(w);
   wv.viewport.setHeight(h);
@@ -58,8 +49,7 @@ const getTileInfo = tile => {
     return 'empty';
   }
 
-  // TODO
-  return [ 'obstacle', 'tree', 'person' ][tile.object.type.id - 1];
+  return tile.object.type.name;
 };
 
 const wv = new WorldView(world, new Viewport(world, {
@@ -108,7 +98,7 @@ const main = document.getElementById('main');
 main.appendChild(wv.viewport.container);
 main.appendChild(panel.element);
 
-const [ w, h ] = getViewportSize();
+const [ w, h ] = getViewportSize(wv.viewport.container, wv.viewport.cellSize);
 
 wv.viewport.setSize(w, h);
 
