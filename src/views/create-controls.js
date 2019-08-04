@@ -33,6 +33,14 @@ export default function createControls(tick, tickTime) {
         buttons.stop.disabled = true;
         buttons.play.disabled = false;
       }
+    }),
+
+    reload: createElement('button', {
+      innerHTML: 'Regenerate',
+      onclick: () => {
+        clearTimeout(timeoutId);
+        location.hash = '';
+      }
     })
   };
 

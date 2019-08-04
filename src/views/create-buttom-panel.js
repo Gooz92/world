@@ -27,6 +27,8 @@ export default function createButtomPanel(tick) {
 
   const controls = createControls(tick, TICK_TIME);
 
+  clearTimeout(controls.timeoutId);
+
   panel.appendChild(controls.container);
 
   panel.appendChild(info);

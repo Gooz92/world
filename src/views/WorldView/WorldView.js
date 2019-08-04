@@ -14,6 +14,19 @@ export default class WorldView {
     this.selection = null;
   }
 
+  static _instance = null;
+
+  static getInstance(world, viewport) {
+    if (this._instance) {
+      this._instance.world = world;
+      this._instance.viewport = viewport;
+    } else {
+      this._instance = new WorldView(world, viewport);
+    }
+
+    return this._instance;
+  }
+
   initLayers() {
 
     this.viewport
