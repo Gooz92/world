@@ -15,10 +15,10 @@ const secondWalker = world.placePerson(x2, y2);
 
 const createPathNode = position => ({ position });
 
-const aPath = [ p1, [ 2, 2 ], [ 2, 3 ], [ 2, 4 ], p2 ].map(createPathNode);
-const bPath = [ p2, [ 2, 4 ], [ 2, 3 ], [ 2, 2 ], p1 ].map(createPathNode);
+// path not include star actor position
+const aPath = [ [ 2, 2 ], [ 2, 3 ], [ 2, 4 ], p2 ].map(createPathNode);
+const bPath = [ [ 2, 4 ], [ 2, 3 ], [ 2, 2 ], p1 ].map(createPathNode);
 
-const ticks = Math.max(aPath.length, bPath.length) * 2;
 
 firstWalker.strategy = new WalkStrategy(world, firstWalker, {
   path: aPath
@@ -28,7 +28,11 @@ secondWalker.strategy = new WalkStrategy(world, secondWalker, {
   path: bPath
 });
 
-for (let i = 0; i < ticks; i++) {
+
+while (
+  (firstWalker.position[0] !== p2[0] || firstWalker.position[1] !== p2[1]) &&
+  (secondWalker.position[0] !== p1[0] || secondWalker.position[1] !== p1[1])
+) {
   world.tick();
   console.log(firstWalker.position, secondWalker.position);
 }
