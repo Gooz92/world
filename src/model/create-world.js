@@ -5,6 +5,7 @@ import { generateArray } from 'utils/common/array.utils.js';
 import World from './World.js';
 import ObjectType from 'model/ObjectType.enum.js';
 import { randomGenerator } from 'utils/common/random.utils.js';
+import { getObject } from 'utils/common/fn.utils.js';
 
 const generator = diamondSquareGenerator()
   .setCellSize(32)
@@ -12,24 +13,29 @@ const generator = diamondSquareGenerator()
   .setCols(18)
   .build();
 
-const seed = 42;
-
-const random = randomGenerator(seed);
-
-const map = normalize(
-  generator.generate(1, 42).map(i => Math.sqrt(i * i * i)), 1
-).map(i => random.nextBoolean(0.4 * i));
-
 const { width, height } = generator.size;
 
-export default function createWorld() {
+function createTiles(seed, empty) {
 
-  const tiles = generateArray(height, y => (
+  if (empty) {
+    return generateArray(height, width, getObject);
+  }
+
+  const random = randomGenerator(seed);
+
+  const map = normalize(
+    generator.generate(1, 42).map(i => Math.sqrt(i * i * i)), 1
+  ).map(i => random.nextBoolean(0.4 * i));
+
+  return generateArray(height, y => (
     generateArray(width, x => ({
       object: map[getIndex(x, y, width, height)] ? { type: ObjectType.TREE } : null
-    })))
-  );
+    }))));
+}
 
+export default function createWorld({ seed, empty }) {
+
+  const tiles = createTiles(seed, empty);
   const world = new World(tiles);
 
   return world;

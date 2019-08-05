@@ -1,1 +1,1 @@
-import './views/game.js';
+import './views/sandbox.js';

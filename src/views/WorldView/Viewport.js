@@ -17,11 +17,30 @@ import TileRenderer from './TileRenderer.js';
 export default class Viewport {
 
   static DEFAULT_CELL_SIZE = 16;
+  static DEFAULT_SIZE = [ 16, 9 ];
+
+  static createBuilder() {
+    return {
+      options: {},
+      setWorld(world) {
+        this.world = world;
+        return this;
+      },
+      setOptions(options) {
+        Object.assign(this.options, options);
+        return this;
+      },
+
+      build() {
+        return new Viewport(this.world, this.options);
+      }
+    };
+  }
 
   constructor(world, options = {}) {
     this.position = [ 0, 0 ];
-    this.size = options.size;
     this.cellSize = Viewport.DEFAULT_CELL_SIZE;
+    this.size = Viewport.DEFAULT_SIZE;
 
     this.world = world;
 
@@ -29,6 +48,10 @@ export default class Viewport {
 
     this.container = createElement('#viewport');
 
+    this.setOptions(options);
+  }
+
+  setOptions(options) {
     if (options.onTileClick) {
       this.container.onclick = this.handleMouseEvent((x, y) => {
         options.onTileClick(x, y);

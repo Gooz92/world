@@ -39,13 +39,22 @@ export function paramsHandler(onInput) {
     onInput(params);
   }
 
-  location.hash = stringifyParams(params, {
-    seed: seed => seed.toString(36),
-    empty: e => +e
-  });
+  location.hash = stringifiedParams;
 
-  window.onhashchange = hash => {
-    onInput(getParams());
+  window.onhashchange = () => {
+
+    const params = getParams();
+
+    const stringifiedParams = stringifyParams(params, {
+      seed: seed => seed.toString(36),
+      empty: e => +e
+    });
+
+    if (stringifiedParams !== getLocationHash()) {
+      location.hash = stringifiedParams;
+    } else {
+      onInput(params);
+    }
   };
 }
 
