@@ -16,18 +16,16 @@ export default class Person {
     this.name = `person-${count++}`;
   }
 
-  moveTo(direction) {
+  moveTo(position) {
     const [ x1, y1 ] = this.position;
-
-    const x2 = this.world.getCycleX(x1 + direction.dx),
-      y2 = this.world.getCycleY(y1 + direction.dy);
+    const [ x2, y2 ] = position;
 
     this.world.getTile(x1, y1).object = null;
 
     const nextTile = this.world.getTile(x2, y2);
     nextTile.object = this;
 
-    this.position = [ x2, y2 ];
+    this.position = position;
   }
 
   setStrategy(strategyName, options = {}) {

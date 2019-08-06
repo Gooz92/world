@@ -1,6 +1,6 @@
 import MoveAction from './MoveAction.js';
 import spy from 'test-utils/spy.js';
-import { equal } from 'utils/common/assertion.js';
+import { deepEqual } from 'utils/common/assertion.js';
 import Direction from 'model/Direction.enum.js';
 
 describe('MoveAction', function () {
@@ -15,11 +15,11 @@ describe('MoveAction', function () {
 
     const direction = Direction.fromPoints(from, to);
 
-    const move = new MoveAction(actor, to);
+    const move = new MoveAction(actor, direction, to);
 
-    it('call actor.moveTo(direction)', () => {
+    it('call actor.moveTo(destination)', () => {
       move.perform();
-      equal(actor.moveTo.calls[0][0], direction);
+      deepEqual(actor.moveTo.calls[0][0], to);
     });
 
   });

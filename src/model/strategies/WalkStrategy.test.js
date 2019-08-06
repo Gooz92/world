@@ -2,6 +2,7 @@ import { generateArray } from 'utils/common/array.utils.js';
 import { getObject } from 'utils/common/fn.utils.js';
 import World from 'model/World.js';
 import { equal } from 'utils/common/assertion.js';
+import Direction from 'model/Direction.enum.js';
 
 describe('WalkStrategy', function () {
 
@@ -11,7 +12,7 @@ describe('WalkStrategy', function () {
     const person = world.placePerson(2, 3);
 
     person.setStrategy('walk', {
-      path: [{ position: [ 3, 4 ] }]
+      path: [{ position: [ 3, 4 ], direction: Direction.SOUTH_EAST }]
     });
 
     const strategy = person.strategy;
