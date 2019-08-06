@@ -1,7 +1,6 @@
 import { createElement } from 'utils/common/dom.utils.js';
 import diamondSquareGenerator from 'utils/common/DiamondSquareGenerator.js';
 import { normalize, getIndex } from 'utils/common/math.utils.js';
-import * as objectUtils from 'utils/common/object.utils.js';
 import PathFinder from 'utils/path-finding/PathFinder.js';
 import { chunk } from 'utils/common/array.utils.js';
 
@@ -17,13 +16,15 @@ const { width, height } = generator.size;
 
 console.log(width, height);
 
-const mapContainer = createElement('.map', {
+const canvas = createElement('canvas', {
+  width: TILE_SIZE * width,
+  height: TILE_SIZE * height,
   style: {
-    width: `${TILE_SIZE * width}px`,
-    height: `${TILE_SIZE * height}px`,
     outline: '1px solid #777'
   }
 });
+
+const ctx = canvas.getContext('2d');
 
 const map = normalize(
   generator.generate(1, 42).map(i => Math.sqrt(i * i * i)), 1
@@ -34,14 +35,10 @@ const tiles = chunk(map, width);
 for (let y = 0; y < height; y++) {
   for (let x = 0; x < width; x++) {
     const index = getIndex(x, y, width, height);
-    const sign = map[index] ? '#' : ' ';
 
-    const tile = createElement(`#tile-${x}-${y}`, {
-      innerHTML: sign,
-      dataset: { x, y }
-    });
-
-    mapContainer.appendChild(tile);
+    if (map[index]) {
+      ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
   }
 }
 
@@ -73,14 +70,18 @@ const pf = {
     const { path } = pf.find(tiles, this.start.x, this.start.y);
 
     path.forEach(({ position: [ x, y ] }) => {
-      document.getElementById(`tile-${x}-${y}`).innerHTML = '*';
+      ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
     });
   }
 };
 
-mapContainer.addEventListener('click', ({ target: { dataset } }) => {
-  const point = objectUtils.map(dataset, value => parseInt(value));
-  pf.setPoint(point);
+canvas.addEventListener('click', event => {
+  const { left, top } = event.target.getBoundingClientRect();
+
+  const x = Math.floor((event.clientX - left) / TILE_SIZE);
+  const y = Math.floor((event.clientY - top) / TILE_SIZE);
+
+  pf.setPoint({ x, y });
 });
 
-document.body.appendChild(mapContainer);
+document.body.appendChild(canvas);
