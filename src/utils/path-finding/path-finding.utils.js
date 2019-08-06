@@ -1,6 +1,7 @@
 import { last } from 'utils/common/array.utils.js';
 import interpolate from '../../interpolate.js';
 import { getCycleCoordinate } from 'utils/common/math.utils.js';
+import Direction from 'model/Direction.enum.js';
 
 export function postProcess(node, isTilePassable, width, height) {
 
@@ -116,15 +117,24 @@ export function expandPath(path, width, height) {
 
     const segment = interpolate(x0, y0, x1, y1);
 
-    segment.forEach(([ x, y ]) => {
+    expanded.push({
+      direction: path[i].direction,
+      position: [
+        getCycleCoordinate(x0, width),
+        getCycleCoordinate(y0, height)
+      ]
+    });
+
+    for (let i = 1; i < segment.length; i++) {
+      const [ x, y ] = segment[i];
       expanded.push({
+        direction: Direction.fromPoints(segment[i - 1], segment[i]),
         position: [
           getCycleCoordinate(x, width),
           getCycleCoordinate(y, height)
         ]
       });
-    });
-
+    }
   }
 
   return expanded;

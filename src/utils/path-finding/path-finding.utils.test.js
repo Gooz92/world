@@ -1,12 +1,48 @@
-import { smoothPath, expandPath, getNextCoordinate } from './path-finding.utils.js';
+import {
+  backtracePath,
+  smoothPath,
+  expandPath,
+  getNextCoordinate
+} from './path-finding.utils.js';
 
 import { deepEqual, equal } from 'utils/common/assertion.js';
 
 import { last } from 'utils/common/array.utils.js';
 import { getTrue } from 'utils/common/fn.utils.js';
 import Direction from 'model/Direction.enum.js';
+import buildLinkedList from './path-finding.test-utils.js';
 
 const getPosition = node => node.position;
+
+describe('backtracePath', function () {
+  it('calculate directions', () => {
+    const x0 = 2, l0 = 5, l1 = 3;
+    const path = [];
+
+    for (let i = 0; i < l0; i++) {
+      path.push({
+        position: [ x0, i ],
+        direction: Direction.SOUTH
+      });
+    }
+
+    for (let i = 0; i < l1; i++) {
+      path.push({
+        direction: Direction.SOUTH_EAST,
+        position: [ x0 + i + 1, l0 + i ]
+      });
+    }
+
+    const node = buildLinkedList(path, (node, data) => {
+      Object.assign(node, data);
+    });
+
+    const processedPath = backtracePath(node);
+
+    equal(processedPath[0].direction, Direction.SOUTH);
+    equal(processedPath[1].direction, Direction.SOUTH_EAST);
+  });
+});
 
 describe('smoothPath', function () {
   // cost or length ?

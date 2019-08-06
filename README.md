@@ -40,6 +40,9 @@ There are "@"s. They are are cutting down trees.
 ## Roadmap
 
   ### v 0.0.x
+    * Test directions calculation in path
+    * Use directions from paths for movement
+    * Rendering services optimization
     * Sandbox (ui, user interaction improvements, refactor)
     * Collision handling (one person per tile)
     * Place stock area

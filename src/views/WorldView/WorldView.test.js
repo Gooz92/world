@@ -4,6 +4,7 @@ import { generateArray } from 'utils/common/array.utils.js';
 import World from 'model/World.js';
 import { equal, deepEqual, isFalse, isTrue } from 'utils/common/assertion.js';
 import ObjectType from 'model/ObjectType.enum.js';
+import Direction from 'model/Direction.enum.js';
 
 // more like integration test
 describe('WorldView', function () {
@@ -77,7 +78,7 @@ describe('WorldView', function () {
       const walker = worldView.place(x, y, ObjectType.PERSON);
       worldView.select(x, y);
 
-      walker.moveTo([ x + 1, y - 1 ]);
+      walker.moveTo(Direction.NORTH);
 
       isTrue(worldView.isSelectionMoved());
     });

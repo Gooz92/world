@@ -1,4 +1,5 @@
 import Action from './Action.js';
+import Direction from 'model/Direction.enum.js';
 
 const isDiagonal = ([ x1, y1 ], [ x2, y2 ]) => (
   Math.abs(x1 - x2) > 0 && Math.abs(y1 - y2) > 0
@@ -13,8 +14,8 @@ export default class MoveAction extends Action {
   }
 
   perform() {
-    const destination = this.tiles[1];
-    this.actor.moveTo(destination);
+    const direction = Direction.fromPoints(this.tiles[0], this.tiles[1]);
+    this.actor.moveTo(direction);
     return super.perform();
   }
 }
