@@ -1,25 +1,16 @@
-import { last } from 'utils/common/array.utils.js';
-
 function defaultSetData(node, data) {
   node.data = data;
 }
 
 export default function buildLinkedList(array, setData = defaultSetData) {
-  let previous = null;
-  let node = {};
+  let previous = null, node;
 
-  for (let i = 0; i < array.length - 1; i++) {
-    const next = {};
-    node.previous = previous;
-    node.next = next;
+  for (let i = 0; i < array.length; i++) {
+    node = {};
     setData(node, array[i]);
+    node.previous = previous;
     previous = node;
-    node = next;
   }
-
-  node.previous = previous;
-  node.next = null;
-  setData(node, last(array));
 
   return node;
 }

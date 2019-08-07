@@ -8,7 +8,6 @@ describe('buildLinkedList', function () {
 
     equal(node.data, 'c');
     equal(node.previous.data, 'b'),
-    equal(node.previous.next, node);
     equal(node.previous.previous.data, 'a');
   });
 });
