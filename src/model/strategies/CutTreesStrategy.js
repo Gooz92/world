@@ -27,7 +27,7 @@ export default class CutTreesStrategy extends Strategy {
 
       if (isUndefined(distanceToTree) || cost < distanceToTree) {
         trees.set(key, cost);
-        this.found([ x, y ]);
+        this.isFound = true;
       }
     },
 
@@ -37,16 +37,18 @@ export default class CutTreesStrategy extends Strategy {
   findTree() {
 
     const [ x, y ] = this.actor.position;
-
-    return CutTreesStrategy.treeFinder.find(this.world.tiles, x, y);
+    const path = CutTreesStrategy.treeFinder.find(this.world.tiles, x, y);
+    const { position } = path.pop();
+    return { path, position };
   }
 
   nextAction() {
 
     if (!this.treePosition) {
-      const result = this.findTree();
-      this.walkStrategy.path = result.path;
-      this.treePosition = result.goal;
+      const { position, path } = this.findTree();
+
+      this.walkStrategy.path = path;
+      this.treePosition = position;
     }
 
     if (this.walkStrategy.path.length === 0 && this.treePosition) {

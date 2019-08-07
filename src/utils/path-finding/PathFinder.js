@@ -19,7 +19,6 @@ export default class PathFinder {
     }, options);
 
     this.isFound = false;
-    this.goal = null;
   }
 
   onTile(tile, x, y, isDiagonal, cost) {
@@ -30,19 +29,12 @@ export default class PathFinder {
     }
 
     if (this.isTileFound(tile, x, y)) {
-      this.found(tile);
+      this.isFound = true;
     }
   }
 
-  found(goal) {
-    this.goal = goal;
-    this.isFound = true;
-  }
-
   getResult(node, tiles) {
-    const goal = this.goal;
 
-    this.goal = null;
     this.isFound = false;
 
     const isTilePassable = (x, y) => {
@@ -50,10 +42,7 @@ export default class PathFinder {
       return this.isTilePassable(tile);
     };
 
-    return {
-      goal: goal,
-      path: postProcess(node, isTilePassable, tiles[0].length, tiles.length)
-    };
+    return postProcess(node, isTilePassable, tiles[0].length, tiles.length);
   }
 
   find(tiles, x, y) {
@@ -87,7 +76,12 @@ export default class PathFinder {
         this.onTile(tile, nextX, nextY, direction.isDiagonal, nextCost);
 
         if (this.isFound) {
-          return this.getResult(currentNode, tiles);
+          const nextNode = {
+            position: [ nextX, nextY ],
+            previous: currentNode,
+            direction
+          };
+          return this.getResult(nextNode, tiles);
         }
 
         if (!this.isTilePassable(tile)) {

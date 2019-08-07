@@ -54,6 +54,9 @@ const pf = {
   setStart(point) {
     this.isStartSetted = true;
     this.start = point;
+
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(point.x * TILE_SIZE, point.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
   },
 
   setEnd(point) {
@@ -67,13 +70,16 @@ const pf = {
       isTilePassable: tile => !tile
     });
 
-    const { path } = pf.find(tiles, this.start.x, this.start.y);
+    const path = pf.find(tiles, this.start.x, this.start.y);
 
     ctx.fillStyle = '#888';
 
     path.forEach(({ position: [ x, y ] }) => {
       ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
     });
+
+    ctx.fillStyle = 'red';
+    ctx.fillRect(point.x * TILE_SIZE, point.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
   }
 };
 
