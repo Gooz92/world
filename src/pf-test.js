@@ -69,27 +69,13 @@ const pf = {
 
     const { path } = pf.find(tiles, this.start.x, this.start.y);
 
-    path.forEach(({ position: [ x, y ], direction }) => {
-      
+    ctx.fillStyle = '#888';
+
+    path.forEach(({ position: [ x, y ] }) => {
+      ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
     });
   }
 };
-
-function drawPolygon(points) {
-
-}
-
-const arrows = {
-  north: [ [ 7.5, 4 ], [ 12, 12 ], [ 4, 12 ] ],
-  northEast: [ [ 4, 4 ], [ 12, 4 ], [ 12, 12 ] ],
-  east: [ [ 12, 7.5 ], [ 4, 12 ], [ 4, 4 ] ],
-  southEast: [ [ 12, 12 ], [ 4, 12 ], [ 4, 4 ] ],
-  south: [ [ 7.5, 12 ], [ 4, 4 ], [ 12, 4 ] ],
-  southWest: [ ],
-  west: [ ],
-  northWest: []
-};
-
 
 canvas.addEventListener('click', event => {
   const { left, top } = event.target.getBoundingClientRect();
