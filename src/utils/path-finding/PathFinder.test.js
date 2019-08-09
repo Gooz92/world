@@ -64,17 +64,24 @@ describe('PathFinder', function () {
     });
 
     it('calculate directions in bend',() => {
-      // const tiles = generateArray(18, 32, getFalse);
+      const tiles = generateArray(18, 32, getFalse);
 
-      // const finder = createFinder();
+      const finder = createFinder();
 
-      // const x0 = 12, y0 = 7;
-      // const x1 = 19, y1 = 8;
+      const x0 = 12, y0 = 7;
+      const x1 = 18, y1 = 8;
 
-      // tiles[y1][x1] = true;
+      tiles[y1][x1] = true;
 
-      // const { path } = finder.find(tiles, x0, y0);
+      /**
+       *    ###
+       * ###
+       *
+       */
 
+      const path = finder.find(tiles, x0, y0);
+
+      equal(path[3].direction, Direction.SOUTH_EAST);
     });
   });
 

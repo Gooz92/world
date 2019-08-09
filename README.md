@@ -40,11 +40,9 @@ There are "@"s. They are are cutting down trees.
 ## Roadmap
 
   ### v 0.0.x
-    * Refine path post processing (backtracing)
-    * Test directions calculation in path
+    * Collision handling (one person per tile)
     * Rendering services optimization
     * Sandbox (ui, user interaction improvements, refactor)
-    * Collision handling (one person per tile)
     * Place stock area
     * Woodcutting mechanics impovement (take a wood and bring to storage)
     * Place house

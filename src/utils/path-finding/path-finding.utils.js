@@ -17,29 +17,27 @@ export function postProcess(node, isTilePassable, width, height) {
 }
 
 export function backtracePath(node) {
-  const path = [];
 
-  let direction = node.direction, isControl = true;
+  const path = [{
+    position: node.position,
+    direction: node.direction
+  }];
 
-  do {
-
-    if (isControl || !node.previous.previous) {
-
+  while (node.previous.previous) {
+    if (node.direction !== node.previous.direction) {
       path.unshift({
-        direction: node.next ? node.next.direction : node.direction,
-        position: node.position
+        position: node.previous.position,
+        direction: node.direction
       });
     }
 
-    isControl = direction !== (node.previous ? node.previous.direction : null);
-
-    if (isControl) {
-      direction = node.previous.direction;
-    }
-
-    node.previous.next = node;
     node = node.previous;
-  } while (node.previous);
+  }
+
+  path.unshift({
+    position: node.position,
+    direction: node.direction
+  });
 
   return path;
 }
