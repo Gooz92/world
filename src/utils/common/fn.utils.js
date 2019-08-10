@@ -6,6 +6,8 @@ export const constant = arg => () => arg;
 
 export const getObject = () => ({});
 
+export const getArray = () => [];
+
 export const getTrue = () => true;
 
 export const getFalse = () => false;

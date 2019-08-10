@@ -1,4 +1,4 @@
-import Strategy from './Startegy.js';
+import Strategy from './Strategy.js';
 import MoveAction from '../actions/MoveAction.js';
 import interpolate from '../../interpolate.js';
 

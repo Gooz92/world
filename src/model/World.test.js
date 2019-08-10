@@ -3,8 +3,9 @@ import World from './World.js';
 import { generateArray } from 'utils/common/array.utils.js';
 import { getObject } from 'utils/common/fn.utils.js';
 
-import { equal, } from 'utils/common/assertion.js';
+import { equal } from 'utils/common/assertion.js';
 import ObjectType from 'model/ObjectType.enum.js';
+import Strategy from './strategies/Strategy.js';
 
 describe('World', function () {
 
@@ -15,6 +16,15 @@ describe('World', function () {
   beforeEach(() => {
     const tiles = generateArray(H, W, getObject);
     world = new World(tiles);
+  });
+
+  describe('#addStrategy', function () {
+
+    it('push strategy in strategies array', () => {
+      world.addStrategy(Strategy);
+      equal(world.strategies[0], Strategy);
+    });
+
   });
 
   describe('#width', function () {

@@ -1,7 +1,7 @@
 import * as arrayUtils from '../array.utils.js';
 import spy from 'test-utils/spy.js';
 import { identity } from '../fn.utils.js';
-import { deepEqual, equal, isTrue } from '../assertion.js';
+import { deepEqual, equal, isTrue, isFalse } from '../assertion.js';
 
 describe('arrayUtils', function () {
 
@@ -170,6 +170,22 @@ describe('arrayUtils', function () {
       swap(array, 1, 2);
       deepEqual(array, [ 'a', 'c', 'b', 'd' ]);
     });
+  });
+
+  describe('isUnique', function () {
+
+    const isUnique = arrayUtils.isUnique;
+
+    it('return true if array contains unique elements', () => {
+      const array = [ 1, 2, 'a', true ];
+      isTrue(isUnique(array));
+    });
+
+    it('return false if array contains non unique elements', () => {
+      const array = [ 0, 0, 7 ];
+      isFalse(isUnique(array));
+    });
+
   });
 
 });

@@ -40,7 +40,10 @@ There are "@"s. They are are cutting down trees.
 ## Roadmap
 
   ### v 0.0.x
+    * Write more test scenarious for collision handling
+    * Simple ascii view with collided actors
     * Collision handling (one person per tile)
+    * Test case with not found path
     * Rendering services optimization
     * Sandbox (ui, user interaction improvements, refactor)
     * Place stock area

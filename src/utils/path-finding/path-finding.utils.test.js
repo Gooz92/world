@@ -10,7 +10,7 @@ import { deepEqual, equal } from 'utils/common/assertion.js';
 import { last } from 'utils/common/array.utils.js';
 import { getTrue } from 'utils/common/fn.utils.js';
 import Direction from 'model/Direction.enum.js';
-import buildLinkedList from './path-finding.test-utils.js';
+import { buildLinkedList } from './path-finding.test-utils.js';
 
 const getPosition = node => node.position;
 

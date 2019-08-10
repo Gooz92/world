@@ -5,18 +5,31 @@ import { getCycleCoordinate } from 'utils/common/math.utils.js';
 
 export default class World {
 
-  constructor(tiles, actors = []) {
+  constructor(tiles) {
     this.tiles = tiles;
-    this.actors = actors;
+
+    this.actors = [];
+    this.strategies = [];
+  }
+
+  addStrategy(Strategy) {
+    if (!this.strategies.includes(Strategy)) {
+      this.strategies.push(Strategy);
+      return true;
+    }
+
+    return false;
   }
 
   tick() {
+    this.strategies.forEach(Strategy => {
+      Strategy.tick();
+    });
+
     const actions = this.actors
       .map(actor => actor.act());
 
-    return {
-      actions
-    };
+    return actions;
   }
 
   // TODO: get rid of this in future =)

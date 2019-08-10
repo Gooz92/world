@@ -11,6 +11,10 @@ export default class Action {
 
   perform() {
     this.completed = true;
-    return { tiles: this.tiles };
+
+    return {
+      actor: this.actor,
+      tiles: this.tiles
+    };
   }
 }

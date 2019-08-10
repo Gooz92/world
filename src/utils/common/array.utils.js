@@ -66,3 +66,34 @@ export function swap(array, i, j) {
   array[i] = array[j];
   array[j] = temp;
 }
+
+export const isArraysEqual = (a, b) => (
+  a.every((item, index) => b[index] === item)
+);
+
+const defaultIsEqual = (a, b) => a === b;
+
+export function isUnique(array, isEqual = defaultIsEqual) {
+  for (let i = 0; i < array.length; i++) {
+    const a = array[i];
+    for (let j = i + 1; j < array.length; j++) {
+      const b = array[j];
+      if (isEqual(a, b)) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+// handle cycle indexes
+export function getItem(array, index) {
+  const i = index % array.length;
+
+  if (i < 0) {
+    return array.length + i;
+  }
+
+  return i;
+} 

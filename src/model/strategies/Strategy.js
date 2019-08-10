@@ -2,12 +2,7 @@ import Action from '../actions/Action.js';
 
 export default class Strategy {
 
-  static IDLE_STRATEGY = new class IdleStartegy extends Strategy {
-
-    nextAction() {
-      return Action.IDLE;
-    }
-  }
+  static tick() {}
 
   constructor(world, actor) {
     this.world = world;

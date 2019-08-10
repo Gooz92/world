@@ -101,6 +101,6 @@ export default class PathFinder {
       }
     } while (!queue.isEmpty);
 
-    return { path: [] };
+    return [];
   }
 }

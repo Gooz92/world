@@ -60,9 +60,9 @@ export default class WorldView {
   }
 
   tick() {
-    const tick = this.world.tick();
+    const actions = this.world.tick();
 
-    tick.actions
+    actions
       .forEach(event => {
         event.tiles.forEach(([ x, y ]) => {
           const vx = this.world.getCycleX(x - this.viewport.position[0]);

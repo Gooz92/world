@@ -1,7 +1,7 @@
 import PathFinder from 'utils/path-finding/PathFinder.js';
 import CutTreeAction from '../actions/CutTreeAction.js';
 import ObjectType from 'model/ObjectType.enum.js';
-import Strategy from './Startegy.js';
+import Strategy from './Strategy.js';
 import { isUndefined } from 'utils/common/is.utils.js';
 import WalkStrategy from './WalkStartegy.js';
 
@@ -14,6 +14,7 @@ export default class CutTreesStrategy extends Strategy {
   constructor(world, actor) {
     super(world, actor);
     this.walkStrategy = new WalkStrategy(world, actor, { path: [] });
+    this.world.addStrategy(WalkStrategy);
   }
 
   static treeFinder = new PathFinder({
@@ -38,6 +39,11 @@ export default class CutTreesStrategy extends Strategy {
 
     const [ x, y ] = this.actor.position;
     const path = CutTreesStrategy.treeFinder.find(this.world.tiles, x, y);
+
+    if (path.length === 0) {
+      return { path };
+    }
+
     const { position } = path.pop();
     return { path, position };
   }
@@ -48,7 +54,7 @@ export default class CutTreesStrategy extends Strategy {
       const { position, path } = this.findTree();
 
       this.walkStrategy.path = path;
-      this.treePosition = position;
+      this.treePosition = path.length > 0 ? position : null;
     }
 
     if (this.walkStrategy.path.length === 0 && this.treePosition) {

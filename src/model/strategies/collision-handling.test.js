@@ -1,45 +1,67 @@
 import World from 'model/World.js';
-import { generateArray } from 'utils/common/array.utils';
-import { getObject } from 'utils/common/fn.utils';
-import WalkStrategy from './WalkStartegy';
+
+import {
+  generateArray,
+  isUnique,
+  isArraysEqual,
+  last
+} from 'utils/common/array.utils.js';
+
+import { getObject, getArray } from 'utils/common/fn.utils.js';
 import Direction from 'model/Direction.enum.js';
+import { isTrue } from 'utils/common/assertion.js';
 
-const tiles = generateArray(7, 5, getObject);
-const world = new World(tiles);
+import {
+  isContinuous,
+  calculateDirections
+} from 'utils/path-finding/path-finding.test-utils.js';
 
-const p1 = [ 2, 1 ], p2 = [ 2, 5 ];
+const isActorPositionsEqual = (a, b) => (
+  isArraysEqual(a.position, b.position)
+);
 
-const [ x1, y1 ] = p1, [ x2, y2 ] = p2;
+function testCollision(pathes, width, height) {
+  const tiles = generateArray(height, width, getObject);
+  const world = new World(tiles);
 
-const firstWalker = world.placePerson(x1, y1);
-const secondWalker = world.placePerson(x2, y2);
+  const walks = pathes.map(path => {
+    const [ x, y ] = path[0];
+    const person = world.placePerson(x, y);
+    const direction = Direction.fromPoints(path[0], path[1]);
+    person.setStrategy('walk', {
+      // walking path should not include start actor position
+      path: calculateDirections(path.slice(1), direction)
+    });
 
-// path not include star actor position
-const aPath = [ [ 2, 2 ], [ 2, 3 ], [ 2, 4 ], p2 ]
-  .map(position => ({
-    position,
-    direction: Direction.SOUTH
-  }));
+    return { actor: person, goal: last(path) };
+  });
 
-const bPath = [ [ 2, 4 ], [ 2, 3 ], [ 2, 2 ], p1 ]
-  .map(position => ({
-    position,
-    direction: Direction.NORTH
-  }));
+  const actualPathes = generateArray(pathes.length, getArray);
 
-firstWalker.strategy = new WalkStrategy(world, firstWalker, {
-  path: aPath
-});
+  while (walks.some(({ actor, goal }) => !isArraysEqual(actor.position, goal))) {
+    const actions = world.tick();
+    isTrue(isUnique(world.actors, isActorPositionsEqual));
 
-secondWalker.strategy = new WalkStrategy(world, secondWalker, {
-  path: bPath
-});
+    // TODO
+    const moves = actions.filter(action => action.tiles.length > 0);
 
+    moves.forEach(move => {
+      actualPathes[world.actors.indexOf(move.actor)].push(move.tiles[1]);
+    });
+  }
 
-while (
-  (firstWalker.position[0] !== p2[0] || firstWalker.position[1] !== p2[1]) &&
-  (secondWalker.position[0] !== p1[0] || secondWalker.position[1] !== p1[1])
-) {
-  world.tick();
-  console.log(firstWalker.position, secondWalker.position);
+  isTrue(pathes.every(path => isContinuous(path)));
 }
+
+describe('collison handling', function () {
+
+
+  it('head-on collision (vertical)', () => {
+
+    testCollision([
+      [ [ 2, 1 ], [ 2, 2 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ] ],
+      [ [ 2, 5 ], [ 2, 4 ], [ 2, 3 ], [ 2, 2 ], [ 2, 1 ] ]
+    ], 5, 7);
+
+  });
+});
