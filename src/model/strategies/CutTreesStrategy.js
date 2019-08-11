@@ -14,7 +14,6 @@ export default class CutTreesStrategy extends Strategy {
   constructor(world, actor) {
     super(world, actor);
     this.walkStrategy = new WalkStrategy(world, actor, { path: [] });
-    this.world.addStrategy(WalkStrategy);
   }
 
   static treeFinder = new PathFinder({

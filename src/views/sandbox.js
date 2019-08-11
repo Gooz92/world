@@ -1,13 +1,14 @@
-import createWorld from '../model/create-world.js';
 import ObjectType from 'model/ObjectType.enum.js';
+import CutTreesStrategy from 'model/strategies/CutTreesStrategy.js';
+import createWorld from 'model/create-world.js';
 
 import WorldView from './WorldView';
 import Viewport from './WorldView/Viewport.js';
 import createButtomPanel from './create-buttom-panel';
 
+import { paramsHandler, getViewportSize } from '../app.utils.js';
 import getArrowKeyCode from 'utils/common/get-arrow-key-code.js';
 import { upperFirst } from 'utils/common/string.utils.js';
-import { paramsHandler, getViewportSize } from '../app.utils.js';
 import { time } from 'utils/common/dev.utils.js';
 import { debounce } from 'utils/common/fn.utils.js';
 
@@ -61,7 +62,7 @@ paramsHandler(({ seed, empty }) => {
         const object = wv.place(x, y, type);
 
         if (type === ObjectType.PERSON) {
-          object.setStrategy('cutTrees');
+          object.setStrategy(CutTreesStrategy);
         }
       },
       onTileEnter: (x, y) => {

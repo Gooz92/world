@@ -3,6 +3,7 @@ import { getObject } from 'utils/common/fn.utils.js';
 import World from 'model/World.js';
 import { equal } from 'utils/common/assertion.js';
 import Direction from 'model/Direction.enum.js';
+import WalkStrategy from './WalkStartegy';
 
 describe('WalkStrategy', function () {
 
@@ -11,7 +12,7 @@ describe('WalkStrategy', function () {
     const world = new World(tiles);
     const person = world.placePerson(2, 3);
 
-    person.setStrategy('walk', {
+    person.setStrategy(WalkStrategy, {
       path: [{ position: [ 3, 4 ], direction: Direction.SOUTH_EAST }]
     });
 

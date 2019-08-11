@@ -2,23 +2,26 @@ import World from 'model/World.js';
 
 import {
   generateArray,
-  isUnique,
   isArraysEqual,
   last
 } from 'utils/common/array.utils.js';
 
 import { getObject, getArray } from 'utils/common/fn.utils.js';
 import Direction from 'model/Direction.enum.js';
-import { isTrue } from 'utils/common/assertion.js';
+import { isTrue, isFalse } from 'utils/common/assertion.js';
 
 import {
   isContinuous,
   calculateDirections
 } from 'utils/path-finding/path-finding.test-utils.js';
+import WalkStrategy from './WalkStartegy';
 
-const isActorPositionsEqual = (a, b) => (
-  isArraysEqual(a.position, b.position)
-);
+// is walkers have same destination or a -> b, b -> a
+function collided(m1, m2) {
+  return isArraysEqual(m1[1], m2[1]) || (
+    isArraysEqual(m1[0], m2[1]) && isArraysEqual(m1[1], m2[0])
+  );
+}
 
 function testCollision(pathes, width, height) {
   const tiles = generateArray(height, width, getObject);
@@ -28,7 +31,7 @@ function testCollision(pathes, width, height) {
     const [ x, y ] = path[0];
     const person = world.placePerson(x, y);
     const direction = Direction.fromPoints(path[0], path[1]);
-    person.setStrategy('walk', {
+    person.setStrategy(WalkStrategy, {
       // walking path should not include start actor position
       path: calculateDirections(path.slice(1), direction)
     });
@@ -40,28 +43,46 @@ function testCollision(pathes, width, height) {
 
   while (walks.some(({ actor, goal }) => !isArraysEqual(actor.position, goal))) {
     const actions = world.tick();
-    isTrue(isUnique(world.actors, isActorPositionsEqual));
 
     // TODO
     const moves = actions.filter(action => action.tiles.length > 0);
+
+    for (let i = 0; i < moves.length; i++) {
+      const m1 = moves[i].tiles;
+      for (let j = i + 1; j < moves.length; j++) {
+        const m2 = moves[j].tiles;
+        isFalse(collided(m1, m2), `collison: [${m1.join('; ')}] - [${m2.join('; ')}]`);
+      }
+    }
 
     moves.forEach(move => {
       actualPathes[world.actors.indexOf(move.actor)].push(move.tiles[1]);
     });
   }
 
-  isTrue(pathes.every(path => isContinuous(path)));
+  isTrue(actualPathes.every(path => isContinuous(path)), 'some path is wrong');
 }
 
 describe('collison handling', function () {
 
 
-  it('head-on collision (vertical)', () => {
+  it('head-on collision (vertical, try to move on same tile [ 2, 3 ])', () => {
 
+    debugger;
     testCollision([
       [ [ 2, 1 ], [ 2, 2 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ] ],
       [ [ 2, 5 ], [ 2, 4 ], [ 2, 3 ], [ 2, 2 ], [ 2, 1 ] ]
     ], 5, 7);
 
   });
+
+  it('head-on collision (vertical, walkers try to occupy each other tiles)', () => {
+
+    testCollision([
+      [ [ 2, 1 ], [ 2, 2 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ], [ 2, 6 ] ],
+      [ [ 2, 6 ], [ 2, 5 ], [ 2, 4 ], [ 2, 3 ], [ 2, 2 ], [ 2, 1 ] ]
+    ], 5, 9);
+
+  });
+
 });

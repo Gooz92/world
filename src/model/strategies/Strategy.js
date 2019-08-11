@@ -2,8 +2,6 @@ import Action from '../actions/Action.js';
 
 export default class Strategy {
 
-  static tick() {}
-
   constructor(world, actor) {
     this.world = world;
     this.actor = actor;

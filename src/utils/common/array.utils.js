@@ -96,4 +96,4 @@ export function getItem(array, index) {
   }
 
   return i;
-} 
+}

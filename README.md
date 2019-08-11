@@ -40,8 +40,9 @@ There are "@"s. They are are cutting down trees.
 ## Roadmap
 
   ### v 0.0.x
+    * Add/remove walkers in collision handler (architect aproach for pre-handle actions for multiple actors)
     * Write more test scenarious for collision handling
-    * Simple ascii view with collided actors
+    * Simple ascii view with collided actors ?
     * Collision handling (one person per tile)
     * Test case with not found path
     * Rendering services optimization

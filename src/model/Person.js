@@ -1,18 +1,13 @@
-import strategies from './strategies';
 import ObjectType from 'model/ObjectType.enum.js';
-import Action from './actions/Action.js';
-import { upperFirst } from 'utils/common/string.utils.js';
+import Actor from './Actor.js';
 
 let count = 0;
 
-export default class Person {
+export default class Person extends Actor {
 
-  // Actually world is tiles in current implementation =()
   constructor(world, position) {
-    this.world = world;
+    super(world);
     this.position = position;
-    this.actionPoints = 0;
-
     this.name = `person-${count++}`;
   }
 
@@ -26,27 +21,6 @@ export default class Person {
     nextTile.object = this;
 
     this.position = position;
-  }
-
-  setStrategy(strategyName, options = {}) {
-    const Strategy = strategies[`${upperFirst(strategyName)}Strategy`];
-    this.strategy = new Strategy(this.world, this, options);
-    this.world.addStrategy(Strategy);
-    this.strategyName = strategyName;
-  }
-
-  act() {
-
-    ++this.actionPoints;
-
-    const action = this.strategy.getAction();
-
-    if (action.duration <= this.actionPoints) {
-      this.actionPoints -= action.duration;
-      return action.perform();
-    }
-
-    return Action.IDLE.perform();
   }
 
   get type() {

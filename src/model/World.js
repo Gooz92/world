@@ -1,5 +1,6 @@
 import ObjectType from 'model/ObjectType.enum.js';
-import Person from 'model/Person.js';
+import Person from 'model/Person.js'; // TODO ?
+import collisionHandler from './collision-handler.js';
 
 import { getCycleCoordinate } from 'utils/common/math.utils.js';
 
@@ -10,21 +11,21 @@ export default class World {
 
     this.actors = [];
     this.strategies = [];
+
+    this.collisionHandler = collisionHandler; // TODO ?
   }
 
-  addStrategy(Strategy) {
-    if (!this.strategies.includes(Strategy)) {
-      this.strategies.push(Strategy);
-      return true;
-    }
+  onSetWalkStrategy(strategy) {
+    this.collisionHandler.addWalker(strategy.actor);
+  }
 
-    return false;
+  onRemoveWalkStrategy(strategy) {
+    this.collisionHandler.removeWalker(strategy.actor);
   }
 
   tick() {
-    this.strategies.forEach(Strategy => {
-      Strategy.tick();
-    });
+
+    this.collisionHandler.tick();
 
     const actions = this.actors
       .map(actor => actor.act());
