@@ -15,6 +15,7 @@ import {
   calculateDirections
 } from 'utils/path-finding/path-finding.test-utils.js';
 import WalkStrategy from './WalkStartegy';
+import MoveAction from 'model/actions/MoveAction';
 
 // is walkers have same destination or a -> b, b -> a
 function collided(m1, m2) {
@@ -44,8 +45,7 @@ function testCollision(pathes, width, height) {
   while (walks.some(({ actor, goal }) => !isArraysEqual(actor.position, goal))) {
     const actions = world.tick();
 
-    // TODO
-    const moves = actions.filter(action => action.tiles.length > 0);
+    const moves = actions.filter(action => action.type === MoveAction.TYPE);
 
     for (let i = 0; i < moves.length; i++) {
       const m1 = moves[i].tiles;
@@ -65,10 +65,8 @@ function testCollision(pathes, width, height) {
 
 describe('collison handling', function () {
 
+  it('vertical collision (try to occupy same tile [ 2, 3 ])', () => {
 
-  it('head-on collision (vertical, try to move on same tile [ 2, 3 ])', () => {
-
-    debugger;
     testCollision([
       [ [ 2, 1 ], [ 2, 2 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ] ],
       [ [ 2, 5 ], [ 2, 4 ], [ 2, 3 ], [ 2, 2 ], [ 2, 1 ] ]
@@ -76,12 +74,31 @@ describe('collison handling', function () {
 
   });
 
-  it('head-on collision (vertical, walkers try to occupy each other tiles)', () => {
+  it('vertical collision (try to occupy each other tiles)', () => {
 
     testCollision([
       [ [ 2, 1 ], [ 2, 2 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ], [ 2, 6 ] ],
       [ [ 2, 6 ], [ 2, 5 ], [ 2, 4 ], [ 2, 3 ], [ 2, 2 ], [ 2, 1 ] ]
     ], 5, 9);
+
+  });
+
+  it('diagonal collision try to occupy same tile [ 4, 4 ]', () => {
+
+    testCollision([
+      [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ] ],
+      [ [ 6, 6 ], [ 5, 5 ], [ 4, 4 ], [ 3, 3 ], [ 2, 2 ] ]
+    ], 8, 8);
+
+  });
+
+  it('diagonal collision try to occupy each other tiles', () => {
+
+    debugger;
+    testCollision([
+      [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ], [ 7, 7 ] ],
+      [ [ 7, 7 ], [ 6, 6 ], [ 5, 5 ], [ 4, 4 ], [ 3, 3 ], [ 2, 2 ] ]
+    ], 9, 9);
 
   });
 

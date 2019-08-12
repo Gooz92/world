@@ -1,8 +1,15 @@
 export default class Action {
 
-  static IDLE = new class IdleAction extends Action {};
+  static IDLE = class IdleAction extends Action {
 
-  constructor(actor = {}, tiles = []) {
+    static TYPE = 'idle';
+
+    get type() {
+      return IdleAction.TYPE;
+    }
+  };
+
+  constructor(actor, tiles = []) {
     this.actor = actor;
     this.tiles = tiles;
     this.duration = 1;
@@ -13,6 +20,7 @@ export default class Action {
     this.completed = true;
 
     return {
+      type: this.type,
       actor: this.actor,
       tiles: this.tiles
     };

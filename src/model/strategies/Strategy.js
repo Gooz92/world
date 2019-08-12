@@ -2,9 +2,21 @@ import Action from '../actions/Action.js';
 
 export default class Strategy {
 
-  constructor(world, actor) {
-    this.world = world;
+  static IDLE = class IdleStrategy extends Strategy {
+    nextAction() {
+      return this.nextIdleAction();
+    }
+  }
+
+  constructor(actor) {
     this.actor = actor;
+  }
+
+  onRemove() {}
+
+  onDone() {
+    this.actor.setStrategy(Strategy.IDLE);
+    return this.actor.strategy.getAction();
   }
 
   getAction() {
@@ -15,7 +27,7 @@ export default class Strategy {
     return this.action;
   }
 
-  nextAction() {
-    return Action.IDLE;
+  nextIdleAction() {
+    return new Action.IDLE(this.actor);
   }
 }

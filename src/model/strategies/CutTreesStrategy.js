@@ -11,11 +11,6 @@ const hash = (x, y) => `${x}-${y}`;
 
 export default class CutTreesStrategy extends Strategy {
 
-  constructor(world, actor) {
-    super(world, actor);
-    this.walkStrategy = new WalkStrategy(world, actor, { path: [] });
-  }
-
   static treeFinder = new PathFinder({
     onAxialTile(tile, x, y, cost) {
       if (!tile.object || tile.object.type !== ObjectType.TREE) {
@@ -37,7 +32,7 @@ export default class CutTreesStrategy extends Strategy {
   findTree() {
 
     const [ x, y ] = this.actor.position;
-    const path = CutTreesStrategy.treeFinder.find(this.world.tiles, x, y);
+    const path = CutTreesStrategy.treeFinder.find(this.actor.world.tiles, x, y);
 
     if (path.length === 0) {
       return { path };
@@ -49,21 +44,22 @@ export default class CutTreesStrategy extends Strategy {
 
   nextAction() {
 
-    if (!this.treePosition) {
+    if (!this.isTreeFound) {
       const { position, path } = this.findTree();
+      this.isTreeFound = true;
 
-      this.walkStrategy.path = path;
-      this.treePosition = path.length > 0 ? position : null;
+      this.actor.setStrategy(WalkStrategy, {
+        path,
+        onDone() {
+          const [ x, y ] = position;
+          trees.delete(hash(x, y));
+          this.actor.setStrategy(CutTreesStrategy);
+          const cutTreeAction = new CutTreeAction(this.actor, position);
+          return cutTreeAction;
+        }
+      });
     }
 
-    if (this.walkStrategy.path.length === 0 && this.treePosition) {
-      const [ x, y ] = this.treePosition;
-      trees.delete(hash(x, y));
-      const cutTreeAction = new CutTreeAction(this.actor, this.treePosition);
-      this.treePosition = null;
-      return cutTreeAction;
-    }
-
-    return this.walkStrategy.nextAction();
+    return this.actor.strategy.nextAction();
   }
 }

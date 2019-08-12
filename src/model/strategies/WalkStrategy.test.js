@@ -3,7 +3,7 @@ import { getObject } from 'utils/common/fn.utils.js';
 import World from 'model/World.js';
 import { equal } from 'utils/common/assertion.js';
 import Direction from 'model/Direction.enum.js';
-import WalkStrategy from './WalkStartegy';
+import WalkStrategy from './WalkStartegy.js';
 
 describe('WalkStrategy', function () {
 

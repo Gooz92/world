@@ -18,4 +18,8 @@ export default class CutTreeAction extends Action {
     this.actor.world.clearTile(x, y);
     return super.perform();
   }
+
+  get type() {
+    return 'cut-tree';
+  }
 }

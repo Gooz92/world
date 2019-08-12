@@ -40,20 +40,20 @@ export default {
     remove(this.walkers, index);
   },
 
-  tick() {
-    const actors = this.walkers;
+  handle() {
+    const actions = this.walkers.map(walker => walker.strategy.getAction())
+      .filter(action => action.type === MoveAction.TYPE);
 
-    for (let i = 0; i < this.walkers.length; i++) {
-      const walker = this.walkers[i];
-      const actionA = walker.strategy.getAction();
+    for (let i = 0; i < actions.length; i++) {
+      const actionA = actions[i];
       const moveA = actionA.tiles;
 
-      for (let j = i + 1; j < actors.length; j++) {
-        const actionB = this.walkers[j].strategy.getAction();
+      for (let j = i + 1; j < actions.length; j++) {
+        const actionB = actions[j];
         const moveB = actionB.tiles;
 
         if (isCollided(moveA, moveB)) {
-          turn(walker, getTrue);
+          turn(actionA.actor, getTrue);
         }
       }
     }
