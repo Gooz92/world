@@ -3,7 +3,7 @@ import CutTreeAction from '../actions/CutTreeAction.js';
 import ObjectType from 'model/ObjectType.enum.js';
 import Strategy from './Strategy.js';
 import { isUndefined } from 'utils/common/is.utils.js';
-import WalkStrategy from './WalkStartegy.js';
+import WalkStrategy from './WalkStrategy.js';
 
 const trees = new Map();
 

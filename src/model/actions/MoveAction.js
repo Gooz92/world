@@ -8,7 +8,7 @@ export default class MoveAction extends Action {
     super(actor, [ actor.position, destination ]);
 
     this.direction = direction;
-    this.duration = direction.distance;
+    this.cost = direction.distance;
   }
 
   get type() {

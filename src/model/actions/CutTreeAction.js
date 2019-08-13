@@ -4,7 +4,7 @@ export default class CutTreeAction extends Action {
 
   constructor(actor, treePosition) {
     super(actor, [ treePosition ]);
-    this.duration = 1; // TODO
+    this.cost = 1;
   }
 
   perform() {

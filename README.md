@@ -29,7 +29,7 @@ There are "@"s. They are are cutting down trees.
 ## Known issues
   * Path smoothing somethimes dosen't work with border-crossing paths.
 
-## TODO
+## DEV TODO
   * Write test for PF: path post processing should not change path cost
   * Run single test
   * Improve assertion error messages
@@ -40,16 +40,18 @@ There are "@"s. They are are cutting down trees.
 ## Roadmap
 
   ### v 0.0.x
+    * Walkers placed twice (patrol and walk strategy)
     * Write more test scenarious for collision handling
+    * Test collision behavior near bounds
     * Simple ascii view with collided actors ?
-    * Collision handling (one person per tile)
+    * Collision handling (one person per tile) (in progress)
     * Test case with not found path
-    * Rendering services optimization
+    * Displaying services refacatoring
     * Sandbox (ui, user interaction improvements, refactor)
     * Place stock area
     * Woodcutting mechanics impovement (take a wood and bring to storage)
     * Place house
-    * Display resource count and populcation
+    * Display resource count and population
     * Assign jobs (for start idle and cut trees)
     * Game run ( not sandbox as now )
     * Game saving ( in local storage)

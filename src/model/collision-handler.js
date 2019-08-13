@@ -1,13 +1,16 @@
 import { remove, isArraysEqual } from 'utils/common/array.utils.js';
 import MoveAction from 'model/actions/MoveAction.js';
 import { getTrue } from 'utils/common/fn.utils.js';
+import Direction from './Direction.enum.js';
 
+// TODO: Take cycle coordinate into account
 function turn(actor, isTilePassable) {
   const [ x, y ] = actor.position;
   const action = actor.strategy.getAction();
 
   const newDirection = action.direction.turnRight();
   const newNextPosition = [ x + newDirection.dx, y + newDirection.dy ];
+  const [ newX, newY ] = newNextPosition;
 
   /*
    * -1  0  1
@@ -17,6 +20,17 @@ function turn(actor, isTilePassable) {
 
   if (isTilePassable(...newNextPosition)) {
     actor.strategy.action = new MoveAction(actor, newDirection, newNextPosition);
+    const [ nextX, nextY ] = actor.strategy.path[0].position;
+    const dx = nextX - newX;
+    const dy = nextY - newY;
+
+    if (Math.abs(dx) > 1) {
+      const direction = Direction.fromPoints( [ nextX, nextY ], [ (nextX + newX) / 2, nextY ]);
+      actor.strategy.path.unshift({ position: [ (nextX + newX) / 2, nextY ], direction });
+    } else if (Math.abs(dy) > 1) {
+      const direction = Direction.fromPoints( [ nextX, nextY ], [ nextX, (nextY + newY) / 2 ] );
+      actor.strategy.path.unshift({ position: [ nextX, (nextY + newY) / 2 ], direction });
+    }
   }
 }
 
@@ -53,6 +67,7 @@ export default {
         const moveB = actionB.tiles;
 
         if (isCollided(moveA, moveB)) {
+          debugger;
           turn(actionA.actor, getTrue);
         }
       }

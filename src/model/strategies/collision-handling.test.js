@@ -14,8 +14,8 @@ import {
   isContinuous,
   calculateDirections
 } from 'utils/path-finding/path-finding.test-utils.js';
-import WalkStrategy from './WalkStartegy';
-import MoveAction from 'model/actions/MoveAction';
+import WalkStrategy from './WalkStrategy.js';
+import MoveAction from 'model/actions/MoveAction.js';
 
 // is walkers have same destination or a -> b, b -> a
 function collided(m1, m2) {
@@ -94,7 +94,6 @@ describe('collison handling', function () {
 
   it('diagonal collision try to occupy each other tiles', () => {
 
-    debugger;
     testCollision([
       [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ], [ 7, 7 ] ],
       [ [ 7, 7 ], [ 6, 6 ], [ 5, 5 ], [ 4, 4 ], [ 3, 3 ], [ 2, 2 ] ]

@@ -2,8 +2,8 @@ export default class Actor {
 
   constructor(world) {
     this.world = world;
-    this.actionPoints = 0;
-
+    this.energy = 0;
+    this.strength = 1;
     this.strategy = null;
   }
 
@@ -22,12 +22,12 @@ export default class Actor {
 
   act() {
 
-    ++this.actionPoints;
+    this.energy += this.strength;
 
     const action = this.strategy.getAction();
 
-    if (action.duration <= this.actionPoints) {
-      this.actionPoints -= action.duration;
+    if (action.cost <= this.energy) {
+      this.energy -= action.cost;
       return action.perform();
     }
 

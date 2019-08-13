@@ -6,6 +6,9 @@ import World from './World.js';
 import ObjectType from 'model/ObjectType.enum.js';
 import { randomGenerator } from 'utils/common/random.utils.js';
 import { getObject } from 'utils/common/fn.utils.js';
+import PatrolStrategy from './strategies/PatrolStrategy.js';
+import { calculateDirections } from 'utils/path-finding/path-finding.test-utils.js';
+import Direction from './Direction.enum.js';
 
 const generator = diamondSquareGenerator()
   .setCellSize(32)
@@ -37,6 +40,15 @@ export default function createWorld({ seed, empty }) {
 
   const tiles = createTiles(seed, empty);
   const world = new World(tiles);
+
+  const person = world.placePerson(1, 1);
+
+  const path = calculateDirections([
+    [ 2, 1 ], [ 3, 1 ], [ 4, 2 ], [ 4, 3 ],
+    [ 3, 4 ], [ 2, 4 ], [ 1, 3 ], [ 1, 2 ]
+  ], Direction.EAST);
+
+  person.setStrategy(PatrolStrategy, { path: path });
 
   return world;
 }

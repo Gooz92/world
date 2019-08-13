@@ -12,8 +12,19 @@ export default class Action {
   constructor(actor, tiles = []) {
     this.actor = actor;
     this.tiles = tiles;
-    this.duration = 1;
+    this.cost = 1;
     this.completed = false;
+  }
+
+  getLeftDuration() {
+
+    const leftDuration = Math.floor(this.cost / this.actor.strength) - this.actor.energy;
+
+    if (leftDuration < 0) {
+      return 0;
+    }
+
+    return leftDuration;
   }
 
   perform() {
