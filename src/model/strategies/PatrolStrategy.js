@@ -1,28 +1,19 @@
 import Strategy from './Strategy.js';
-import WalkStrategy from './WalkStrategy.js';
+import MoveAction from 'model/actions/MoveAction.js';
 
 export default class PatrolStrategy extends Strategy {
 
   constructor(actor, { path = [] }) {
     super(actor);
 
-    this.path = path; // assume that path is closed
-    this.setWalkStrategy();
-  }
-
-  setWalkStrategy() {
-    const self = this;
-
-    this.walkStrategy = new WalkStrategy(this.actor, {
-      path: [ ...this.path ],
-      onDone() {
-        self.setWalkStrategy();
-        return self.getAction();
-      }
-    });
+    this.path = path; // assume that path is closed and passable
+    this.pathNodeIndex = 0;
   }
 
   nextAction() {
-    return this.walkStrategy.nextAction();
+    const { position } = this.path[this.pathNodeIndex];
+
+    this.pathNodeIndex = ++this.pathNodeIndex % this.path.length;
+    return new MoveAction(this.actor, position);
   }
 }

@@ -5,7 +5,7 @@ import { createElement } from 'utils/common/dom.utils.js';
 
 const presentors = {
   tree: tree => 'tree',
-  person: person => person.name + ' : ' + person.strategyName
+  person: person => person.name
 };
 
 const TICK_TIME = 80;

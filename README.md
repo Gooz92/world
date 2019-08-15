@@ -39,8 +39,7 @@ There are "@"s. They are are cutting down trees.
 
 ## Roadmap
 
-  ### v 0.0.x
-    * Walkers placed twice (patrol and walk strategy)
+  ### v 0.0.#
     * Write more test scenarious for collision handling
     * Test collision behavior near bounds
     * Simple ascii view with collided actors ?

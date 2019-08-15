@@ -1,6 +1,8 @@
 import ObjectType from 'model/ObjectType.enum.js';
 import Person from 'model/Person.js'; // TODO ?
 
+import createCollisionHaldler from './collision-handler.js';
+
 import { getCycleCoordinate } from 'utils/common/math.utils.js';
 
 export default class World {
@@ -10,11 +12,13 @@ export default class World {
 
     this.actors = [];
     this.beforeTickHooks = [];
+
+    this.collisionHandler = createCollisionHaldler();
   }
 
   tick() {
 
-    this.beforeTickHooks.forEach(hook => hook(this));
+    this.collisionHandler.handle(this.actors);
 
     const actions = this.actors
       .map(actor => actor.act());
@@ -56,10 +60,13 @@ export default class World {
     return object;
   }
 
-  isTileOccupied(x, y) {
+  isTileEmpty(x, y) {
     const tile = this.getTile(x, y);
+    return !tile.object;
+  }
 
-    return !!tile.object;
+  isTileOccupied(x, y) {
+    return !this.isTileEmpty(x, y);
   }
 
   getTile(x, y) {

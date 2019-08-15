@@ -1,14 +1,15 @@
 import Action from './Action.js';
+import Direction from 'model/Direction.enum.js';
 
 export default class MoveAction extends Action {
 
   static TYPE = 'move';
 
-  constructor(actor, direction, destination) {
+  constructor(actor, destination) {
     super(actor, [ actor.position, destination ]);
 
-    this.direction = direction;
-    this.cost = direction.distance;
+    this.direction = Direction.fromPoints(actor.position, destination);
+    this.cost = this.direction.distance;
   }
 
   get type() {
@@ -17,6 +18,15 @@ export default class MoveAction extends Action {
 
   get destination() {
     return this.tiles[1];
+  }
+
+  canPerform() {
+    if (!super.canPerform()) {
+      return false;
+    }
+
+    const [ x, y ] = this.destination;
+    return this.actor.canMoveTo(x, y);
   }
 
   perform() {

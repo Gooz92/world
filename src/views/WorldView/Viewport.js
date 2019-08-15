@@ -58,6 +58,12 @@ export default class Viewport {
       });
     }
 
+    if (options.onRightClick) {
+      this.container.oncontextmenu = this.handleMouseEvent((x, y) => {
+        options.onRightClick(x, y);
+      });
+    }
+
     if (options.onTileEnter) {
       this.container.onmousemove = this.handleMouseMove((x, y) => {
         options.onTileEnter(x, y);
@@ -94,6 +100,8 @@ export default class Viewport {
       const tileY = this.getTileCoordinate(event.clientY - top);
 
       handler(tileX, tileY);
+
+      return false;
     };
   }
 

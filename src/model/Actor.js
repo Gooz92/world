@@ -18,6 +18,12 @@ export default class Actor {
     }
 
     this.strategy = new Strategy(this, options);
+
+    this.strategy.onInit();
+  }
+
+  getAction() {
+    return this.strategy.getAction();
   }
 
   act() {
@@ -26,7 +32,7 @@ export default class Actor {
 
     const action = this.strategy.getAction();
 
-    if (action.cost <= this.energy) {
+    if (action.canPerform()) {
       this.energy -= action.cost;
       return action.perform();
     }

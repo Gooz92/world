@@ -3,12 +3,13 @@ import World from 'model/World.js';
 import {
   generateArray,
   isArraysEqual,
-  last
+  last,
+  isUnique
 } from 'utils/common/array.utils.js';
 
 import { getObject, getArray } from 'utils/common/fn.utils.js';
 import Direction from 'model/Direction.enum.js';
-import { isTrue, isFalse } from 'utils/common/assertion.js';
+import { isTrue } from 'utils/common/assertion.js';
 
 import {
   isContinuous,
@@ -17,11 +18,8 @@ import {
 import WalkStrategy from './WalkStrategy.js';
 import MoveAction from 'model/actions/MoveAction.js';
 
-// is walkers have same destination or a -> b, b -> a
-function collided(m1, m2) {
-  return isArraysEqual(m1[1], m2[1]) || (
-    isArraysEqual(m1[0], m2[1]) && isArraysEqual(m1[1], m2[0])
-  );
+function isActorHaveSamePositions(a, b) {
+  return isArraysEqual(a.position, b.position);
 }
 
 function testCollision(pathes, width, height) {
@@ -47,13 +45,7 @@ function testCollision(pathes, width, height) {
 
     const moves = actions.filter(action => action.type === MoveAction.TYPE);
 
-    for (let i = 0; i < moves.length; i++) {
-      const m1 = moves[i].tiles;
-      for (let j = i + 1; j < moves.length; j++) {
-        const m2 = moves[j].tiles;
-        isFalse(collided(m1, m2), `collison: [${m1.join('; ')}] - [${m2.join('; ')}]`);
-      }
-    }
+    isTrue(isUnique(world.actors, isActorHaveSamePositions));
 
     moves.forEach(move => {
       actualPathes[world.actors.indexOf(move.actor)].push(move.tiles[1]);
@@ -85,6 +77,7 @@ describe('collison handling', function () {
 
   it('diagonal collision try to occupy same tile [ 4, 4 ]', () => {
 
+    debugger;
     testCollision([
       [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ] ],
       [ [ 6, 6 ], [ 5, 5 ], [ 4, 4 ], [ 3, 3 ], [ 2, 2 ] ]
@@ -98,6 +91,10 @@ describe('collison handling', function () {
       [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ], [ 7, 7 ] ],
       [ [ 7, 7 ], [ 6, 6 ], [ 5, 5 ], [ 4, 4 ], [ 3, 3 ], [ 2, 2 ] ]
     ], 9, 9);
+
+  });
+
+  it('#4', () => {
 
   });
 

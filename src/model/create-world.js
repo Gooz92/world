@@ -41,14 +41,19 @@ export default function createWorld({ seed, empty }) {
   const tiles = createTiles(seed, empty);
   const world = new World(tiles);
 
-  const person = world.placePerson(1, 1);
+  const firstWalker = world.placePerson(1, 1);
+  const secondWalker = world.placePerson(1, 4);
 
-  const path = calculateDirections([
-    [ 2, 1 ], [ 3, 1 ], [ 4, 2 ], [ 4, 3 ],
-    [ 3, 4 ], [ 2, 4 ], [ 1, 3 ], [ 1, 2 ]
-  ], Direction.EAST);
+  const ab = [ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ] ],
+    ba = [ [ 1, 3 ], [ 1, 2 ], [ 1, 1 ] ];
 
-  person.setStrategy(PatrolStrategy, { path: path });
+  firstWalker.setStrategy(PatrolStrategy, {
+    path: calculateDirections([ ...ab, ...ba ], Direction.SOUTH)
+  });
+
+  secondWalker.setStrategy(PatrolStrategy, {
+    path: calculateDirections([ ...ba, ...ab ], Direction.NORTH)
+  });
 
   return world;
 }

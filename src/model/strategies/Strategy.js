@@ -19,6 +19,8 @@ export default class Strategy {
     return this.actor.strategy.getAction();
   }
 
+  onInit() {}
+
   getAction() {
     if (!this.action || this.action.completed) {
       this.action = this.nextAction();

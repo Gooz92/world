@@ -16,6 +16,10 @@ export default class Action {
     this.completed = false;
   }
 
+  canPerform() {
+    return this.cost <= this.actor.energy;
+  }
+
   getLeftDuration() {
 
     const leftDuration = Math.floor(this.cost / this.actor.strength) - this.actor.energy;

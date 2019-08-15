@@ -1,5 +1,4 @@
 import ObjectType from 'model/ObjectType.enum.js';
-import CutTreesStrategy from 'model/strategies/CutTreesStrategy.js';
 import createWorld from 'model/create-world.js';
 
 import WorldView from './WorldView';
@@ -11,6 +10,8 @@ import getArrowKeyCode from 'utils/common/get-arrow-key-code.js';
 import { upperFirst } from 'utils/common/string.utils.js';
 import { time } from 'utils/common/dev.utils.js';
 import { debounce } from 'utils/common/fn.utils.js';
+import WalkStrategy from 'model/strategies/WalkStrategy';
+import PathFinder from 'utils/path-finding/PathFinder.js';
 
 let wv;
 
@@ -43,6 +44,30 @@ paramsHandler(({ seed, empty }) => {
   const viewport = viewportBuilder
     .setWorld(world)
     .setOptions({
+      onRightClick: (vx, vy) => {
+
+        if (wv.selection && wv.selection.object && wv.selection.object.type === ObjectType.PERSON) {
+
+          const gx = world.getCycleX(wv.viewport.position[0] + vx);
+          const gy = world.getCycleY(wv.viewport.position[1] + vy);
+
+          const [ x0, y0 ] = wv.selection.object.position;
+
+          const pathFinder = new PathFinder({
+            isTileFound: (tile, x, y) => (
+              x === gx && y === gy
+            ),
+            isTilePassable: tile => (
+              !tile.object || tile.object.type === ObjectType.PERSON
+            )
+          });
+
+          const path = pathFinder.find(world.tiles, x0, y0);
+
+          wv.selection.object.setStrategy(WalkStrategy, { path });
+        }
+      },
+
       onTileClick: (x, y) => {
 
         if (panel.objectType === null) {
@@ -59,10 +84,10 @@ paramsHandler(({ seed, empty }) => {
 
         const type = ObjectType.fromId(panel.objectType);
 
-        const object = wv.place(x, y, type);
+        wv.place(x, y, type);
 
         if (type === ObjectType.PERSON) {
-          object.setStrategy(CutTreesStrategy);
+          // object.setStrategy(CutTreesStrategy);
         }
       },
       onTileEnter: (x, y) => {

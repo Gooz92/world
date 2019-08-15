@@ -11,6 +11,10 @@ export default class Person extends Actor {
     this.name = `person-${count++}`;
   }
 
+  canMoveTo(x, y) {
+    return !this.world.isTileOccupied(x, y);
+  }
+
   moveTo(position) {
     const [ x1, y1 ] = this.position;
     const [ x2, y2 ] = position;
