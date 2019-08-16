@@ -23,3 +23,19 @@ export function forIn(obj, cb) {
       cb(obj[key], key);
     });
 }
+
+// TODO: escape dots, default value
+export function get(obj, path) {
+
+  if (!Array.isArray(path)) {
+    return get(obj, path.split('.'));
+  }
+
+  let index = 0, length = path.length;
+
+  while (obj != null && index < length) {
+    obj = obj[path[index++]];
+  }
+
+  return index === length ? obj : undefined;
+}

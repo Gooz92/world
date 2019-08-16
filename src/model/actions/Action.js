@@ -12,7 +12,7 @@ export default class Action {
   constructor(actor, tiles = []) {
     this.actor = actor;
     this.tiles = tiles;
-    this.cost = 1;
+    this.cost = 0;
     this.completed = false;
   }
 

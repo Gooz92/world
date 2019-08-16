@@ -5,6 +5,7 @@ export default function createControls(tick, tickTime) {
 
   let timeoutId;
 
+  // TODO request animation frame
   const gameLoop = () => {
     time('tick', tick);
     timeoutId = setTimeout(gameLoop, tickTime);

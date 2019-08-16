@@ -1,3 +1,5 @@
+const MAX_ENERGY = 3;
+
 export default class Actor {
 
   constructor(world) {
@@ -13,10 +15,6 @@ export default class Actor {
       this.strategy.onRemove();
     }
 
-    if (Strategy.onBeforeTick) {
-      this.world.addBeforeTickHook(Strategy.onBeforeTick);
-    }
-
     this.strategy = new Strategy(this, options);
 
     this.strategy.onInit();
@@ -26,9 +24,19 @@ export default class Actor {
     return this.strategy.getAction();
   }
 
+  idle() {
+    return this.strategy.nextIdleAction();
+  }
+
   act() {
 
-    this.energy += this.strength;
+    const energy = this.energy + this.strength;
+
+    if (energy <= MAX_ENERGY) {
+      this.energy = energy;
+    } else {
+      this.energy = MAX_ENERGY;
+    }
 
     const action = this.strategy.getAction();
 

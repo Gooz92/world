@@ -51,6 +51,8 @@ export default function createButtomPanel(tick) {
 
       const [ x, y ] = selection.position;
       const object = selection.object;
+      // TODO
+      window.selectedObject = object;
       selectionInfo.innerHTML = `${x};${y} - ${presentors[object.type.name](object)}`;
     },
     get objectType() {

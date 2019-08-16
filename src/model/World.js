@@ -1,27 +1,36 @@
 import ObjectType from 'model/ObjectType.enum.js';
 import Person from 'model/Person.js'; // TODO ?
 
-import createCollisionHaldler from './collision-handler.js';
+import handleCollision from './handle-collision.js/';
 
 import { getCycleCoordinate } from 'utils/common/math.utils.js';
+import Strategy from './strategies/Strategy.js';
 
 export default class World {
 
   constructor(tiles) {
     this.tiles = tiles;
-
     this.actors = [];
-    this.beforeTickHooks = [];
-
-    this.collisionHandler = createCollisionHaldler();
   }
 
   tick() {
 
-    this.collisionHandler.handle(this.actors);
+    try {
+      handleCollision(this.actors);
+    } catch (e) {
+      console.log(e);
+    }
 
     const actions = this.actors
-      .map(actor => actor.act());
+      .map(actor => {
+        try {
+          return actor.act();
+        } catch (e) {
+          console.log(e);
+        }
+
+        return actor.idle();
+      });
 
     return actions;
   }
@@ -30,6 +39,7 @@ export default class World {
   placePerson(x, y) {
     const person = new Person(this, [ x, y ]);
     this.tiles[y][x].object = person;
+    person.setStrategy(Strategy.IDLE);
     this.actors.push(person);
 
     return person;
@@ -74,12 +84,6 @@ export default class World {
     const y0 = this.getCycleY(y);
 
     return this.tiles[y0][x0];
-  }
-
-  addBeforeTickHook(hook) {
-    if (!this.beforeTickHooks.includes(hook)) {
-      this.beforeTickHooks.push(hook);
-    }
   }
 
   getCycleX(x) {

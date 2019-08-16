@@ -1,12 +1,10 @@
-import Strategy from './Strategy.js';
+import MovementStrategy from './MovementStrategy.js';
 import MoveAction from 'model/actions/MoveAction.js';
 
-export default class WalkStrategy extends Strategy {
+export default class WalkStrategy extends MovementStrategy {
 
   constructor(actor, { path = [], onDone } = {}) {
-    super(actor);
-
-    this.path = path;
+    super(actor, { path });
 
     if (onDone) {
       this.onDone = onDone;
@@ -15,11 +13,13 @@ export default class WalkStrategy extends Strategy {
 
   nextAction() {
 
-    if (this.path.length === 0) {
+    if (this.pathNodeIndex === this.path.length) {
       return this.onDone();
     }
 
-    const { position } = this.path.shift();
+    const { position } = this.getNextPathNode();
+
+    ++this.pathNodeIndex;
 
     return new MoveAction(this.actor, position);
   }

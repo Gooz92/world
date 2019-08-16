@@ -1,6 +1,6 @@
 import * as objectUtils from '../object.utils.js';
 import spy from 'test-utils/spy.js';
-import { deepEqual } from '../assertion.js';
+import { deepEqual, equal } from '../assertion.js';
 
 describe('objectUtils', function () {
 
@@ -63,6 +63,26 @@ describe('objectUtils', function () {
 
     });
 
+  });
+
+  describe('get', function () {
+    const get = objectUtils.get;
+
+    it('return nested object by path', () => {
+      const obj = { a: { b: { c: 'abc' } } };
+      const abc = get(obj, 'a.b.c');
+      equal(abc, obj.a.b.c);
+    });
+
+    it('return null if nested field not found', () => {
+      const obj = { x: { y: { z: {} } } };
+      const none = get(obj, 'x.a.z');
+      equal(none, undefined);
+    });
+
+    it('return undefined if first argument is not an object', () => {
+      equal(get(null, 'field'), undefined);
+    });
   });
 
 });

@@ -1,19 +1,17 @@
-import Strategy from './Strategy.js';
+import MovementStrategy from './MovementStrategy.js';
 import MoveAction from 'model/actions/MoveAction.js';
 
-export default class PatrolStrategy extends Strategy {
+export default class PatrolStrategy extends MovementStrategy {
 
   constructor(actor, { path = [] }) {
-    super(actor);
-
-    this.path = path; // assume that path is closed and passable
-    this.pathNodeIndex = 0;
+    super(actor, { path });
   }
 
   nextAction() {
-    const { position } = this.path[this.pathNodeIndex];
+    const { position } = this.getNextPathNode();
 
     this.pathNodeIndex = ++this.pathNodeIndex % this.path.length;
+
     return new MoveAction(this.actor, position);
   }
 }

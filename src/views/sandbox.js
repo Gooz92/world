@@ -12,6 +12,7 @@ import { time } from 'utils/common/dev.utils.js';
 import { debounce } from 'utils/common/fn.utils.js';
 import WalkStrategy from 'model/strategies/WalkStrategy';
 import PathFinder from 'utils/path-finding/PathFinder.js';
+import { get } from 'utils/common/object.utils';
 
 let wv;
 
@@ -46,7 +47,7 @@ paramsHandler(({ seed, empty }) => {
     .setOptions({
       onRightClick: (vx, vy) => {
 
-        if (wv.selection && wv.selection.object && wv.selection.object.type === ObjectType.PERSON) {
+        if (get(wv, 'selection.object.type') === ObjectType.PERSON) {
 
           const gx = world.getCycleX(wv.viewport.position[0] + vx);
           const gy = world.getCycleY(wv.viewport.position[1] + vy);
