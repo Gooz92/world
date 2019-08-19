@@ -1,62 +1,43 @@
 import { isArraysEqual } from 'utils/common/array.utils.js';
 import MoveAction from 'model/actions/MoveAction.js';
-import Direction from './Direction.enum.js';
 import WalkStrategy from './strategies/WalkStrategy.js';
+import PathFinder from 'utils/path-finding/PathFinder.js';
 
-const TURNS_ORDER = [ 1, -1, 2, -2, 3, -3, 4 ];
-
-function getBypassPosition(actor) {
+function getBypass(actor, blockedPosition) {
   const [ x, y ] = actor.position;
-  const action = actor.getAction();
+  const path = actor.strategy.path;
 
-  for (let i = 0; i < TURNS_ORDER.length; i++) {
-    const turnIndex = TURNS_ORDER[i];
+  let pathNodeIndex = null;
 
-    const newDirection = action.direction.turn(turnIndex);
+  const bypassFinder = new PathFinder({
+    isTilePassable(tile, x, y) {
+      return actor.canMoveTo(x, y) && !isArraysEqual(blockedPosition, [ x, y ]);
+    },
+    isTileFound(tile, x, y) {
+      const startIndex = actor.strategy.pathNodeIndex;
+      for (let i = startIndex; i < path.length; i++) {
+        if (isArraysEqual(path[i].position, [ x, y ])) {
+          pathNodeIndex = i;
+          return true;
+        }
+      }
 
-    const nextX = x + newDirection.dx,
-      nextY = y + newDirection.dy;
-
-    if (actor.canMoveTo(nextX, nextY)) {
-      return [ nextX, nextY ];
+      return false;
     }
-  }
+  });
 
-  return; // what ????
+  const bypath = bypassFinder.find(actor.world.tiles, x, y);
+
+  return { pathNodeIndex, path: bypath };
 }
 
-// TODO: Take cycle coordinate into account
-export function turn(actor) {
+export function turn(actor, blockedPosition) {
 
   if (!actor.strategy.hasNextPathNode()) {
     return;
   }
 
-  const position = getBypassPosition(actor);
-  const path = [{ position }];
-  const [ newX, newY ] = position;
-
-  /*
-   * -1  0  1
-   * -2  @  2s
-   * -3     3
-   */
-
-  const { position: [ nextX, nextY ] } = actor.strategy.getNextPathNode();
-  const dx = nextX - newX;
-  const dy = nextY - newY;
-
-  if (Math.abs(dx) > 1) {
-    const x = (nextX + newX) / 2;
-    if (x % 1 !== 0) debugger;
-    const direction = Direction.fromPoints( [ nextX, nextY ], [ x, nextY ]);
-    path.push({ position: [ x, nextY ], direction });
-  } else if (Math.abs(dy) > 1) {
-    const y = (nextY + newY) / 2;
-    if (y % 1 !== 0) debugger;
-    const direction = Direction.fromPoints( [ nextX, nextY ], [ nextX, y ] );
-    path.push({ position: [ nextX, y ], direction });
-  }
+  const { path, pathNodeIndex } = getBypass(actor, blockedPosition);
 
   const originalStrategy = actor.strategy;
 
@@ -64,6 +45,7 @@ export function turn(actor) {
     path,
     onDone() {
       originalStrategy.action = null;
+      originalStrategy.pathNodeIndex = pathNodeIndex + 1;
       this.actor.strategy = originalStrategy;
       return this.actor.strategy.getAction();
     }
@@ -80,7 +62,6 @@ export function isCollided(moveA, moveB) {
 }
 
 export default function handleCollision(walkers) {
-  debugger;
   for (let i = 0; i < walkers.length; i++) {
     const walkerA = walkers[i];
     const actionA = walkerA.getAction();
@@ -96,12 +77,12 @@ export default function handleCollision(walkers) {
 
       if (isBMoved && isAMoved) {
         if (isCollided(moveA, moveB)) {
-          turn(walkerA); // or walkerB; TODO: priority
+          turn(walkerA, moveA[1]); // or walkerB; TODO: priority
         }
       } else if (isAMoved && isArraysEqual(moveA[1], walkerB.position)) {
-        turn(walkerA);
+        turn(walkerA, moveA[1]);
       } else if (isBMoved && isArraysEqual(moveB[1], walkerA.position)) {
-        turn(walkerB);
+        turn(walkerB, moveB[1]);
       }
     }
   }

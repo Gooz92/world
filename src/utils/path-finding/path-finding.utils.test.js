@@ -5,9 +5,9 @@ import {
   getNextCoordinate
 } from './path-finding.utils.js';
 
-import { deepEqual, equal } from 'utils/common/assertion.js';
+import { deepEqual, equal, isTrue } from 'utils/common/assertion.js';
 
-import { last } from 'utils/common/array.utils.js';
+import { last, isArraysEqual } from 'utils/common/array.utils.js';
 import { getTrue } from 'utils/common/fn.utils.js';
 import Direction from 'model/Direction.enum.js';
 import { buildLinkedList } from './path-finding.test-utils.js';
@@ -41,6 +41,25 @@ describe('backtracePath', function () {
 
     equal(processedPath[0].direction, Direction.SOUTH);
     equal(processedPath[1].direction, Direction.SOUTH_EAST);
+  });
+
+  it('process path with one-tile segments', () => {
+    const path = [
+      { position: [ 0, 0 ] },
+      { position: [ 1, 1 ], direction: Direction.SOUTH_EAST },
+      { position: [ 0, 2 ], direction: Direction.SOUTH_WEST }
+    ];
+
+    const node = buildLinkedList(path, (node, data) => {
+      Object.assign(node, data);
+    });
+
+    const processedPath = backtracePath(node);
+
+    isTrue(processedPath.every((node, index) => (
+      isArraysEqual(node.position, path[index])
+    )));
+
   });
 });
 

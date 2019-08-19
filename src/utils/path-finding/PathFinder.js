@@ -39,9 +39,10 @@ export default class PathFinder {
 
     const isTilePassable = (x, y) => {
       const tile = tiles[y][x];
-      return this.isTilePassable(tile);
+      return this.isTilePassable(tile, x, y);
     };
 
+    // TODO: test isTIlePassable callback invokes
     return postProcess(node, isTilePassable, tiles[0].length, tiles.length);
   }
 
@@ -84,7 +85,7 @@ export default class PathFinder {
           return this.getResult(nextNode, tiles);
         }
 
-        if (!this.isTilePassable(tile)) {
+        if (!this.isTilePassable(tile, nextX, nextY)) {
           continue;
         }
 

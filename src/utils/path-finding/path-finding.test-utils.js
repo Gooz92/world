@@ -17,7 +17,7 @@ export function buildLinkedList(array, setData = defaultSetData) {
   return node;
 }
 
-export function isContinuous(positions) {
+export function isValidPath(positions) {
   for (let i = 0; i < positions.length - 1; i++) {
     const [ x1, y1 ] = positions[i],
       [ x2, y2 ] = positions[i + 1];
@@ -25,7 +25,7 @@ export function isContinuous(positions) {
     const dx = Math.abs(x1 - x2),
       dy = Math.abs(y1 - y2);
 
-    if (dx > 1 || dy > 1) {
+    if ((dx > 1 || dy > 1) || (dx === 0 && dy === 0)) {
       return false;
     }
   }

@@ -16,13 +16,9 @@ export default class World {
 
   tick() {
 
-    try {
-      time('handle-collision', () => {
-        handleCollision(this.actors);
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    time('handle-collision', () => {
+      handleCollision(this.actors);
+    });
 
     const actions = this.actors
       .map(actor => {
