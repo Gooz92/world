@@ -78,10 +78,14 @@ Direction.prototype.turnLeft = function () {
 
 Direction.prototype.turn = function (index) {
   const selfIndex = Direction.members.indexOf(this);
-
   const nextIndex = selfIndex + index;
+  const actualIndex = nextIndex % Direction.members.length;
 
-  
+  if (actualIndex < 0) {
+    return Direction.members[Direction.members.length + nextIndex];
+  }
+
+  return Direction.members[nextIndex];
 };
 
 export default Direction;

@@ -9,6 +9,13 @@ export default class MoveAction extends Action {
     super(actor, [ actor.position, destination ]);
 
     this.direction = Direction.fromPoints(actor.position, destination);
+
+    if (!this.direction) {
+      throw new Error(
+        `Wrong move for actor at position [${actor.position}] to [${destination}]`
+      );
+    }
+
     this.cost = this.direction.distance;
   }
 

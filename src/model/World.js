@@ -5,6 +5,7 @@ import handleCollision from './handle-collision.js/';
 
 import { getCycleCoordinate } from 'utils/common/math.utils.js';
 import Strategy from './strategies/Strategy.js';
+import { time } from 'utils/common/dev.utils';
 
 export default class World {
 
@@ -16,7 +17,9 @@ export default class World {
   tick() {
 
     try {
-      handleCollision(this.actors);
+      time('handle-collision', () => {
+        handleCollision(this.actors);
+      });
     } catch (e) {
       console.log(e);
     }

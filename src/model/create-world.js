@@ -42,10 +42,10 @@ export default function createWorld({ seed, empty }) {
   const world = new World(tiles);
 
   const firstWalker = world.placePerson(1, 1);
-  const secondWalker = world.placePerson(1, 4);
+  const secondWalker = world.placePerson(1, 5);
 
-  const ab = [ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ] ],
-    ba = [ [ 1, 3 ], [ 1, 2 ], [ 1, 1 ] ];
+  const ab = [ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ] ],
+    ba = [ [ 1, 4 ], [ 1, 3 ], [ 1, 2 ], [ 1, 1 ] ];
 
   firstWalker.setStrategy(PatrolStrategy, {
     path: calculateDirections([ ...ab, ...ba ], Direction.SOUTH)
