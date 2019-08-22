@@ -10,34 +10,41 @@ export function postProcess(node, isTilePassable, width, height) {
   }
 
   const path = backtracePath(node);
-  const smoothedPath = smoothPath(path, isTilePassable, width, height);
+  const compressedpath = compressPath(path);
+  const smoothedPath = smoothPath(compressedpath, isTilePassable, width, height);
   const expandedPath = expandPath(smoothedPath, width, height);
 
   return expandedPath;
 }
 
-export function backtracePath(node) {
+export function compressPath(path) {
+  const compressed = [ path[0] ];
 
-  const path = [{
-    position: node.position,
-    direction: node.direction
-  }];
-
-  while (node.previous.previous) {
-    if (node.direction !== node.previous.direction) {
-      path.unshift({
-        position: node.previous.position,
-        direction: node.direction
+  for (let i = 1; i < path.length - 1; i++) {
+    if (path[i].direction !== path[i + 1].direction) {
+      compressed.push({
+        position: path[i].position,
+        direction:  path[i + 1].direction
       });
     }
-
-    node = node.previous;
   }
 
-  path.unshift({
-    position: node.position,
-    direction: node.direction
-  });
+  compressed.push(last(path));
+
+  return compressed;
+}
+
+export function backtracePath(node) {
+
+  const path = [];
+
+  do {
+    path.unshift({
+      position: node.position,
+      direction: node.direction
+    });
+    node = node.previous;
+  } while (node.previous);
 
   return path;
 }

@@ -1,5 +1,6 @@
 import {
   backtracePath,
+  compressPath,
   smoothPath,
   expandPath,
   getNextCoordinate
@@ -15,7 +16,7 @@ import { buildLinkedList } from './path-finding.test-utils.js';
 const getPosition = node => node.position;
 
 describe('backtracePath', function () {
-  it('calculate directions', () => {
+  it('build path from linked list', () => {
     const x0 = 2, l0 = 5, l1 = 3;
     const path = [];
 
@@ -28,8 +29,8 @@ describe('backtracePath', function () {
 
     for (let i = 0; i < l1; i++) {
       path.push({
-        direction: Direction.SOUTH_EAST,
-        position: [ x0 + i + 1, l0 + i ]
+        position: [ x0 + i + 1, l0 + i ],
+        direction: Direction.SOUTH_EAST
       });
     }
 
@@ -39,28 +40,21 @@ describe('backtracePath', function () {
 
     const processedPath = backtracePath(node);
 
-    equal(processedPath[0].direction, Direction.SOUTH);
-    equal(processedPath[1].direction, Direction.SOUTH_EAST);
-  });
+    // cut off start path node
+    equal(processedPath.length, path.length - 1);
 
-  it('process path with one-tile segments', () => {
-    const path = [
-      { position: [ 0, 0 ] },
-      { position: [ 1, 1 ], direction: Direction.SOUTH_EAST },
-      { position: [ 0, 2 ], direction: Direction.SOUTH_WEST }
-    ];
-
-    const node = buildLinkedList(path, (node, data) => {
-      Object.assign(node, data);
-    });
-
-    const processedPath = backtracePath(node);
+    path.shift();
 
     isTrue(processedPath.every((node, index) => (
-      isArraysEqual(node.position, path[index])
+      node.direction === path[index].direction &&
+        isArraysEqual(node.position, path[index].position)
     )));
 
   });
+});
+
+describe('compressPath', function () {
+
 });
 
 describe('smoothPath', function () {

@@ -77,7 +77,7 @@ function testCollision(pathes, width, height) {
 
 describe('collison handling', function () {
 
-  it('vertical collision (try to occupy same tile [ 3, 4 ])', () => {
+  it.skip('vertical collision (try to occupy same tile [ 3, 4 ])', () => {
 
     testCollision([
       [ [ 3, 2 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], [ 3, 6 ] ],

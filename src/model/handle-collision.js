@@ -3,7 +3,7 @@ import MoveAction from 'model/actions/MoveAction.js';
 import WalkStrategy from './strategies/WalkStrategy.js';
 import PathFinder from 'utils/path-finding/PathFinder.js';
 
-function getBypass(actor, blockedPosition) {
+export function getBypass(actor, blockedPosition) {
   const [ x, y ] = actor.position;
   const path = actor.strategy.path;
 
@@ -11,7 +11,10 @@ function getBypass(actor, blockedPosition) {
 
   const bypassFinder = new PathFinder({
     isTilePassable(tile, x, y) {
-      return actor.canMoveTo(x, y) && !isArraysEqual(blockedPosition, [ x, y ]);
+      return (
+        !actor.world.isTileOccupied(x, y) &&
+        !isArraysEqual(blockedPosition, [ x, y ])
+      );
     },
     isTileFound(tile, x, y) {
       const startIndex = actor.strategy.pathNodeIndex;
@@ -45,7 +48,7 @@ export function turn(actor, blockedPosition) {
     path,
     onDone() {
       originalStrategy.action = null;
-      originalStrategy.pathNodeIndex = pathNodeIndex + 1;
+      originalStrategy.pathNodeIndex = pathNodeIndex;
       this.actor.strategy = originalStrategy;
       return this.actor.strategy.getAction();
     }
