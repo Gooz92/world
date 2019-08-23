@@ -10,6 +10,10 @@ export default class MovementStrategy extends Strategy {
     this.pathNodeIndex = 0;
   }
 
+  nextPathNodeIndex() {
+    return ++this.pathNodeIndex;
+  }
+
   getNextPathNode() {
     return this.path[this.pathNodeIndex];
   }

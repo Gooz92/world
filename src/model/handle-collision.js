@@ -49,6 +49,7 @@ export function turn(actor, blockedPosition) {
     onDone() {
       originalStrategy.action = null;
       originalStrategy.pathNodeIndex = pathNodeIndex;
+      originalStrategy.nextPathNodeIndex();
       this.actor.strategy = originalStrategy;
       return this.actor.strategy.getAction();
     }

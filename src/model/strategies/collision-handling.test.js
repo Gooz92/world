@@ -26,7 +26,7 @@ function isActorHaveSamePositions(a, b) {
 function addWalls(tiles) {
 
   for (let i = 0; i < tiles[0].length; i++) {
-    tiles[0].object = { type: ObjectType.OBSTACLE };
+    tiles[0][i].object = { type: ObjectType.OBSTACLE };
   }
 
   for (let i = 1; i < tiles.length - 1; i++) {
@@ -41,7 +41,7 @@ function addWalls(tiles) {
   }
 }
 
-function testCollision(pathes, width, height) {
+function testCollision(pathes, width, height, maxTicks = 20) {
   const tiles = generateArray(height, width, getObject);
   addWalls(tiles);
   const world = new World(tiles);
@@ -60,7 +60,11 @@ function testCollision(pathes, width, height) {
 
   const actualPathes = generateArray(pathes.length, getArray);
 
-  while (walks.some(({ actor, goal }) => !isArraysEqual(actor.position, goal))) {
+  let ticks = 0;
+
+  while (ticks++ <
+      maxTicks && walks.some(({ actor, goal }) => !isArraysEqual(actor.position, goal))) {
+
     const actions = world.tick();
 
     const moves = actions.filter(action => action.type === MoveAction.TYPE);
@@ -77,8 +81,9 @@ function testCollision(pathes, width, height) {
 
 describe('collison handling', function () {
 
-  it.skip('vertical collision (try to occupy same tile [ 3, 4 ])', () => {
+  it('vertical collision (try to occupy same tile [ 3, 4 ])', () => {
 
+    debugger;
     testCollision([
       [ [ 3, 2 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], [ 3, 6 ] ],
       [ [ 3, 6 ], [ 3, 5 ], [ 3, 4 ], [ 3, 3 ], [ 3, 2 ] ]

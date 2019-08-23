@@ -13,7 +13,7 @@ export default class WalkStrategy extends MovementStrategy {
 
   nextAction() {
 
-    if (this.pathNodeIndex === this.path.length) {
+    if (this.pathNodeIndex >= this.path.length) {
       return this.onDone();
     }
 

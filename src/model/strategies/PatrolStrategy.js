@@ -7,10 +7,16 @@ export default class PatrolStrategy extends MovementStrategy {
     super(actor, { path });
   }
 
+  nextPathNodeIndex() {
+    this.pathNodeIndex = ++this.pathNodeIndex % this.path.length;
+
+    return this.pathNodeIndex;
+  }
+
   nextAction() {
     const { position } = this.getNextPathNode();
 
-    this.pathNodeIndex = ++this.pathNodeIndex % this.path.length;
+    this.nextPathNodeIndex();
 
     return new MoveAction(this.actor, position);
   }
