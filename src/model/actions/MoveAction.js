@@ -11,7 +11,7 @@ export default class MoveAction extends Action {
     this.direction = Direction.fromPoints(actor.position, destination);
 
     if (!this.direction) {
-      throw new Error(
+      console.warn(
         `Wrong move for actor at position [${actor.position}] to [${destination}]`
       );
     }

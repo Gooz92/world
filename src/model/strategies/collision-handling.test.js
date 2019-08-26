@@ -76,6 +76,7 @@ function testCollision(pathes, width, height, maxTicks = 20) {
     });
   }
 
+  isTrue(ticks < maxTicks);
   isTrue(actualPathes.every(path => isValidPath(path)), 'some path is wrong');
 }
 
@@ -83,7 +84,6 @@ describe('collison handling', function () {
 
   it('vertical collision (try to occupy same tile [ 3, 4 ])', () => {
 
-    debugger;
     testCollision([
       [ [ 3, 2 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], [ 3, 6 ] ],
       [ [ 3, 6 ], [ 3, 5 ], [ 3, 4 ], [ 3, 3 ], [ 3, 2 ] ]

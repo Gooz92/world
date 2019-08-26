@@ -19,7 +19,7 @@ export default class WalkStrategy extends MovementStrategy {
 
     const { position } = this.getNextPathNode();
 
-    ++this.pathNodeIndex;
+    this.nextPathNodeIndex();
 
     return new MoveAction(this.actor, position);
   }

@@ -15,6 +15,8 @@ import { buildLinkedList } from './path-finding.test-utils.js';
 
 const getPosition = node => node.position;
 
+// expandPath(smoothPath(compressPath(backtracePath(node))))
+
 describe('backtracePath', function () {
   it('build path from linked list', () => {
     const x0 = 2, l0 = 5, l1 = 3;
@@ -54,7 +56,19 @@ describe('backtracePath', function () {
 });
 
 describe('compressPath', function () {
+  it('change directions in two-nodes path', () => {
+    const path = [
+      { position: [ 0, 0 ], direction: Direction.WEST },
+      { position: [ 0, 1 ], direction: Direction.SOUTH }
+    ];
 
+    const compressed = compressPath(path);
+
+    deepEqual(
+      compressed.map(node => node.direction),
+      [ Direction.SOUTH, Direction.SOUTH ]
+    );
+  });
 });
 
 describe('smoothPath', function () {
@@ -122,6 +136,19 @@ describe('expandPath', function () {
     const positions = expanded.map(getPosition);
 
     deepEqual(positions, [ [ 2, 2 ], [ 1, 2 ], [ 0, 2 ], [ 5, 2 ], [ 4, 2 ] ]);
+  });
+
+  it('work with two-nodes segments', () => {
+    const path = [
+      { position: [ 1, 1 ], direction: Direction.NORTH_EAST },
+      { position: [ 2, 0 ], direction: Direction.EAST },
+      { position: [ 4, 0 ], direction: Direction.EAST }
+    ];
+
+    const expanded = expandPath(path, 6, 4);
+    const positions = expanded.map(node => node.position);
+
+    deepEqual(positions, [ [ 1, 1 ], [ 2, 0 ], [ 3, 0 ], [ 4, 0 ] ]);
   });
 
 });

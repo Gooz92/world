@@ -23,7 +23,7 @@ describe('isValidPath', function () {
     isFalse(isValidPath(path));
   });
 
-  it('return false if path contains duplcated positions', () => {
+  it('return false if path contains duplicated positions', () => {
     const path = [ [ 0, 1 ], [ 1, 2 ], [ 2, 1 ], [ 2, 2 ], [ 2, 2 ] ];
     isFalse(isValidPath(path));
   });

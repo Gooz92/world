@@ -10,21 +10,30 @@ export function postProcess(node, isTilePassable, width, height) {
   }
 
   const path = backtracePath(node);
-  const compressedpath = compressPath(path);
-  const smoothedPath = smoothPath(compressedpath, isTilePassable, width, height);
+  const compressedPath = compressPath(path);
+  const smoothedPath = smoothPath(compressedPath, isTilePassable, width, height);
   const expandedPath = expandPath(smoothedPath, width, height);
 
   return expandedPath;
 }
 
 export function compressPath(path) {
+
+  if (path.length < 2) {
+    return path;
+  }
+
   const compressed = [ path[0] ];
+
+  if (path[0].direction !== path[1].direction) {
+    compressed[0].direction = path[1].direction;
+  }
 
   for (let i = 1; i < path.length - 1; i++) {
     if (path[i].direction !== path[i + 1].direction) {
       compressed.push({
         position: path[i].position,
-        direction:  path[i + 1].direction
+        direction: path[i + 1].direction
       });
     }
   }
