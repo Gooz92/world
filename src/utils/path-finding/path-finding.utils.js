@@ -122,6 +122,8 @@ export function expandPath(path, width, height) {
 
   const expanded = [];
 
+  let direction = path[0].direction;
+
   for (let i = 0; i < path.length - 1; i++) {
     let [ x0, y0 ] = path[i].position;
     let [ x1, y1 ] = path[i + 1].position;
@@ -131,25 +133,24 @@ export function expandPath(path, width, height) {
 
     const segment = interpolate(x0, y0, x1, y1);
 
-    expanded.push({
-      direction: path[i].direction,
-      position: [
-        getCycleCoordinate(x0, width),
-        getCycleCoordinate(y0, height)
-      ]
-    });
-
-    for (let i = 1; i < segment.length; i++) {
-      const [ x, y ] = segment[i];
+    for (let j = 0; j < segment.length - 1; j++) {
+      const [ x, y ] = segment[j];
       expanded.push({
-        direction: Direction.fromPoints(segment[i - 1], segment[i]),
+        direction,
         position: [
           getCycleCoordinate(x, width),
           getCycleCoordinate(y, height)
         ]
       });
+
+      direction = Direction.fromPoints(segment[j], segment[j + 1]);
     }
   }
+
+  expanded.push({
+    position: last(path).position,
+    direction
+  });
 
   return expanded;
 }

@@ -25,22 +25,4 @@ describe('Direction.enum', function () {
 
   });
 
-  describe('turnRight()', function () {
-
-    it('return next direction', () => {
-      equal(Direction.NORTH.turnRight(), Direction.NORTH_EAST);
-      equal(Direction.NORTH_WEST.turnRight(), Direction.NORTH);
-    });
-
-  });
-
-  describe('turn()', function () {
-
-    it('return dirction by relative index', () => {
-      equal(Direction.NORTH.turn(-1), Direction.NORTH_WEST);
-      equal(Direction.SOUTH.turn(1), Direction.SOUTH_WEST);
-    });
-
-  });
-
 });

@@ -69,6 +69,7 @@ describe('compressPath', function () {
       [ Direction.SOUTH, Direction.SOUTH ]
     );
   });
+
 });
 
 describe('smoothPath', function () {
@@ -107,9 +108,7 @@ describe('smoothPath', function () {
 
     const smoothed = smoothPath(path, getTrue, width, height).map(getPosition);
     deepEqual(smoothed, [ [ 3, 0 ], [ 2, 18 ] ]);
-
   });
-
 });
 
 describe('expandPath', function () {

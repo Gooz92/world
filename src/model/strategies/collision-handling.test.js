@@ -13,32 +13,15 @@ import { isTrue } from 'utils/common/assertion.js';
 
 import {
   isValidPath,
-  calculateDirections
+  calculateDirections,
+  addWalls
 } from 'utils/path-finding/path-finding.test-utils.js';
+
 import WalkStrategy from './WalkStrategy.js';
 import MoveAction from 'model/actions/MoveAction.js';
-import ObjectType from 'model/ObjectType.enum.js';
 
 function isActorHaveSamePositions(a, b) {
   return isArraysEqual(a.position, b.position);
-}
-
-function addWalls(tiles) {
-
-  for (let i = 0; i < tiles[0].length; i++) {
-    tiles[0][i].object = { type: ObjectType.OBSTACLE };
-  }
-
-  for (let i = 1; i < tiles.length - 1; i++) {
-    tiles[i][0].object = { type: ObjectType.OBSTACLE };
-    tiles[i][tiles[i].length - 1].object = { type: ObjectType.OBSTACLE };
-  }
-
-  const lastRow = tiles[tiles.length - 1];
-
-  for (let i = 0; i < lastRow.length; i++) {
-    lastRow[i].object = { type: ObjectType.OBSTACLE };
-  }
 }
 
 function testCollision(pathes, width, height, maxTicks = 20) {
@@ -91,7 +74,7 @@ describe('collison handling', function () {
 
   });
 
-  it.skip('vertical collision (try to occupy each other tiles)', () => {
+  it('vertical collision (try to occupy each other tiles)', () => {
 
     testCollision([
       [ [ 3, 2 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], [ 3, 6 ], [ 3, 7 ] ],
@@ -100,7 +83,7 @@ describe('collison handling', function () {
 
   });
 
-  it.skip('diagonal collision try to occupy same tile [ 4, 4 ]', () => {
+  it('diagonal collision try to occupy same tile [ 4, 4 ]', () => {
 
     testCollision([
       [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ] ],
@@ -109,7 +92,7 @@ describe('collison handling', function () {
 
   });
 
-  it.skip('diagonal collision try to occupy each other tiles', () => {
+  it('diagonal collision try to occupy each other tiles', () => {
 
     testCollision([
       [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ], [ 7, 7 ] ],

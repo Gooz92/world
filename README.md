@@ -29,22 +29,20 @@ There are "@"s. They are are cutting down trees.
 ## Known issues
   * Path smoothing somethimes dosen't work with border-crossing paths.
 
-## DEV TODO
-  * Write test for PF: path post processing should not change path cost
+## DEV ENV TODO
   * Run single test
   * Improve assertion error messages
   * Debug test from IDE
-  * Somehow deal with browser scaling
-  * Collision handling
 
 ## Roadmap
 
   ### v 0.0.#
-    * Write more test scenarious for collision handling
+    * Collision handling (one person per tile) (in progress)
+    * Write more test scenarious for collision handling (swap, multiple actors in collsion group)
     * Test collision behavior near bounds
     * Simple ascii view with collided actors ?
-    * Collision handling (one person per tile) (in progress)
-    * Test case with not found path
+    * Write test for PF: path post processing should not change path cost
+    * Somehow deal with browser scaling
     * Displaying services refacatoring
     * Sandbox (ui, user interaction improvements, refactor)
     * Place stock area
@@ -53,7 +51,7 @@ There are "@"s. They are are cutting down trees.
     * Display resource count and population
     * Assign jobs (for start idle and cut trees)
     * Game run ( not sandbox as now )
-    * Game saving ( in local storage)
+    * Game saving (in local storage)
 
   ### v 0.1.0 (MVP)
 

@@ -25,7 +25,7 @@ export default class World {
         try {
           return actor.act();
         } catch (e) {
-          console.log(e);
+          console.log(e); // TODO ? 
         }
 
         return actor.idle();

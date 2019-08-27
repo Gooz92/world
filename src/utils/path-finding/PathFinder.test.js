@@ -83,6 +83,19 @@ describe('PathFinder', function () {
 
       equal(path[3].direction, Direction.SOUTH_EAST);
     });
+
+    it('return empty array if path not found', () => {
+      const tiles = generateArray(3, 4, getFalse);
+
+      const finder = createFinder();
+
+      const x0 = 1, y0 = 2;
+
+      const path = finder.find(tiles, x0, y0);
+
+      equal(path.length, 0);
+    });
+
   });
 
 });

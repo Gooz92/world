@@ -59,33 +59,4 @@ Direction.fromPoints = ([ x0, y0 ], [ x1, y1 ]) => {
   ));
 };
 
-// TODO
-Direction.prototype.turnRight = function () {
-  const index = Direction.members.indexOf(this);
-
-  const nextIndex = index < Direction.members.length - 1 ? index + 1 : 0;
-
-  return Direction.members[nextIndex];
-};
-
-Direction.prototype.turnLeft = function () {
-  const index = Direction.members.indexOf(this);
-
-  const nextIndex = index === 0 ? Direction.members.length - 1 : index - 1;
-
-  return Direction.members[nextIndex];
-};
-
-Direction.prototype.turn = function (index) {
-  const selfIndex = Direction.members.indexOf(this);
-  const nextIndex = selfIndex + index;
-  const actualIndex = nextIndex % Direction.members.length;
-
-  if (actualIndex < 0) {
-    return Direction.members[Direction.members.length + nextIndex];
-  }
-
-  return Direction.members[nextIndex];
-};
-
 export default Direction;
