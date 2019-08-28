@@ -38,7 +38,7 @@ There are "@"s. They are are cutting down trees.
 
   ### v 0.0.#
     * Collision handling (one person per tile) (in progress)
-    * Write more test scenarious for collision handling (swap, multiple actors in collsion group)
+    * Write more test scenarious for collision handling (swap, multiple actors in collsion group, tunnels)
     * Test collision behavior near bounds
     * Simple ascii view with collided actors ?
     * Write test for PF: path post processing should not change path cost

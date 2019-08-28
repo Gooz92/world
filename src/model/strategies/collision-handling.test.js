@@ -59,7 +59,7 @@ function testCollision(pathes, width, height, maxTicks = 20) {
     });
   }
 
-  isTrue(ticks < maxTicks);
+  isTrue(ticks < maxTicks, 'max ticks reached (deadlock?)');
   isTrue(actualPathes.every(path => isValidPath(path)), 'some path is wrong');
 }
 
@@ -99,6 +99,13 @@ describe('collison handling', function () {
       [ [ 7, 7 ], [ 6, 6 ], [ 5, 5 ], [ 4, 4 ], [ 3, 3 ], [ 2, 2 ] ]
     ], 9, 9);
 
+  });
+
+  it('vertical swap', () => {
+    testCollision([
+      [ [ 2, 2 ], [ 2, 3 ] ],
+      [ [ 2, 3 ], [ 2, 2 ] ]
+    ], 5, 7);
   });
 
 });
