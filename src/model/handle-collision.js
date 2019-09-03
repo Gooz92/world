@@ -5,9 +5,6 @@ import PathFinder from 'utils/path-finding/PathFinder.js';
 
 export function getBypass(actor, blockedPosition) {
   const [ x, y ] = actor.position;
-  const path = actor.strategy.path;
-
-  let pathNodeIndex = null;
 
   const bypassFinder = new PathFinder({
     isTilePassable(tile, x, y) {
@@ -17,21 +14,17 @@ export function getBypass(actor, blockedPosition) {
       );
     },
     isTileFound(tile, x, y) {
-      const startIndex = actor.strategy.pathNodeIndex;
-      for (let i = startIndex; i < path.length; i++) {
-        if (isArraysEqual(path[i].position, [ x, y ])) {
-          pathNodeIndex = i;
-          return true;
-        }
-      }
+      const strategy = actor.strategy;
+      const path = strategy.path;
+      const { position: [ x0, y0 ] } = path[strategy.pathNodeIndex + 1];
 
-      return false;
+      return x === x0 && y === y0;
     }
   });
 
-  const bypath = bypassFinder.find(actor.world.tiles, x, y);
+  const path = bypassFinder.find(actor.world.tiles, x, y);
 
-  return { pathNodeIndex, path: bypath };
+  return path.slice(0, -1);
 }
 
 export function turn(actor, blockedPosition) {
@@ -40,7 +33,7 @@ export function turn(actor, blockedPosition) {
     return;
   }
 
-  const { path, pathNodeIndex } = getBypass(actor, blockedPosition);
+  const path = getBypass(actor, blockedPosition);
 
   const originalStrategy = actor.strategy;
 
@@ -48,7 +41,6 @@ export function turn(actor, blockedPosition) {
     path,
     onDone() {
       originalStrategy.action = null;
-      originalStrategy.pathNodeIndex = pathNodeIndex;
       originalStrategy.nextPathNodeIndex();
       this.actor.strategy = originalStrategy;
       return this.actor.strategy.getAction();
@@ -58,10 +50,10 @@ export function turn(actor, blockedPosition) {
 
 export function isCollided(moveA, moveB) {
 
-  // walkers have same destiation tile
-  return isArraysEqual(moveA[1], moveB[1]) || (
-    // or a -> b and b -> a
-    isArraysEqual(moveA[1], moveB[0]) && isArraysEqual(moveB[1], moveA[0])
+  return (
+    isArraysEqual(moveA[1], moveB[1]) ||
+    isArraysEqual(moveA[1], moveB[0]) ||
+    isArraysEqual(moveB[1], moveA[0])
   );
 }
 
@@ -79,14 +71,15 @@ export default function handleCollision(walkers) {
       const isBMoved = actionB.type === MoveAction.TYPE;
       const moveB = actionB.tiles;
 
-      if (isBMoved && isAMoved) {
-        if (isCollided(moveA, moveB)) {
-          turn(walkerA, moveA[1]); // or walkerB; TODO: priority
-        }
+      if (isBMoved && isAMoved && isCollided(moveA, moveB)) {
+        turn(walkerA, moveA[1]);
+        break;
       } else if (isAMoved && isArraysEqual(moveA[1], walkerB.position)) {
         turn(walkerA, moveA[1]);
+        break;
       } else if (isBMoved && isArraysEqual(moveB[1], walkerA.position)) {
         turn(walkerB, moveB[1]);
+        break;
       }
     }
   }
