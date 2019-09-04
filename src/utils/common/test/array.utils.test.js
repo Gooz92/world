@@ -188,4 +188,25 @@ describe('arrayUtils', function () {
 
   });
 
+  describe('getItem', function () {
+
+    const L = 10;
+    const getItem = arrayUtils.getItem;
+
+    const array = arrayUtils.generateArray(L, identity);
+
+    it('index > array.length', () => {
+      const n = 2;
+      const item = getItem(array, L + n );
+      equal(item, array[n]);
+    });
+
+    it('index < 0', () => {
+      const n = 3;
+      const item = getItem(array, -n);
+      equal(item, array[L - n]);
+    });
+
+  });
+
 });

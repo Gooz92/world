@@ -1,14 +1,16 @@
 import diamondSquareGenerator from 'utils/common/DiamondSquareGenerator.js';
-import { normalize, getIndex } from 'utils/common/math.utils.js';
-import { generateArray } from 'utils/common/array.utils.js';
+
 
 import World from './World.js';
 import ObjectType from 'model/ObjectType.enum.js';
+// import PatrolStrategy from './strategies/PatrolStrategy.js';
+// import { calculateDirections } from 'utils/path-finding/path-finding.test-utils.js';
+// import Direction from './Direction.enum.js';
+
 import { randomGenerator } from 'utils/common/random.utils.js';
 import { getObject } from 'utils/common/fn.utils.js';
-import PatrolStrategy from './strategies/PatrolStrategy.js';
-import { calculateDirections } from 'utils/path-finding/path-finding.test-utils.js';
-import Direction from './Direction.enum.js';
+import { normalize, getIndex } from 'utils/common/math.utils.js';
+import { generateArray } from 'utils/common/array.utils.js';
 
 const generator = diamondSquareGenerator()
   .setCellSize(32)
@@ -41,19 +43,19 @@ export default function createWorld({ seed, empty }) {
   const tiles = createTiles(seed, empty);
   const world = new World(tiles);
 
-  const firstWalker = world.placePerson(1, 1);
-  const secondWalker = world.placePerson(1, 8);
+  // const firstWalker = world.placePerson(1, 1);
+  // const secondWalker = world.placePerson(1, 8);
 
-  const ab = [ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ], [ 1, 6 ] ],
-    ba = [ [ 1, 7 ], [ 1, 6 ], [ 1, 5 ], [ 1, 4 ], [ 1, 3 ] ];
+  // const ab = [ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ], [ 1, 6 ] ],
+  //   ba = [ [ 1, 7 ], [ 1, 6 ], [ 1, 5 ], [ 1, 4 ], [ 1, 3 ] ];
 
-  firstWalker.setStrategy(PatrolStrategy, {
-    path: calculateDirections([ ...ab, ...ba ], Direction.SOUTH)
-  });
+  // firstWalker.setStrategy(PatrolStrategy, {
+  //   path: calculateDirections([ ...ab, ...ba ], Direction.SOUTH)
+  // });
 
-  secondWalker.setStrategy(PatrolStrategy, {
-    path: calculateDirections([ ...ba, ...ab ], Direction.NORTH)
-  });
+  // secondWalker.setStrategy(PatrolStrategy, {
+  //   path: calculateDirections([ ...ba, ...ab ], Direction.NORTH)
+  // });
 
   return world;
 }

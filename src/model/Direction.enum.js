@@ -1,5 +1,6 @@
 import createEnum from 'utils/common/create-enum.js';
 import { camelCase } from 'utils/common/string.utils.js';
+import { getItem } from 'utils/common/array.utils';
 
 /*
  * sqrt(2) ~ 1.4 ~ 1.5
@@ -51,12 +52,21 @@ const Direction = createEnum(
   }
 );
 
+Direction.axial = Direction.members.filter(direction => !direction.isDiagonal);
+
+Direction.diagonal = Direction.members.filter(direction => direction.isDiagonal);
+
 Direction.fromPoints = ([ x0, y0 ], [ x1, y1 ]) => {
   const dx = Math.sign(x1 - x0), dy = Math.sign(y1 - y0);
 
   return Direction.members.find(direction => (
     direction.dx === dx && direction.dy === dy
   ));
+};
+
+Direction.prototype.turn = function (offset) {
+  const selfIndex = Direction.members.indexOf(this);
+  return getItem(Direction.members, selfIndex + offset);
 };
 
 export default Direction;

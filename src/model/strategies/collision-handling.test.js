@@ -67,7 +67,7 @@ function testCollision(pathes, width, height, maxTicks = 20) {
 
 describe('collison handling', function () {
 
-  it('vertical collision (try to occupy same tile [ 3, 4 ])', () => {
+  it.skip('vertical collision (try to occupy same tile [ 3, 4 ])', () => {
 
     testCollision([
       [ [ 3, 2 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], [ 3, 6 ] ],
@@ -103,7 +103,8 @@ describe('collison handling', function () {
 
   });
 
-  it.skip('vertical swap', () => {
+  it('vertical swap', () => {
+    debugger;
     testCollision([
       [ [ 2, 2 ], [ 2, 3 ] ],
       [ [ 2, 3 ], [ 2, 2 ] ]
@@ -111,3 +112,4 @@ describe('collison handling', function () {
   });
 
 });
+

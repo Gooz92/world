@@ -95,5 +95,5 @@ export function getItem(array, index) {
     return array.length + i;
   }
 
-  return i;
+  return array[i];
 }
