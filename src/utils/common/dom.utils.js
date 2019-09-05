@@ -1,7 +1,7 @@
 import { forIn } from './object.utils.js';
 import { isObject, isFunction } from './is.utils.js';
 
-function assignProperties(element, properties) {
+export function assignProperties(element, properties) {
   for (const propertyName in properties) {
     if (propertyName === 'style') {
       Object.assign(element.style, properties.style);

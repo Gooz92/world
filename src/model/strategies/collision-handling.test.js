@@ -1,3 +1,5 @@
+import { COLLISIONS } from './test-cases.js';
+
 import World from 'model/World.js';
 
 import {
@@ -67,48 +69,11 @@ function testCollision(pathes, width, height, maxTicks = 20) {
 
 describe('collison handling', function () {
 
-  it.skip('vertical collision (try to occupy same tile [ 3, 4 ])', () => {
-
-    testCollision([
-      [ [ 3, 2 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], [ 3, 6 ] ],
-      [ [ 3, 6 ], [ 3, 5 ], [ 3, 4 ], [ 3, 3 ], [ 3, 2 ] ]
-    ], 7, 9);
-
-  });
-
-  it.skip('vertical collision (try to occupy each other tiles)', () => {
-
-    testCollision([
-      [ [ 3, 2 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], [ 3, 6 ], [ 3, 7 ] ],
-      [ [ 3, 7 ], [ 3, 6 ], [ 3, 5 ], [ 3, 4 ], [ 3, 3 ], [ 3, 2 ] ]
-    ], 7, 10);
-
-  });
-
-  it.skip('diagonal collision try to occupy same tile [ 4, 4 ]', () => {
-
-    testCollision([
-      [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ] ],
-      [ [ 6, 6 ], [ 5, 5 ], [ 4, 4 ], [ 3, 3 ], [ 2, 2 ] ]
-    ], 8, 8);
-
-  });
-
-  it.skip('diagonal collision try to occupy each other tiles', () => {
-
-    testCollision([
-      [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ], [ 7, 7 ] ],
-      [ [ 7, 7 ], [ 6, 6 ], [ 5, 5 ], [ 4, 4 ], [ 3, 3 ], [ 2, 2 ] ]
-    ], 9, 9);
-
-  });
-
-  it('vertical swap', () => {
-    debugger;
-    testCollision([
-      [ [ 2, 2 ], [ 2, 3 ] ],
-      [ [ 2, 3 ], [ 2, 2 ] ]
-    ], 5, 7);
+  COLLISIONS.forEach(testCase => {
+    it(testCase.title, () => {
+      const { walks, width, height } = testCase.data;
+      testCollision(walks, width, height);
+    });
   });
 
 });

@@ -95,7 +95,6 @@ position: absolute;
   cursor: pointer;
 }
 
-
 main {
   margin: 8px;
   display: grid;
@@ -103,3 +102,5 @@ main {
   grid-template-rows: auto;
   grid-column-gap: 12px;
 }
+
+.

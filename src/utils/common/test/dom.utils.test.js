@@ -65,6 +65,33 @@ describe('domUtils', function () {
 
   });
 
+  describe('assignProperties', function () {
+
+    const assignProperties = domUtils.assignProperties;
+
+    it('assign properties', () => {
+      const element = document.createElement('div');
+
+      const id = 'unique', innerHTML = 'hi!';
+
+      assignProperties(element, { id, innerHTML });
+
+      equal(element.id, id);
+      equal(element.innerHTML, innerHTML);      
+    });
+
+    it('auto-detect attributes', () => {
+      // htmlFor property reflects 'for' attribute
+      const id = 'name';
+      const label = document.createElement('label');
+
+      assignProperties(label, { for: id } );
+
+      equal(label.htmlFor, id);
+    });
+
+  });
+
   describe('parseQuery', function () {
 
     const parseQuery = domUtils.parseQuery;

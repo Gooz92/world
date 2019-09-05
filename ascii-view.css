@@ -1,0 +1,9 @@
+.ascii-field {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.ascii-field div {
+  width: 16px;
+  height: 16px;
+}
