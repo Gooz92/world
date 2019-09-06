@@ -77,7 +77,7 @@ describe('domUtils', function () {
       assignProperties(element, { id, innerHTML });
 
       equal(element.id, id);
-      equal(element.innerHTML, innerHTML);      
+      equal(element.innerHTML, innerHTML);
     });
 
     it('auto-detect attributes', () => {

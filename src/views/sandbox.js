@@ -12,7 +12,7 @@ import { time } from 'utils/common/dev.utils.js';
 import { debounce } from 'utils/common/fn.utils.js';
 import WalkStrategy from 'model/strategies/WalkStrategy';
 import PathFinder from 'utils/path-finding/PathFinder.js';
-import { get } from 'utils/common/object.utils';
+import { get } from 'utils/common/object.utils.js';
 
 let wv;
 
@@ -141,4 +141,3 @@ window.addEventListener('keydown', event => {
     }
   }
 });
-

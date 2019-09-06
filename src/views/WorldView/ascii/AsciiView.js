@@ -2,6 +2,8 @@ import { createElement, assignProperties } from 'utils/common/dom.utils.js';
 
 export default class AsciiView {
 
+  static CLASS_NAME = 'ascii-field';
+
   static CELL_SIZE = 16;
 
   static TOKENS = {
@@ -16,7 +18,7 @@ export default class AsciiView {
   }
 
   createElement() {
-    const field = createElement('.ascii-field', {
+    const field = createElement('.' + AsciiView.CLASS_NAME, {
       style: {
         width: (AsciiView.CELL_SIZE * this.world.width) + 'px',
         height: (AsciiView.CELL_SIZE * this.world.height) + 'px',

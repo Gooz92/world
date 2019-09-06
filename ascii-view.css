@@ -1,9 +1,55 @@
 .ascii-field {
   display: flex;
   flex-wrap: wrap;
+  margin: 12px;
 }
 
 .ascii-field div {
   width: 16px;
   height: 16px;
+  line-height: 16px;
+  text-align: center;
+}
+
+.row {
+  display: flex;
+}
+
+.box {
+  width: 120px;
+  height: 90px;
+  margin: 4px;
+  border: 1px solid black;
+}
+
+.red {
+  background-color: #f00;
+}
+
+.yellow {
+  background-color: #ff0;
+}
+
+.green {
+  background-color: #090;
+}
+
+.orange {
+  background-color: #fa0;
+}
+
+.blue {
+   background-color: #00f;
+}
+
+.light-blue {
+  background-color: #2af;
+}
+
+.dark-blue {
+  background-color: #009;
+}
+
+.pink {
+  background-color: #f6b;
 }

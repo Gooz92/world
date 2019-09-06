@@ -1,3 +1,4 @@
+// min <= n <= max
 export const randomInt = (min, max) => (
   Math.floor((min + (max - min + 1) * Math.random()))
 );

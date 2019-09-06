@@ -70,7 +70,7 @@ function testCollision(pathes, width, height, maxTicks = 20) {
 describe('collison handling', function () {
 
   COLLISIONS.forEach(testCase => {
-    it(testCase.title, () => {
+    it(testCase.name, () => {
       const { walks, width, height } = testCase.data;
       testCollision(walks, width, height);
     });

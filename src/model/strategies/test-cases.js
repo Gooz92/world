@@ -1,6 +1,6 @@
 export const COLLISIONS = [
   {
-    title: 'vertical collision (try to occupy same tile [ 3, 4 ])',
+    name: 'vertical collision (try to occupy same tile [ 3, 4 ])',
     data: {
       walks: [
         [ [ 3, 2 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], [ 3, 6 ] ],
@@ -11,7 +11,7 @@ export const COLLISIONS = [
     }
   },
   {
-    title: 'vertical collision (try to occupy each other tiles)',
+    name: 'vertical collision (try to occupy each other tiles)',
     data: {
       walks: [
         [ [ 3, 2 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], [ 3, 6 ], [ 3, 7 ] ],
@@ -22,7 +22,7 @@ export const COLLISIONS = [
     }
   },
   {
-    title: 'diagonal collision try to occupy same tile [ 4, 4 ]',
+    name: 'diagonal collision try to occupy same tile [ 4, 4 ]',
     data: {
       walks: [
         [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ] ],
@@ -33,7 +33,7 @@ export const COLLISIONS = [
     }
   },
   {
-    title: 'diagonal collision try to occupy each other tiles',
+    name: 'diagonal collision try to occupy each other tiles',
     data: {
       walks: [
         [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ], [ 7, 7 ] ],
@@ -44,7 +44,7 @@ export const COLLISIONS = [
     }
   },
   {
-    title: 'verical swap',
+    name: 'verical swap',
     data: {
       walks:[
         [ [ 2, 2 ], [ 2, 3 ] ],
