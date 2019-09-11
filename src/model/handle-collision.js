@@ -11,6 +11,8 @@ export function getBypass(actor, blockedPosition) {
 
   const strategy = actor.strategy;
 
+  let nextPathIndex = strategy.pathNodeIndex - 1;
+
   if (!strategy.hasNextPathNode()) {
     const action = actor.getAction();
     const [ x0, y0 ] = actor.position;
@@ -23,17 +25,18 @@ export function getBypass(actor, blockedPosition) {
         nextY = y0 + direction.dy;
 
       if (actor.canMoveTo(nextX, nextY)) {
-        return [{
-          position: [ nextX, nextY ],
-          direction
-        }];
+        return {
+          nextPathIndex,
+          path: [{
+            position: [ nextX, nextY ],
+            direction
+          }]
+        };
       }
     }
 
     return null; // TODO ?
   }
-
-  const { position: [ x0, y0 ] } = strategy.getNextPathNode();
 
   const bypassFinder = new PathFinder({
     isTilePassable(tile, x, y) {
@@ -43,18 +46,27 @@ export function getBypass(actor, blockedPosition) {
       );
     },
     isTileFound(tile, x, y) {
-      return x === x0 && y === y0;
+      for (let i = strategy.pathNodeIndex; i < strategy.path.length; i++) {
+        const { position: [ xi, yi ] } = strategy.path[i];
+
+        if (x === xi && y === yi) {
+          nextPathIndex = i;
+          return true;
+        }
+      }
+
+      return false;
     }
   });
 
   const path = bypassFinder.find(actor.world.tiles, x, y);
 
-  return path.slice(0, -1);
+  return { path: path.slice(0, -1), nextPathIndex };
 }
 
 export function turn(actor, blockedPosition) {
 
-  const path = getBypass(actor, blockedPosition);
+  const { path, nextPathIndex } = getBypass(actor, blockedPosition);
 
   const originalStrategy = actor.strategy;
 
@@ -63,9 +75,7 @@ export function turn(actor, blockedPosition) {
     onDone() {
       originalStrategy.action = null;
 
-      if (!originalStrategy.hasNextPathNode()) {
-        --originalStrategy.pathNodeIndex; // TODO
-      }
+      originalStrategy.pathNodeIndex = nextPathIndex;
 
       this.actor.strategy = originalStrategy;
       return this.actor.strategy.getAction();
