@@ -26,7 +26,7 @@ function isActorHaveSamePositions(a, b) {
   return isArraysEqual(a.position, b.position);
 }
 
-function testCollision(pathes, width, height, maxTicks = 20) {
+function testCollision(pathes, idlers, width, height, maxTicks = 20) {
   const tiles = generateArray(height, width, getObject);
 
   addWalls(tiles);
@@ -45,7 +45,11 @@ function testCollision(pathes, width, height, maxTicks = 20) {
     return { actor: person, goal: last(path) };
   });
 
-  const actualPathes = generateArray(pathes.length, getArray);
+  idlers.forEach(([ x0, y0 ]) => {
+    world.placePerson(x0, y0);
+  });
+
+  const actualPathes = generateArray(world.actors.length, getArray);
 
   let ticks = 0;
 
@@ -71,8 +75,8 @@ describe('collison handling', function () {
 
   COLLISIONS.forEach(testCase => {
     it(testCase.name, () => {
-      const { walks, width, height } = testCase.data;
-      testCollision(walks, width, height);
+      const { walks, idlers = [], width, height } = testCase.data;
+      testCollision(walks, idlers, width, height);
     });
   });
 

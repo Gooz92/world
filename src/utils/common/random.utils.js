@@ -1,3 +1,5 @@
+import { swap } from './array.utils.js';
+
 // min <= n <= max
 export const randomInt = (min, max) => (
   Math.floor((min + (max - min + 1) * Math.random()))
@@ -43,4 +45,23 @@ export function randomGenerator(seed = getSeed()) {
   };
 
   return self;
+}
+
+// TODO
+export function randomArrayIterator($array) {
+  const array = [ ...$array ];
+  let maxIndex = array.length - 1;
+
+  return {
+    next: () => {
+      const index = randomInt(0, maxIndex);
+      const element = array[index];
+
+      swap(array, maxIndex, index);
+
+      --maxIndex;
+
+      return element;
+    }
+  };
 }

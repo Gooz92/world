@@ -1,42 +1,14 @@
 import MoveAction from 'model/actions/MoveAction.js';
-import WalkStrategy from './strategies/WalkStrategy.js';
 import PathFinder from 'utils/path-finding/PathFinder.js';
 
-import { isArraysEqual } from 'utils/common/array.utils.js';
-
-const TURN_INDEXES = [ 1, -1, 2, -2, 3, -3, 4 ];
+import { isArraysEqual, last } from 'utils/common/array.utils.js';
+import WalkStrategy from './strategies/WalkStrategy';
 
 export function getBypass(actor, blockedPosition) {
   const [ x, y ] = actor.position;
 
   const strategy = actor.strategy;
-
-  let nextPathIndex = strategy.pathNodeIndex - 1;
-
-  if (!strategy.hasNextPathNode()) {
-    const action = actor.getAction();
-    const [ x0, y0 ] = actor.position;
-    const currentDirection = action.direction;
-
-    for (const turnIndex of TURN_INDEXES) {
-      const direction = currentDirection.turn(turnIndex);
-
-      const nextX = x0 + direction.dx,
-        nextY = y0 + direction.dy;
-
-      if (actor.canMoveTo(nextX, nextY)) {
-        return {
-          nextPathIndex,
-          path: [{
-            position: [ nextX, nextY ],
-            direction
-          }]
-        };
-      }
-    }
-
-    return null; // TODO ?
-  }
+  const goal = last(strategy.path);
 
   const bypassFinder = new PathFinder({
     isTilePassable(tile, x, y) {
@@ -46,41 +18,40 @@ export function getBypass(actor, blockedPosition) {
       );
     },
     isTileFound(tile, x, y) {
-      for (let i = strategy.pathNodeIndex; i < strategy.path.length; i++) {
-        const { position: [ xi, yi ] } = strategy.path[i];
-
-        if (x === xi && y === yi) {
-          nextPathIndex = i;
-          return true;
-        }
-      }
-
-      return false;
+      return goal.position[0] === x && goal.position[1] === y;
     }
   });
 
   const path = bypassFinder.find(actor.world.tiles, x, y);
 
-  return { path: path.slice(0, -1), nextPathIndex };
+  return path;
 }
 
 export function turn(actor, blockedPosition) {
 
-  const { path, nextPathIndex } = getBypass(actor, blockedPosition);
+  const path = getBypass(actor, blockedPosition);
 
-  const originalStrategy = actor.strategy;
+  actor.strategy.action = null;
 
-  actor.setStrategy(WalkStrategy, {
-    path,
-    onDone() {
-      originalStrategy.action = null;
+  actor.strategy.path = path;
+  actor.strategy.pathNodeIndex = 0;
+}
 
-      originalStrategy.pathNodeIndex = nextPathIndex;
+function getOutOfWay(actor, blockedPositions) {
+  const [ x0, y0 ] = actor.position;
 
-      this.actor.strategy = originalStrategy;
-      return this.actor.strategy.getAction();
+  const bypassFinder = new PathFinder({
+    isTilePassable(tile, x, y) {
+      return actor.world.isTileEmpty(x, y);
+    },
+    isTileFound(tile, x, y) {
+      return actor.world.isTileEmpty(x, y);
     }
   });
+
+  const path = bypassFinder.find(actor.world.tiles, x0, y0);
+
+  actor.setStrategy(WalkStrategy, { path });
 }
 
 export function getMove(actor) {
@@ -127,8 +98,18 @@ export default function handleCollision(walkers) {
       const collisionPosition = getCollsionPosition(moveA, moveB);
 
       if (collisionPosition !== null) {
-        const walker = moveA.isStatic ? walkerB : walkerA;
-        turn(walker, collisionPosition);
+
+        if (moveA.isStatic) {
+          getOutOfWay(walkerA);
+          continue;
+        }
+
+        if (moveB.isStatic) {
+          getOutOfWay(walkerB);
+          continue;
+        }
+
+        turn(walkerA, collisionPosition);
       }
     }
   }

@@ -46,12 +46,23 @@ export const COLLISIONS = [
   {
     name: 'verical swap',
     data: {
-      walks:[
+      walks: [
         [ [ 2, 2 ], [ 2, 3 ] ],
         [ [ 2, 3 ], [ 2, 2 ] ]
       ],
       width: 5,
       height: 7
     }
+  },
+  {
+    name: 'idlers should get out the way',
+    data: {
+      walks: [
+        [ [ 2, 2 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ], [ 2, 6 ] ]
+      ],
+      idlers: [ [ 2, 4 ] ],
+      width: 5,
+      height: 9
+    },
   }
 ];

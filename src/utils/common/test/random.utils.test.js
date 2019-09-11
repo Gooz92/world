@@ -54,4 +54,15 @@ describe('randomUtils', function () {
 
   });
 
+  describe('randomArrayIterator', function () {
+    const randomArrayIterator = randomUtils.randomArrayIterator;
+
+    it('works for single-element array', () => {
+      const array = [ 'alone' ];
+      const iterator = randomArrayIterator(array);
+      equal(iterator.next(), array[0]);
+    });
+
+  });
+
 });
