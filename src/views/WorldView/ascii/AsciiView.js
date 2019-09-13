@@ -1,4 +1,5 @@
 import { createElement, assignProperties } from 'utils/common/dom.utils.js';
+import colorPool from './color-pool.js';
 
 export default class AsciiView {
 
@@ -15,6 +16,8 @@ export default class AsciiView {
   constructor(world) {
     this.world = world;
     this.cells = [];
+
+    this.getActorNextColor = colorPool();
   }
 
   createElement() {

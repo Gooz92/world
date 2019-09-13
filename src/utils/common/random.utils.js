@@ -50,10 +50,11 @@ export function randomGenerator(seed = getSeed()) {
 // TODO
 export function randomArrayIterator($array) {
   const array = [ ...$array ];
+
   let maxIndex = array.length - 1;
 
   return {
-    next: () => {
+    next() {
       const index = randomInt(0, maxIndex);
       const element = array[index];
 
@@ -62,6 +63,12 @@ export function randomArrayIterator($array) {
       --maxIndex;
 
       return element;
-    }
+    },
+
+    reset() {
+      maxIndex = array.length - 1;
+    },
+
+    hasNext: () => maxIndex >= 0
   };
 }

@@ -1,5 +1,5 @@
 import * as randomUtils from '../random.utils.js';
-import { equal } from '../assertion.js';
+import { equal, isTrue, isFalse } from '../assertion.js';
 
 describe('randomUtils', function () {
 
@@ -55,12 +55,33 @@ describe('randomUtils', function () {
   });
 
   describe('randomArrayIterator', function () {
+
     const randomArrayIterator = randomUtils.randomArrayIterator;
 
     it('works for single-element array', () => {
       const array = [ 'alone' ];
       const iterator = randomArrayIterator(array);
       equal(iterator.next(), array[0]);
+    });
+
+    it('#hasNext return true if not all elements iterated', () => {
+      const array = [ 'uno', 'des' ];
+      const iterator = randomArrayIterator(array);
+
+      isTrue(iterator.hasNext());
+
+      iterator.next();
+
+      isTrue(iterator.hasNext());
+    });
+
+    it('#hasNext return false if all elements iterated', () => {
+      const array = [ 'uno' ];
+      const iterator = randomArrayIterator(array);
+
+      iterator.next();
+
+      isFalse(iterator.hasNext());
     });
 
   });
