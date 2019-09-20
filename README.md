@@ -40,7 +40,6 @@ There are "@"s. They are are cutting down trees.
     * Collision handling (one person per tile) (in progress)
     * Simple ascii view with collided actors (in progress)
     * Write more test scenarious for collision handling (swap, multiple actors in collsion group, tunnels) (in progress)
-    * Different colors for actors in AsciiView (in progress)
     * Test collision behavior near bounds
     * Write test for PF: path post processing should not change path cost
     * Somehow deal with browser scaling

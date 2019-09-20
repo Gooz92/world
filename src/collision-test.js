@@ -49,6 +49,10 @@ function run(scenario) {
   const field = view.createElement();
 
   main.appendChild(field);
+
+  setInterval(() => {
+    view.tick();
+  }, 300);
 }
 
 const testCaseSelector = select(COLLISIONS, item => {

@@ -14,7 +14,6 @@ describe('colorPool', function () {
 
     let steps = COLORS[0].length + COLORS[1].length;
 
-    debugger;
     while (steps-- > 0) {
       getColor();
     }

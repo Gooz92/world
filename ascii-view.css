@@ -2,6 +2,7 @@
   display: flex;
   flex-wrap: wrap;
   margin: 12px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .ascii-field div {
@@ -23,33 +24,33 @@
 }
 
 .red {
-  background-color: #f00;
+  color: #f00;
 }
 
 .yellow {
-  background-color: #ff0;
+  color: #ff0;
 }
 
 .green {
-  background-color: #090;
+  color: #090;
 }
 
 .orange {
-  background-color: #fa0;
+  color: #fa0;
 }
 
 .blue {
-   background-color: #00f;
+   color: #00f;
 }
 
 .light-blue {
-  background-color: #2af;
+  color: #2af;
 }
 
 .dark-blue {
-  background-color: #009;
+  color: #009;
 }
 
 .pink {
-  background-color: #f6b;
+  color: #f6b;
 }

@@ -31,13 +31,18 @@ export function turn(actor, blockedPosition) {
 
   const path = getBypass(actor, blockedPosition);
 
+  if (path.length === 1 && isArraysEqual(path[0].position, blockedPosition)) {
+    getOutOfWay(actor);
+    return;
+  }
+
   actor.strategy.action = null;
 
   actor.strategy.path = path;
   actor.strategy.pathNodeIndex = 0;
 }
 
-function getOutOfWay(actor, blockedPositions) {
+function getOutOfWay(actor) {
   const [ x0, y0 ] = actor.position;
 
   const bypassFinder = new PathFinder({

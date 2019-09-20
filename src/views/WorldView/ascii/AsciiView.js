@@ -1,5 +1,6 @@
 import { createElement, assignProperties } from 'utils/common/dom.utils.js';
 import colorPool from './color-pool.js';
+import ObjectType from 'model/ObjectType.enum.js';
 
 export default class AsciiView {
 
@@ -18,6 +19,8 @@ export default class AsciiView {
     this.cells = [];
 
     this.getActorNextColor = colorPool();
+
+    this.actorClasses = {};
   }
 
   createElement() {
@@ -66,8 +69,23 @@ export default class AsciiView {
   getTileAttributes(x, y) {
     const tile = this.world.getTile(x, y);
 
-    return {
-      innerHTML: tile.object ? AsciiView.TOKENS[tile.object.type.name] : '.'
+    const attributes = {
+      innerHTML: ' '
     };
+
+    if (tile.object) {
+      const { object } = tile;
+      attributes.innerHTML = AsciiView.TOKENS[object.type.name];
+
+      if (object.type === ObjectType.PERSON) {
+        if (!this.actorClasses[object.name]) {
+          this.actorClasses[object.name] = this.getActorNextColor();
+        }
+
+        attributes.className = this.actorClasses[object.name];
+      }
+    }
+
+    return attributes;
   }
 }

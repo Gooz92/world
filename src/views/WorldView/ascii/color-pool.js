@@ -2,20 +2,20 @@ import { randomArrayIterator } from 'utils/common/random.utils.js';
 
 export const COLORS = [
   [
-    [ 'red', '#f00' ],
-    [ 'green', '#090' ],
-    [ 'blue', '#00f' ],
+    'red',
+    'green',
+    'blue'
   ],
 
   [
-    [ 'yellow', '#ff0' ]
+    'yellow'
   ],
 
   [
-    [ 'orange' ],
-    [ 'light-blue' ],
-    [ 'dark-blue' ],
-    [ 'pink' ]
+    'orange',
+    'light-blue',
+    'dark-blue',
+    'pink'
   ]
 ];
 
