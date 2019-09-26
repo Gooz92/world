@@ -1,12 +1,18 @@
 import { createElement } from 'utils/common/dom.utils.js';
 
 export default function select(items, onChange) {
-  const selectElement = createElement('select', {
-    onchange: event => {
-      const item = items[event.target.selectedIndex];
-      onChange(item);
-    }
-  });
+
+  const component = {
+    element: createElement('select', {
+      onchange: event => {
+        const item = items[event.target.selectedIndex];
+        onChange(item);
+        component.selectedItem = item;
+      }
+    }),
+
+    selectedItem: items[0]
+  };
 
   items.forEach((item, index) => {
     const option = createElement('option', {
@@ -14,10 +20,8 @@ export default function select(items, onChange) {
       innerText: item.name
     });
 
-    selectElement.appendChild(option);
+    component.element.appendChild(option);
   });
 
-  return {
-    element: selectElement
-  };
+  return component;
 }

@@ -15,11 +15,18 @@ import {
 import { COLLISIONS } from 'model/strategies/test-cases.js';
 import select from 'views/components/select';
 
-const main = document.querySelector('main');
+const main = document.querySelector('main'),
+  replayButton = document.getElementById('replay');
+
+let timerId;
 
 function run(scenario) {
 
+  clearInterval(timerId);
+
   const prevField = main.querySelector('.' + AsciiView.CLASS_NAME);
+
+  replayButton.disabled = true;
 
   if (prevField) {
     prevField.parentElement.removeChild(prevField);
@@ -33,6 +40,8 @@ function run(scenario) {
 
   const world = new World(tiles);
 
+  let moversCount = scenario.walks.length;
+
   scenario.walks.forEach(path => {
     const [ x, y ] = path[0];
     const person = world.placePerson(x, y);
@@ -40,7 +49,11 @@ function run(scenario) {
 
     person.setStrategy(WalkStrategy, {
       // walking path should not include start actor position
-      path: calculateDirections(path.slice(1), direction)
+      path: calculateDirections(path.slice(1), direction),
+
+      onDone() {
+        --moversCount;
+      }
     });
   });
 
@@ -50,8 +63,11 @@ function run(scenario) {
 
   main.appendChild(field);
 
-  setInterval(() => {
+  timerId = setInterval(() => {
     view.tick();
+    if (moversCount === 0 && replayButton.disabled) {
+      replayButton.disabled = false;
+    }
   }, 300);
 }
 
@@ -60,3 +76,10 @@ const testCaseSelector = select(COLLISIONS, item => {
 });
 
 main.appendChild(testCaseSelector.element);
+
+run(COLLISIONS[0].data);
+
+document.getElementById('replay')
+  .addEventListener('click', event => {
+    run(testCaseSelector.selectedItem.data);
+  });

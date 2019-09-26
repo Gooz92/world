@@ -11,7 +11,7 @@ export default class WalkStrategy extends Strategy {
     this.pathNodeIndex = 0;
 
     if (onDone) {
-      this.onDone = onDone;
+      this.$onDone = onDone;
     }
   }
 
@@ -38,5 +38,16 @@ export default class WalkStrategy extends Strategy {
     this.nextPathNodeIndex();
 
     return new MoveAction(this.actor, position);
+  }
+
+  onDone() {
+
+    const action = super.onDone();
+
+    if (this.$onDone) {
+      this.$onDone();
+    }
+
+    return action;
   }
 }
