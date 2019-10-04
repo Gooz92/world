@@ -3,6 +3,7 @@ import PathFinder from 'utils/path-finding/PathFinder.js';
 
 import { isArraysEqual, last } from 'utils/common/array.utils.js';
 import WalkStrategy from './strategies/WalkStrategy';
+import Direction from './Direction.enum';
 
 export function getBypass(actor, blockedPosition) {
   const [ x, y ] = actor.position;
@@ -42,21 +43,35 @@ export function turn(actor, blockedPosition) {
   actor.strategy.pathNodeIndex = 0;
 }
 
-function getOutOfWay(actor) {
+const STEERING_INDEXES = [
+  2, -2, 3, -3, 1, -1
+];
+
+function getOutOfWay(actor, position) {
+  const direction = Direction.fromPoints(position, actor.position);
   const [ x0, y0 ] = actor.position;
 
-  const bypassFinder = new PathFinder({
-    isTilePassable(tile, x, y) {
-      return actor.world.isTileEmpty(x, y);
-    },
-    isTileFound(tile, x, y) {
-      return actor.world.isTileEmpty(x, y);
+  for (const index of STEERING_INDEXES) {
+    const steeringDirection = direction.turn(index);
+
+    const newPosition = [
+      x0 + steeringDirection.dx,
+      y0 + steeringDirection.dy
+    ];
+
+    const [ x, y ] = newPosition;
+
+    if (actor.canMoveTo(x, y)) {
+      const path = [{
+        position: newPosition,
+        direction: steeringDirection
+      }];
+
+      actor.setStrategy(WalkStrategy, { path });
+      return;
     }
-  });
+  }
 
-  const path = bypassFinder.find(actor.world.tiles, x0, y0);
-
-  actor.setStrategy(WalkStrategy, { path });
 }
 
 export function getMove(actor) {
@@ -105,12 +120,12 @@ export default function handleCollision(walkers) {
       if (collisionPosition !== null) {
 
         if (moveA.isStatic) {
-          getOutOfWay(walkerA);
+          getOutOfWay(walkerA, walkerB.position);
           continue;
         }
 
         if (moveB.isStatic) {
-          getOutOfWay(walkerB);
+          getOutOfWay(walkerB, walkerA.position);
           continue;
         }
 
