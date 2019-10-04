@@ -89,10 +89,10 @@ export function isUnique(array, isEqual = defaultIsEqual) {
 
 // handle cycle indexes
 export function getItem(array, index) {
-  const i = index % array.length;
+  let i = index % array.length;
 
   if (i < 0) {
-    return array.length + i;
+    i += array.length;
   }
 
   return array[i];

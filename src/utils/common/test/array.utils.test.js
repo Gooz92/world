@@ -190,10 +190,10 @@ describe('arrayUtils', function () {
 
   describe('getItem', function () {
 
-    const L = 10;
     const getItem = arrayUtils.getItem;
 
-    const array = arrayUtils.generateArray(L, identity);
+    const array = 'abcdefghijk'.split('');
+    const L = array.length;
 
     it('index > array.length', () => {
       const n = 2;
