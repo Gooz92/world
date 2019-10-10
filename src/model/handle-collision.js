@@ -2,8 +2,8 @@ import MoveAction from 'model/actions/MoveAction.js';
 import PathFinder from 'utils/path-finding/PathFinder.js';
 
 import { isArraysEqual, last } from 'utils/common/array.utils.js';
-import WalkStrategy from './strategies/WalkStrategy';
-import Direction from './Direction.enum';
+import WalkStrategy from './strategies/WalkStrategy.js';
+import Direction from './Direction.enum.js';
 
 export function getBypass(actor, blockedPosition) {
   const [ x, y ] = actor.position;
@@ -33,7 +33,8 @@ export function turn(actor, blockedPosition) {
   const path = getBypass(actor, blockedPosition);
 
   if (path.length === 1 && isArraysEqual(path[0].position, blockedPosition)) {
-    getOutOfWay(actor);
+    debugger;
+    getOutOfWay(actor, blockedPosition);
     return;
   }
 
