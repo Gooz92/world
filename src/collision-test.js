@@ -6,7 +6,6 @@ import Direction from 'model/Direction.enum.js';
 
 import { generateArray } from 'utils/common/array.utils.js';
 import { getObject } from 'utils/common/fn.utils.js';
-
 import {
   addWalls,
   calculateDirections

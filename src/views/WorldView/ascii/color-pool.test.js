@@ -12,7 +12,7 @@ describe('colorPool', function () {
   it('can switch to color with less priority', () => {
     const getColor = colorPool();
 
-    let steps = COLORS[0].length + COLORS[1].length;
+    let steps = COLORS[0].length;
 
     while (steps-- > 0) {
       getColor();
@@ -20,7 +20,7 @@ describe('colorPool', function () {
 
     const color = getColor();
 
-    isTrue(COLORS[2].includes(color));
+    isTrue(COLORS[1].includes(color));
   });
 
   it('switch back to first colors if all colors were iterated', () => {

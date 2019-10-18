@@ -55,14 +55,27 @@ export const COLLISIONS = [
     }
   },
   {
-    name: 'idlers should get out the way',
+    name: 'multiple actors collisions #1',
     data: {
       walks: [
-        [ [ 2, 2 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ], [ 2, 6 ] ]
+        [ [ 4, 2 ], [ 4, 3 ], [ 4, 4 ], [ 4, 5 ], [ 4, 6 ] ],
+        [ [ 2, 4 ], [ 3, 4 ], [ 4, 4 ], [ 5, 4 ], [ 6, 4 ] ],
+        [ [ 6, 4 ], [ 5, 4 ], [ 4, 4 ], [ 3, 4 ], [ 2, 4 ] ],
+        [ [ 4, 6 ], [ 4, 5 ], [ 4, 4 ], [ 4, 3 ], [ 4, 2 ] ]
       ],
-      idlers: [ [ 2, 4 ] ],
-      width: 5,
+      width: 9,
       height: 9
-    },
+    }
   }
+  // {
+  //   name: 'idlers should get out the way',
+  //   data: {
+  //     walks: [
+  //       [ [ 2, 2 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ], [ 2, 6 ] ]
+  //     ],
+  //     idlers: [ [ 2, 4 ] ],
+  //     width: 5,
+  //     height: 9
+  //   },
+  // }
 ];

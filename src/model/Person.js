@@ -1,5 +1,6 @@
 import ObjectType from 'model/ObjectType.enum.js';
 import Actor from './Actor.js';
+import MoveAction from './actions/MoveAction.js';
 
 let count = 0;
 
@@ -13,6 +14,10 @@ export default class Person extends Actor {
 
   canMoveTo(x, y) {
     return !this.world.isTileOccupied(x, y);
+  }
+
+  inMotion() {
+    return this.getAction().type === MoveAction.TYPE;
   }
 
   moveTo(position) {

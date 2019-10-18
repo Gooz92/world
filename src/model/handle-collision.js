@@ -1,136 +1,148 @@
-import MoveAction from 'model/actions/MoveAction.js';
-import PathFinder from 'utils/path-finding/PathFinder.js';
-
 import { isArraysEqual, last } from 'utils/common/array.utils.js';
 import WalkStrategy from './strategies/WalkStrategy.js';
-import Direction from './Direction.enum.js';
+import PathFinder from 'utils/path-finding/PathFinder.js';
 
-export function getBypass(actor, blockedPosition) {
-  const [ x, y ] = actor.position;
+function $inCollision(moveA, moveB) {
+  return (
+    isArraysEqual(moveA.tiles[1], moveB.tiles[0]) &&
+    (moveB.duration >= moveA.duration || moveB.isStatic)
+  );
+}
 
-  const strategy = actor.strategy;
-  const goal = last(strategy.path);
+function isInCollision(moveA, moveB) {
+  if (isArraysEqual(moveA.tiles[1], moveB.tiles[1]) &&
+    moveA.duration === moveB.duration) {
+    return true;
+  }
 
-  const bypassFinder = new PathFinder({
-    isTilePassable(tile, x, y) {
-      return (
-        !actor.world.isTileOccupied(x, y) &&
-        !isArraysEqual(blockedPosition, [ x, y ])
-      );
-    },
-    isTileFound(tile, x, y) {
-      return goal.position[0] === x && goal.position[1] === y;
-    }
+  if ($inCollision(moveA, moveB) || $inCollision(moveB, moveA)) {
+    return true;
+  }
+}
+
+const TURN_INDEXES = [ 1, -1, 2, -2, 3, -3, 4 ];
+
+function reCalculatePath(actor, goal) {
+  const [ x0, y0 ] = actor.position;
+
+  const finder = new PathFinder({
+    isTilePassable: tile => !tile.object,
+    isTileFound: (tile, x, y) => goal[0] === x && goal[1]=== y
   });
 
-  const path = bypassFinder.find(actor.world.tiles, x, y);
+  const path = finder.find(actor.world.tiles, x0, y0);
 
   return path;
 }
 
-export function turn(actor, blockedPosition) {
+const FLEE_INDEXES = [ 2, -2, 3, -3, 1, -1 ];
 
-  const path = getBypass(actor, blockedPosition);
+export function flee(actor, direction) {
 
-  if (path.length === 1 && isArraysEqual(path[0].position, blockedPosition)) {
-    debugger;
-    getOutOfWay(actor, blockedPosition);
-    return;
-  }
-
-  actor.strategy.action = null;
-
-  actor.strategy.path = path;
-  actor.strategy.pathNodeIndex = 0;
-}
-
-const STEERING_INDEXES = [
-  2, -2, 3, -3, 1, -1
-];
-
-function getOutOfWay(actor, position) {
-  const direction = Direction.fromPoints(position, actor.position);
   const [ x0, y0 ] = actor.position;
 
-  for (const index of STEERING_INDEXES) {
-    const steeringDirection = direction.turn(index);
+  for (const fleeIndex of FLEE_INDEXES) {
+    const fleeDirection = direction.turn(fleeIndex);
 
-    const newPosition = [
-      x0 + steeringDirection.dx,
-      y0 + steeringDirection.dy
-    ];
-
-    const [ x, y ] = newPosition;
+    const x = x0 + fleeDirection.dx,
+      y = y0 + fleeDirection.dy;
 
     if (actor.canMoveTo(x, y)) {
-      const path = [{
-        position: newPosition,
-        direction: steeringDirection
-      }];
 
-      actor.setStrategy(WalkStrategy, { path });
+      actor.setStrategy(WalkStrategy, {
+        path: [{
+          position: [ x, y ],
+          direction: fleeDirection
+        }],
+      });
+
       return;
     }
   }
-
 }
 
-export function getMove(actor) {
-  const action = actor.getAction();
+export function turn(actor) {
+  const action = actor.getAction(),
+    currentDirection = action.direction,
+    [ x0, y0 ] = actor.position;
 
-  if (action.type === MoveAction.TYPE) {
+  for (const turnIndex of TURN_INDEXES) {
+    const newDirection = currentDirection.turn(turnIndex);
+
+    const x = x0 + newDirection.dx,
+      y = y0 + newDirection.dy;
+
+    if (actor.canMoveTo(x, y)) {
+
+      const goal = last(actor.strategy.path).position,
+        onDone = actor.strategy.$onDone;
+
+      actor.setStrategy(WalkStrategy, {
+        path: [{
+          position: [ x, y ],
+          direction: newDirection
+        }],
+
+        onDone() {
+          actor.setStrategy(WalkStrategy, {
+            path: reCalculatePath(actor, goal),
+            onDone
+          });
+        }
+      });
+
+      return;
+    }
+  }
+}
+
+function getMove(actor) {
+  const position = actor.position;
+
+  if (!actor.inMotion()) {
     return {
-      tiles: action.tiles,
-      isStatic: false,
-      duration: action.getLeftDuration()
+      tiles: [ position, position ],
+      duration: 0,
+      isStatic: true
     };
   }
 
+  const action = actor.getAction();
+
   return {
-    tiles: [ actor.position, actor.position ],
-    isStatic: true,
-    duration: 1
+    tiles: [ position, action.tiles[1] ],
+    duration: action.getLeftDuration(),
+    isStatic: false
   };
-}
-
-export function getCollsionPosition(moveA, moveB) {
-
-  for ( const [ i, j ] of [ [ 1, 1 ], [ 1, 0 ], [ 0, 1 ] ]) {
-    if (isArraysEqual(moveA.tiles[i], moveB.tiles[j]) &&
-      moveA.duration === moveB.duration) {
-      return moveA.tiles[i];
-    }
-  }
-
-  return null;
 }
 
 export default function handleCollision(walkers) {
 
   for (let i = 0; i < walkers.length; i++) {
     const walkerA = walkers[i];
-
     const moveA = getMove(walkerA);
-
     for (let j = i + 1; j < walkers.length; j++) {
       const walkerB = walkers[j];
       const moveB = getMove(walkerB);
 
-      const collisionPosition = getCollsionPosition(moveA, moveB);
+      if (isInCollision(moveA, moveB)) {
 
-      if (collisionPosition !== null) {
+        if (moveA.duration === 1 || moveB.duration === 1) {
+          continue;
+        }
 
         if (moveA.isStatic) {
-          getOutOfWay(walkerA, walkerB.position);
-          continue;
+          flee(walkerA, walkerB.getAction().direction);
+          break;
         }
 
         if (moveB.isStatic) {
-          getOutOfWay(walkerB, walkerA.position);
-          continue;
+          flee(walkerB, walkerA.getAction().direction);
+          break;
         }
 
-        turn(walkerA, collisionPosition);
+        turn(walkerA); // should take into account direciont of walkerB !!!
+        break;
       }
     }
   }

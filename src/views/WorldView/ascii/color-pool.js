@@ -6,11 +6,6 @@ export const COLORS = [
     'green',
     'blue'
   ],
-
-  [
-    'yellow'
-  ],
-
   [
     'orange',
     'light-blue',
