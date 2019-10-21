@@ -54,6 +54,30 @@ export const COLLISIONS = [
       height: 7
     }
   },
+
+  /*
+   * 0 1 2 3 4 5 6 7 8 9
+   * # # # # # # # # # # 0
+   * # . . . . . . . . # 1
+   * # . . . @ . . . . # 2
+   * # . . . . . . . . # 3
+   * # . . @ . . x . . # 4
+   * # . . . . . . . . # 5
+   * # . . . . . . . . # 6
+   * # # # # # # # # # # 7
+   */
+
+  {
+    name: 'angle collsion',
+    data: {
+      walks: [
+        [ [ 4, 2 ], [ 5, 3 ], [ 6, 4 ], [ 7, 5 ] ],
+        [ [ 3, 4 ], [ 4, 4 ], [ 5, 4 ], [ 6, 4 ], [ 7, 4 ] ]
+      ],
+      width: 10,
+      height: 8
+    }
+  },
   {
     name: 'multiple actors collisions #1',
     data: {
@@ -67,15 +91,4 @@ export const COLLISIONS = [
       height: 9
     }
   }
-  // {
-  //   name: 'idlers should get out the way',
-  //   data: {
-  //     walks: [
-  //       [ [ 2, 2 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ], [ 2, 6 ] ]
-  //     ],
-  //     idlers: [ [ 2, 4 ] ],
-  //     width: 5,
-  //     height: 9
-  //   },
-  // }
 ];

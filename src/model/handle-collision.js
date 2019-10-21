@@ -2,6 +2,11 @@ import { isArraysEqual, last } from 'utils/common/array.utils.js';
 import WalkStrategy from './strategies/WalkStrategy.js';
 import PathFinder from 'utils/path-finding/PathFinder.js';
 
+const move = (position, direction) => ([
+  position[0] + direction.dx,
+  position[1] + direction.dy
+]);
+
 function $inCollision(moveA, moveB) {
   return (
     isArraysEqual(moveA.tiles[1], moveB.tiles[0]) &&
@@ -37,40 +42,42 @@ function reCalculatePath(actor, goal) {
 
 const FLEE_INDEXES = [ 2, -2, 3, -3, 1, -1 ];
 
-export function flee(actor, direction) {
-
-  const [ x0, y0 ] = actor.position;
+function findFleeNode(actor, direction) {
 
   for (const fleeIndex of FLEE_INDEXES) {
     const fleeDirection = direction.turn(fleeIndex);
 
-    const x = x0 + fleeDirection.dx,
-      y = y0 + fleeDirection.dy;
+    const [ x, y ] = move(actor.position, fleeDirection);
 
     if (actor.canMoveTo(x, y)) {
-
-      actor.setStrategy(WalkStrategy, {
-        path: [{
-          position: [ x, y ],
-          direction: fleeDirection
-        }],
-      });
-
-      return;
+      return {
+        position: [ x, y ],
+        direction: fleeDirection
+      };
     }
+  }
+
+  return null;
+}
+
+export function flee(actor, direction) {
+  const fleeNode = findFleeNode(actor, direction);
+
+  if (fleeNode) {
+    actor.setStrategy(WalkStrategy, {
+      path: [ fleeNode ]
+    });
   }
 }
 
 export function turn(actor) {
   const action = actor.getAction(),
-    currentDirection = action.direction,
-    [ x0, y0 ] = actor.position;
+    currentDirection = action.direction;
 
   for (const turnIndex of TURN_INDEXES) {
     const newDirection = currentDirection.turn(turnIndex);
 
-    const x = x0 + newDirection.dx,
-      y = y0 + newDirection.dy;
+    const [ x, y ] = move(actor.position, newDirection);
 
     if (actor.canMoveTo(x, y)) {
 
@@ -141,7 +148,7 @@ export default function handleCollision(walkers) {
           break;
         }
 
-        turn(walkerA); // should take into account direciont of walkerB !!!
+        turn(walkerA); // TODO: should take into account direction of walkerB ?
         break;
       }
     }

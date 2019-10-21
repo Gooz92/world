@@ -38,7 +38,8 @@ There are "@"s. They are are cutting down trees.
 
   ### v 0.0.#
     * Collision handling (one person per tile) (in progress)
-    * Collision queue
+    * Take into account actors movement direction in collsion handling ?
+    * Collision queue ?
     * Simple ascii view with collided actors (in progress)
     * Write more test scenarious for collision handling (swap, multiple actors in collsion group, tunnels) (in progress)
     * Test collision behavior near bounds
