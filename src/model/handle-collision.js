@@ -158,7 +158,7 @@ export default function handleCollision(walkers) {
 
     for (let j = i + 1; j < walkers.length; j++) {
       const walkerB = walkers[j];
-      const actionB = walkerA.getAction();
+      const actionB = walkerB.getAction();
       const moveB = getMove(walkerB);
 
       if (isInCollision(moveA, moveB)) {

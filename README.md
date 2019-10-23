@@ -38,6 +38,7 @@ There is a trees
     * Take into account actors movement direction in collsion handling ?
     * Simple ascii view with collided actors (in progress, partial done)
     * Write more test scenarious for collision handling (swap, multiple actors in collsion group, tunnels) (in progress, partial done)
+    * Test collsion multiple actors in tunnel
     * Test collision behavior near bounds
     * Write test for PF: path post processing should not change path cost
     * Somehow deal with browser scaling
