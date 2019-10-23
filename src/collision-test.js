@@ -13,6 +13,7 @@ import {
 
 import { COLLISIONS } from 'model/strategies/test-cases.js';
 import select from 'views/components/select';
+import ObjectType from 'model/ObjectType.enum.js';
 
 const main = document.querySelector('main'),
   replayButton = document.getElementById('replay');
@@ -54,6 +55,14 @@ function run(scenario) {
         --moversCount;
       }
     });
+  });
+
+  (scenario.idlers || []).forEach(([ x, y ]) => {
+    world.placePerson(x, y);
+  });
+
+  (scenario.obstacles || []).forEach(([ x, y ]) => {
+    world.place(x, y, ObjectType.OBSTACLE);
   });
 
   const view = new AsciiView(world);

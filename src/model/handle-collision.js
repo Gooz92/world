@@ -1,6 +1,7 @@
 import { isArraysEqual, last } from 'utils/common/array.utils.js';
 import WalkStrategy from './strategies/WalkStrategy.js';
 import PathFinder from 'utils/path-finding/PathFinder.js';
+import ObjectType from './ObjectType.enum.js';
 
 const move = (position, direction) => ([
   position[0] + direction.dx,
@@ -10,13 +11,21 @@ const move = (position, direction) => ([
 function $inCollision(moveA, moveB) {
   return (
     isArraysEqual(moveA.tiles[1], moveB.tiles[0]) &&
-    (moveB.duration >= moveA.duration || moveB.isStatic)
+    (moveB.duration > moveA.duration || moveB.isStatic)
   );
 }
 
 function isInCollision(moveA, moveB) {
   if (isArraysEqual(moveA.tiles[1], moveB.tiles[1]) &&
     moveA.duration === moveB.duration) {
+    return true;
+  }
+
+  // TODO: Comparing of same positions performed several times. Optimize ?
+  if (
+    isArraysEqual(moveA.tiles[0], moveB.tiles[1]) &&
+    isArraysEqual(moveA.tiles[1], moveB.tiles[0])
+  ) {
     return true;
   }
 
@@ -44,30 +53,47 @@ const FLEE_INDEXES = [ 2, -2, 3, -3, 1, -1 ];
 
 function findFleeNode(actor, direction) {
 
+  let fleeNode = null;
+
   for (const fleeIndex of FLEE_INDEXES) {
     const fleeDirection = direction.turn(fleeIndex);
 
     const [ x, y ] = move(actor.position, fleeDirection);
+    const tile = actor.world.getTile(x, y);
 
-    if (actor.canMoveTo(x, y)) {
+    if (!tile.object) {
       return {
+        position: [ x, y ],
+        direction: fleeDirection
+      };
+    } else if (tile.object.type === ObjectType.PERSON && fleeNode === null) {
+      fleeNode = {
         position: [ x, y ],
         direction: fleeDirection
       };
     }
   }
 
-  return null;
+  return fleeNode;
 }
 
 export function flee(actor, direction) {
   const fleeNode = findFleeNode(actor, direction);
 
-  if (fleeNode) {
-    actor.setStrategy(WalkStrategy, {
-      path: [ fleeNode ]
-    });
+  if (!fleeNode) {
+    return;
   }
+
+  const [ x, y ] = fleeNode.position,
+    nextActor = actor.world.getTile(x, y).object;
+
+  if (nextActor) {
+    flee(nextActor, direction);
+  }
+
+  actor.setStrategy(WalkStrategy, {
+    path: [ fleeNode ]
+  });
 }
 
 export function turn(actor) {
@@ -127,24 +153,26 @@ export default function handleCollision(walkers) {
 
   for (let i = 0; i < walkers.length; i++) {
     const walkerA = walkers[i];
+    const actionA = walkerA.getAction();
     const moveA = getMove(walkerA);
+
     for (let j = i + 1; j < walkers.length; j++) {
       const walkerB = walkers[j];
+      const actionB = walkerA.getAction();
       const moveB = getMove(walkerB);
 
       if (isInCollision(moveA, moveB)) {
-
         if (moveA.duration === 1 || moveB.duration === 1) {
           continue;
         }
 
         if (moveA.isStatic) {
-          flee(walkerA, walkerB.getAction().direction);
+          flee(walkerA, actionB.direction);
           break;
         }
 
         if (moveB.isStatic) {
-          flee(walkerB, walkerA.getAction().direction);
+          flee(walkerB, actionA.direction);
           break;
         }
 

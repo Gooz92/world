@@ -23,9 +23,6 @@ Under construction
 ## Nature
 There is a trees
 
-## Population
-There are "@"s. They are are cutting down trees.
-
 ## Known issues
   * Path smoothing somethimes dosen't work with border-crossing paths.
 
@@ -37,11 +34,10 @@ There are "@"s. They are are cutting down trees.
 ## Roadmap
 
   ### v 0.0.#
-    * Collision handling (one person per tile) (in progress)
+    * Collision handling (one person per tile) (in progress, partial done)
     * Take into account actors movement direction in collsion handling ?
-    * Collision queue ?
-    * Simple ascii view with collided actors (in progress)
-    * Write more test scenarious for collision handling (swap, multiple actors in collsion group, tunnels) (in progress)
+    * Simple ascii view with collided actors (in progress, partial done)
+    * Write more test scenarious for collision handling (swap, multiple actors in collsion group, tunnels) (in progress, partial done)
     * Test collision behavior near bounds
     * Write test for PF: path post processing should not change path cost
     * Somehow deal with browser scaling
