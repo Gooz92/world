@@ -42,6 +42,7 @@ There is a trees
     * Test collision behavior near bounds
     * Write test for PF: path post processing should not change path cost
     * Somehow deal with browser scaling
+    * Standardize size and coordinates converting from cells (tiles) to pixels and relative to absolute
     * Displaying services refacatoring
     * Sandbox (ui, user interaction improvements, refactor)
     * Place stock area

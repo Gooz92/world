@@ -119,9 +119,7 @@ paramsHandler(({ seed, empty }) => {
 
 window.addEventListener('resize', debounce(event => {
   const [ w, h ] = getViewportSize(wv.viewport.container, wv.viewport.cellSize);
-
-  wv.viewport.setWidth(w);
-  wv.viewport.setHeight(h);
+  wv.viewport.setSize(w, h);
 }, 150));
 
 window.addEventListener('keydown', event => {
