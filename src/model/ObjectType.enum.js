@@ -8,7 +8,8 @@ const ObjectType = createEnum(
   {
     OBSTACLE: [ 1 ],
     TREE: [ 2 ],
-    PERSON: [ 3 ]
+    PERSON: [ 3 ],
+    STOCK: [ 4 ]
   }
 );
 

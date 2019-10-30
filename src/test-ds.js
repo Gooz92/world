@@ -1,6 +1,6 @@
 import diamondSquareGenerator from 'utils/common/DiamondSquareGenerator.js';
 import { normalize } from 'utils/common/math.utils.js';
-import createCanvas from './views/canvas.js';
+import createCanvas from './views/components/canvas.js';
 import getFrequencyTable from 'utils/common/frequency-table.js';
 import distributionDiagram from './views/distribution-diagram.js';
 import range from './views/components/range';

@@ -11,7 +11,8 @@ export default class AsciiView {
   static TOKENS = {
     tree: '^',
     person: '@',
-    obstacle: '#'
+    obstacle: '#',
+    stock: '_'
   };
 
   constructor(world) {
@@ -84,8 +85,12 @@ export default class AsciiView {
 
         attributes.className = this.actorClasses[object.name];
       }
+
+      return attributes;
     }
 
-    return attributes;
+    if (tile.terrain) {
+      attributes.innerHTML = AsciiView.TOKENS[tile.terrain.type.name];
+    }
   }
 }

@@ -69,6 +69,19 @@ export default class World {
     return object;
   }
 
+  placeZone(x1, y1, x2, y2, type) {
+
+    for (let y = y1; y < y2; y++) {
+      for (let x = x1; x <= x2; x++) {
+        this.tiles[y][x].terrain = type;
+      }
+    }
+  }
+
+  placeStockZone(x1, y1, x2, y2) {
+    this.placeZone(x1, y1, x2, y2, ObjectType.STOCK);
+  }
+
   isTileEmpty(x, y) {
     const tile = this.getTile(x, y);
     return !tile.object;
