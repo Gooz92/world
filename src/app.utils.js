@@ -57,12 +57,3 @@ export function paramsHandler(onInput) {
     }
   };
 }
-
-export function getViewportSize(container, cellSize) {
-  const { width, height } = container.getBoundingClientRect();
-
-  return [
-    Math.ceil(width / cellSize),
-    Math.ceil(height / cellSize)
-  ];
-}

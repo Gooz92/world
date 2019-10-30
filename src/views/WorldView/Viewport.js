@@ -1,4 +1,5 @@
 import ViewportLayer from './ViewportLayer.js';
+import TileRenderer from './TileRenderer.js';
 
 import {
   clearRenderer,
@@ -7,8 +8,6 @@ import {
 
 import { createElement } from 'utils/common/dom.utils.js';
 import { last } from 'utils/common/array.utils.js';
-
-import TileRenderer from './TileRenderer.js';
 
 /**
  * viewport.size <= world.size
@@ -170,7 +169,7 @@ export default class Viewport {
 
     clearRenderer(mainLayer.context, x, y, this.cellSize);
 
-    this.tileRenderer.render(mainLayer.context, tile, x, y);
+    this.tileRenderer.render(mainLayer.context, tile, x, y, this.cellSize);
   }
 
   drawSelection(tileX, tileY) {
@@ -211,6 +210,23 @@ export default class Viewport {
 
     this.layers.forEach(layer => {
       layer.scrollHorizontal(dx);
+    });
+  }
+
+  adjustViewportSize() {
+
+    const { width, height } = this.container.getBoundingClientRect();
+
+    const w = Math.ceil(width / this.cellSize),
+      h = Math.ceil(height / this.cellSize);
+
+    this.setSize(w, h);
+  }
+
+  scale(r) {
+    this.cellSize *= r;
+    this.layers.forEach(layer => {
+      layer.scale(r);
     });
   }
 

@@ -5,7 +5,7 @@ import WorldView from './WorldView';
 import Viewport from './WorldView/Viewport.js';
 import createButtomPanel from './create-buttom-panel';
 
-import { paramsHandler, getViewportSize } from '../app.utils.js';
+import { paramsHandler } from '../app.utils.js';
 import getArrowKeyCode from 'utils/common/get-arrow-key-code.js';
 import { upperFirst } from 'utils/common/string.utils.js';
 import { time } from 'utils/common/dev.utils.js';
@@ -110,16 +110,13 @@ paramsHandler(({ seed, empty }) => {
   main.appendChild(viewport.container);
   main.appendChild(panel.element);
 
-  const [ w, h ] = getViewportSize(wv.viewport.container, wv.viewport.cellSize);
-
-  wv.viewport.setSize(w, h);
+  wv.viewport.adjustViewportSize();
 
   wv.viewport.draw();
 });
 
 window.addEventListener('resize', debounce(event => {
-  const [ w, h ] = getViewportSize(wv.viewport.container, wv.viewport.cellSize);
-  wv.viewport.setSize(w, h);
+  wv.viewport.adjustViewportSize();
 }, 150));
 
 window.addEventListener('keydown', event => {

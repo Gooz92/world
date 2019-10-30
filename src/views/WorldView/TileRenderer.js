@@ -1,7 +1,7 @@
 import { greenRenderer, greyRenderer } from './renderers.js';
 import ObjectType from 'model/ObjectType.enum.js';
 
-const TILE_SIZE = 16;
+const ORIGINAL_TILE_SIZE = 16;
 
 export default class TileRenderer {
 
@@ -9,23 +9,24 @@ export default class TileRenderer {
     this.tilesSprite = tilesSprite;
   }
 
-  render(ctx, tile, x, y) {
+  render(ctx, tile, x, y, tileSize) {
 
     if (tile.object && tile.object.type === ObjectType.OBSTACLE) {
-      greyRenderer(ctx, x, y, TILE_SIZE);
+      greyRenderer(ctx, x, y, tileSize);
       return;
     }
 
-    greenRenderer(ctx, x, y, TILE_SIZE);
+    greenRenderer(ctx, x, y, tileSize);
 
     if (tile.object) {
       const [ sx, sy ] = tile.object.type == ObjectType.PERSON ? [ 0, 0 ] : [ 2, 3 ];
-      const sxd = sx * TILE_SIZE;
-      const syd = sy * TILE_SIZE;
+
+      const sxd = sx * ORIGINAL_TILE_SIZE;
+      const syd = sy * ORIGINAL_TILE_SIZE;
 
       ctx.drawImage(
-        this.tilesSprite, sxd, syd, TILE_SIZE, TILE_SIZE,
-        x, y, TILE_SIZE, TILE_SIZE
+        this.tilesSprite, sxd, syd, ORIGINAL_TILE_SIZE, ORIGINAL_TILE_SIZE,
+        x, y, tileSize, tileSize
       );
     }
   }

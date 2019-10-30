@@ -128,4 +128,8 @@ export default class ViewportLayer {
 
     this.context.putImageData(previousImage, 0, 0);
   }
+
+  scale(r) {
+    this.context.scale(r, r);
+  }
 }
