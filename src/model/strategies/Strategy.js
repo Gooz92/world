@@ -6,14 +6,6 @@ export default class Strategy {
     nextAction() {
       return this.nextIdleAction();
     }
-
-    onInit() {
-      this.actor.isIdle = true;
-    }
-
-    onRemove() {
-      this.actor.isIdle = false;
-    }
   }
 
   constructor(actor) {
