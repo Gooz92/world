@@ -71,26 +71,20 @@ paramsHandler(({ seed, empty }) => {
 
       onTileClick: (x, y) => {
 
-        if (panel.objectType === null) {
+        if (panel.selectedItem === null) {
           const selection = wv.select(x, y);
           panel.updateSelectionInfo(selection);
           return;
         }
 
-        if (panel.objectType === 0) {
-          wv.clearTile(x, y);
+        panel.selectedItem.action(wv, x, y);
+
+        if (panel.selectedItem.id === 0) {
           panel.updateSelectionInfo(wv.selection);
           return;
         }
-
-        const type = ObjectType.fromId(panel.objectType);
-
-        wv.place(x, y, type);
-
-        if (type === ObjectType.PERSON) {
-          // object.setStrategy(CutTreesStrategy);
-        }
       },
+
       onTileEnter: (x, y) => {
         const gx = world.getCycleX(wv.viewport.position[0] + x);
         const gy = world.getCycleY(wv.viewport.position[1] + y);

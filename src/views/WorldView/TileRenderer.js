@@ -1,4 +1,4 @@
-import { greenRenderer, greyRenderer } from './renderers.js';
+import { greenRenderer, greyRenderer, stockRenderer } from './renderers.js';
 import ObjectType from 'model/ObjectType.enum.js';
 
 const ORIGINAL_TILE_SIZE = 16;
@@ -16,7 +16,11 @@ export default class TileRenderer {
       return;
     }
 
-    greenRenderer(ctx, x, y, tileSize);
+    if (tile.terrain === ObjectType.STOCK) {
+      stockRenderer(ctx, x, y, tileSize);
+    } else {
+      greenRenderer(ctx, x, y, tileSize);
+    }
 
     if (tile.object) {
       const [ sx, sy ] = tile.object.type == ObjectType.PERSON ? [ 0, 0 ] : [ 2, 3 ];

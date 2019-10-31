@@ -45,7 +45,8 @@ There is a trees
     * Standardize size and coordinates converting from cells (tiles) to pixels and relative to absolute
     * Displaying services refacatoring
     * Sandbox (ui, user interaction improvements, refactor)
-    * Place stock area
+    * Place stock area (partialy done)
+    * Select area tool
     * Woodcutting mechanics impovement (take a wood and bring to storage)
     * Place house
     * Display resource count and population

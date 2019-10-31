@@ -11,13 +11,13 @@ const presentors = {
 const TICK_TIME = 80;
 
 export default function createButtomPanel(tick) {
-  let objectType = null;
+  let selectedItem = null;
 
   const panel = createElement('#panel');
 
   const menu = createMenu({
-    onChange: newObjectType => {
-      objectType = newObjectType;
+    onChange: item => {
+      selectedItem = item;
     }
   });
 
@@ -42,6 +42,7 @@ export default function createButtomPanel(tick) {
     updateTileInfo(text) {
       info.innerHTML = text;
     },
+
     updateSelectionInfo(selection) {
 
       if (!selection) {
@@ -55,8 +56,9 @@ export default function createButtomPanel(tick) {
       window.selectedObject = object;
       selectionInfo.innerHTML = `${x};${y} - ${presentors[object.type.name](object)}`;
     },
-    get objectType() {
-      return objectType;
+
+    get selectedItem() {
+      return selectedItem;
     }
   };
 }

@@ -71,7 +71,7 @@ export default class World {
 
   placeZone(x1, y1, x2, y2, type) {
 
-    for (let y = y1; y < y2; y++) {
+    for (let y = y1; y <= y2; y++) {
       for (let x = x1; x <= x2; x++) {
         this.tiles[y][x].terrain = type;
       }

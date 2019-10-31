@@ -185,6 +185,14 @@ export default class WorldView {
     return object;
   }
 
+  placeStock(x, y) {
+    const [ gx, gy ] = this.getGlobalPosition(x, y);
+
+    this.world.placeStockZone(gx, gy, gx, gy);
+
+    this.viewport.drawTile(x, y);
+  }
+
   clearTile(x, y) {
     const [ gx, gy ] = this.getGlobalPosition(x, y);
 

@@ -1,20 +1,53 @@
 import { createElement } from 'utils/common/dom.utils.js';
 import ObjectType from 'model/ObjectType.enum.js';
 
+const createPlaceAction = objectType => (
+  (view, x, y) => {
+    view.place(x, y, objectType);
+  }
+);
+
 export default function createMenu(options) {
 
   const menu = createElement('ul', { className: 'menu' });
 
   const items = [];
 
-  let value = null;
+  let selectedItem = null;
 
   [
-    { name: 'Obstacle', id: ObjectType.OBSTACLE.id },
-    { name: 'Tree', id: ObjectType.TREE.id },
-    { name: 'Person', id: ObjectType.PERSON.id },
-    { name: 'Erase', id: 0 }
-  ].forEach(({ name, id }) => {
+    {
+      name: 'Obstacle',
+      id: ObjectType.OBSTACLE.id,
+      action: createPlaceAction(ObjectType.OBSTACLE)
+    },
+    {
+      name: 'Tree',
+      id: ObjectType.TREE.id,
+      action: createPlaceAction(ObjectType.TREE)
+    },
+    {
+      name: 'Person',
+      id: ObjectType.PERSON.id,
+      action: createPlaceAction(ObjectType.PERSON)
+    },
+    {
+      name: 'Stock',
+      id: ObjectType.STOCK.id,
+      action: (view, x, y) => {
+        view.placeStock(x, y);
+      }
+    },
+    {
+      name: 'Erase',
+      id: 0,
+      action: (view, x, y) => {
+        view.clearTile(x, y);
+      }
+    }
+  ].forEach(item => {
+
+    const { name } = item;
 
     const li = createElement('li', {
       id: name.toLowerCase(),
@@ -28,15 +61,15 @@ export default function createMenu(options) {
             item.style.fontWeight = 'normal';
           });
 
-        if (id === value) {
+        if (item === selectedItem) {
           target.style.fontWeight = 'normal';
-          value = null;
+          selectedItem = null;
         } else {
           target.style.fontWeight = 'bold';
-          value = id;
+          selectedItem = item;
         }
 
-        options.onChange(value);
+        options.onChange(selectedItem);
       }
     });
 

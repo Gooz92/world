@@ -43,3 +43,12 @@ export const greyRenderer = createColorRenderer('grey');
 
 export const greenRenderer = createColorRenderer('#6daa2c');
 
+export function stockRenderer(ctx, x, y, size) {
+  greyRenderer(ctx, x, y, size);
+  ctx.strokeStyle = '#000';
+  ctx.moveTo(x + size * .2, y + size * .8);
+  ctx.lineTo(x + size * .8, y + size * .8);
+  ctx.stroke();
+  ctx.closePath();
+}
+
