@@ -1,1 +1,1 @@
-import './views/sandbox.js';
+import './views/sandbox.new.js';

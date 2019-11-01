@@ -8,12 +8,12 @@ html, body {
   overflow: hidden;
 }
 
-#main, #panel {
+main, #bottom-panel {
   display: flex;
   overflow: hidden;
 }
 
-#main {
+main {
   flex-direction: column;
   height: 100%;
 }
@@ -29,48 +29,8 @@ html, body {
   left: 0;
 }
 
-#info, #selection-info {
-  flex: 1;
-}
-
-#panel {
+#bottom-panel {
   background-color: #aaa;
   z-index: 1;
-}
-
-.field {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.field div {
-  width: 12px;
-  height: 12px;
-  min-width: 12px;
-  min-height: 12px;
-  line-height: 12px;
-  font-size: 12px;
-  text-align: center;
-  font-weight: bold;
-}
-
-.menu {
-  list-style-type: none;
-  padding: 4px;
-  user-select: none;
-}
-
-.menu li {
-  float: left;
-  margin: 4px;
-  cursor: pointer;
-}
-
-main {
-  margin: 8px;
-  display: grid;
-  grid-template-columns: max-content auto;
-  grid-template-rows: auto;
-  grid-column-gap: 12px;
+  padding: 8px;
 }
