@@ -34,6 +34,10 @@ There is a trees
 ## Roadmap
 
   ### v 0.0.#
+    * Place area tool (in progress)
+    * Place stock area (partialy done)
+    * Sandbox (ui, user interaction improvements, refactor)
+    * Displaying services refacatoring
     * Collision handling (one person per tile) (in progress, partial done)
     * Take into account actors movement direction in collsion handling ?
     * Simple ascii view with collided actors (in progress, partial done)
@@ -43,10 +47,6 @@ There is a trees
     * Write test for PF: path post processing should not change path cost
     * Somehow deal with browser scaling
     * Standardize size and coordinates converting from cells (tiles) to pixels and relative to absolute
-    * Displaying services refacatoring
-    * Sandbox (ui, user interaction improvements, refactor)
-    * Place stock area (partialy done)
-    * Select area tool
     * Woodcutting mechanics impovement (take a wood and bring to storage)
     * Place house
     * Display resource count and population
