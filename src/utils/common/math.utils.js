@@ -48,6 +48,7 @@ export function getIndex(x, y, width, height) {
   return y0 * width + x0;
 }
 
+// TODO: not used ?
 export function inCycleRange(value, left, right, maxBound = right) {
   if (value < 0 || value >= maxBound) {
     return false;

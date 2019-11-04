@@ -63,6 +63,12 @@ export default class Viewport {
       });
     }
 
+    if (options.onMouseDown) {
+      this.container.onmousedown = this.handleMouseEvent((x, y) => {
+        options.onMouseDown(x, y);
+      });
+    }
+
     if (options.onTileEnter) {
       this.container.onmousemove = this.handleMouseMove((x, y) => {
         options.onTileEnter(x, y);
@@ -157,8 +163,7 @@ export default class Viewport {
     clearRenderer(this.getBottomLayer().context, x, y, this.cellSize);
   }
 
-  // TODO: rename ro refreshTile
-  drawTile(tileX, tileY) {
+  refreshTile(tileX, tileY) {
 
     const tile = this.world.getTile(tileX + this.position[0], tileY + this.position[1]);
 
@@ -181,12 +186,31 @@ export default class Viewport {
     selectionRenderer(guideLayer.context, x, y, this.cellSize);
   }
 
+  drawArea(startX, startY, endX, endY) {
+    const context = this.getTopLayer().context;
+
+    const x1 = startX * this.cellSize, y1 = startY * this.cellSize;
+    const x2 = endX * this.cellSize, y2 = endY * this.cellSize;
+
+    context.fillStyle = 'rgba(255, 255, 0, 0.5)'; // TODO !!!
+    context.fillRect(x1, y1, x2 - x1, y2 - y1);
+  }
+
+  clearArea(startX, startY, endX, endY) {
+    const context = this.getTopLayer().context;
+
+    const x1 = startX * this.cellSize, y1 = startY * this.cellSize;
+    const x2 = endX * this.cellSize, y2 = endY * this.cellSize;
+
+    context.clearRect(x1, y1, x2 - x1, y2 - y1);
+  }
+
   draw(x = 0, y = 0, width = this.width, height = this.height) {
     const endX = x + width, endY = y + height;
 
     for (let tileX = x; tileX < endX; tileX++) {
       for (let tileY = y; tileY < endY; tileY++) {
-        this.drawTile(tileX, tileY);
+        this.refreshTile(tileX, tileY);
       }
     }
   }

@@ -8,7 +8,7 @@ import ObjectType from 'model/ObjectType.enum.js';
 
 import createWorld from 'model/create-world.js';
 
-import { debounce } from 'utils/common/fn.utils.js';
+import { debounce, noop } from 'utils/common/fn.utils.js';
 import { upperFirst } from 'utils/common/string.utils.js';
 import getArrowKeyCode from 'utils/common/get-arrow-key-code.js';
 
@@ -18,11 +18,40 @@ const place = type => (
   }
 );
 
+function placeOnArea(type) {
+  let startX, startY;
+
+  let endX, endY;
+
+  return {
+    ondown: (worldView, x, y) => {
+      startX = x;
+      startY = y;
+    },
+
+    onmove: (worldView, x, y) => {
+      if (endX) {
+        worldView.viewport.clearArea(startX, startY, endX, endY);
+      }
+
+      endX = x;
+      endY = y;
+
+      worldView.viewport.drawArea(startX, startY, endX, endY);
+    }
+  };
+}
+
 const panel = new BottomPanel({}, {
   controls: [ Tools, PlayControls ],
   tools: [
-    { id: 'person', apply: place(ObjectType.PERSON) },
-    { id: 'tree', apply: place(ObjectType.TREE) }
+    { id: 'person', click: place(ObjectType.PERSON) },
+    { id: 'tree', click: place(ObjectType.TREE) },
+
+    {
+      id: 'stock',
+      ...placeOnArea(ObjectType.STOCK)
+    }
   ],
   dispatch: state => {
     panel.update(state);
@@ -39,19 +68,23 @@ const viewport = viewportBuilder
     tilesSprite: document.getElementById('tiles-sprite'),
 
     onTileClick: (x, y) => {
-      panel.tool.apply(worldView, x, y);
+      (panel.tool.click || noop)(worldView, x, y);
     },
 
     onTileEnter(x, y) {
-      // const gx = world.getCycleX(viewport.position[0] + x);
-      // const gy = world.getCycleY(viewport.position[1] + y);
+      (panel.tool.onmove || noop)(worldView, x, y);
+    },
 
-      // const tile = world.getTile(gx, gy);
+    onMouseDown(x, y) {
+      (panel.tool.ondown || noop)(worldView, x, y);
     }
   })
   .build();
 
 const worldView = WorldView.getInstance(world, viewport);
+
+window.wv = worldView; // TODO
+
 worldView.initLayers();
 
 const main = document.getElementById('main');

@@ -69,17 +69,33 @@ export default class World {
     return object;
   }
 
-  placeZone(x1, y1, x2, y2, type) {
-
+  $forEachTileInArea(x1, y1, x2, y2, onTile) {
     for (let y = y1; y <= y2; y++) {
       for (let x = x1; x <= x2; x++) {
-        this.tiles[y][x].terrain = type;
+        const tile = this.tiles[y][x];
+        onTile(tile);
       }
     }
   }
 
-  placeStockZone(x1, y1, x2, y2) {
-    this.placeZone(x1, y1, x2, y2, ObjectType.STOCK);
+  forEachTileInArea(x1, y1, x2, y2, onTile) {
+    const dx = Math.abs(x1 - x2), dy = Math.abs(y1 - y2);
+
+    const startX = Math.min(x1, x2), startY = Math.min(y1, y2);
+    const endX = Math.max(x1, x2), endY = Math.max(y1, y2);
+
+    if (dx > this.width / 2 || dy > this.height / 2) {
+      this.$forEachTileInArea(0, 0, startX, startY, onTile);
+      this.$forEachTileInArea(endX, endY, this.width - 1, this.height - 1, onTile);
+    } else {
+      this.$forEachTileInArea(startX, startY, endX, endY, onTile);
+    }
+  }
+
+  placeStock(x1, y1, x2, y2) {
+    this.forEachTileInArea(x1, y1, x2, y2, tile => {
+      tile.terrain = ObjectType.STOCK;
+    });
   }
 
   isTileEmpty(x, y) {

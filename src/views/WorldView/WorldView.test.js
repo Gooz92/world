@@ -20,7 +20,7 @@ describe('WorldView', function () {
         size: [ 4, 3 ],
         position: [ 1, 2 ],
         drawSelection: noop,
-        drawTile: noop
+        refreshTile: noop
       };
 
       worldView = new WorldView(world, viewportStub);
@@ -54,7 +54,7 @@ describe('WorldView', function () {
         size: [ 4, 3 ],
         position: [ 1, 2 ],
         drawSelection: noop,
-        drawTile: noop
+        refreshTile: noop
       };
 
       worldView = new WorldView(world, viewportStub);
