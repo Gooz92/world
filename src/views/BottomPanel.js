@@ -2,6 +2,18 @@ import { createElement } from 'utils/common/dom.utils.js';
 
 export default class BottomPanel {
 
+  static TilePosition = class {
+
+    constructor({ tilePosition }) {
+      this.element = createElement('span#tile-position');
+      this.update({ tilePosition });
+    }
+
+    update({ tilePosition }) {
+      this.element.innerHTML = tilePosition.join('; ');
+    }
+  };
+
   constructor(state, config) {
     const { controls } = config;
 
@@ -13,11 +25,12 @@ export default class BottomPanel {
 
     this.state = {
       ...state,
-      tool: this.tool
+      tool: this.tool,
+      tilePosition: [ 0, 0 ]
     };
 
     controls.forEach(Control => {
-      const control = new Control(state, config);
+      const control = new Control(this.state, config);
       this.controls.push(control);
       this.element.appendChild(control.element);
     });

@@ -33,12 +33,12 @@ describe('World', function () {
 
   });
 
-  describe('#placeStock', function () {
+  describe('#placeArea', function () {
 
-    it('change terrain for tiles in defiend area', () => {
+    it('change tiles in defiend area', () => {
       const x1 = 2, y1 = 3, x2 = 4, y2 = 6;
 
-      world.placeStock(x1, y1, x2, y2);
+      world.placeArea(x1, y1, x2, y2, { terrain: ObjectType.STOCK });
 
       [ [ x1, y1 ],[ x2, y2 ] ].forEach(([ x, y ]) => {
         const tile = world.getTile(x, y);
@@ -50,7 +50,7 @@ describe('World', function () {
     it('works with cycled coordinates', () => {
       const x1 = W - 2, y1 = H - 3, x2 = 1, y2 = 2;
 
-      world.placeStock(x1, y1, x2, y2);
+      world.placeArea(x1, y1, x2, y2, { terrain: ObjectType.STOCK });
 
       [ [ x1, y1 ],[ x2, y2 ] ].forEach(([ x, y ]) => {
         const tile = world.getTile(x, y);
@@ -60,6 +60,13 @@ describe('World', function () {
       [ [ x1 - 1, y1 - 1 ], [ x2 + 1, y2 + 1 ] ].forEach(([ x, y ]) => {
         const tile = world.getTile(x, y);
         notEqual(tile.terrain, ObjectType.STOCK);
+      });
+
+      debugger;
+
+      [ [ x1 + 1, y2 - 1 ], [ x2 - 1, y1 + 1 ] ].forEach(([ x, y ]) => {
+        const tile = world.getTile(x, y);
+        equal(tile.terrain, ObjectType.STOCK);
       });
 
     });

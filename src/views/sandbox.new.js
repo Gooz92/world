@@ -23,27 +23,38 @@ function placeOnArea(type) {
 
   let endX, endY;
 
+  let mdown = false;
+
   return {
-    ondown: (worldView, x, y) => {
+    mouseDown: (worldView, x, y) => {
       startX = x;
       startY = y;
+      mdown = true;
     },
 
-    onmove: (worldView, x, y) => {
-      if (endX) {
-        worldView.viewport.clearArea(startX, startY, endX, endY);
+    mouseMove: (worldView, x, y) => {
+      if (!mdown) {
+        return;
       }
+
+      worldView.viewport.clearArea(startX, startY, endX, endY);
 
       endX = x;
       endY = y;
 
       worldView.viewport.drawArea(startX, startY, endX, endY);
+    },
+
+    mouseUp: (worldView, x, y) => {
+      worldView.viewport.clearArea(startX, startY, x, y);
+      worldView.placeArea(startX, startY, endX, endY, { terrain: type });
+      mdown = false;
     }
   };
 }
 
 const panel = new BottomPanel({}, {
-  controls: [ Tools, PlayControls ],
+  controls: [ Tools, PlayControls, BottomPanel.TilePosition ],
   tools: [
     { id: 'person', click: place(ObjectType.PERSON) },
     { id: 'tree', click: place(ObjectType.TREE) },
@@ -67,16 +78,25 @@ const viewport = viewportBuilder
   .setOptions({
     tilesSprite: document.getElementById('tiles-sprite'),
 
-    onTileClick: (x, y) => {
+    click: (x, y) => {
       (panel.tool.click || noop)(worldView, x, y);
     },
 
-    onTileEnter(x, y) {
-      (panel.tool.onmove || noop)(worldView, x, y);
+    mouseMove(x, y) {
+      (panel.tool.mouseMove || noop)(worldView, x, y);
+
+      const gx = world.getCycleX(viewport.position[0] + x);
+      const gy = world.getCycleY(viewport.position[1] + y);
+
+      panel.update({ tilePosition: [ gx, gy ] });
     },
 
-    onMouseDown(x, y) {
-      (panel.tool.ondown || noop)(worldView, x, y);
+    mouseDown(x, y) {
+      (panel.tool.mouseDown || noop)(worldView, x, y);
+    },
+
+    mouseUp(x, y) {
+      (panel.tool.mouseUp || noop)(worldView, x, y);
     }
   })
   .build();

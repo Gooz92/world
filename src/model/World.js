@@ -84,7 +84,7 @@ export default class World {
     const startX = Math.min(x1, x2), startY = Math.min(y1, y2);
     const endX = Math.max(x1, x2), endY = Math.max(y1, y2);
 
-    if (dx > this.width / 2 || dy > this.height / 2) {
+    if (dx > this.width / 2) {
       this.$forEachTileInArea(0, 0, startX, startY, onTile);
       this.$forEachTileInArea(endX, endY, this.width - 1, this.height - 1, onTile);
     } else {
@@ -92,9 +92,9 @@ export default class World {
     }
   }
 
-  placeStock(x1, y1, x2, y2) {
+  placeArea(x1, y1, x2, y2, tileProperies) {
     this.forEachTileInArea(x1, y1, x2, y2, tile => {
-      tile.terrain = ObjectType.STOCK;
+      Object.assign(tile, tileProperies);
     });
   }
 

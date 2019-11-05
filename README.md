@@ -35,7 +35,7 @@ There is a trees
 
   ### v 0.0.#
     * Place area tool (in progress)
-    * Place stock area (partialy done)
+    * Place stock area (in progress)
     * Sandbox (ui, user interaction improvements, refactor)
     * Displaying services refacatoring
     * Collision handling (one person per tile) (in progress, partial done)

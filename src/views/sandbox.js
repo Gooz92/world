@@ -116,7 +116,7 @@ window.addEventListener('resize', debounce(event => {
 window.addEventListener('keydown', event => {
 
   /*
-   * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+   * https://developer.zilla.org/en-US/docs/Web/API/KeyboardEvent/key
    * TODO move event.key to getArrowKeyCode ?
    */
 

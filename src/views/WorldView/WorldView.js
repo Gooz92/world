@@ -185,15 +185,14 @@ export default class WorldView {
     return object;
   }
 
-  placeStock(startX, startY, endX, endY) {
-
+  placeArea(startX, startY, endX, endY, tileProperies) {
     const x1 = Math.min(startX, endX), y1 = Math.min(startY, endY);
     const x2 = Math.max(startX, endX), y2 = Math.max(startY, endY);
 
     const [ gx1, gy1 ] = this.getGlobalPosition(x1, y1);
     const [ gx2, gy2 ] = this.getGlobalPosition(x2, y2);
 
-    this.world.placeStock(gx1, gy1, gx2, gy2);
+    this.world.placeArea(gx1, gy1, gx2, gy2, tileProperies);
 
     this.viewport.draw(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
   }

@@ -8,6 +8,7 @@ import {
 
 import { createElement } from 'utils/common/dom.utils.js';
 import { last } from 'utils/common/array.utils.js';
+import { forIn } from 'utils/common/object.utils.js';
 
 /**
  * viewport.size <= world.size
@@ -17,6 +18,13 @@ export default class Viewport {
 
   static DEFAULT_CELL_SIZE = 16;
   static DEFAULT_SIZE = [ 16, 9 ];
+
+  static MOUSE_EVENT_HANDLERS = {
+    click: 'onclick',
+    rightClick: 'oncontextmenu',
+    mouseDown: 'onmousedown',
+    mouseUp: 'onmouseup'
+  };
 
   static createBuilder() {
     return {
@@ -51,27 +59,17 @@ export default class Viewport {
   }
 
   setOptions(options) {
-    if (options.onTileClick) {
-      this.container.onclick = this.handleMouseEvent((x, y) => {
-        options.onTileClick(x, y);
-      });
-    }
 
-    if (options.onRightClick) {
-      this.container.oncontextmenu = this.handleMouseEvent((x, y) => {
-        options.onRightClick(x, y);
-      });
-    }
+    forIn(Viewport.MOUSE_EVENT_HANDLERS, (domEventName, handlerName) => {
+      const handler = options[handlerName];
+      if (handler) {
+        this.container[domEventName] = this.handleMouseEvent(handler);
+      }
+    });
 
-    if (options.onMouseDown) {
-      this.container.onmousedown = this.handleMouseEvent((x, y) => {
-        options.onMouseDown(x, y);
-      });
-    }
-
-    if (options.onTileEnter) {
+    if (options.mouseMove) {
       this.container.onmousemove = this.handleMouseMove((x, y) => {
-        options.onTileEnter(x, y);
+        options.mouseMove(x, y);
       });
     }
 
@@ -80,14 +78,22 @@ export default class Viewport {
     }
   }
 
+  getTileRelativePosition(px, py) {
+    const topLayer = this.getTopLayer();
+    const { left, top } = topLayer.canvas.getBoundingClientRect();
+
+    return [
+      this.getTileCoordinate(px - left),
+      this.getTileCoordinate(py - top)
+    ];
+  }
+
   handleMouseMove(handler) {
 
     let prevTileX, prevTileY;
 
     return event => {
-      const { left, top } = event.target.getBoundingClientRect();
-      const tileX = this.getTileCoordinate(event.clientX - left);
-      const tileY = this.getTileCoordinate(event.clientY - top);
+      const [ tileX, tileY ] = this.getTileRelativePosition(event.clientX, event.clientY);
 
       if (prevTileX !== tileX || prevTileY !== tileY) {
         handler(tileX, tileY);
@@ -100,9 +106,7 @@ export default class Viewport {
   handleMouseEvent(handler) {
 
     return event => {
-      const { left, top } = event.target.getBoundingClientRect();
-      const tileX = this.getTileCoordinate(event.clientX - left);
-      const tileY = this.getTileCoordinate(event.clientY - top);
+      const [ tileX, tileY ] = this.getTileRelativePosition(event.clientX, event.clientY);
 
       handler(tileX, tileY);
 
