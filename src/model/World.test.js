@@ -33,6 +33,7 @@ describe('World', function () {
 
   });
 
+  // TODO ?
   describe('#placeArea', function () {
 
     it('change tiles in defiend area', () => {
@@ -47,30 +48,56 @@ describe('World', function () {
 
     });
 
-    it('works with cycled coordinates', () => {
-      const x1 = W - 2, y1 = H - 3, x2 = 1, y2 = 2;
+    it('works with overflows by horizontal', () => {
+      const x1 = W - 3, y1 = 2;
+      const x2 = 2, y2 = 4;
 
       world.placeArea(x1, y1, x2, y2, { terrain: ObjectType.STOCK });
 
-      [ [ x1, y1 ],[ x2, y2 ] ].forEach(([ x, y ]) => {
+      [ [ x1, y1 ], [ x2, y2 ] ].forEach(([ x, y ]) => {
         const tile = world.getTile(x, y);
         equal(tile.terrain, ObjectType.STOCK);
       });
 
-      [ [ x1 - 1, y1 - 1 ], [ x2 + 1, y2 + 1 ] ].forEach(([ x, y ]) => {
+      [ [ x1 - 1, y1 ], [ x2 + 1, y2 + 2 ] ].forEach(([ x, y ]) => {
         const tile = world.getTile(x, y);
         notEqual(tile.terrain, ObjectType.STOCK);
       });
+    });
 
-      debugger;
+    it('works with overflows by vertical', () => {
+      const x1 = 3, y1 = H - 2;
+      const x2 = 1, y2 = 2;
 
-      [ [ x1 + 1, y2 - 1 ], [ x2 - 1, y1 + 1 ] ].forEach(([ x, y ]) => {
+      world.placeArea(x1, y1, x2, y2, { terrain: ObjectType.STOCK });
+
+      [ [ x1, y1 ], [ x2, y2 ] ].forEach(([ x, y ]) => {
         const tile = world.getTile(x, y);
         equal(tile.terrain, ObjectType.STOCK);
       });
 
+      [ [ x1 + 1, y1 ], [ x2, y2 + 2 ] ].forEach(([ x, y ]) => {
+        const tile = world.getTile(x, y);
+        notEqual(tile.terrain, ObjectType.STOCK);
+      });
     });
 
+    it('works with overflows by vertical and horizontal', () => {
+      const x1 = W - 1, y1 = H - 2;
+      const x2 = 2, y2 = 1;
+
+      world.placeArea(x1, y1, x2, y2, { terrain: ObjectType.STOCK });
+
+      [ [ x1, y1 ], [ x2, y2 ], [ 0, 0 ] ].forEach(([ x, y ]) => {
+        const tile = world.getTile(x, y);
+        equal(tile.terrain, ObjectType.STOCK);
+      });
+
+      [ [ x1 - 1, y1 - 1 ], [ x2, y2 + 2 ] ].forEach(([ x, y ]) => {
+        const tile = world.getTile(x, y);
+        notEqual(tile.terrain, ObjectType.STOCK);
+      });
+    });
   });
 
   describe('#place', function () {

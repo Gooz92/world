@@ -53,3 +53,11 @@ export function stockRenderer(ctx, x, y, size) {
   ctx.closePath();
 }
 
+function createRectangleRenderer(fillStyle) {
+  return (ctx, x, y, width, height) => {
+    ctx.fillStyle = fillStyle;
+    ctx.fillRect(x, y, width, height);
+  };
+}
+
+export const renderPlacementArea = createRectangleRenderer('rgba(255, 255, 0, 0.5)');

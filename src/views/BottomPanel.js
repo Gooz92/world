@@ -34,6 +34,8 @@ export default class BottomPanel {
       this.controls.push(control);
       this.element.appendChild(control.element);
     });
+
+    this.update(this.state);
   }
 
   update(delta) {

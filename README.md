@@ -5,9 +5,9 @@ Under construction
 ## Code organization
 
 ### Modules
-* Common (core or lang) utils
-* Test utils
-* Game Engine
+* Common (core or lang) utils (without dom utils)
+* Test utils (assetion functions)
+* Game Engine (World, Action, strategy, collision handling)
 * ui-components
 
 ## Physics
@@ -34,11 +34,12 @@ There is a trees
 ## Roadmap
 
   ### v 0.0.#
-    * Place area tool (in progress)
-    * Place stock area (in progress)
-    * Sandbox (ui, user interaction improvements, refactor)
+    * Place area tool (partialy done)
+    * Validate placement area + size (max size <= world size / 2)
+    * Place stock area (partialy done)
+    * Sandbox (ui, user interaction improvements, refactor) (in progress)
     * Displaying services refacatoring
-    * Collision handling (one person per tile) (in progress, partial done)
+    * Collision handling (one person per tile) (partial done)
     * Take into account actors movement direction in collsion handling ?
     * Simple ascii view with collided actors (in progress, partial done)
     * Write more test scenarious for collision handling (swap, multiple actors in collsion group, tunnels) (in progress, partial done)

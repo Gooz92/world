@@ -1,11 +1,12 @@
 import ObjectType from 'model/ObjectType.enum.js';
 import Person from 'model/Person.js'; // TODO ?
 
-import handleCollision from './handle-collision.js/';
+import handleCollision from './handle-collision.js';
 
 import { getCycleCoordinate } from 'utils/common/math.utils.js';
 import Strategy from './strategies/Strategy.js';
 import { time } from 'utils/common/dev.utils';
+import { normalizeArea } from 'utils/common/geometry.utils.js';
 
 export default class World {
 
@@ -81,14 +82,24 @@ export default class World {
   forEachTileInArea(x1, y1, x2, y2, onTile) {
     const dx = Math.abs(x1 - x2), dy = Math.abs(y1 - y2);
 
-    const startX = Math.min(x1, x2), startY = Math.min(y1, y2);
-    const endX = Math.max(x1, x2), endY = Math.max(y1, y2);
+    const [ minX, minY, maxX, maxY ] = normalizeArea(x1, y1, x2, y2);
 
-    if (dx > this.width / 2) {
-      this.$forEachTileInArea(0, 0, startX, startY, onTile);
-      this.$forEachTileInArea(endX, endY, this.width - 1, this.height - 1, onTile);
+    const hOverflow = dx > this.width / 2, vOverflow = dy > this.height / 2;
+
+    // TODO: refactor somehow
+    if (hOverflow && vOverflow) {
+      this.$forEachTileInArea(0, 0, minX, minY, onTile);
+      this.$forEachTileInArea(maxX, maxY, this.width - 1, this.height - 1, onTile);
+      this.$forEachTileInArea(0, maxY, minX, this.height - 1, onTile);
+      this.$forEachTileInArea(maxX, 0, this.width - 1, minY, onTile);
+    } else if (hOverflow) {
+      this.$forEachTileInArea(0, minY, minX, maxY, onTile);
+      this.$forEachTileInArea(maxX, minY, this.width - 1, maxY, onTile);
+    } else if (vOverflow) {
+      this.$forEachTileInArea(minX, 0, maxX, minY, onTile);
+      this.$forEachTileInArea(minX, maxY, maxX, this.height - 1, onTile);
     } else {
-      this.$forEachTileInArea(startX, startY, endX, endY, onTile);
+      this.$forEachTileInArea(minX, minY, maxX, maxY, onTile);
     }
   }
 

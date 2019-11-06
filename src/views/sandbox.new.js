@@ -29,6 +29,8 @@ function placeOnArea(type) {
     mouseDown: (worldView, x, y) => {
       startX = x;
       startY = y;
+      endX = x;
+      endY = y;
       mdown = true;
     },
 

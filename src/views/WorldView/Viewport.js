@@ -3,12 +3,14 @@ import TileRenderer from './TileRenderer.js';
 
 import {
   clearRenderer,
-  selectionRenderer
+  selectionRenderer,
+  renderPlacementArea
 } from './renderers.js';
 
 import { createElement } from 'utils/common/dom.utils.js';
 import { last } from 'utils/common/array.utils.js';
 import { forIn } from 'utils/common/object.utils.js';
+import { normalizeArea } from 'utils/common/geometry.utils.js';
 
 /**
  * viewport.size <= world.size
@@ -190,23 +192,36 @@ export default class Viewport {
     selectionRenderer(guideLayer.context, x, y, this.cellSize);
   }
 
-  drawArea(startX, startY, endX, endY) {
-    const context = this.getTopLayer().context;
+  createTileRectangle(x1, y1, x2, y2) {
+    const [ minX, minY, maxX, maxY ] = normalizeArea(x1, y1, x2, y2);
 
-    const x1 = startX * this.cellSize, y1 = startY * this.cellSize;
-    const x2 = endX * this.cellSize, y2 = endY * this.cellSize;
+    const startX = this.getSizeInPX(minX), startY = this.getSizeInPX(minY);
+    const endX = this.getSizeInPX(maxX + 1), endY = this.getSizeInPX(maxY + 1);
 
-    context.fillStyle = 'rgba(255, 255, 0, 0.5)'; // TODO !!!
-    context.fillRect(x1, y1, x2 - x1, y2 - y1);
+    const width = endX - startX, height = endY - startY;
+
+    return {
+      x: startX,
+      y: startY,
+
+      width, height
+    };
   }
 
-  clearArea(startX, startY, endX, endY) {
+  drawArea(x1, y1, x2, y2) {
     const context = this.getTopLayer().context;
 
-    const x1 = startX * this.cellSize, y1 = startY * this.cellSize;
-    const x2 = endX * this.cellSize, y2 = endY * this.cellSize;
+    const { x, y, width, height } = this.createTileRectangle(x1, y1, x2, y2);
 
-    context.clearRect(x1, y1, x2 - x1, y2 - y1);
+    renderPlacementArea(context, x, y, width, height);
+  }
+
+  clearArea(x1, y1, x2, y2) {
+    const context = this.getTopLayer().context;
+
+    const { x, y, width, height } = this.createTileRectangle(x1, y1, x2, y2);
+
+    context.clearRect(x, y, width, height);
   }
 
   draw(x = 0, y = 0, width = this.width, height = this.height) {
