@@ -61,3 +61,5 @@ function createRectangleRenderer(fillStyle) {
 }
 
 export const renderPlacementArea = createRectangleRenderer('rgba(255, 255, 0, 0.5)');
+
+export const renderRedArea = createColorRenderer('rgba(255, 0, 0, 0.5)');

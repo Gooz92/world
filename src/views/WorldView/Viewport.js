@@ -4,13 +4,13 @@ import TileRenderer from './TileRenderer.js';
 import {
   clearRenderer,
   selectionRenderer,
-  renderPlacementArea
+  renderPlacementArea,
+  renderRedArea
 } from './renderers.js';
 
 import { createElement } from 'utils/common/dom.utils.js';
 import { last } from 'utils/common/array.utils.js';
 import { forIn } from 'utils/common/object.utils.js';
-import { normalizeArea } from 'utils/common/geometry.utils.js';
 
 /**
  * viewport.size <= world.size
@@ -192,34 +192,43 @@ export default class Viewport {
     selectionRenderer(guideLayer.context, x, y, this.cellSize);
   }
 
-  createTileRectangle(x1, y1, x2, y2) {
-    const [ minX, minY, maxX, maxY ] = normalizeArea(x1, y1, x2, y2);
+  createTileRectangle(x, y, width, height) {
 
-    const startX = this.getSizeInPX(minX), startY = this.getSizeInPX(minY);
-    const endX = this.getSizeInPX(maxX + 1), endY = this.getSizeInPX(maxY + 1);
+    const startX = width < 0 ? x + 1 : x;
+    const startY = height < 0 ? y + 1 : y;
 
-    const width = endX - startX, height = endY - startY;
+    const [ px, py, pw, ph ] = [ startX, startY, width, height ]
+      .map(size => this.getSizeInPX(size));
 
     return {
-      x: startX,
-      y: startY,
+      x: px,
+      y: py,
 
-      width, height
+      width: pw, height: ph
     };
   }
 
-  drawArea(x1, y1, x2, y2) {
+  // TODO
+  drawRedArea(x0, y0, w, h) {
     const context = this.getTopLayer().context;
 
-    const { x, y, width, height } = this.createTileRectangle(x1, y1, x2, y2);
+    const { x, y, width, height } = this.createTileRectangle(x0, y0, w, h);
+
+    renderRedArea(context, x, y, width, height);
+  }
+
+  drawArea(x0, y0, pw, ph) {
+    const context = this.getTopLayer().context;
+
+    const { x, y, width, height } = this.createTileRectangle(x0, y0, pw, ph);
 
     renderPlacementArea(context, x, y, width, height);
   }
 
-  clearArea(x1, y1, x2, y2) {
+  clearArea(x0, y0, pw, ph) {
     const context = this.getTopLayer().context;
 
-    const { x, y, width, height } = this.createTileRectangle(x1, y1, x2, y2);
+    const { x, y, width, height } = this.createTileRectangle(x0, y0, pw, ph);
 
     context.clearRect(x, y, width, height);
   }
@@ -227,8 +236,10 @@ export default class Viewport {
   draw(x = 0, y = 0, width = this.width, height = this.height) {
     const endX = x + width, endY = y + height;
 
-    for (let tileX = x; tileX < endX; tileX++) {
-      for (let tileY = y; tileY < endY; tileY++) {
+    const dx = Math.sign(width), dy = Math.sign(height);
+
+    for (let tileX = x; tileX !== endX; tileX += dx) {
+      for (let tileY = y; tileY !== endY; tileY += dy) {
         this.refreshTile(tileX, tileY);
       }
     }

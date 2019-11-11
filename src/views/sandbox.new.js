@@ -39,17 +39,24 @@ function placeOnArea(type) {
         return;
       }
 
-      worldView.viewport.clearArea(startX, startY, endX, endY);
+      const oldWidth = endX - startX, oldHeight = endY - startY;
+
+      worldView.viewport.clearArea(startX, startY, oldWidth, oldHeight);
 
       endX = x;
       endY = y;
 
-      worldView.viewport.drawArea(startX, startY, endX, endY);
+      const width = endX - startX, height = endY - startY;
+
+      worldView.viewport.drawArea(startX, startY, width, height);
     },
 
     mouseUp: (worldView, x, y) => {
-      worldView.viewport.clearArea(startX, startY, x, y);
-      worldView.placeArea(startX, startY, endX, endY, { terrain: type });
+      const width = x - startX, height = y - startY;
+
+      worldView.viewport.clearArea(startX, startY, width, height);
+
+      worldView.placeArea(startX, startY, width, height, { terrain: type });
       mdown = false;
     }
   };

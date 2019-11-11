@@ -35,8 +35,8 @@ There is a trees
 
   ### v 0.0.#
     * Place area tool (partialy done)
-    * Validate placement area + size (max size <= world size / 2)
     * Place stock area (partialy done)
+    * Validate placement area + size
     * Sandbox (ui, user interaction improvements, refactor) (in progress)
     * Displaying services refacatoring
     * Collision handling (one person per tile) (partial done)
