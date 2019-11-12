@@ -76,6 +76,13 @@ const panel = new BottomPanel({}, {
     { id: 'tree', click: place(ObjectType.TREE) },
 
     {
+      id: 'erase',
+      click: (worldView, x, y ) => {
+        worldView.clearTile(x, y);
+      }
+    },
+
+    {
       id: 'stock',
       ...placeOnArea(ObjectType.STOCK)
     }
