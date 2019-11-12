@@ -93,7 +93,7 @@ export default class World {
 
   isAreaPlaceable(x, y, width, height) {
     const tiles = this.getAreaTiles(x, y, width, height);
-    return tiles.every(tile => !tile.object);
+    return tiles.every(tile => !tile.object && !tile.terrain);
   }
 
   placeArea(x0, y0, width, height, tileProperies) {

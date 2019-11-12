@@ -48,7 +48,11 @@ function placeOnArea(type) {
 
       const width = endX - startX, height = endY - startY;
 
-      worldView.viewport.drawArea(startX, startY, width, height);
+      if (worldView.isAreaPlaceable(startX, startY, width, height)) {
+        worldView.viewport.drawArea(startX, startY, width, height);
+      } else {
+        worldView.viewport.drawRedArea(startX, startY, width, height);
+      }
     },
 
     mouseUp: (worldView, x, y) => {
@@ -56,7 +60,10 @@ function placeOnArea(type) {
 
       worldView.viewport.clearArea(startX, startY, width, height);
 
-      worldView.placeArea(startX, startY, width, height, { terrain: type });
+      if (worldView.isAreaPlaceable(startX, startY, width, height)) {
+        worldView.placeArea(startX, startY, width, height, { terrain: type });
+      }
+
       mdown = false;
     }
   };

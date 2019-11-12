@@ -185,6 +185,12 @@ export default class WorldView {
     return object;
   }
 
+  isAreaPlaceable(x, y, width, height) {
+    const [ gx, gy ] = this.getGlobalPosition(x, y);
+
+    return this.world.isAreaPlaceable(gx, gy, width, height);
+  }
+
   placeArea(startX, startY, width, height, tileProperies) {
     const [ gx, gy ] = this.getGlobalPosition(startX, startY);
 
