@@ -2,10 +2,10 @@ import BottomPanel from './BottomPanel.js';
 import Tools from './Tools.js';
 import PlayControls from './PlayControls.js';
 
-import WorldView from './WorldView';
-import Viewport from './WorldView/Viewport.js';
-import ObjectType from 'model/ObjectType.enum.js';
+import WorldView from '../WorldView';
+import Viewport from '../WorldView/Viewport.js';
 
+import ObjectType from 'model/ObjectType.enum.js';
 import createWorld from 'model/create-world.js';
 
 import { debounce, noop } from 'utils/common/fn.utils.js';

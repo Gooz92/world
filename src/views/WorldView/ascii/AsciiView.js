@@ -92,5 +92,7 @@ export default class AsciiView {
     if (tile.terrain) {
       attributes.innerHTML = AsciiView.TOKENS[tile.terrain.type.name];
     }
+
+    return attributes;
   }
 }
