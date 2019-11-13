@@ -36,7 +36,9 @@ There is a trees
   ### v 0.0.#
     * Place area tool (partialy done)
     * Place stock area (partialy done)
-    * Validate placement area + size
+    * Validate placement area + size (partial done)
+    * Selection in sandbox
+    * Strategy => State (hierarhycal states machines etc) ?
     * Sandbox (ui, user interaction improvements, refactor) (in progress)
     * Displaying services refacatoring
     * Collision handling (one person per tile) (partial done)

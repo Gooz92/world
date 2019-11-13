@@ -47,11 +47,8 @@ export default class WorldView {
           if (vx >= x && vx < width + x && vy >= y && vy < height + y) {
             this.viewport.drawSelection(vx, vy);
           } else {
-            // TODO
-            const px = this.viewport.getSizeInPX(x),
-              py = this.viewport.getSizeInPX(y),
-              pw = this.viewport.getSizeInPX(width),
-              ph = this.viewport.getSizeInPX(height);
+            const [ px, py, pw, ph ] = [ x, y, width, height ]
+              .map(size => this.viewport.getSizeInPX(size));
 
             this.viewport.getTopLayer().context.clearRect(px, py, pw, ph);
           }
