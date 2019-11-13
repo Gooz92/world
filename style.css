@@ -38,3 +38,7 @@ main {
 #tile-position {
   margin-left: auto;
 }
+
+#selection-info {
+  margin: 0 4px;
+}

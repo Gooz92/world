@@ -60,8 +60,9 @@ function placeOnArea(type) {
 export default [
   {
     id: 'select',
-    click: (worldView, x, y) => {
-      worldView.select(x, y);
+    click: (worldView, x, y, dispatch) => {
+      const selection = worldView.select(x, y);
+      dispatch({ selection });
     }
   },
 

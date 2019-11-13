@@ -14,6 +14,17 @@ export default class BottomPanel {
     }
   };
 
+  static SelectionInfo = class {
+    constructor({ selection }) {
+      this.element = createElement('span#selection-info');
+      this.update({ selection });
+    }
+
+    update({ selection }) {
+      this.element.innerHTML = selection ? selection.object.type.name : null;
+    }
+  };
+
   constructor(state, config) {
     const { controls } = config;
 

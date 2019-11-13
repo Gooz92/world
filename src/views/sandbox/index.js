@@ -14,12 +14,21 @@ import { upperFirst } from 'utils/common/string.utils.js';
 import getArrowKeyCode from 'utils/common/get-arrow-key-code.js';
 
 const panel = new BottomPanel({}, {
-  controls: [ ToolsSelector, PlayControls, BottomPanel.TilePosition ],
+  controls: [
+    ToolsSelector,
+    PlayControls,
+    BottomPanel.SelectionInfo,
+    BottomPanel.TilePosition
+  ],
   tools,
   dispatch: state => {
     panel.update(state);
   }
 });
+
+const dispatch = state => {
+  panel.update(state);
+};
 
 const world = createWorld({ seed: 42, empty: false });
 
@@ -31,11 +40,11 @@ const viewport = viewportBuilder
     tilesSprite: document.getElementById('tiles-sprite'),
 
     click: (x, y) => {
-      (panel.tool.click || noop)(worldView, x, y);
+      (panel.tool.click || noop)(worldView, x, y, dispatch);
     },
 
     mouseMove(x, y) {
-      (panel.tool.mouseMove || noop)(worldView, x, y);
+      (panel.tool.mouseMove || noop)(worldView, x, y, dispatch);
 
       const gx = world.getCycleX(viewport.position[0] + x);
       const gy = world.getCycleY(viewport.position[1] + y);
@@ -44,11 +53,11 @@ const viewport = viewportBuilder
     },
 
     mouseDown(x, y) {
-      (panel.tool.mouseDown || noop)(worldView, x, y);
+      (panel.tool.mouseDown || noop)(worldView, x, y, dispatch);
     },
 
     mouseUp(x, y) {
-      (panel.tool.mouseUp || noop)(worldView, x, y);
+      (panel.tool.mouseUp || noop)(worldView, x, y, dispatch);
     },
 
     rightClick(x, y) {

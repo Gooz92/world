@@ -37,7 +37,7 @@ There is a trees
     * Place area tool (partialy done)
     * Place stock area (partialy done)
     * Validate placement area + size (partial done)
-    * Selection in sandbox
+    * Selection in sandbox (partial done, in progress)
     * Strategy => State (hierarhycal states machines etc) ?
     * Sandbox (ui, user interaction improvements, refactor) (in progress)
     * Displaying services refacatoring
