@@ -45,7 +45,7 @@ export default class WalkStrategy extends Strategy {
     const action = super.onDone();
 
     if (this.$onDone) {
-      this.$onDone();
+      return this.$onDone();
     }
 
     return action;

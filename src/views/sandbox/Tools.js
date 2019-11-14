@@ -1,9 +1,8 @@
 import ObjectType from 'model/ObjectType.enum.js';
+import CutTreesStrategy from 'model/strategies/CutTreesStrategy.js';
 
 const place = type => (
-  (worldView, x, y) => {
-    worldView.place(x, y, type);
-  }
+  (worldView, x, y) => worldView.place(x, y, type)
 );
 
 function placeOnArea(type) {
@@ -57,16 +56,26 @@ function placeOnArea(type) {
   };
 }
 
+const placePerson = place(ObjectType.PERSON);
+
 export default [
   {
     id: 'select',
     click: (worldView, x, y, dispatch) => {
       const selection = worldView.select(x, y);
+      console.log('selection: ', selection.object);
       dispatch({ selection });
     }
   },
 
-  { id: 'person', click: place(ObjectType.PERSON) },
+  {
+    id: 'person',
+    click: (worldView, x, y) => {
+      const person = placePerson(worldView, x, y);
+      person.setStrategy(CutTreesStrategy);
+    }
+  },
+
   { id: 'tree', click: place(ObjectType.TREE) },
 
   {

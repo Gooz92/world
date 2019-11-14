@@ -13,6 +13,8 @@ import { debounce, noop } from 'utils/common/fn.utils.js';
 import { upperFirst } from 'utils/common/string.utils.js';
 import getArrowKeyCode from 'utils/common/get-arrow-key-code.js';
 
+let isPlayed = false;
+
 const panel = new BottomPanel({}, {
   controls: [
     ToolsSelector,
@@ -22,6 +24,17 @@ const panel = new BottomPanel({}, {
   ],
   tools,
   dispatch: state => {
+
+    // TODO handle dispatched action in proper way
+    if (state.isPlayed && !isPlayed) {
+      isPlayed = true;
+      setInterval(() => worldView.tick(), 180);
+    }
+
+    if (!state.isPlayed && isPlayed) {
+      isPlayed = false;
+    }
+
     panel.update(state);
   }
 });

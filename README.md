@@ -34,11 +34,13 @@ There is a trees
 ## Roadmap
 
   ### v 0.0.#
+    * Extract "transition" abstraction in AI
+    * Write tests for tree cutting
     * Place area tool (partialy done)
     * Place stock area (partialy done)
     * Validate placement area + size (partial done)
     * Selection in sandbox (partial done, in progress)
-    * Strategy => State (hierarhycal states machines etc) ?
+    * AStar
     * Sandbox (ui, user interaction improvements, refactor) (in progress)
     * Displaying services refacatoring
     * Collision handling (one person per tile) (partial done)

@@ -6,12 +6,12 @@ export default class ToolsSelector {
     const element = this.element = createElement('select.tools');
 
     tools.forEach(tool => {
-      const select = createElement('option', {
+      const option = createElement('option', {
         value: tool.id,
-        innerHTML: tool.id
+        innerHTML: tool.name || tool.id
       });
 
-      element.appendChild(select);
+      element.appendChild(option);
     });
 
     element.onchange = event => {
