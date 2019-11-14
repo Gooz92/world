@@ -9,8 +9,7 @@ const trees = new Map();
 
 const hash = (x, y) => `${x}-${y}`;
 
-export default class CutTreesStrategy extends Strategy {
-
+export default class FindTreeStrategy extends Strategy {
   static treeFinder = new PathFinder({
     onAxialTile(tile, x, y, cost) {
       if (!tile.object || tile.object.type !== ObjectType.TREE) {
@@ -32,7 +31,7 @@ export default class CutTreesStrategy extends Strategy {
   findTree() {
 
     const [ x, y ] = this.actor.position;
-    const path = CutTreesStrategy.treeFinder.find(this.actor.world.tiles, x, y);
+    const path = FindTreeStrategy.treeFinder.find(this.actor.world.tiles, x, y);
 
     if (path.length === 0) {
       return { path };
@@ -42,24 +41,43 @@ export default class CutTreesStrategy extends Strategy {
     return { path, position };
   }
 
-  nextAction() {
+  nextStrategy() {
+    const { position, path } = this.findTree();
 
-    if (!this.isTreeFound) {
-      const { position, path } = this.findTree();
-      this.isTreeFound = true;
-
-      this.actor.setStrategy(WalkStrategy, {
-        path,
-        onDone() {
-          const [ x, y ] = position;
-          trees.delete(hash(x, y));
-          this.actor.setStrategy(CutTreesStrategy);
-          const cutTreeAction = new CutTreeAction(this.actor, position);
-          return cutTreeAction;
-        }
-      });
+    if (path.length === 0) {
+      return new CutTreeStrategy(this.actor, position);
     }
 
-    return this.actor.strategy.nextAction();
+    return new WalkStrategy(this.actor, {
+      path,
+      onDone() {
+        return new CutTreeStrategy(this.actor, position);
+      }
+    });
+  }
+
+  nextAction() {
+    return null;
+  }
+}
+
+class CutTreeStrategy extends Strategy {
+
+  constructor(actor, treePosition) {
+    super(actor);
+    this.treePosition = treePosition;
+  }
+
+  nextStrategy() {
+
+    if (this.action.completed) {
+      return new FindTreeStrategy(this.actor);
+    }
+
+    return null;
+  }
+
+  nextAction() {
+    return new CutTreeAction(this.actor, this.treePosition);
   }
 }

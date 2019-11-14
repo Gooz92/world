@@ -2,6 +2,7 @@ import { isArraysEqual, last } from 'utils/common/array.utils.js';
 import WalkStrategy from './strategies/WalkStrategy.js';
 import PathFinder from 'utils/path-finding/PathFinder.js';
 import ObjectType from './ObjectType.enum.js';
+import Strategy from './strategies/Strategy.js';
 
 const move = (position, direction) => ([
   position[0] + direction.dx,
@@ -78,6 +79,11 @@ function findFleeNode(actor, direction) {
 }
 
 export function flee(actor, direction) {
+
+  if (!(actor.strategy instanceof Strategy.IDLE)) {
+    return;
+  }
+
   const fleeNode = findFleeNode(actor, direction);
 
   if (!fleeNode) {
@@ -117,7 +123,7 @@ export function turn(actor) {
         }],
 
         onDone() {
-          actor.setStrategy(WalkStrategy, {
+          return new WalkStrategy(actor, {
             path: reCalculatePath(actor, goal),
             onDone
           });

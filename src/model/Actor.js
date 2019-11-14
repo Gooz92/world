@@ -28,8 +28,7 @@ export default class Actor {
     return this.strategy.nextIdleAction();
   }
 
-  act() {
-
+  addEnergy() {
     const energy = this.energy + this.strength;
 
     if (energy <= MAX_ENERGY) {
@@ -37,15 +36,36 @@ export default class Actor {
     } else {
       this.energy = MAX_ENERGY;
     }
+  }
 
+  performAction() {
     const action = this.strategy.getAction();
+
+    if (action === null) {
+      return null;
+    }
 
     if (action.canPerform()) {
       this.energy -= action.cost;
       return action.perform();
     }
 
-    return this.strategy.nextIdleAction();
+    return this.idle();
+  }
+
+  act() {
+
+    this.addEnergy();
+
+    const result = this.performAction();
+
+    const nextStrategy = this.strategy.nextStrategy();
+
+    if (nextStrategy !== null) {
+      this.strategy = nextStrategy;
+    }
+
+    return result || this.performAction();
   }
 
 }

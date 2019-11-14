@@ -15,11 +15,14 @@ export default class Strategy {
   onRemove() {}
 
   onDone() {
-    this.actor.setStrategy(Strategy.IDLE);
-    return this.actor.strategy.getAction();
+    return new Strategy.IDLE(this.actor);
   }
 
   onInit() {}
+
+  nextStrategy() {
+    return null;
+  }
 
   getAction() {
     if (!this.action || this.action.completed) {

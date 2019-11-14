@@ -17,7 +17,8 @@ export default class Person extends Actor {
   }
 
   inMotion() {
-    return this.getAction().type === MoveAction.TYPE;
+    const action = this.getAction();
+    return action !== null && action.type === MoveAction.TYPE;
   }
 
   moveTo(position) {

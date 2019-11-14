@@ -29,8 +29,8 @@ export default class WalkStrategy extends Strategy {
 
   nextAction() {
 
-    if (this.pathNodeIndex >= this.path.length) {
-      return this.onDone();
+    if (!this.hasNextPathNode()) {
+      return null;
     }
 
     const { position } = this.getNextPathNode();
@@ -40,14 +40,20 @@ export default class WalkStrategy extends Strategy {
     return new MoveAction(this.actor, position);
   }
 
-  onDone() {
+  nextStrategy() {
+    if (this.hasNextPathNode() || !this.action.completed) {
+      return null;
+    }
 
-    const action = super.onDone();
+    return this.onDone();
+  }
+
+  onDone() {
 
     if (this.$onDone) {
       return this.$onDone();
     }
 
-    return action;
+    return super.onDone();
   }
 }
