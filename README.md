@@ -39,6 +39,8 @@ There is a trees
     * Place area tool (partialy done)
     * Place stock area (partialy done)
     * Validate placement area + size (partial done)
+    * Cancel area definition by esc or right click
+    * Show area size 
     * Selection in sandbox (partial done, in progress)
     * AStar
     * Sandbox (ui, user interaction improvements, refactor) (in progress)
