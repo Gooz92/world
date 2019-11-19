@@ -1,7 +1,7 @@
 import { createElement } from 'utils/common/dom.utils.js';
 import diamondSquareGenerator from 'utils/common/DiamondSquareGenerator.js';
 import { normalize, getIndex } from 'utils/common/math.utils.js';
-import PathFinder from 'utils/path-finding/PathFinder.js';
+import findPath from 'utils/path-finding/a-star.js';
 import { chunk } from 'utils/common/array.utils.js';
 
 const TILE_SIZE = 14;
@@ -63,14 +63,14 @@ const pf = {
     this.isStartSetted = false;
     this.end = point;
 
-    const pf = new PathFinder({
-      isTileFound: (tile, x, y) => (
-        x === this.end.x && y === this.end.y
-      ),
-      isTilePassable: tile => !tile
-    });
+    // const pf = new PathFinder({
+    //   isTileFound: (tile, x, y) => (
+    //     x === this.end.x && y === this.end.y
+    //   ),
+    //   isTilePassable: tile => !tile
+    // });
 
-    const path = pf.find(tiles, this.start.x, this.start.y);
+    const path = findPath(tiles, this.start.x, this.start.y, this.end.x, this.end.y);
 
     ctx.fillStyle = '#888';
 
