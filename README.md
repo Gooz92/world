@@ -43,6 +43,7 @@ There is a trees
     * Show area size 
     * Selection in sandbox (partial done, in progress)
     * AStar
+    * Food generation (use ca ?)
     * Sandbox (ui, user interaction improvements, refactor) (in progress)
     * Displaying services refacatoring
     * Collision handling (one person per tile) (partial done)
