@@ -1,6 +1,7 @@
-import { nextGeneration } from 'utils/common/ca.js';
+import { nextGeneration, FOOD, TREE, updateFcell } from 'utils/common/ca.js';
 import { generateArray } from 'utils/common/array.utils';
-import { getFalse, identity } from 'utils/common/fn.utils';
+import { getFalse } from 'utils/common/fn.utils';
+import select from 'views/components/select';
 
 const canvas = document.getElementById('canv'),
   ctx = canvas.getContext('2d');
@@ -20,55 +21,61 @@ canvas.addEventListener('click', event => {
 
   const x = tileX * TILE_SIZE, y = tileY * TILE_SIZE;
 
-  tiles[tileY][tileX] = !tiles[tileY][tileX];
-
-  if (tiles[tileY][tileX]) {
-    drawCell(ctx, x, y);
-  } else {
+  if (tiles[tileY][tileX] === selectedType.id) {
     clearCell(ctx, x, y);
+  } else {
+    tiles[tileY][tileX] = selectedType.id;
+    const cell = tiles[tileY][tileX];
+    drawCell(ctx, x, y, cell);
   }
 });
 
 function draw(tiles) {
   for (let y = 0; y < tiles.length; y++) {
     for (let x = 0; x < tiles[y].length; x++) {
-      if (tiles[y][x]) {
-        drawCell(ctx, x * TILE_SIZE, y * TILE_SIZE);
-      } else {
-        clearCell(ctx, x * TILE_SIZE, y * TILE_SIZE);
-      }
+      drawCell(ctx, x * TILE_SIZE, y * TILE_SIZE, tiles[y][x]);
     }
   }
 }
 
-function drawCell(ctx, x, y) {
-  ctx.fillRect(x + 1, y + 1, TILE_SIZE - 1, TILE_SIZE - 1);
+const colors = {
+  [ FOOD ]: 'grey',
+  [ TREE ]: 'green'
+};
+
+function drawCell(ctx, x, y, type) {
+  const color = colors[type];
+
+  if (color) {
+    ctx.fillStyle = colors[type];
+    ctx.fillRect(x + 1, y + 1, TILE_SIZE - 1, TILE_SIZE - 1);
+  } else {
+    ctx.clearRect(x, y, TILE_SIZE, TILE_SIZE);
+  }
 }
 
 function clearCell(ctx, x, y) {
   ctx.clearRect(x, y, TILE_SIZE, TILE_SIZE);
 }
 
-function updateCell(cell, neighbors) {
-  const [ n1, n2 ] = neighbors;
-  const n = [ ...n1, ...n2 ];
-  const count = n.filter(identity).length;
-  if (count === 3) {
-    return true;
-  }
+const types = [
+  { id: TREE, name: 'tree' },
+  { id: FOOD, name: 'food' }
+];
 
-  if (cell && [ 2, 3 ].includes(count)) {
-    return true;
-  }
+let selectedType = types[0];
 
-  return false;
-}
+const typeSelect = select(types, item => {
+  selectedType = item;
+});
+
+document.body.appendChild(typeSelect.element);
 
 let tID;
 
 document.getElementById('play-button').addEventListener('click', event => {
   tID = setInterval(() => {
-    tiles = nextGeneration(tiles, updateCell, 2);
+    tiles = nextGeneration(tiles, updateFcell, 4);
     draw(tiles);
   }, 200);
 });
