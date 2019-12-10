@@ -1,7 +1,8 @@
-import { getNeighbors, updateFcell, EMPTY, FOOD } from '../ca.js';
+import { getNeighbors, updateFcell } from '../ca.js';
 import { deepEqual, equal } from '../assertion.js';
 import { generateArray } from '../array.utils.js';
-import { getFalse } from '../fn.utils.js';
+import { getObject } from '../fn.utils.js';
+import ObjectType from 'model/ObjectType.enum.js';
 
 describe('ca', function () {
 
@@ -28,11 +29,12 @@ describe('tree-and-food', function () {
   describe('updateFcell', function () {
     it('remove foor if ther are no trees around', () => {
       const x0 = 2, y0 = 2;
-      const world = generateArray(5, 5, getFalse);
-      world[y0][x0] = 2;
+      const world = generateArray(5, 5, getObject);
+      const cell = { object: { type: ObjectType.FOOD } };
+      world[y0][x0] = cell;
       const neighbors = getNeighbors(x0, y0, 4, world);
-      const cell = updateFcell(FOOD, neighbors);
-      equal(cell, EMPTY);
+      Object.assign(cell, updateFcell(cell, neighbors));
+      equal(cell.object, null);
     });
   });
 });

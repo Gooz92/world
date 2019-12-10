@@ -1,6 +1,9 @@
-import { getCycleCoordinate } from './math.utils';
-import { identity } from './fn.utils';
-import { flatten } from './array.utils';
+import ObjectType from 'model/ObjectType.enum.js';
+
+import { getCycleCoordinate } from './math.utils.js';
+import { identity } from './fn.utils.js';
+import { flatten } from './array.utils.js';
+import { get } from './object.utils.js';
 
 
 // params:
@@ -72,14 +75,14 @@ export function updateGolCell(cell, neighbors) {
   const n = [ ...n1, ...n2 ];
   const count = n.filter(identity).length;
   if (count === 3) {
-    return true;
+    return { alive: true };
   }
 
   if (cell && [ 2, 3 ].includes(count)) {
-    return true;
+    return { alive: true };
   }
 
-  return false;
+  return { alive: false };
 }
 
 const OPPOSITES = [
@@ -92,62 +95,67 @@ const OPPOSITES = [
   ]
 ];
 
-export const FOOD = '%';
-export const TREE = 'o';
-export const EMPTY = '.';
+const TREE = ObjectType.TREE;
 
-const count = type => n => n.filter(c => c === type).length;
+const getType = cell => get(cell, 'object.type');
 
-const countTrees = count(TREE);
+const count = type => n => n.filter(c => getType(c) === type).length;
+
+const countTrees = count(ObjectType.TREE);
 
 export function updateFcell(cell, neighbors) {
 
-  if (cell === TREE) return TREE;
+  const currentObject = getType(cell);
+
+  if (currentObject === ObjectType.TREE) return {};
 
   const trees1 = countTrees(neighbors[0]);
 
   if (trees1 > 2) { // 0,1,2
-    return EMPTY;
+    return { object: null };
   }
 
   const trees2 = countTrees(neighbors[1]);
 
   if (trees2 === 4) { // 0,1,2,3
-    return EMPTY;
+    return { object: null };
   }
 
   if (trees1 + trees2 > 3) {
-    return EMPTY;
+    return { object: null };
   }
 
   const surroundings = flatten(neighbors);
   const treesCount = countTrees(surroundings);
 
   if (treesCount === 0) {
-    return EMPTY;
+    return { object: null };
   }
 
   const s4 = neighbors[3];
   const s3 = neighbors[2];
 
-  const s3Pairs = OPPOSITES[0].filter((i, j) => s3[i] === TREE && s3[j] === TREE).length;
-  const s4Pairs = OPPOSITES[1].filter(([ i1, i2 ], j) => (
-    s4[j] === TREE && (s4[i1] === TREE || s4[i2] === TREE)
+  const s3Pairs = OPPOSITES[0].filter((i, j) => (
+    getType(s3[i]) === TREE && getType(s3[j]) === TREE
   )).length;
 
-  if (cell === FOOD) {
+  const s4Pairs = OPPOSITES[1].filter(([ i1, i2 ], j) => (
+    getType(s4[j]) === TREE && (getType(s4[i1]) === TREE || getType(s4[i2]) === TREE)
+  )).length;
+
+  if (currentObject === ObjectType.FOOD) {
     if (s3Pairs === 0 && s4Pairs === 0) {
-      return EMPTY;
+      return { object: null };
     }
 
-    return FOOD;
+    return { object: { type: ObjectType.FOOD } };
   }
 
   if (s3Pairs + s4Pairs > 2) {
-    return FOOD;
+    return { object: { type: ObjectType.FOOD } };
   }
 
-  return EMPTY;
+  return { object: null };
 }
 
 export function getNeighbors(x0, y0, r, tiles) {
@@ -170,8 +178,10 @@ export function nextGeneration(tiles, update, r = 2) {
   for (let y = 0; y < tiles.length; y++) {
     const row = [];
     for (let x = 0; x < tiles[y].length; x++) {
+      const tile = tiles[y][x];
       const neighbors = getNeighbors(x, y, r, tiles);
-      const tile = update(tiles[y][x], neighbors);
+      const delta = update(tiles[y][x], neighbors);
+      Object.assign(tile, delta);
       row.push(tile);
     }
     next.push(row);

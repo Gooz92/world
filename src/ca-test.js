@@ -1,19 +1,33 @@
-import { nextGeneration, FOOD, TREE, updateFcell } from 'utils/common/ca.js';
+import { nextGeneration, updateFcell } from 'utils/common/ca.js';
 import { generateArray } from 'utils/common/array.utils';
 import { getFalse } from 'utils/common/fn.utils';
 import select from 'views/components/select';
+import diamondSquareGenerator from 'utils/common/DiamondSquareGenerator.js';
+import createCanvas from 'views/components/canvas';
+import { get } from 'utils/common/object.utils';
+import ObjectType from 'model/ObjectType.enum';
 
-const canvas = document.getElementById('canv'),
+const TILE_SIZE = 16;
+
+const generator = diamondSquareGenerator()
+  .setCellSize(16)
+  .setRows(3)
+  .setCols(4)
+  .build();
+
+const { width: W, height: H } = generator.size;
+
+const width = W * TILE_SIZE,
+  height = H * TILE_SIZE;
+
+const { element: canvas } = createCanvas(width, height),
   ctx = canvas.getContext('2d');
+
+document.body.appendChild(canvas);
 
 const { left: x0, top: y0 } = canvas.getBoundingClientRect();
 
-const TILE_SIZE = 10;
-
-const width = canvas.width / TILE_SIZE,
-  height = canvas.height / TILE_SIZE;
-
-let tiles = generateArray(height, width, getFalse);
+let tiles = generateArray(H, W, getFalse);
 
 canvas.addEventListener('click', event => {
   const tileX = Math.floor((event.clientX - x0) / TILE_SIZE),
@@ -39,11 +53,12 @@ function draw(tiles) {
 }
 
 const colors = {
-  [ FOOD ]: 'grey',
-  [ TREE ]: 'green'
+  [ ObjectType.FOOD.name ]: 'grey',
+  [ ObjectType.TREE.name ]: 'green'
 };
 
-function drawCell(ctx, x, y, type) {
+function drawCell(ctx, x, y, cell) {
+  const type = get(cell, 'object.type.name');
   const color = colors[type];
 
   if (color) {
@@ -59,8 +74,8 @@ function clearCell(ctx, x, y) {
 }
 
 const types = [
-  { id: TREE, name: 'tree' },
-  { id: FOOD, name: 'food' }
+  { id: ObjectType.TREE.id, name: 'tree' },
+  { id: ObjectType.FOOD.id, name: 'food' }
 ];
 
 let selectedType = types[0];

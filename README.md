@@ -42,7 +42,7 @@ There is a trees
     * Cancel area definition by esc or right click
     * Show area size 
     * Selection in sandbox (partial done, in progress)
-    * AStar
+    * AStar (partial done)
     * Food generation (use ca ?)
     * Sandbox (ui, user interaction improvements, refactor) (in progress)
     * Displaying services refacatoring
