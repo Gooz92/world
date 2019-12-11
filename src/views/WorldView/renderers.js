@@ -41,6 +41,8 @@ export const blueRenderer = createColorRenderer('blue');
 
 export const greyRenderer = createColorRenderer('grey');
 
+export const yellowRenderer = createColorRenderer('#FF0');
+
 export const greenRenderer = createColorRenderer('#6daa2c');
 
 export function stockRenderer(ctx, x, y, size) {

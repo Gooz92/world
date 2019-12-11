@@ -7,6 +7,7 @@ import { randomGenerator } from 'utils/common/random.utils.js';
 import { getObject } from 'utils/common/fn.utils.js';
 import { normalize, getIndex } from 'utils/common/math.utils.js';
 import { generateArray } from 'utils/common/array.utils.js';
+import { nextGeneration, updateFcell } from 'utils/common/ca.js';
 
 const generator = diamondSquareGenerator()
   .setCellSize(32)
@@ -28,10 +29,12 @@ function createTiles(seed, empty) {
     generator.generate(1, 42).map(i => Math.sqrt(i * i * i)), 1
   ).map(i => random.nextBoolean(0.4 * i));
 
-  return generateArray(height, y => (
+  const tiles = generateArray(height, y => (
     generateArray(width, x => ({
       object: map[getIndex(x, y, width, height)] ? { type: ObjectType.TREE } : null
     }))));
+
+  return nextGeneration(tiles, updateFcell, 4);
 }
 
 export default function createWorld({ seed, empty }) {

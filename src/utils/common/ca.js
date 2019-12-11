@@ -1,7 +1,6 @@
 import ObjectType from 'model/ObjectType.enum.js';
 
 import { getCycleCoordinate } from './math.utils.js';
-import { identity } from './fn.utils.js';
 import { flatten } from './array.utils.js';
 import { get } from './object.utils.js';
 
@@ -73,12 +72,12 @@ const OFFSETS = [
 export function updateGolCell(cell, neighbors) {
   const [ n1, n2 ] = neighbors;
   const n = [ ...n1, ...n2 ];
-  const count = n.filter(identity).length;
+  const count = n.filter(c => c.alive).length;
   if (count === 3) {
     return { alive: true };
   }
 
-  if (cell && [ 2, 3 ].includes(count)) {
+  if (cell.alive && [ 2, 3 ].includes(count)) {
     return { alive: true };
   }
 
@@ -181,6 +180,8 @@ export function nextGeneration(tiles, update, r = 2) {
       const tile = tiles[y][x];
       const neighbors = getNeighbors(x, y, r, tiles);
       const delta = update(tiles[y][x], neighbors);
+
+      // TODO ?
       Object.assign(tile, delta);
       row.push(tile);
     }

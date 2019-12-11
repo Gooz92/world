@@ -1,7 +1,7 @@
 import { createElement } from 'utils/common/dom.utils.js';
 import { noop } from 'utils/common/fn.utils.js';
 
-import { clearRenderer } from './renderers';
+import { clearRenderer } from './renderers.js';
 
 export default class ViewportLayer {
 

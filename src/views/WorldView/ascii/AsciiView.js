@@ -12,6 +12,7 @@ export default class AsciiView {
     tree: '^',
     person: '@',
     obstacle: '#',
+    food: '%',
     stock: '_'
   };
 
