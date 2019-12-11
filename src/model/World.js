@@ -5,6 +5,7 @@ import handleCollision from './handle-collision.js';
 
 import { getCycleCoordinate } from 'utils/common/math.utils.js';
 import Strategy from './strategies/Strategy.js';
+import { get } from 'utils/common/object.utils.js';
 
 export default class World {
 
@@ -66,6 +67,12 @@ export default class World {
     return object;
   }
 
+  placeBuilding(Building, x, y) {
+    const { WIDTH, HEIGHT } = Building;
+    const building = new Building(x, y);
+    this.placeArea(x, y, WIDTH, HEIGHT, { object: building });
+  }
+
   getAreaTiles(x, y, width, height) {
     const tiles = [];
 
@@ -111,6 +118,11 @@ export default class World {
 
   isTileOccupied(x, y) {
     return !this.isTileEmpty(x, y);
+  }
+
+  getTileType(x, y) {
+    const tile = this.getTile(x, y);
+    return get(tile, 'object.type');
   }
 
   getTile(x, y) {

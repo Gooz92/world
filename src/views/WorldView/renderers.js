@@ -35,6 +35,11 @@ export function selectionRenderer(ctx, x, y, size) {
   ctx.strokeRect(x + 1, y + 1, size - 2, size - 2);
 }
 
+export function buildingRenderer(ctx, x, y, width, height, tileSize) {
+  ctx.fillStyle = '#964B00';
+  ctx.fillRect(x + 1, y + 1, width * tileSize - 1, height * tileSize - 1);
+}
+
 export const redRenderer = createColorRenderer('red');
 
 export const blueRenderer = createColorRenderer('blue');

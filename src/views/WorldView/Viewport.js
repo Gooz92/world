@@ -5,12 +5,14 @@ import {
   clearRenderer,
   selectionRenderer,
   renderPlacementArea,
-  renderRedArea
+  renderRedArea,
+  buildingRenderer
 } from './renderers.js';
 
 import { createElement } from 'utils/common/dom.utils.js';
 import { last } from 'utils/common/array.utils.js';
 import { forIn } from 'utils/common/object.utils.js';
+import ObjectType from 'model/ObjectType.enum.js';
 
 /**
  * viewport.size <= world.size
@@ -238,9 +240,29 @@ export default class Viewport {
 
     const dx = Math.sign(width), dy = Math.sign(height);
 
+    const buildings = [];
+
     for (let tileX = x; tileX !== endX; tileX += dx) {
       for (let tileY = y; tileY !== endY; tileY += dy) {
-        this.refreshTile(tileX, tileY);
+        const gx = this.position[0] + tileX;
+        const gy = this.position[1] + tileY;
+        const tileType = this.world.getTileType(gx, gy);
+
+        // TODO; do not check exact type; check multilied or not
+        if (tileType === ObjectType.BUILDING) {
+          const { object: building } = this.world.getTile(gx, gy);
+          if (!buildings.includes(building)) {
+            buildings.push(building);
+            const x = building.x - this.position[0];
+            const y = building.y - this.position[1];
+            const layer = this.getBottomLayer();
+            buildingRenderer(
+              layer.context, x, y, building.width, building.height, this.cellSize
+            );
+          }
+        } else {
+          this.refreshTile(tileX, tileY);
+        }
       }
     }
   }

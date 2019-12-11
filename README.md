@@ -40,6 +40,7 @@ There is a trees
     * Place stock area (partialy done)
     * Validate placement area + size (partial done)
     * Cancel area definition by esc or right click
+    * Enum creation mechanism review (?)
     * Show area size 
     * Selection in sandbox (partial done, in progress)
     * AStar
