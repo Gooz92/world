@@ -1,11 +1,11 @@
 import { nextGeneration, updateFcell } from 'utils/common/ca.js';
-import { generateArray } from 'utils/common/array.utils';
-import { getFalse } from 'utils/common/fn.utils';
+import { generateArray } from 'utils/common/array.utils.js';
+import { getObject } from 'utils/common/fn.utils.js';
 import select from 'views/components/select';
 import diamondSquareGenerator from 'utils/common/DiamondSquareGenerator.js';
 import createCanvas from 'views/components/canvas';
-import { get } from 'utils/common/object.utils';
-import ObjectType from 'model/ObjectType.enum';
+import { get } from 'utils/common/object.utils.js';
+import ObjectType from 'model/ObjectType.enum.js';
 
 const TILE_SIZE = 16;
 
@@ -27,7 +27,7 @@ document.body.appendChild(canvas);
 
 const { left: x0, top: y0 } = canvas.getBoundingClientRect();
 
-let tiles = generateArray(H, W, getFalse);
+let tiles = generateArray(H, W, getObject);
 
 canvas.addEventListener('click', event => {
   const tileX = Math.floor((event.clientX - x0) / TILE_SIZE),
@@ -35,10 +35,10 @@ canvas.addEventListener('click', event => {
 
   const x = tileX * TILE_SIZE, y = tileY * TILE_SIZE;
 
-  if (tiles[tileY][tileX] === selectedType.id) {
+  if (get(tiles[tileY][tileX], 'object.type') === selectedType.type) {
     clearCell(ctx, x, y);
   } else {
-    tiles[tileY][tileX] = selectedType.id;
+    Object.assign(tiles[tileY][tileX], { object: { type: selectedType.type } } );
     const cell = tiles[tileY][tileX];
     drawCell(ctx, x, y, cell);
   }
@@ -74,8 +74,8 @@ function clearCell(ctx, x, y) {
 }
 
 const types = [
-  { id: ObjectType.TREE.id, name: 'tree' },
-  { id: ObjectType.FOOD.id, name: 'food' }
+  { id: ObjectType.TREE.id, name: 'tree', type: ObjectType.TREE },
+  { id: ObjectType.FOOD.id, name: 'food', type: ObjectType.FOOD }
 ];
 
 let selectedType = types[0];
