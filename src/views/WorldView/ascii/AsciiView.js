@@ -9,7 +9,7 @@ export default class AsciiView {
   static CELL_SIZE = 16;
 
   static TOKENS = {
-    tree: '^',
+    tree: 'o',
     person: '@',
     obstacle: '#',
     food: '%',

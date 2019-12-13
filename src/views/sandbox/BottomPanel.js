@@ -1,4 +1,11 @@
 import { createElement } from 'utils/common/dom.utils.js';
+import select from 'views/components/select';
+
+const defaultSelectionPresenter = object => object.type.name;
+
+const selectionPresenters = {
+  tree: tree => `tree: ${tree.amount}`
+};
 
 export default class BottomPanel {
 
@@ -21,7 +28,13 @@ export default class BottomPanel {
     }
 
     update({ selection }) {
-      this.element.innerHTML = selection ? selection.object.type.name : null;
+      if (!selection) {
+        this.element.innerHTML = null;
+      } else {
+        const typeName = selection.object.type.name;
+        const presenter = selectionPresenters[typeName] || defaultSelectionPresenter;
+        this.element.innerHTML = presenter(selection.object);
+      }
     }
   };
 

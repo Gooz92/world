@@ -70,7 +70,9 @@ class CutTreeStrategy extends Strategy {
 
   nextStrategy() {
 
-    if (this.action.completed) {
+    const [ x, y ] = this.treePosition;
+
+    if (this.actor.world.isTileEmpty(x, y)) {
       return new FindTreeStrategy(this.actor);
     }
 

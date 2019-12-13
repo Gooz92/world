@@ -108,8 +108,7 @@ export default class World {
   }
 
   isTileEmpty(x, y) {
-    const tile = this.getTile(x, y);
-    return !tile.object;
+    return !this.getObject(x, y);
   }
 
   isTileOccupiedBy(x, y, type) {
@@ -119,6 +118,11 @@ export default class World {
 
   isTileOccupied(x, y) {
     return !this.isTileEmpty(x, y);
+  }
+
+  getObject(x, y) {
+    const tile = this.getTile(x, y);
+    return tile.object;
   }
 
   getTileType(x, y) {

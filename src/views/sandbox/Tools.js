@@ -72,7 +72,6 @@ export default [
     id: 'select',
     click: (worldView, x, y, dispatch) => {
       const selection = worldView.select(x, y);
-      console.log('selection: ', selection.object);
       dispatch({ selection });
     }
   },

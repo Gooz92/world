@@ -10,6 +10,7 @@ export default class Person extends Actor {
     super(world);
     this.position = position;
     this.name = `person-${count++}`;
+    this.inventory = [];
   }
 
   canMoveTo(x, y) {

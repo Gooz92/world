@@ -30,9 +30,11 @@ function createTiles(seed, empty) {
   ).map(i => random.nextBoolean(0.4 * i));
 
   const tiles = generateArray(height, y => (
-    generateArray(width, x => ({
-      object: map[getIndex(x, y, width, height)] ? { type: ObjectType.TREE } : null
-    }))));
+    generateArray(width, x => {
+      const index = getIndex(x, y, width, height);
+      const object = map[index] ? { type: ObjectType.TREE, amount: 10 } : null;
+      return { object };
+    })));
 
   return nextGeneration(tiles, updateFcell, 4);
 }

@@ -12,10 +12,15 @@ export default class CutTreeAction extends Action {
 
     /*
      * TODO: there is a bug in CutTreeStrategy and actor sometimes
-     * try to cut tree non existing tree
+     * try to cut non existing tree
      */
+    const tree = this.actor.world.getObject(x, y);
+    tree.amount--;
 
-    this.actor.world.clearTile(x, y);
+    if (tree.amount === 0) {
+      this.actor.world.clearTile(x, y);
+    }
+
     return super.perform();
   }
 
