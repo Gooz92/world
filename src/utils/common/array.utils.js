@@ -97,3 +97,7 @@ export function getItem(array, index) {
 
   return array[i];
 }
+
+export const flatten = array => (
+  array.reduce((flat, element) => flat.concat(element), [])
+);

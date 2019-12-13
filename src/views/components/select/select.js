@@ -17,7 +17,7 @@ export default function select(items, onChange) {
   items.forEach((item, index) => {
     const option = createElement('option', {
       value: item.id || index,
-      innerText: item.name
+      innerText: item.name || item.id
     });
 
     component.element.appendChild(option);

@@ -39,13 +39,16 @@ There is a trees
     * Place area tool (partialy done)
     * Place stock area (partialy done)
     * Validate placement area + size (partial done)
+    * Place buildings
+    * Food regeneration under trees
+    * Food gethering strategy
     * Cancel area definition by esc or right click
     * Enum creation mechanism review (?)
     * Validate building placement
     * Multitile rendering
     * Show area size 
     * Selection in sandbox (partial done, in progress)
-    * AStar
+    * AStar (partial done)
     * Sandbox (ui, user interaction improvements, refactor) (in progress)
     * Displaying services refacatoring
     * Collision handling (one person per tile) (partial done)

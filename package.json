@@ -30,7 +30,8 @@
     "build:dev": "rollup -c rollup.config/rollup.config.dev.js",
     "build:ds": "rollup -c rollup.config/rollup.config.test-ds.js -i src/test-ds.js --file dist/ds.js",
     "build:pf-test": "rollup -c rollup.config/rollup.config.dev.js -i src/pf-test.js --file dist/pf-test.js",
-    "build:clsn": "rollup -c rollup.config/rollup.config.dev.js -i src/collision-test.js --file dist/collision-test.js"
+    "build:clsn": "rollup -c rollup.config/rollup.config.dev.js -i src/collision-test.js --file dist/collision-test.js",
+    "build:ca": "rollup -c rollup.config/rollup.config.dev.js -i src/ca-test.js --file dist/ca-test.js"
   },
   "author": "Gooz",
   "license": "MIT"

@@ -1,10 +1,13 @@
 import {
   greenRenderer,
   greyRenderer,
-  stockRenderer,
-  brownRenderer } from './renderers.js';
+  brownRenderer,
+  yellowRenderer,
+  stockRenderer } from './renderers.js';
 
 import ObjectType from 'model/ObjectType.enum.js';
+
+import { get } from 'utils/common/object.utils.js';
 
 const ORIGINAL_TILE_SIZE = 16;
 
@@ -16,13 +19,20 @@ export default class TileRenderer {
 
   render(ctx, tile, x, y, tileSize) {
 
-    if (tile.object && tile.object.type === ObjectType.OBSTACLE) {
+    const objectType = get(tile, 'object.type');
+
+    if (objectType === ObjectType.OBSTACLE) {
       greyRenderer(ctx, x, y, tileSize);
       return;
     }
 
-    if (tile.object && tile.object.type === ObjectType.BUILDING) { // TODO ?
+    if (objectType === ObjectType.BUILDING) { // TODO ?
       brownRenderer(ctx, x, y, tileSize);
+      return;
+    }
+
+    if (objectType === ObjectType.FOOD) {
+      yellowRenderer(ctx, x, y, tileSize);
       return;
     }
 
@@ -32,8 +42,8 @@ export default class TileRenderer {
       greenRenderer(ctx, x, y, tileSize);
     }
 
-    if (tile.object) {
-      const [ sx, sy ] = tile.object.type == ObjectType.PERSON ? [ 0, 0 ] : [ 2, 3 ];
+    if ([ ObjectType.PERSON, ObjectType.TREE ].includes(objectType)) {
+      const [ sx, sy ] = objectType == ObjectType.PERSON ? [ 0, 0 ] : [ 2, 3 ];
 
       const sxd = sx * ORIGINAL_TILE_SIZE;
       const syd = sy * ORIGINAL_TILE_SIZE;
