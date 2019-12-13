@@ -1,5 +1,6 @@
 import ObjectType from 'model/ObjectType.enum.js';
 import CutTreesStrategy from 'model/strategies/CutTreesStrategy.js';
+import Barn from 'model/buildings/Barn';
 
 const place = type => (
   (worldView, x, y) => worldView.place(x, y, type)
@@ -56,7 +57,15 @@ function placeOnArea(type) {
   };
 }
 
+function placeBuilding(Building) {
+  return (worldView, x, y) => {
+    worldView.placeBuilding(Building, x, y);
+  };
+}
+
 const placePerson = place(ObjectType.PERSON);
+
+const placeBarn = placeBuilding(Barn);
 
 export default [
   {
@@ -88,5 +97,10 @@ export default [
   {
     id: 'stock',
     ...placeOnArea(ObjectType.STOCK)
+  },
+
+  {
+    id: 'barn',
+    click: placeBarn
   }
 ];

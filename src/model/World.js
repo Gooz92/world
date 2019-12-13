@@ -71,6 +71,7 @@ export default class World {
     const { WIDTH, HEIGHT } = Building;
     const building = new Building(x, y);
     this.placeArea(x, y, WIDTH, HEIGHT, { object: building });
+    return building;
   }
 
   getAreaTiles(x, y, width, height) {

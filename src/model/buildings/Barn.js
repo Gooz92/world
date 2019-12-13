@@ -1,21 +1,6 @@
 import ObjectType from 'model/ObjectType.enum.js';
 import Orientation from 'model/Orientation.enum.js';
 
-/**
- *
- * # # # - - # # #
- * # . . . . . . #
- * # . . . . . . #
- * # . . . . . . #
- * # . . . . . . #
- * # . . . . . . #
- * # . . . . . . #
- * # . . . . . . #
- * # . . . . . . #
- * # # # # # # # #
- */
-
-
 export default class Barn {
 
   static TYPE = ObjectType.BUILDING;
@@ -28,6 +13,10 @@ export default class Barn {
     this.y = y;
 
     this.orientation = orientation;
+
+    // TODO ?
+    this.width = Barn.WIDTH;
+    this.height = Barn.HEIGHT;
   }
 
   get type() {

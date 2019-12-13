@@ -41,6 +41,8 @@ There is a trees
     * Validate placement area + size (partial done)
     * Cancel area definition by esc or right click
     * Enum creation mechanism review (?)
+    * Validate building placement
+    * Multitile rendering
     * Show area size 
     * Selection in sandbox (partial done, in progress)
     * AStar

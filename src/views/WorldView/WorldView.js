@@ -196,6 +196,13 @@ export default class WorldView {
     this.viewport.draw(startX, startY, width, height);
   }
 
+  placeBuilding(Building, x, y) {
+    const [ gx, gy ] = this.getGlobalPosition(x, y);
+
+    const building = this.world.placeBuilding(Building, gx, gy);
+    this.viewport.draw(x, y, building.width, building.height);
+  }
+
   clearTile(x, y) {
     const [ gx, gy ] = this.getGlobalPosition(x, y);
 

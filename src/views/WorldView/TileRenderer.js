@@ -1,4 +1,9 @@
-import { greenRenderer, greyRenderer, stockRenderer } from './renderers.js';
+import {
+  greenRenderer,
+  greyRenderer,
+  stockRenderer,
+  brownRenderer } from './renderers.js';
+
 import ObjectType from 'model/ObjectType.enum.js';
 
 const ORIGINAL_TILE_SIZE = 16;
@@ -13,6 +18,11 @@ export default class TileRenderer {
 
     if (tile.object && tile.object.type === ObjectType.OBSTACLE) {
       greyRenderer(ctx, x, y, tileSize);
+      return;
+    }
+
+    if (tile.object && tile.object.type === ObjectType.BUILDING) { // TODO ?
+      brownRenderer(ctx, x, y, tileSize);
       return;
     }
 
