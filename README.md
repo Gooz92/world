@@ -34,13 +34,16 @@ There is a trees
 ## Roadmap
 
   ### v 0.0.#
-    * Extract "transition" abstraction in AI
+    * Extract "transition" abstraction in AI (there is nextStrategy methods)
     * Write tests for tree cutting
     * Place area tool (partialy done)
     * Place stock area (partialy done)
+    * AStar (partial done)
     * Validate placement area + size (partial done)
-    * Place buildings
-    * Food regeneration under trees
+    * Place buildings (there is posiblity to place barn)
+    * Food regeneration under trees (partial done. food generated on world creation)
+    * Actors inventory (in progress)
+    * Woodcutting mechanics impovement (take a wood and bring to storage)
     * Food gethering strategy
     * Cancel area definition by esc or right click
     * Enum creation mechanism review (?)
@@ -48,7 +51,6 @@ There is a trees
     * Multitile rendering
     * Show area size 
     * Selection in sandbox (partial done, in progress)
-    * AStar (partial done)
     * Sandbox (ui, user interaction improvements, refactor) (in progress)
     * Displaying services refacatoring
     * Collision handling (one person per tile) (partial done)
@@ -60,7 +62,6 @@ There is a trees
     * Write test for PF: path post processing should not change path cost
     * Somehow deal with browser scaling
     * Standardize size and coordinates converting from cells (tiles) to pixels and relative to absolute
-    * Woodcutting mechanics impovement (take a wood and bring to storage)
     * Place house
     * Display resource count and population
     * Assign jobs (for start idle and cut trees)

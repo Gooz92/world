@@ -1,6 +1,7 @@
 import ObjectType from 'model/ObjectType.enum.js';
 import Actor from './Actor.js';
 import MoveAction from './actions/MoveAction.js';
+import Inventory from './Inventory.js';
 
 let count = 0;
 
@@ -10,7 +11,11 @@ export default class Person extends Actor {
     super(world);
     this.position = position;
     this.name = `person-${count++}`;
-    this.inventory = [];
+    this.inventory = new Inventory(10);
+  }
+
+  pickUp(resourceType, amount) {
+    return this.inventory.add(resourceType, amount);
   }
 
   canMoveTo(x, y) {
