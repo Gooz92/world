@@ -69,8 +69,11 @@ const pf = {
     //   ),
     //   isTilePassable: tile => !tile
     // });
+    const isTilePassable = (x, y) => !tiles[y][x];
 
-    const path = findPath(tiles, this.start.x, this.start.y, this.end.x, this.end.y);
+    const path = findPath(isTilePassable,
+      this.start.x, this.start.y,
+      this.end.x, this.end.y);
 
     ctx.fillStyle = '#888';
 

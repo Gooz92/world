@@ -21,7 +21,7 @@ function findMin(nodes, fScores) {
   return minNode;
 }
 
-export default function find(tiles, x1, y1, x2, y2) {
+export default function find(isTilePassable, x1, y1, x2, y2) {
 
   let node = {
     position: [ x1, y1 ]
@@ -54,6 +54,10 @@ export default function find(tiles, x1, y1, x2, y2) {
         currentNode.position[0] + direction.dx,
         currentNode.position[1] + direction.dy
       ];
+
+      if (!isTilePassable(nextX, nextY)) {
+        continue;
+      }
 
       const nHash = [ nextX, nextY ].join(',');
       if (!gScores.has(nHash) || gScore < gScores.get(nHash)) {
