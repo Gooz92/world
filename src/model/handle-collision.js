@@ -123,10 +123,13 @@ export function turn(actor) {
         }],
 
         onDone() {
-          return new WalkStrategy(actor, {
-            path: reCalculatePath(actor, goal),
-            onDone
-          });
+          return {
+            Strategy: WalkStrategy,
+            options: {
+              path: reCalculatePath(actor, goal),
+              onDone
+            }
+          };
         }
       });
 

@@ -1,5 +1,5 @@
 import ViewportLayer from './ViewportLayer.js';
-import TileRenderer from './TileRenderer.js';
+import TileRenderer from './AsciiTileRenderer.js';
 
 import {
   clearRenderer,

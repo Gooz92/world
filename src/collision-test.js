@@ -15,6 +15,7 @@ import {
 import { COLLISIONS } from 'model/strategies/test-cases.js';
 import select from 'views/components/select';
 import ObjectType from 'model/ObjectType.enum.js';
+import Strategy from 'model/strategies/Strategy';
 
 const main = document.querySelector('main'),
   replayButton = document.getElementById('replay');
@@ -54,6 +55,7 @@ function run(scenario) {
 
       onDone() {
         --moversCount;
+        return { Strategy: Strategy.IDLE };
       }
     });
   });

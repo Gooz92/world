@@ -15,7 +15,7 @@ export default class Strategy {
   onRemove() {}
 
   onDone() {
-    return new Strategy.IDLE(this.actor);
+    return { Strategy: Strategy.IDLE };
   }
 
   onInit() {}

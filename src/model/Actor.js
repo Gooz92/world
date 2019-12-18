@@ -9,13 +9,21 @@ export default class Actor {
     this.strategy = null;
   }
 
+  createStrategy(Strategy, options = {}) {
+    if (Strategy.create) {
+      return Strategy.create(this, options);
+    }
+
+    return new Strategy(this, options);
+  }
+
   setStrategy(Strategy, options = {}) {
 
     if (this.strategy) {
       this.strategy.onRemove();
     }
 
-    this.strategy = new Strategy(this, options);
+    this.strategy = this.createStrategy(Strategy, options);
 
     this.strategy.onInit();
   }
@@ -59,10 +67,11 @@ export default class Actor {
 
     const result = this.performAction();
 
-    const nextStrategy = this.strategy.nextStrategy();
+    const next = this.strategy.nextStrategy();
 
-    if (nextStrategy !== null) {
-      this.strategy = nextStrategy;
+    if (next !== null) {
+      const { Strategy, options } = next;
+      this.setStrategy(Strategy, options);
     }
 
     return result || this.performAction();

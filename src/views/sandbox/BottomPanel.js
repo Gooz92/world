@@ -1,5 +1,4 @@
 import { createElement } from 'utils/common/dom.utils.js';
-import select from 'views/components/select';
 
 const defaultSelectionPresenter = object => object.type.name;
 
