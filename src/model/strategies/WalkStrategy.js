@@ -3,9 +3,8 @@ import Strategy from './Strategy.js';
 
 export default class WalkStrategy extends Strategy {
 
-  constructor(actor, { path = [], onDone } = {}) {
+  constructor(actor, { path, onDone }) {
     super(actor);
-
 
     this.path = path;
     this.pathNodeIndex = 0;

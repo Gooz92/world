@@ -21,6 +21,7 @@ import {
 
 import WalkStrategy from './WalkStrategy.js';
 import MoveAction from 'model/actions/MoveAction.js';
+import ObjectType from 'model/ObjectType.enum.js';
 
 function isActorHaveSamePositions(a, b) {
   return isArraysEqual(a.position, b.position);
@@ -35,7 +36,7 @@ function testCollision(pathes, idlers, width, height, maxTicks = 20) {
 
   const walks = pathes.map(path => {
     const [ x, y ] = path[0];
-    const person = world.placePerson(x, y);
+    const person = world.place(x, y, ObjectType.PERSON);
     const direction = Direction.fromPoints(path[0], path[1]);
     person.setStrategy(WalkStrategy, {
       // walking path should not include start actor position
@@ -46,7 +47,7 @@ function testCollision(pathes, idlers, width, height, maxTicks = 20) {
   });
 
   idlers.forEach(([ x0, y0 ]) => {
-    world.placePerson(x0, y0);
+    world.place(x0, y0, ObjectType.PERSON);
   });
 
   const actualPathes = generateArray(world.actors.length, getArray);

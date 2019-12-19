@@ -37,6 +37,6 @@ export default class Inventory {
   }
 
   remove(itemType) {
-    return this.$items.remove(itemType.id);
+    return this.$items.delete(itemType.id);
   }
 }

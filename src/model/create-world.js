@@ -32,7 +32,7 @@ function createTiles(seed, empty) {
   const tiles = generateArray(height, y => (
     generateArray(width, x => {
       const index = getIndex(x, y, width, height);
-      const object = map[index] ? { type: ObjectType.TREE, amount: 10 } : null;
+      const object = map[index] ? { type: ObjectType.TREE, amount: 10 } : null; // TODO
       return { object };
     })));
 

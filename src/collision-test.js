@@ -46,7 +46,7 @@ function run(scenario) {
 
   scenario.walks.forEach(path => {
     const [ x, y ] = path[0];
-    const person = world.placePerson(x, y);
+    const person = world.place(x, y, ObjectType.PERSON);
     const direction = Direction.fromPoints(path[0], path[1]);
 
     person.setStrategy(WalkStrategy, {
@@ -61,7 +61,7 @@ function run(scenario) {
   });
 
   (scenario.idlers || []).forEach(([ x, y ]) => {
-    world.placePerson(x, y);
+    world.place(x, y, ObjectType.PERSON);
   });
 
   (scenario.obstacles || []).forEach(([ x, y ]) => {

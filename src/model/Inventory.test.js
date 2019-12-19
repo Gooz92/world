@@ -7,7 +7,7 @@ describe('Inventory', function () {
 
   describe('add', function () {
 
-    it('works', () => {
+    it('add given amount of items ti inventory', () => {
       const inventory = new Inventory(10);
       const amount = 3;
       inventory.add(matter, amount);
@@ -16,4 +16,20 @@ describe('Inventory', function () {
     });
 
   });
+
+  describe('remove', function () {
+
+    it('remove items of given type from inventory', () => {
+      const inventory = new Inventory(10);
+      const amount = 2;
+
+      inventory.add(matter, amount);
+
+      inventory.remove(matter);
+
+      equal(inventory.getAmount(matter), 0);
+    });
+
+  });
+
 });

@@ -106,7 +106,7 @@ describe('World', function () {
 
   describe('#place', function () {
 
-    const x = 2, y = 4, type = 'thing';
+    const x = 2, y = 4, type = { name: 'thing' };
 
     const place = () => {
       return world.place(x, y, type);

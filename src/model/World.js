@@ -1,17 +1,65 @@
 import ObjectType from 'model/ObjectType.enum.js';
-import Person from 'model/Person.js'; // TODO ?
 
 import handleCollision from './handle-collision.js';
 
 import { getCycleCoordinate } from 'utils/common/math.utils.js';
-import Strategy from './strategies/Strategy.js';
 import { get } from 'utils/common/object.utils.js';
+import { upperFirst } from 'utils/common/string.utils.js';
+import Person from './Person.js';
+import Strategy from './strategies/Strategy.js';
+
+class ObjectPlacer {
+
+  static PLACE_METHOD_NAME_PREFIX = 'place';
+
+  static getPlaceMethodName(type) {
+    return ObjectPlacer.PLACE_METHOD_NAME_PREFIX + upperFirst(type.name);
+  }
+
+  constructor(world) {
+    this.world = world;
+  }
+
+  placePerson(x, y) {
+    const person = new Person(this.world, [ x, y ]);
+    this.world.tiles[y][x].object = person;
+    person.setStrategy(Strategy.IDLE);
+    this.world.actors.push(person);
+
+    return person;
+  }
+
+  placeTree(x, y, type) {
+    const tree = this.$place(x, y, type);
+    tree.amount = 10;
+    return tree;
+  }
+
+  $place(x, y, type) {
+    const object = { type };
+    this.world.tiles[y][x].object = object;
+    return object;
+  }
+
+  place(x, y, type) {
+    const methodName = ObjectPlacer.getPlaceMethodName(type);
+    const method = this[methodName];
+
+    if (method) {
+      return method.call(this, x, y, type);
+    }
+
+    return this.$place(x, y, type);
+  }
+}
 
 export default class World {
 
   constructor(tiles) {
     this.tiles = tiles;
     this.actors = [];
+
+    this.objectPlacer = new ObjectPlacer(this);
   }
 
   tick() {
@@ -32,15 +80,6 @@ export default class World {
     return actions;
   }
 
-  // TODO: get rid of this in future =)
-  placePerson(x, y) {
-    const person = new Person(this, [ x, y ]);
-    this.tiles[y][x].object = person;
-    person.setStrategy(Strategy.IDLE);
-    this.actors.push(person);
-
-    return person;
-  }
 
   removeActor(actor) {
     this.actors = this.actors.filter(a => a !== actor);
@@ -57,14 +96,7 @@ export default class World {
   }
 
   place(x, y, type) {
-    if (type === ObjectType.PERSON) {
-      return this.placePerson(x, y);
-    }
-
-    const object = { type };
-    this.tiles[y][x].object = object;
-
-    return object;
+    return this.objectPlacer.place(x, y, type);
   }
 
   placeBuilding(Building, x, y) {

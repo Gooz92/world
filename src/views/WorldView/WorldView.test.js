@@ -29,7 +29,7 @@ describe('WorldView', function () {
     it('store and return selection', () => {
       const x = 2, y = 3;
 
-      const teapot = worldView.place(x, y, 'teapot');
+      const teapot = worldView.place(x, y, { name: 'teapot' });
 
       const selection = worldView.select(x, y);
 
