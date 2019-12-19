@@ -36,6 +36,10 @@ export default class Inventory {
     return addedAmount;
   }
 
+  asArray() {
+    return Array.from(this.$items.entries());
+  }
+
   remove(itemType) {
     return this.$items.delete(itemType.id);
   }

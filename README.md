@@ -34,7 +34,7 @@ There is a trees
 ## Roadmap
 
   ### v 0.0.#
-    * Extract "transition" abstraction in AI (there is nextStrategy methods)
+    * Woodcutting mechanics impovement (in progress)
     * Write tests for tree cutting
     * Place area tool (partialy done)
     * Place stock area (partialy done)
@@ -42,8 +42,8 @@ There is a trees
     * Validate placement area + size (partial done)
     * Place buildings (there is posiblity to place barn)
     * Food regeneration under trees (partial done. food generated on world creation)
-    * Actors inventory (in progress)
-    * Woodcutting mechanics impovement (take a wood and bring to storage)
+    * Actors inventory (Person inventory is done)
+    * Extract "transition" abstraction in AI (there is nextStrategy methods)
     * Food gethering strategy
     * Cancel area definition by esc or right click
     * Enum creation mechanism review (?)

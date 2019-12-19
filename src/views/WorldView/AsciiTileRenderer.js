@@ -12,7 +12,7 @@ function tileRenderer(token, color, bgColor) {
 }
 
 const renderers = {
-  grass: tileRenderer('.', 'rgba(51, 101, 36, 1)', '#6daa2c'),
+  grass: tileRenderer('.', '#5b8e25', '#6daa2c'),
   tree: tileRenderer('o', 'rgba(51, 101, 36, 1)', '#6daa2c'),
   food: tileRenderer('"', 'rgba(51, 101, 36, 1)', '#6daa2c'),
   person: tileRenderer('@', 'black', '#6daa2c'),

@@ -1,9 +1,17 @@
 import { createElement } from 'utils/common/dom.utils.js';
+import ResourceType from 'model/ResourceType.enum';
 
 const defaultSelectionPresenter = object => object.type.name;
 
+function stringifyItems(items) {
+  return items
+    .map(([ key, value ]) => `${ResourceType.fromId(key).name}: ${value}`)
+    .join('; ');
+}
+
 const selectionPresenters = {
-  tree: tree => `tree: ${tree.amount}`
+  tree: tree => `tree: ${tree.amount}`,
+  person: person => `person: [${stringifyItems(person.inventory.asArray())}]`
 };
 
 export default class BottomPanel {
