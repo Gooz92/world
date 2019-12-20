@@ -1,32 +1,54 @@
 import { get } from 'utils/common/object.utils.js';
-import ObjectType from 'model/ObjectType.enum';
+import { noop } from 'utils/common/fn.utils';
+
+const TILE_SIZE = 16;
 
 function tileRenderer(token, color, bgColor) {
-  return (ctx, x, y, tileSize) => {
+  return (ctx, x, y) => {
     ctx.fillStyle = bgColor;
-    ctx.fillRect(x, y, tileSize, tileSize);
-    ctx.font = 'bold 12px Verdana';
+    ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
     ctx.fillStyle = color;
-    ctx.fillText(token, x + 4, y + tileSize - 4);
+    ctx.fillText(token, x + TILE_SIZE / 2, y + TILE_SIZE / 2);
   };
 }
 
+function terrainRenderer(bgColor) {
+  return (ctx, x, y) => {
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
+  };
+}
+
+const stockBgRenderer = terrainRenderer('grey');
+
+const terrainRenderes = {
+  grass: terrainRenderer('#6daa2c'),
+  stock: (ctx, x, y, tile) => {
+    stockBgRenderer(ctx, x, y);
+    if (!tile.object) {
+      ctx.fillStyle = 'black';
+      ctx.fillText('-', x + TILE_SIZE / 2, y + TILE_SIZE / 2);
+    }
+  }
+};
+
 const renderers = {
-  grass: tileRenderer('.', '#5b8e25', '#6daa2c'),
-  tree: tileRenderer('o', 'rgba(51, 101, 36, 1)', '#6daa2c'),
-  food: tileRenderer('"', 'rgba(51, 101, 36, 1)', '#6daa2c'),
-  person: tileRenderer('@', 'black', '#6daa2c'),
-  building: tileRenderer('#', 'black', 'grey'),
-  stock: tileRenderer('_', 'black', 'grey')
+  tree: tileRenderer('o', 'rgba(51, 101, 36, 1)'),
+  food: tileRenderer(',', 'rgba(51, 101, 36, 1)'),
+  person: tileRenderer('@', 'black'),
+  building: tileRenderer('#', 'black', 'grey')
 };
 
 export default class AsciiTileRenderer {
   render(ctx, tile, x, y, tileSize) {
-    if (tile.terrain === ObjectType.STOCK) {
-      renderers.stock(ctx, x, y, tileSize);
-      return;
-    }
+    ctx.font = 'bold 12px Courier New';
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    const terrain = get(tile, 'terrain.name');
     const objectType = get(tile, 'object.type.name');
-    (renderers[objectType] || renderers.grass)(ctx, x, y, tileSize);
+
+    terrainRenderes[terrain || 'grass'](ctx, x, y, tile);
+    (renderers[objectType] || noop)(ctx, x, y);
   }
 }
