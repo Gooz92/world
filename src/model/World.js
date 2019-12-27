@@ -80,7 +80,6 @@ export default class World {
     return actions;
   }
 
-
   removeActor(actor) {
     this.actors = this.actors.filter(a => a !== actor);
   }

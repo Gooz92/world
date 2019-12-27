@@ -4,7 +4,6 @@ import { getCycleCoordinate } from './math.utils.js';
 import { flatten } from './array.utils.js';
 import { get } from './object.utils.js';
 
-
 // params:
 /*
  * Neighborhoods size:
@@ -34,7 +33,6 @@ import { get } from './object.utils.js';
       5
 
 */
-
 
 /*
 

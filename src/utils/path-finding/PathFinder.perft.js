@@ -39,7 +39,6 @@ class SimplePriorityQueue {
   }
 }
 
-
 /*
  * === x 2 ===
  *

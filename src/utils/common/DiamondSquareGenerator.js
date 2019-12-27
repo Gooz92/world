@@ -14,7 +14,6 @@ import { randomGenerator } from './random.utils.js';
  * roughness
  */
 
-
 /**
  * .     .
  *  \   /
@@ -78,7 +77,6 @@ export function square(arr, width, height, side, next) {
     }
   }
 }
-
 
 const defaults = {
   rows: 1,

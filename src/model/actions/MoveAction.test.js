@@ -13,7 +13,6 @@ describe('MoveAction', function () {
       moveTo: spy()
     };
 
-
     const move = new MoveAction(actor, to);
 
     it('call actor.moveTo(destination)', () => {

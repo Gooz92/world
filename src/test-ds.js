@@ -33,7 +33,6 @@ const rangeComponent = range('roughness', 'Roughness', {
   min: 0, max: 1, step: 0.01
 }, onRoughnessChange);
 
-
 function draw(roughness, seed) {
   const map = normalize(
     generator.generate(roughness, seed).map(i => Math.sqrt(i * i * i)), 1

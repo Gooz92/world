@@ -73,7 +73,6 @@ describe('mathUtils', function () {
       equal(getIndex(x, y, width, height), index);
     }
 
-
     it('return index by coordinates in bounds', () => {
 
       /*

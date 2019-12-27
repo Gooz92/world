@@ -39,7 +39,6 @@ describe('tree-and-food', function () {
   });
 });
 
-
 /**
  *
  * pow(2, 20) = 1 048 576

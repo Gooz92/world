@@ -3,6 +3,22 @@ import { noop } from 'utils/common/fn.utils.js';
 
 import { clearRenderer } from './renderers.js';
 
+const PERSISTENT_CTX_ATTRS = [
+  'strokeStyle',
+  'fillStyle',
+  'globalAlpha',
+  'lineWidth',
+  'lineCap',
+  'lineJoin',
+  'miterLimit',
+  // 'shadowOffsetX',
+  // 'shadowOffsetY',
+  // shadowBlur, shadowColor, globalCompositeOperation,
+  'font',
+  'textAlign',
+  'textBaseline'
+];
+
 export default class ViewportLayer {
 
   constructor(viewport, name, { draw = noop } = {}) {
@@ -34,6 +50,26 @@ export default class ViewportLayer {
       y = this.viewport.getSizeInPX(tileY);
 
     clearRenderer(this.context, x, y, this.viewport.cellSize);
+  }
+
+  saveContextSettings() {
+
+    const settigns = {};
+
+    PERSISTENT_CTX_ATTRS.forEach(attrName => {
+      settigns[attrName] = this.context[attrName];
+    });
+
+    if (!this.$ctxSettings) {
+      this.$ctxSettings = [];
+    }
+
+    this.$ctxSettings.push(settigns);
+  }
+
+  restoreContextSettings() {
+    const settigns = this.$ctxSettings.pop();
+    Object.assign(this.context, settigns);
   }
 
   scrollVertical(dy) {
@@ -83,6 +119,7 @@ export default class ViewportLayer {
   }
 
   setWidth(width) {
+
     const dw = this.viewport.width - width;
 
     if (dw === 0) {
@@ -96,7 +133,9 @@ export default class ViewportLayer {
 
     const previousImage = this.context.getImageData(0, 0, canvWidth, canvHeight);
 
+    this.saveContextSettings();
     this.canvas.width = newCanvWidth;
+    this.restoreContextSettings();
 
     if (width > this.viewport.width) {
       this.draw.call(this.viewport, width + dw, 0, -dw, this.viewport.height);
@@ -120,7 +159,9 @@ export default class ViewportLayer {
 
     const previousImage = this.context.getImageData(0, 0, canvWidth, canvHeight);
 
+    this.saveContextSettings();
     this.canvas.height = newCanvHeight;
+    this.restoreContextSettings();
 
     if (height > this.viewport.height) {
       this.draw.call(this.viewport, 0, height + dh, this.viewport.width, -dh);

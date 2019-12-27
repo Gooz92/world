@@ -1,3 +1,5 @@
+import AsciiTileRenderer from './AsciiTileRenderer.js';
+
 /**
  * TODO: Create world view controller or smth like that
  * to handle selection, object placing etc ?
@@ -54,6 +56,10 @@ export default class WorldView {
           }
         }
       });
+
+    const mainLayer = this.viewport.getBottomLayer();
+
+    this.viewport.tileRenderer = new AsciiTileRenderer(mainLayer.context);
   }
 
   tick() {

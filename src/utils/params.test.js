@@ -34,5 +34,3 @@ describe('params', function () {
   });
 
 });
-
-

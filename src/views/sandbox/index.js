@@ -50,7 +50,7 @@ const viewportBuilder = Viewport.createBuilder();
 const viewport = viewportBuilder
   .setWorld(world)
   .setOptions({
-    tilesSprite: document.getElementById('tiles-sprite'),
+    // tilesSprite: document.getElementById('tiles-sprite'),
 
     click: (x, y) => {
       (panel.tool.click || noop)(worldView, x, y, dispatch);

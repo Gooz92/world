@@ -1,5 +1,4 @@
 import ViewportLayer from './ViewportLayer.js';
-import TileRenderer from './AsciiTileRenderer.js';
 
 import {
   clearRenderer,
@@ -73,10 +72,6 @@ export default class Viewport {
       this.container.onmousemove = this.handleMouseMove((x, y) => {
         options.mouseMove(x, y);
       });
-    }
-
-    if (options.tilesSprite) {
-      this.tileRenderer = new TileRenderer(options.tilesSprite);
     }
   }
 
@@ -180,7 +175,7 @@ export default class Viewport {
 
     clearRenderer(mainLayer.context, x, y, this.cellSize);
 
-    this.tileRenderer.render(mainLayer.context, tile, x, y, this.cellSize);
+    this.tileRenderer.render(tile, x, y, this.cellSize);
   }
 
   drawSelection(tileX, tileY) {

@@ -29,7 +29,7 @@ export default class AsciiView {
     const field = createElement('.' + AsciiView.CLASS_NAME, {
       style: {
         width: (AsciiView.CELL_SIZE * this.world.width) + 'px',
-        height: (AsciiView.CELL_SIZE * this.world.height) + 'px',
+        height: (AsciiView.CELL_SIZE * this.world.height) + 'px'
       }
     });
 

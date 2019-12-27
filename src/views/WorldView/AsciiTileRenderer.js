@@ -21,8 +21,17 @@ function terrainRenderer(bgColor) {
 
 const stockBgRenderer = terrainRenderer('grey');
 
+const grassBgRenderer = terrainRenderer('#6daa2c');
+
 const terrainRenderes = {
-  grass: terrainRenderer('#6daa2c'),
+  grass: (ctx, x, y, tile) => {
+    grassBgRenderer(ctx, x, y);
+    if (!tile.object) {
+      ctx.fillStyle = '#629927';
+      ctx.fillText('.', x + TILE_SIZE / 2, y + TILE_SIZE / 2);
+    }
+  },
+
   stock: (ctx, x, y, tile) => {
     stockBgRenderer(ctx, x, y);
     if (!tile.object) {
@@ -40,15 +49,24 @@ const renderers = {
 };
 
 export default class AsciiTileRenderer {
-  render(ctx, tile, x, y, tileSize) {
-    ctx.font = 'bold 12px Courier New';
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
+
+  static SETTINGS = {
+    font: 'bold 12px Lucida Console',
+    textAlign: 'center',
+    textBaseline: 'middle'
+  };
+
+  constructor(context) {
+    this.context = context;
+    Object.assign(context, AsciiTileRenderer.SETTINGS);
+  }
+
+  render(tile, x, y) {
 
     const terrain = get(tile, 'terrain.name');
     const objectType = get(tile, 'object.type.name');
 
-    terrainRenderes[terrain || 'grass'](ctx, x, y, tile);
-    (renderers[objectType] || noop)(ctx, x, y);
+    terrainRenderes[terrain || 'grass'](this.context, x, y, tile);
+    (renderers[objectType] || noop)(this.context, x, y);
   }
 }
