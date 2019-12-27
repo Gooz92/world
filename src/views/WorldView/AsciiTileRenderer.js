@@ -45,7 +45,8 @@ const renderers = {
   tree: tileRenderer('o', 'rgba(51, 101, 36, 1)'),
   food: tileRenderer(',', 'rgba(51, 101, 36, 1)'),
   person: tileRenderer('@', 'black'),
-  building: tileRenderer('#', 'black', 'grey')
+  building: tileRenderer('#', 'black'),
+  wood: tileRenderer('=', 'black')
 };
 
 export default class AsciiTileRenderer {

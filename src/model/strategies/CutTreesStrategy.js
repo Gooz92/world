@@ -1,10 +1,15 @@
-import PathFinder from 'utils/path-finding/PathFinder.js';
-import CutTreeAction from '../actions/CutTreeAction.js';
-import ObjectType from 'model/ObjectType.enum.js';
 import Strategy from './Strategy.js';
-import { isUndefined } from 'utils/common/is.utils.js';
 import WalkStrategy from './WalkStrategy.js';
-import DropWoodAction from 'model/actions/DropWoodAction.js';
+
+import CutTreeAction from '../actions/CutTreeAction.js';
+import DropItemAction from 'model/actions/DropItemAction.js';
+
+import ObjectType from 'model/ObjectType.enum.js';
+import ResourceType from 'model/ResourceType.enum.js';
+
+import PathFinder from 'utils/path-finding/PathFinder.js';
+import { isUndefined } from 'utils/common/is.utils.js';
+import { get } from 'utils/common/object.utils.js';
 
 const trees = new Map();
 
@@ -12,8 +17,13 @@ const hash = (x, y) => `${x}-${y}`;
 
 class DropWoodStrategy extends Strategy {
 
+  constructor(actor, stockPosition) {
+    super(actor);
+    this.stockPosition = stockPosition;
+  }
+
   nextAction() {
-    return new DropWoodAction(this.actor);
+    return new DropItemAction(this.actor, [ this.stockPosition ], ResourceType.WOOD);
   }
 
   nextStrategy() {
@@ -25,26 +35,40 @@ class DropWoodStrategy extends Strategy {
   }
 }
 
-class GoToStockStrategy extends WalkStrategy {
+export class GoToStockStrategy extends WalkStrategy {
 
   static create(actor) {
     const { position: [ x, y ], world: { tiles } } = actor;
-    const path = GoToStockStrategy.findStock(x, y, tiles);
-    return new GoToStockStrategy(actor, { path });
+    const { path, stockPosition } = GoToStockStrategy.findStock(x, y, tiles);
+    return new GoToStockStrategy(actor, { path, stockPosition });
   }
 
   static stockFidner = new PathFinder({
-    isTileFound: tile => tile.terrain === ObjectType.STOCK,
+    onAxialTile(tile) {
+      if (tile.terrain === ObjectType.STOCK) {
+        this.isFound = true;
+      }
+    },
+
     isTilePassable: tile => !tile.object
   });
 
   static findStock(x, y, tiles) {
-    return GoToStockStrategy.stockFidner.find(tiles, x, y);
+    const path = GoToStockStrategy.stockFidner.find(tiles, x, y);
+    const { position: stockPosition } = path.pop();
+
+    return { path, stockPosition };
+  }
+
+  constructor(actor, { path, stockPosition }) {
+    super(actor, { path });
+    this.stockPosition = stockPosition;
   }
 
   onDone() {
     return {
-      Strategy: DropWoodStrategy
+      Strategy: DropWoodStrategy,
+      options: this.stockPosition
     };
   }
 }
@@ -60,7 +84,7 @@ export default class GoToTreeStrategy extends WalkStrategy {
 
   static treeFinder = new PathFinder({
     onAxialTile(tile, x, y, cost) {
-      if (!tile.object || tile.object.type !== ObjectType.TREE) {
+      if (get(tile, 'object.type') !== ObjectType.TREE) {
         return;
       }
 

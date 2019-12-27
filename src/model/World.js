@@ -28,7 +28,6 @@ class ObjectPlacer {
 
     return person;
   }
-
   placeTree(x, y, type) {
     const tree = this.$place(x, y, type);
     tree.amount = 10;
