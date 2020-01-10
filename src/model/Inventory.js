@@ -1,14 +1,14 @@
 export default class Inventory {
 
-  constructor(maxCapacity) {
-    this.$maxCapacity = maxCapacity;
+  constructor(capacity) {
+    this.$capacity = capacity;
 
-    this.$capacity = 0;
+    this.$storedAmount = 0;
     this.$items = new Map();
   }
 
   getAvailableCapacity() {
-    return this.$maxCapacity - this.$capacity;
+    return this.$capacity - this.$storedAmount;
   }
 
   contains(itemType) {
@@ -32,7 +32,7 @@ export default class Inventory {
 
     this.$items.set(itemType.id, newAmount);
 
-    this.$capacity += addedAmount;
+    this.$storedAmount += addedAmount;
     return addedAmount;
   }
 
@@ -41,6 +41,7 @@ export default class Inventory {
   }
 
   remove(itemType) {
+    this.$storedAmount -= this.getAmount(itemType);
     return this.$items.delete(itemType.id);
   }
 }

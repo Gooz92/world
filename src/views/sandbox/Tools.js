@@ -72,6 +72,7 @@ export default [
     id: 'select',
     click: (worldView, x, y, dispatch) => {
       const selection = worldView.select(x, y);
+      window.__selection__ = selection;
       dispatch({ selection });
     }
   },
