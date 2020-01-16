@@ -28,6 +28,7 @@ class ObjectPlacer {
 
     return person;
   }
+
   placeTree(x, y, type) {
     const tree = this.$place(x, y, type);
     tree.amount = 10;
@@ -38,6 +39,18 @@ class ObjectPlacer {
     const object = { type };
     this.world.tiles[y][x].object = object;
     return object;
+  }
+
+  placeResource(x, y, type, amount) {
+    const tile = this.world.getTile(x, y);
+
+    if (!tile.object || tile.object.type !== type) {
+      tile.object = { type, amount: 0 };
+    }
+
+    tile.object.amount += amount;
+
+    return tile.object;
   }
 
   place(x, y, type) {
@@ -91,6 +104,10 @@ export default class World {
     }
 
     this.tiles[y][x].object = null;
+  }
+
+  placeResource(x, y, type, amount) {
+    return this.objectPlacer.placeResource(x, y, type, amount);
   }
 
   place(x, y, type) {

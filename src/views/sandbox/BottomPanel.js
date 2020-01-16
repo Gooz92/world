@@ -11,7 +11,8 @@ function stringifyItems(items) {
 
 const selectionPresenters = {
   tree: tree => `tree: ${tree.amount}`,
-  person: person => `person: [${stringifyItems(person.inventory.asArray())}]`
+  person: person => `person: [${stringifyItems(person.inventory.asArray())}]`,
+  wood: wood => `wood: ${wood.amount}`
 };
 
 export default class BottomPanel {

@@ -44,5 +44,7 @@ export default function createWorld({ seed, empty }) {
   const tiles = createTiles(seed, empty);
   const world = new World(tiles);
 
+  world.placeArea(2, 3, 3, 4, { terrain: ObjectType.STOCK });
+
   return world;
 }

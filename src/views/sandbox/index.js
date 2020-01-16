@@ -28,7 +28,10 @@ const panel = new BottomPanel({}, {
     // TODO handle dispatched action in proper way
     if (state.isPlayed && !isPlayed) {
       isPlayed = true;
-      timerId = setInterval(() => worldView.tick(), 180);
+      timerId = setInterval(() => {
+        worldView.tick();
+        panel.update(state);
+      }, 180);
     }
 
     if (!state.isPlayed && isPlayed) {

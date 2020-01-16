@@ -1,8 +1,8 @@
 import Strategy from './Strategy.js';
 import WalkStrategy from './WalkStrategy.js';
+import DropItemStrategy from './DropItemStrategy.js';
 
 import CutTreeAction from '../actions/CutTreeAction.js';
-import DropItemAction from 'model/actions/DropItemAction.js';
 
 import ObjectType from 'model/ObjectType.enum.js';
 import ResourceType from 'model/ResourceType.enum.js';
@@ -14,26 +14,6 @@ import { get } from 'utils/common/object.utils.js';
 const trees = new Map();
 
 const hash = (x, y) => `${x}-${y}`;
-
-class DropWoodStrategy extends Strategy {
-
-  constructor(actor, stockPosition) {
-    super(actor);
-    this.stockPosition = stockPosition;
-  }
-
-  nextAction() {
-    return new DropItemAction(this.actor, [ this.stockPosition ], ResourceType.WOOD);
-  }
-
-  nextStrategy() {
-    if (this.action && this.action.completed) {
-      return { Strategy: GoToTreeStrategy };
-    }
-
-    return null;
-  }
-}
 
 export class GoToStockStrategy extends WalkStrategy {
 
@@ -67,8 +47,12 @@ export class GoToStockStrategy extends WalkStrategy {
 
   onDone() {
     return {
-      Strategy: DropWoodStrategy,
-      options: this.stockPosition
+      Strategy: DropItemStrategy,
+      options: {
+        position: this.stockPosition,
+        nextStrategy: GoToTreeStrategy,
+        resourceType: ResourceType.WOOD
+      }
     };
   }
 }
