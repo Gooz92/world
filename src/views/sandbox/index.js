@@ -79,6 +79,10 @@ const viewport = viewportBuilder
 
     rightClick(x, y) {
       worldView.resetSelection();
+    },
+
+    keyDown(key) {
+      (panel.tool.keyDown || noop)(worldView, key);
     }
   })
   .build();

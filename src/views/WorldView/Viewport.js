@@ -4,7 +4,8 @@ import {
   clearRenderer,
   selectionRenderer,
   renderPlacementArea,
-  renderRedArea
+  renderRedArea,
+  renderGreenMask
 } from './renderers.js';
 
 import { createElement } from 'utils/common/dom.utils.js';
@@ -54,7 +55,13 @@ export default class Viewport {
 
     this.layers = [];
 
-    this.container = createElement('#viewport');
+    this.container = createElement('#viewport', {
+      // in order to support keyboard events
+      tabindex: 1,
+      onmouseover() {
+        this.focus();
+      }
+    });
 
     this.setOptions(options);
   }
@@ -72,6 +79,12 @@ export default class Viewport {
       this.container.onmousemove = this.handleMouseMove((x, y) => {
         options.mouseMove(x, y);
       });
+    }
+
+    if (options.keyDown) {
+      this.container.onkeydown = event => {
+        options.keyDown(event.key);
+      };
     }
   }
 
@@ -212,8 +225,20 @@ export default class Viewport {
     renderRedArea(context, x, y, width, height);
   }
 
+  drawMask(x0, y0, mask) {
+    const { context } = this.getTopLayer();
+
+    for (let i = 0; i < mask.length; i++) {
+      const y = this.getSizeInPX(y0 + i);
+      for (let j = 0; j < mask[i].length; j++) {
+        const x = this.getSizeInPX(x0 + j);
+        renderGreenMask(context, x + 1, y + 1, this.cellSize - 2, this.cellSize - 2);
+      }
+    }
+  }
+
   drawArea(x0, y0, pw, ph) {
-    const context = this.getTopLayer().context;
+    const { context } = this.getTopLayer();
 
     const { x, y, width, height } = this.createTileRectangle(x0, y0, pw, ph);
 
@@ -221,7 +246,7 @@ export default class Viewport {
   }
 
   clearArea(x0, y0, pw, ph) {
-    const context = this.getTopLayer().context;
+    const { context } = this.getTopLayer();
 
     const { x, y, width, height } = this.createTileRectangle(x0, y0, pw, ph);
 

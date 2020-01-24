@@ -41,6 +41,7 @@ There is a trees
     * AStar (partial done)
     * Validate placement area + size (partial done)
     * Place buildings (there is posiblity to place barn)
+      - Rotate building (in progress)
     * Food regeneration under trees (partial done. food generated on world creation)
     * Actors inventory (Person inventory is done)
     * Extract "transition" abstraction in AI (there is nextStrategy methods)
