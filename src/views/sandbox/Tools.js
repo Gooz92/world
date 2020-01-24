@@ -58,14 +58,40 @@ function placeOnArea(type) {
 }
 
 function placeBuilding(Building) {
-  return (worldView, x, y) => {
-    worldView.placeBuilding(Building, x, y);
+
+  let active = false;
+
+  let prevX, prevY;
+
+  const { WIDTH: width, HEIGHT: height } = Building;
+
+  return {
+    click: (worldView, x, y) => {
+      if (worldView.isAreaPlaceable(x, y, width, height)) {
+        worldView.placeBuilding(Building, x, y);
+      }
+    },
+
+    mouseMove(worldView, x, y) {
+      if (active) {
+        worldView.viewport.clearArea(prevX, prevY, width, height);
+      } else {
+        active = true;
+      }
+
+      if (worldView.isAreaPlaceable(x, y, width, height)) {
+        worldView.viewport.drawArea(x, y, width, height);
+      } else {
+        worldView.viewport.drawRedArea(x, y, width, height);
+      }
+
+      prevX = x;
+      prevY = y;
+    }
   };
 }
 
 const placePerson = place(ObjectType.PERSON);
-
-const placeBarn = placeBuilding(Barn);
 
 export default [
   {
@@ -101,6 +127,6 @@ export default [
 
   {
     id: 'barn',
-    click: placeBarn
+    ...placeBuilding(Barn)
   }
 ];

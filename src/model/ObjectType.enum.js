@@ -11,7 +11,8 @@ const ObjectType = createEnum(
     PERSON: [ 3 ],
     STOCK: [ 4 ],
     FOOD: [ 5 ],
-    BUILDING: [ 6 ]
+    BUILDING: [ 6 ],
+    DOOR: [ 7 ]
   }
 );
 

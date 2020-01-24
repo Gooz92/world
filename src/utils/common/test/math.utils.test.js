@@ -1,5 +1,5 @@
 import * as mathUtils from '../math.utils.js';
-import { equal, deepEqual, isTrue, isFalse } from '../assertion.js';
+import { equal, deepEqual } from '../assertion.js';
 
 describe('mathUtils', function () {
 
@@ -28,28 +28,28 @@ describe('mathUtils', function () {
 
   });
 
-  describe('inCycleRange', function () {
+  describe('rotateFlatMatrix', function () {
 
-    const inCycleRange = mathUtils.inCycleRange;
+    const rotate = mathUtils.rotateFlatMatrix;
 
-    it('normal positive', () => {
-      const left = 1, right = 5, value = 1;
-      isTrue(inCycleRange(value, left, right));
-    });
+    it('works', () => {
+      const m = [
+        1, 2, 3,
+        4, 5, 6,
+        7, 8, 9,
+        1, 2, 3
+      ];
 
-    it('normal negative', () => {
-      const left = 1, right = 5, value = 6;
-      isFalse(inCycleRange(value, left, right));
-    });
+      const w = 3, h = 4;
 
-    it('in cycled range', () => {
-      const left = 8, right = 4, value = 2, bound = 10;
-      isTrue(inCycleRange(value, left, right, bound));
-    });
+      const rotated = rotate(m, w, h);
 
-    it('outside cycled range', () => {
-      const left = 8, right = 4, value = 6, bound = 10;
-      isFalse(inCycleRange(value, left, right, bound));
+      deepEqual(rotated, [
+        1, 7, 4, 1,
+        2, 8, 5, 2,
+        3, 9, 6, 3
+      ]);
+
     });
 
   });

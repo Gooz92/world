@@ -48,14 +48,24 @@ export function getIndex(x, y, width, height) {
   return y0 * width + x0;
 }
 
-// TODO: not used ?
-export function inCycleRange(value, left, right, maxBound = right) {
-  if (value < 0 || value >= maxBound) {
-    return false;
+/**
+ * a b c
+ * d e f
+ *
+ * d a
+ * e b
+ * f c
+ */
+
+export function rotateFlatMatrix(matrix, width, height) {
+  const rotated = [];
+
+  for (let j = 0; j < width; j++) {
+    for (let i = height - 1; i >= 0; i--) {
+      const index = i * width + j;
+      rotated.push(matrix[index]);
+    }
   }
 
-  const gteLeft = value >= left;
-  const ltRight = value < right;
-
-  return (left < right) ? (gteLeft && ltRight) : (gteLeft || ltRight);
+  return rotated;
 }
