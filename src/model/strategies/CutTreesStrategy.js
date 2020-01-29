@@ -15,6 +15,8 @@ const trees = new Map();
 
 const hash = (x, y) => `${x}-${y}`;
 
+const MAX_WOOD_PER_TILE = 80;
+
 export class GoToStockStrategy extends WalkStrategy {
 
   static create(actor) {
@@ -25,7 +27,8 @@ export class GoToStockStrategy extends WalkStrategy {
 
   static stockFidner = new PathFinder({
     onAxialTile(tile) {
-      if (tile.terrain === ObjectType.STOCK) {
+      if (tile.terrain === ObjectType.STOCK &&
+        (!tile.object || tile.object.amount < MAX_WOOD_PER_TILE)) {
         this.isFound = true;
       }
     },

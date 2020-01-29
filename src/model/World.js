@@ -8,6 +8,10 @@ import { upperFirst } from 'utils/common/string.utils.js';
 import Person from './Person.js';
 import Strategy from './strategies/Strategy.js';
 
+/*
+ * tile { object, terrain, area }
+ */
+
 class ObjectPlacer {
 
   static PLACE_METHOD_NAME_PREFIX = 'place';
@@ -148,9 +152,11 @@ export default class World {
     return tiles.every(tile => !tile.object && !tile.terrain);
   }
 
-  placeArea(x0, y0, width, height, tileProperies) {
-    this.forEachTileInArea(x0, y0, width, height, tile => {
-      Object.assign(tile, tileProperies);
+  placeArea(x, y, width, height, tileProperies) {
+    const area = { x, y, width, height };
+
+    this.forEachTileInArea(x, y, width, height, tile => {
+      Object.assign(tile, { ...tileProperies, area });
     });
   }
 
