@@ -9,11 +9,14 @@ import createWorld from 'model/create-world.js';
 
 import tools from './tools.js';
 
-import { debounce, noop } from 'utils/common/fn.utils.js';
-import { upperFirst } from 'utils/common/string.utils.js';
-import getArrowKeyCode from 'utils/common/get-arrow-key-code.js';
+import actions from './Actions.js';
 
-let isPlayed = false, timerId;
+import { debounce, noop } from 'utils/common/fn.utils.js';
+import { upperFirst, camelCase } from 'utils/common/string.utils.js';
+import getArrowKeyCode from 'utils/common/get-arrow-key-code.js';
+import Dispatcher from './Dispatcher.js';
+
+let timerId;
 
 const panel = new BottomPanel({}, {
   controls: [
@@ -23,24 +26,35 @@ const panel = new BottomPanel({}, {
     BottomPanel.TilePosition
   ],
   tools,
-  dispatch: state => {
+  ...actions
+});
 
-    // TODO handle dispatched action in proper way
-    if (state.isPlayed && !isPlayed) {
-      isPlayed = true;
-      timerId = setInterval(() => {
-        worldView.tick();
-        panel.update(state);
-      }, 180);
-    }
+const actionHandlers = {
+  onToolSelect(tool) {
+    panel.update({ tool });
+  },
 
-    if (!state.isPlayed && isPlayed) {
-      isPlayed = false;
-      clearInterval(timerId);
-    }
+  onPlay() {
+    timerId = setInterval(() => {
+      worldView.tick();
+      panel.update({ isPlayed: true });
+    }, 180);
+  },
 
-    panel.update(state);
+  onStop() {
+    clearInterval(timerId);
+    panel.update({ isPlayed: false });
+  },
+
+  onStep() {
+    worldView.tick();
+    panel.update({});
   }
+};
+
+Dispatcher.register((actionType, payload) => {
+  const handlerName = 'on' + upperFirst(camelCase(actionType));
+  actionHandlers[handlerName](payload);
 });
 
 const dispatch = state => {

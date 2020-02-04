@@ -1,26 +1,32 @@
 import { createElement } from 'utils/common/dom.utils.js';
+import { upperFirst } from 'utils/common/string.utils.js';
 
 const BUTTONS = [
-  [ 'Play', { isPlayed: true }],
-  [ 'Step', { type: 'step' }],
-  [ 'Stop' , { isPlayed: false }]
+  'play',
+  'stop',
+  'step'
 ];
 
 export default class PlayControls {
 
-  constructor(state, { dispatch }) {
+  constructor(state, { onPlay, onStop, onStep }) {
     this.element = createElement('#play-controls');
-    this.dispatch = dispatch;
 
-    BUTTONS.forEach(([ name, data ]) => {
+    this.onPlay = onPlay;
+    this.onStop = onStop;
+    this.onStep = onStep;
+
+    BUTTONS.forEach(btnId => {
+      const name = upperFirst(btnId);
       const button = createElement('button', {
+        id: btnId,
         innerHTML: name,
         onclick: () => {
-          this.dispatch(data);
+          this[`on${name}`]();
         }
       });
 
-      this[name.toLowerCase() + 'Button'] = button;
+      this[`${btnId}Button`] = button;
       this.element.appendChild(button);
     });
   }

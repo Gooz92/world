@@ -2,7 +2,7 @@ import { createElement } from 'utils/common/dom.utils.js';
 
 export default class ToolsSelector {
 
-  constructor(state, { tools, dispatch }) {
+  constructor(state, { tools, onToolSelect }) {
     const element = this.element = createElement('select.tools');
 
     tools.forEach(tool => {
@@ -15,7 +15,7 @@ export default class ToolsSelector {
     });
 
     element.onchange = event => {
-      dispatch({ tool: tools[element.selectedIndex] });
+      onToolSelect(tools[element.selectedIndex]);
     };
   }
 
