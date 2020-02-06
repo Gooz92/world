@@ -1,6 +1,6 @@
 import Strategy from './Strategy.js';
 import WalkStrategy from './WalkStrategy.js';
-import DropItemStrategy from './DropItemStrategy.js';
+import DropResourceStrategy from './DropResourceStrategy.js';
 
 import CutTreeAction from '../actions/CutTreeAction.js';
 
@@ -10,6 +10,7 @@ import ResourceType from 'model/ResourceType.enum.js';
 import PathFinder from 'utils/path-finding/PathFinder.js';
 import { isUndefined } from 'utils/common/is.utils.js';
 import { get } from 'utils/common/object.utils.js';
+// import { getCenter } from 'utils/common/geomentry.utils.js';
 
 const trees = new Map();
 
@@ -36,11 +37,18 @@ export class GoToStockStrategy extends WalkStrategy {
     isTilePassable: tile => !tile.object
   });
 
-  static findStock(x, y, tiles) {
-    const path = GoToStockStrategy.stockFidner.find(tiles, x, y);
-    const { position: stockPosition } = path.pop();
+  static findStock(x0, y0, tiles) {
+    const path = GoToStockStrategy.stockFidner.find(tiles, x0, y0);
+    const { position: [ tx, ty ] } = path.pop();
 
-    return { path, stockPosition };
+    // const tile = tiles[ty][tx];
+    // const { x, y, width, height } = tile.area;
+    // debugger;
+    // const [ cx, cy ] = getCenter(x, y, width, height);
+
+    // console.log(cx, cy);
+
+    return { path, stockPosition: [ tx, ty ] };
   }
 
   constructor(actor, { path, stockPosition }) {
@@ -50,7 +58,7 @@ export class GoToStockStrategy extends WalkStrategy {
 
   onDone() {
     return {
-      Strategy: DropItemStrategy,
+      Strategy: DropResourceStrategy,
       options: {
         position: this.stockPosition,
         nextStrategy: GoToTreeStrategy,

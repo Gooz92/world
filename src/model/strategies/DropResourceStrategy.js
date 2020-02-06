@@ -2,7 +2,7 @@ import Strategy from './Strategy.js';
 
 import DropItemAction from 'model/actions/DropItemAction.js';
 
-export default class DropItemStrategy extends Strategy {
+export default class DropResourceStrategy extends Strategy {
 
   constructor(actor, { position, resourceType, nextStrategy }) {
     super(actor);

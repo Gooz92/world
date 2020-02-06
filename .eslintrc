@@ -26,6 +26,7 @@
     "comma-dangle": 2,
     "no-empty": 2,
     "no-extra-semi": 2,
+    "max-params": [ 2, 6 ],
     "semi": 2,
     "eol-last": 2,
     "no-unreachable": 2,
