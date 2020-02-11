@@ -10,13 +10,11 @@ import ResourceType from 'model/ResourceType.enum.js';
 import PathFinder from 'utils/path-finding/PathFinder.js';
 import { isUndefined } from 'utils/common/is.utils.js';
 import { get } from 'utils/common/object.utils.js';
-// import { getCenter } from 'utils/common/geomentry.utils.js';
+import { isResourceCanBePlacedOnTile } from './utils.js';
 
 const trees = new Map();
 
 const hash = (x, y) => `${x}-${y}`;
-
-const MAX_WOOD_PER_TILE = 80;
 
 export class GoToStockStrategy extends WalkStrategy {
 
@@ -28,8 +26,7 @@ export class GoToStockStrategy extends WalkStrategy {
 
   static stockFidner = new PathFinder({
     onAxialTile(tile) {
-      if (tile.terrain === ObjectType.STOCK &&
-        (!tile.object || tile.object.amount < MAX_WOOD_PER_TILE)) {
+      if (isResourceCanBePlacedOnTile(tile)) {
         this.isFound = true;
       }
     },
@@ -40,13 +37,6 @@ export class GoToStockStrategy extends WalkStrategy {
   static findStock(x0, y0, tiles) {
     const path = GoToStockStrategy.stockFidner.find(tiles, x0, y0);
     const { position: [ tx, ty ] } = path.pop();
-
-    // const tile = tiles[ty][tx];
-    // const { x, y, width, height } = tile.area;
-    // debugger;
-    // const [ cx, cy ] = getCenter(x, y, width, height);
-
-    // console.log(cx, cy);
 
     return { path, stockPosition: [ tx, ty ] };
   }

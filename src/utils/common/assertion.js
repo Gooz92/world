@@ -33,5 +33,5 @@ export function isNull(arg) {
 }
 
 export function deepEqual(a, b) {
-  isTrue(isDeepEqual(a, b));
+  isTrue(isDeepEqual(a, b), `${JSON.stringify(a)} not equal ${JSON.stringify(b)}`);
 }
