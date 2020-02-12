@@ -38,7 +38,7 @@ const actionHandlers = {
     timerId = setInterval(() => {
       worldView.tick();
       panel.update({ isPlayed: true });
-    }, 180);
+    }, 60);
   },
 
   onStop() {

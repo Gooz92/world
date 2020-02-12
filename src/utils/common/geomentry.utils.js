@@ -1,6 +1,9 @@
+// get middle of discrete segment
+export const getMiddle = (start, length) => Math.ceil(start + length / 2 - 1);
+
 export function getCenter(x, y, width, height) {
   return [
-    Math.floor((x + width) / 2),
-    Math.floor((y + height) / 2)
+    getMiddle(x, width),
+    getMiddle(y, height)
   ];
 }

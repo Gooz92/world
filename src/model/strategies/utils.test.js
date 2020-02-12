@@ -22,18 +22,18 @@ describe('findStockTile', function () {
     0 1 2 3 4 5 6 7 8 9
     . . . . . . . . . . . . . . . . 0
     . . . . . . . . . . . . . . . . 1
-    . . . # # # # # # # . . . . . . 2
+    . . . + # # # # # # . . . . . . 2
     . . . # # # # # # # . . . . . . 3
-    . . . # # # + # # # . . . . . . 4
+    . . . # # # # # # # . . . . . . 4
     . . . # # # # # # # . . . . . . 5
     . . . # # # # # # # . . . . . . 6
     . . . . . . . . . . . . . . . .
     . . . . . . . . . . . . . . . .
 */
 
-  it.skip('works', () => {
-    const p = findStockTile(stockX + 1, stockY, tiles);
-    deepEqual(p, [ 6, 4 ]);
+  it('works', () => {
+    const p = findStockTile(stockX + 1, stockY, world);
+    deepEqual(p, [ stockX, stockY ]);
   });
 
 });

@@ -10,7 +10,9 @@ import ResourceType from 'model/ResourceType.enum.js';
 import PathFinder from 'utils/path-finding/PathFinder.js';
 import { isUndefined } from 'utils/common/is.utils.js';
 import { get } from 'utils/common/object.utils.js';
-import { isResourceCanBePlacedOnTile } from './utils.js';
+import { isResourceCanBePlacedOnTile, findStockTile } from './utils.js';
+import find from 'utils/path-finding/a-star.js';
+import { last } from 'utils/common/array.utils.js';
 
 const trees = new Map();
 
@@ -19,8 +21,8 @@ const hash = (x, y) => `${x}-${y}`;
 export class GoToStockStrategy extends WalkStrategy {
 
   static create(actor) {
-    const { position: [ x, y ], world: { tiles } } = actor;
-    const { path, stockPosition } = GoToStockStrategy.findStock(x, y, tiles);
+    const { position: [ x, y ], world } = actor;
+    const { path, stockPosition } = GoToStockStrategy.findStock(x, y, world);
     return new GoToStockStrategy(actor, { path, stockPosition });
   }
 
@@ -34,11 +36,23 @@ export class GoToStockStrategy extends WalkStrategy {
     isTilePassable: tile => !tile.object
   });
 
-  static findStock(x0, y0, tiles) {
-    const path = GoToStockStrategy.stockFidner.find(tiles, x0, y0);
-    const { position: [ tx, ty ] } = path.pop();
+  static findStock(x0, y0, world) {
+    const path = GoToStockStrategy.stockFidner.find(world.tiles, x0, y0);
+    const { position: [ tx, ty ] } = last(path);
 
-    return { path, stockPosition: [ tx, ty ] };
+    const [ x, y ] = findStockTile(tx, ty, world);
+
+    const $isResourceCanBePlacedOnTile = (xi, yi) => (
+      isResourceCanBePlacedOnTile(world.getTile(xi, yi))
+    );
+
+    const pathToTargetStock = find($isResourceCanBePlacedOnTile, tx, ty, x, y);
+
+    const fullPath = path.concat(pathToTargetStock);
+
+    const { position: stockPosition } = fullPath.pop();
+
+    return { path: fullPath, stockPosition };
   }
 
   constructor(actor, { path, stockPosition }) {

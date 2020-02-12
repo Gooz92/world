@@ -67,7 +67,8 @@ export default function find(isTilePassable, x1, y1, x2, y2) {
         if (!openSet.has(nHash)) {
           const nextNode = {
             position: [ nextX, nextY ],
-            previous: currentNode
+            previous: currentNode,
+            direction
           };
           openSet.set(nHash, nextNode);
         } else {
