@@ -35,8 +35,8 @@ There is a trees
 
   ### v 0.0.#
     * Woodcutting mechanics impovement (in progress)
-    * Write tests for tree cutting
-    * Fix getCente function
+    * Write tests for tree cutting (in progrees)
+    * Fix wood drop on stock tile (wood amoun on tile can be > LIMIT in some cases)
     * Implement tiles grid class
     * Place area tool (partialy done)
     * Place stock area (partialy done)

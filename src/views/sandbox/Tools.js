@@ -1,8 +1,9 @@
 import ObjectType from 'model/ObjectType.enum.js';
 import CutTreesStrategy from 'model/strategies/CutTreesStrategy.js';
-import Barn from 'model/buildings/Barn';
-import { generateArray } from 'utils/common/array.utils';
-import { getTrue } from 'utils/common/fn.utils';
+
+import Barn from 'model/buildings/Barn.js';
+import { generateArray } from 'utils/common/array.utils.js';
+import { getTrue } from 'utils/common/fn.utils.js';
 
 const place = type => (
   (worldView, x, y) => worldView.place(x, y, type)

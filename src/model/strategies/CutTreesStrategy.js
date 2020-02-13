@@ -77,7 +77,11 @@ export default class GoToTreeStrategy extends WalkStrategy {
   static create(actor) {
     const { position: [ x, y ], world: { tiles } } = actor;
     const { treePosition, path } = GoToTreeStrategy.findTree(x, y, tiles);
-    // TODO or cut if tree is around
+
+    if (path.length === 0) {
+      return new CutTreeStrategy(actor, treePosition);
+    }
+
     return new GoToTreeStrategy(actor, { path, treePosition });
   }
 
@@ -102,10 +106,6 @@ export default class GoToTreeStrategy extends WalkStrategy {
   static findTree(x, y, tiles) {
 
     const path = GoToTreeStrategy.treeFinder.find(tiles, x, y);
-
-    if (path.length === 0) {
-      return { path };
-    }
 
     const { position } = path.pop();
     return { path, treePosition: position };
