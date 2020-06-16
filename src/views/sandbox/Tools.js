@@ -1,5 +1,4 @@
 import ObjectType from 'model/ObjectType.enum.js';
-import CutTreesStrategy from 'model/strategies/CutTreesStrategy.js';
 
 import Barn from 'model/buildings/Barn.js';
 import { generateArray } from 'utils/common/array.utils.js';
@@ -117,8 +116,7 @@ export default [
   {
     id: 'person',
     click: (worldView, x, y) => {
-      const person = placePerson(worldView, x, y);
-      person.setStrategy(CutTreesStrategy);
+      placePerson(worldView, x, y);
     }
   },
 

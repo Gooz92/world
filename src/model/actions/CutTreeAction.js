@@ -5,7 +5,7 @@ export default class CutTreeAction extends Action {
 
   constructor(actor, treePosition) {
     super(actor, [ treePosition ]);
-    this.cost = 1;
+    this.cost = 3;
   }
 
   perform() {
@@ -18,16 +18,12 @@ export default class CutTreeAction extends Action {
     const tree = this.actor.world.getObject(x, y);
 
     tree.amount--;
-    this.actor.pickUp(ResourceType.WOOD, 1);
+    this.actor.pickUp(ResourceType.WOOD, 2);
 
     if (tree.amount === 0) {
       this.actor.world.clearTile(x, y);
     }
 
     return super.perform();
-  }
-
-  get type() {
-    return 'cut-tree';
   }
 }

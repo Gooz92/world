@@ -5,6 +5,13 @@ const SUB_CLASS_NAME_PATTERN = /^([A-z]+)State$/;
 
 export default class State {
 
+  static IDLE = class IdleState extends State {
+
+    nextAction() {
+      return new Action.IDLE(this.actor);
+    }
+  }
+
   constructor(actor) {
     this.actor = actor;
   }
@@ -15,10 +22,6 @@ export default class State {
     }
 
     return this.action;
-  }
-
-  nextAction() {
-    return new Action.IDLE(this.actor);
   }
 
   update() {}
@@ -32,5 +35,9 @@ export default class State {
     }
 
     return constructor._name;
+  }
+
+  isDone() {
+    return true;
   }
 }

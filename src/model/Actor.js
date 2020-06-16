@@ -1,4 +1,5 @@
 import behavior from './strategies/CutTreesStrategy.js';
+import State from './strategies/State.js';
 
 const MAX_ENERGY = 3;
 
@@ -8,15 +9,12 @@ export default class Actor {
     this.world = world;
     this.energy = 0;
     this.strength = 1;
-    this.behavior = behavior;
+    this.behavior = behavior(); // ?
+    this.behavior.state = new State.IDLE(this);
   }
 
   getAction() {
-    return this.strategy.getAction();
-  }
-
-  idle() {
-    return this.strategy.nextIdleAction();
+    return this.behavior.state.getAction();
   }
 
   addEnergy() {
@@ -30,7 +28,7 @@ export default class Actor {
   }
 
   performAction() {
-    const action = this.strategy.getAction();
+    const action = this.getAction();
 
     if (action === null) {
       return null;
@@ -41,11 +39,11 @@ export default class Actor {
       return action.perform();
     }
 
-    return this.idle();
+    return null; // ?
   }
 
   update() {
-    this.behavior.update(this);
+    this.behavior.update();
   }
 
   act() {
@@ -54,9 +52,7 @@ export default class Actor {
 
     this.update();
 
-    const result = this.performAction();
-
-    return result || this.performAction();
+    return this.performAction();
   }
 
 }

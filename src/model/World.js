@@ -6,7 +6,6 @@ import { getCycleCoordinate } from 'utils/common/math.utils.js';
 import { get } from 'utils/common/object.utils.js';
 import { upperFirst } from 'utils/common/string.utils.js';
 import Person from './Person.js';
-import Strategy from './strategies/Strategy.js';
 
 /*
  * tile { object, terrain, area }
@@ -27,7 +26,6 @@ class ObjectPlacer {
   placePerson(x, y) {
     const person = new Person(this.world, [ x, y ]);
     this.world.tiles[y][x].object = person;
-    person.setStrategy(Strategy.IDLE);
     this.world.actors.push(person);
 
     return person;
@@ -90,8 +88,8 @@ export default class World {
           console.log(e); // TODO ?
         }
 
-        return actor.idle();
-      });
+        // return actor.idle();
+      }).filter(action => !!action); // ?
 
     return actions;
   }

@@ -1,6 +1,7 @@
 import State from './State.js';
 import ObjectType from 'model/ObjectType.enum.js';
 import CutTreeAction from 'model/actions/CutTreeAction.js';
+import ResourceType from 'model/ResourceType.enum.js';
 
 export default class CutTreeState extends State {
 
@@ -19,5 +20,9 @@ export default class CutTreeState extends State {
     }
 
     return new CutTreeAction(this.actor, this.treePosition);
+  }
+
+  isDone() {
+    return this.actor.inventory.getAmount(ResourceType.WOOD) >= 10;
   }
 }

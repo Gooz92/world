@@ -3,14 +3,14 @@ import DropItemAction from 'model/actions/DropItemAction.js';
 
 export default class DropResourceState extends State {
 
-  constructor(actor, { position, resourceType }) {
+  constructor(actor, { targetPosition, resourceType }) {
     super(actor);
 
-    this.position = position;
+    this.targetPosition = targetPosition;
     this.resourceType = resourceType;
   }
 
   nextAction() {
-    return new DropItemAction(this.actor, [ this.position ], this.resourceType);
+    return new DropItemAction(this.actor, [ this.targetPosition ], this.resourceType);
   }
 }

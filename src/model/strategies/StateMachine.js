@@ -1,9 +1,11 @@
 import State from './State.js';
 
+// Make state machine more abstract
+// It must not know about .update(). .isDone() in states ?
 export default class StateMachine {
 
   constructor(transition) {
-    this.transition = transition;
+    this.transitions = transition;
   }
 
   update() {
@@ -21,13 +23,13 @@ export default class StateMachine {
     const actor = this.state.actor;
 
     if (transition.to instanceof State) {
-      this.state = new transition.to(actor);
+      return new transition.to(actor);
     } else {
-      this.state = transition.to(actor);
+      return transition.to(actor);
     }
   }
 
   matchState(state) {
-    return state.constructor === this.state.constructor;
+    return state === this.state.constructor;
   }
 }

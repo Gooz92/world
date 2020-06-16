@@ -33,7 +33,7 @@ describe('DropItemAction', function () {
       actor.inventory.add(ResourceType.WOOD, 10);
     });
 
-    it('place resorce on give tile', () => {
+    it('place resource on give tile', () => {
       const action = new DropItemAction(actor, [ [ 2, 3 ] ], ResourceType.WOOD);
       action.perform();
       const tile = actor.world.getTile(2, 3);

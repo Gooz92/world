@@ -4,7 +4,7 @@ import MoveAction from 'model/actions/MoveAction.js';
 
 export default class WalkState extends State {
 
-  constructor(actor, { path, targetPosition }) {
+  constructor(actor, { path, targetPosition = null }) {
     super(actor);
 
     this.path = path;
@@ -13,11 +13,14 @@ export default class WalkState extends State {
   }
 
   getNextPathNode() {
-    return this.path[++this.pathNodeIndex];
+    return this.path[this.pathNodeIndex++];
+  }
+
+  hasNextPathNode() {
+    return this.pathNodeIndex < this.path.length;
   }
 
   update() {
-    // TODO: collision handling here?
     super.update();
   }
 

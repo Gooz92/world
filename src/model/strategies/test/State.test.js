@@ -1,4 +1,4 @@
-import State from './State.js';
+import State from '../State.js';
 import { equal } from 'utils/common/assertion.js';
 
 describe('State', function () {
@@ -9,7 +9,7 @@ describe('State', function () {
       const subState = new class SubState extends State {};
       const name = subState.getName();
       equal(name, 'sub');
-    })
+    });
   });
 
 });

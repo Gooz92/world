@@ -1,7 +1,5 @@
 import DropResourceState from './DropResourceState.js';
 
-import CutTreeAction from '../actions/CutTreeAction.js';
-
 import ObjectType from 'model/ObjectType.enum.js';
 import ResourceType from 'model/ResourceType.enum.js';
 
@@ -67,20 +65,22 @@ function findStock(x0, y0, world) {
   return { path: fullPath, stockPosition };
 }
 
-export default new StateMachine([
+function findOrCutTree(actor) {
+  const { world: { tiles }, position: [ x, y ] } = actor;
+  const path = treeFinder.find(tiles, x, y);
+  const { position } = path.pop();
+
+  if (path.length === 0) {
+    return new CutTreeState(actor, { treePosition: position });
+  }
+
+  return new WalkState(actor, { path, targetPosition: position });
+}
+
+export default () => new StateMachine([
   {
     from: State.IDLE,
-    to: actor => {
-      const { world: { tiles }, position: [ x, y ] } = actor;
-      const path = treeFinder.find(tiles, x, y);
-      const { position } = path.pop();
-
-      if (path.length === 0) {
-        return new CutTreeState(actor, { treePosition: position });
-      }
-
-      return new WalkState(actor, { path, targetPosition: position });
-    }
+    to: findOrCutTree
   },
   {
     from: WalkState,
@@ -104,5 +104,9 @@ export default new StateMachine([
       const { path, stockPosition } = findStock(x, y, world);
       return new WalkState(actor, { path, targetPosition: stockPosition });
     }
+  },
+  {
+    from: DropResourceState,
+    to: findOrCutTree
   }
 ]);
