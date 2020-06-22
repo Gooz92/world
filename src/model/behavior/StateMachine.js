@@ -4,7 +4,8 @@ import State from './State.js';
 // It must not know about .update(). .isDone() in states ?
 export default class StateMachine {
 
-  constructor(transition) {
+  constructor(initialState, transition) {
+    this.state = initialState;
     this.transitions = transition;
   }
 
@@ -29,7 +30,7 @@ export default class StateMachine {
     }
   }
 
-  matchState(state) {
+  matchState(state) { // ?
     return state === this.state.constructor;
   }
 }

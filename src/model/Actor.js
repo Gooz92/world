@@ -1,5 +1,10 @@
-import behavior from './strategies/CutTreesStrategy.js';
-import State from './strategies/State.js';
+// import State from './behavior/State.js';
+// import { noop } from 'utils/common/fn.utils.js';
+
+// const createIdleBehavior = actor => ({
+//   update: noop,
+//   state: new State.IDLE(actor)
+// });
 
 const MAX_ENERGY = 3;
 
@@ -9,12 +14,19 @@ export default class Actor {
     this.world = world;
     this.energy = 0;
     this.strength = 1;
-    this.behavior = behavior(); // ?
-    this.behavior.state = new State.IDLE(this);
+  }
+
+  setBehavior(createBehavior, options = {}) {
+    this.behavior = createBehavior(this, options);
   }
 
   getAction() {
-    return this.behavior.state.getAction();
+    const state = this.getState();
+    return state.getAction();
+  }
+
+  getState() {
+    return this.behavior.state;
   }
 
   addEnergy() {

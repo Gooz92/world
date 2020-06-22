@@ -1,8 +1,8 @@
 import { isArraysEqual, last } from 'utils/common/array.utils.js';
-import WalkStrategy from './strategies/WalkStrategy.js';
+import WalkStrategy from './behavior/WalkStrategy.js.js';
 import PathFinder from 'utils/path-finding/PathFinder.js';
 import ObjectType from './ObjectType.enum.js';
-import Strategy from './strategies/Strategy.js';
+import Strategy from './behavior/Strategy.js.js';
 
 const move = (position, direction) => ([
   position[0] + direction.dx,

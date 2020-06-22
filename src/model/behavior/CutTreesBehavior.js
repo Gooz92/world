@@ -1,3 +1,8 @@
+import State from './State.js';
+import StateMachine from './StateMachine.js';
+
+import WalkState from './WalkState.js';
+import CutTreeState from './CutTreeState.js';
 import DropResourceState from './DropResourceState.js';
 
 import ObjectType from 'model/ObjectType.enum.js';
@@ -9,10 +14,6 @@ import { get } from 'utils/common/object.utils.js';
 import { isResourceCanBePlacedOnTile, findStockTile } from './utils.js';
 import find from 'utils/path-finding/a-star.js';
 import { last } from 'utils/common/array.utils.js';
-import WalkState from './WalkState.js';
-import StateMachine from './StateMachine.js';
-import State from './State.js';
-import CutTreeState from './CutTreeState.js';
 
 const trees = new Map();
 
@@ -77,7 +78,7 @@ function findOrCutTree(actor) {
   return new WalkState(actor, { path, targetPosition: position });
 }
 
-export default () => new StateMachine([
+export default actor => new StateMachine(new State.IDLE(actor), [
   {
     from: State.IDLE,
     to: findOrCutTree

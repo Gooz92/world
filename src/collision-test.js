@@ -1,7 +1,6 @@
 import AsciiView from 'views/WorldView/ascii/AsciiView.js';
 
 import World from 'model/World';
-import WalkStrategy from 'model/strategies/WalkStrategy.js';
 import Direction from 'model/Direction.enum.js';
 
 import { generateArray } from 'utils/common/array.utils.js';
@@ -12,10 +11,9 @@ import {
   calculateDirections
 } from 'utils/path-finding/path-finding.test-utils.js';
 
-import { COLLISIONS } from 'model/strategies/test-cases.js';
+import { COLLISIONS } from 'model/behavior/test-cases.js';
 import select from 'views/components/select';
 import ObjectType from 'model/ObjectType.enum.js';
-import Strategy from 'model/strategies/Strategy';
 
 const main = document.querySelector('main'),
   replayButton = document.getElementById('replay');
@@ -48,16 +46,9 @@ function run(scenario) {
     const [ x, y ] = path[0];
     const person = world.place(x, y, ObjectType.PERSON);
     const direction = Direction.fromPoints(path[0], path[1]);
+    const path = calculateDirections(path.slice(1), direction);
 
-    person.setStrategy(WalkStrategy, {
-      // walking path should not include start actor position
-      path: calculateDirections(path.slice(1), direction),
-
-      onDone() {
-        --moversCount;
-        return { Strategy: Strategy.IDLE };
-      }
-    });
+    // TODO set person walk state with given path
   });
 
   (scenario.idlers || []).forEach(([ x, y ]) => {

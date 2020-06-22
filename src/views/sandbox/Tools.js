@@ -3,6 +3,7 @@ import ObjectType from 'model/ObjectType.enum.js';
 import Barn from 'model/buildings/Barn.js';
 import { generateArray } from 'utils/common/array.utils.js';
 import { getTrue } from 'utils/common/fn.utils.js';
+import createCutTreesBehavior from 'model/behavior/CutTreesBehavior';
 
 const place = type => (
   (worldView, x, y) => worldView.place(x, y, type)
@@ -116,7 +117,8 @@ export default [
   {
     id: 'person',
     click: (worldView, x, y) => {
-      placePerson(worldView, x, y);
+      const person = placePerson(worldView, x, y);
+      person.setBehavior(createCutTreesBehavior);
     }
   },
 

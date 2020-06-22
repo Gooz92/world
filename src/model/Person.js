@@ -1,7 +1,7 @@
 import ObjectType from 'model/ObjectType.enum.js';
 import Actor from './Actor.js';
-import MoveAction from './actions/MoveAction.js';
 import Inventory from './Inventory.js';
+import WalkState from './behavior/WalkState.js';
 
 let count = 0;
 
@@ -22,9 +22,9 @@ export default class Person extends Actor {
     return !this.world.isTileOccupied(x, y);
   }
 
-  inMotion() {
-    const action = this.getAction();
-    return action !== null && action.type === MoveAction.TYPE;
+  isMoving() {
+    const state = this.getState();
+    return state.constructor === WalkState && !state.isDone();
   }
 
   moveTo(position) {
