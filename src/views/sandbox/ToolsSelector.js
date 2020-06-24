@@ -1,25 +1,15 @@
-import { createElement } from 'utils/common/dom.utils.js';
+import select from 'views/components/select';
 
 export default class ToolsSelector {
 
   constructor(state, { tools, onToolSelect }) {
-    const element = this.element = createElement('select.tools');
+    const component = select(tools, onToolSelect, {});
 
-    tools.forEach(tool => {
-      const option = createElement('option', {
-        value: tool.id,
-        innerHTML: tool.name || tool.id
-      });
-
-      element.appendChild(option);
-    });
-
-    element.onchange = event => {
-      onToolSelect(tools[element.selectedIndex]);
-    };
+    this.component = component;
+    this.element = component.element;
   }
 
   update({ tool }) {
-    this.element.value = tool.id;
+    this.component.update({ selectedItem: tool });
   }
 }
