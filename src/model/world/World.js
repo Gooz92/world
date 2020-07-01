@@ -5,7 +5,7 @@ import ObjectType from 'model/ObjectType.enum.js';
 import { getCycleCoordinate } from 'utils/common/math.utils.js';
 import { get } from 'utils/common/object.utils.js';
 import { upperFirst } from 'utils/common/string.utils.js';
-import Person from './Person.js';
+import Person from '../Person.js';
 
 /*
  * tile { object, terrain, area }

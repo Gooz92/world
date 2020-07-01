@@ -1,0 +1,20 @@
+0       3       6       9
+
+ b . a   b . a   B . a   B . A
+ . . .   . B .   . A .   . . .
+ A . B   A . .   . . .   . . .
+
+
+0       2       3       5       6       7
+
+ b . a   b . a   b . a   b . a   B . a    B . A 
+ . . .   . . .   . B .   . B A   . . A    . . .
+ A . B   . A B   . A .   . . .   . . .    . . .
+
+
+I - idler (or actor who can iterrupt his activity)
+
+0       2       4
+ . a .   . a .   . A .
+ . I .   . A I   . . I
+ . A .   . . .   . . .

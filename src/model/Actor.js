@@ -1,6 +1,8 @@
 // import State from './behavior/State.js';
 // import { noop } from 'utils/common/fn.utils.js';
 
+import State from './behavior/State';
+
 // const createIdleBehavior = actor => ({
 //   update: noop,
 //   state: new State.IDLE(actor)
@@ -27,6 +29,15 @@ export default class Actor {
 
   getState() {
     return this.behavior.state;
+  }
+
+  isIdle() {
+    return this.hasState(State.IDLE);
+  }
+
+  hasState(State) {
+    const state = this.getState();
+    return state.constructor === State;
   }
 
   addEnergy() {
@@ -62,9 +73,11 @@ export default class Actor {
 
     this.addEnergy();
 
+    const actionResult = this.performAction();
+
     this.update();
 
-    return this.performAction();
+    return actionResult;
   }
 
 }

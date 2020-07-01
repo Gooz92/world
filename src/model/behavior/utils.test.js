@@ -1,9 +1,7 @@
 import * as utils from './utils.js';
-import { generateArray } from 'utils/common/array.utils.js';
-import { getObject } from 'utils/common/fn.utils.js';
-import World from 'model/World.js';
 import { deepEqual } from 'utils/common/assertion.js';
 import ObjectType from 'model/ObjectType.enum.js';
+import { createEmptyWorld } from 'model/world/World.test-utils.js';
 
 describe('findStockTile', function () {
   const findStockTile = utils.findStockTile;
@@ -12,9 +10,7 @@ describe('findStockTile', function () {
   const stockX = 3, stockY = 2;
   const stockWidth = 7, stockHeight = 5;
 
-  const tiles = generateArray(worldHeight, worldWidth, getObject);
-
-  const world = new World(tiles);
+  const world = createEmptyWorld(worldWidth, worldHeight);
 
   world.placeArea(stockX, stockY, stockWidth, stockHeight, { terrain: ObjectType.STOCK });
 

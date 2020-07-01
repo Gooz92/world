@@ -23,8 +23,7 @@ export default class Person extends Actor {
   }
 
   isMoving() {
-    const state = this.getState();
-    return state.constructor === WalkState && !state.isDone();
+    return this.hasState(WalkState) && !this.getState().isDone();
   }
 
   moveTo(position) {

@@ -92,6 +92,26 @@ describe('arrayUtils', function () {
 
   });
 
+  describe('isArraysEqual', function () {
+
+    const { isArraysEqual } = arrayUtils;
+
+    it('return true if array equal', () => {
+      const a = [ 1, 2, 3 ];
+      const b = [ 1, 2, 3 ];
+
+      isTrue(isArraysEqual(a, b));
+    });
+
+    it('return false if arrays has different lengths', () => {
+      const a = [ 1, 2 ];
+      const b = [ 1, 2, 3 ];
+
+      isFalse(isArraysEqual(a, b));
+    });
+
+  });
+
   describe('take', function () {
 
     const take = arrayUtils.take;
@@ -120,7 +140,7 @@ describe('arrayUtils', function () {
 
   });
 
-  describe('last', function () {
+  describe('first', function () {
 
     const first = arrayUtils.first;
 

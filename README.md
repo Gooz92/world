@@ -31,6 +31,10 @@ There is a trees
   * Improve assertion error messages
   * Debug test from IDE
 
+## Collision handling
+ * Detect collsion
+    Collsion occurs if two walkers on next tick try to occupy same tile or move trought each other
+
 ## Roadmap
 
   ### v 0.0.#
@@ -46,7 +50,6 @@ There is a trees
       - Rotate building (in progress)
     * Food regeneration under trees (partial done. food generated on world creation)
     * Actors inventory (Person inventory is done)
-    * Extract "transition" abstraction in AI (there is nextStrategy methods)
     * Food gethering strategy
     * Cancel area definition by esc or right click
     * Enum creation mechanism review (?)

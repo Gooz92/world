@@ -1,6 +1,5 @@
 import createEnum from 'utils/common/create-enum.js';
 import { camelCase } from 'utils/common/string.utils.js';
-import { getItem } from 'utils/common/array.utils';
 
 /*
  * sqrt(2) ~ 1.4 ~ 1.5
@@ -64,9 +63,16 @@ Direction.fromPoints = ([ x0, y0 ], [ x1, y1 ]) => {
   ));
 };
 
-Direction.prototype.turn = function (offset) {
-  const selfIndex = Direction.members.indexOf(this);
-  return getItem(Direction.members, selfIndex + offset);
+Direction.fromOffset = (dx, dy) => (
+  Direction.members.find(member => dx === member.dx && dy === member.dy) || null
+);
+
+Direction.prototype.getOpposite = function () {
+  return Direction.fromOffset(-this.dx, -this.dy);
+};
+
+Direction.prototype.isOpposite = function (direction) {
+  return this.getOpposite() === direction;
 };
 
 export default Direction;

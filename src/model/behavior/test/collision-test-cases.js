@@ -1,3 +1,5 @@
+import interpolate from 'interpolate.js';
+
 function generateRectPositions(x1, y1, x2, y2) {
   const positions = [];
 
@@ -10,9 +12,33 @@ function generateRectPositions(x1, y1, x2, y2) {
   return positions;
 }
 
-export const COLLISIONS = [
+export default [
+  /*
+     0 1 2 3 4 5 6 7 8 9 a
+     # # # # # # # # # # # 0
+     # . . . . . . . . . # 1
+     # . . b . . . a . . # 2
+     # . . . . . . . . . # 3
+     # . . . . x . . . . # 4
+     # . . . . . . . . . # 5
+     # . . A . . . B . . # 6
+     # # # # # # # # # # # 7
+           3       7
+  */
+  {
+    name: 'no frontal #1',
+    data: {
+      walks: [
+        interpolate(3, 6, 7, 2),
+        interpolate(7, 6, 3, 2)
+      ],
+      width: 11,
+      height: 8
+    }
+  },
   {
     name: 'vertical collision (try to occupy same tile [ 3, 4 ])',
+    skip: true,
     data: {
       walks: [
         [ [ 3, 2 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], [ 3, 6 ] ],
@@ -24,6 +50,7 @@ export const COLLISIONS = [
   },
   {
     name: 'vertical collision (try to occupy each other tiles)',
+    skip: true,
     data: {
       walks: [
         [ [ 3, 2 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], [ 3, 6 ], [ 3, 7 ] ],
@@ -35,6 +62,7 @@ export const COLLISIONS = [
   },
   {
     name: 'diagonal collision try to occupy same tile [ 4, 4 ]',
+    skip: true,
     data: {
       walks: [
         [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ] ],
@@ -46,6 +74,7 @@ export const COLLISIONS = [
   },
   {
     name: 'diagonal collision try to occupy each other tiles',
+    skip: true,
     data: {
       walks: [
         [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ], [ 7, 7 ] ],
@@ -57,6 +86,7 @@ export const COLLISIONS = [
   },
   {
     name: 'verical swap',
+    skip: true,
     data: {
       walks: [
         [ [ 2, 2 ], [ 2, 3 ] ],
@@ -68,6 +98,7 @@ export const COLLISIONS = [
   },
   {
     name: 'multiple actors collisions #1',
+    skip: true,
     data: {
       walks: [
         [ [ 4, 2 ], [ 4, 3 ], [ 4, 4 ], [ 4, 5 ], [ 4, 6 ] ],
@@ -96,6 +127,7 @@ export const COLLISIONS = [
    */
   {
     name: 'flee',
+    skip: true,
     data: {
       walks: [
         [ [ 7, 7 ], [ 6, 6 ], [ 5, 5 ], [ 4, 4 ], [ 3, 3 ], [ 2, 2 ] ]
@@ -126,6 +158,7 @@ export const COLLISIONS = [
    */
   {
     name: 'tunnel',
+    skip: true,
     data: {
       walks: [
         [ [ 4, 2 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], [ 3, 6 ], [ 3, 7 ], [ 3, 8 ] ],

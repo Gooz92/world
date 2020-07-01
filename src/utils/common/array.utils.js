@@ -68,7 +68,7 @@ export function swap(array, i, j) {
 }
 
 export const isArraysEqual = (a, b) => (
-  a.every((item, index) => b[index] === item)
+  a.length === b.length && a.every((item, index) => b[index] === item)
 );
 
 const defaultIsEqual = (a, b) => a === b;

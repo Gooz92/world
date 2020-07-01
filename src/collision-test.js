@@ -1,17 +1,17 @@
 import AsciiView from 'views/WorldView/ascii/AsciiView.js';
 
-import World from 'model/World';
-import Direction from 'model/Direction.enum.js';
+import World from 'model/world';
+// import Direction from 'model/Direction.enum.js';
 
 import { generateArray } from 'utils/common/array.utils.js';
 import { getObject } from 'utils/common/fn.utils.js';
 
 import {
-  addWalls,
-  calculateDirections
+  addWalls
+  // calculateDirections
 } from 'utils/path-finding/path-finding.test-utils.js';
 
-import { COLLISIONS } from 'model/behavior/test-cases.js';
+import { COLLISIONS } from 'model/behavior/test/collision-test-cases.js';
 import select from 'views/components/select';
 import ObjectType from 'model/ObjectType.enum.js';
 
@@ -43,10 +43,10 @@ function run(scenario) {
   let moversCount = scenario.walks.length;
 
   scenario.walks.forEach(path => {
-    const [ x, y ] = path[0];
-    const person = world.place(x, y, ObjectType.PERSON);
-    const direction = Direction.fromPoints(path[0], path[1]);
-    const path = calculateDirections(path.slice(1), direction);
+    // const [ x, y ] = path[0];
+    // const person = world.place(x, y, ObjectType.PERSON);
+    // const direction = Direction.fromPoints(path[0], path[1]);
+    // const path = calculateDirections(path.slice(1), direction);
 
     // TODO set person walk state with given path
   });

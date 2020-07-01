@@ -1,13 +1,10 @@
 import DropItemAction from './DropItemAction.js';
-import World from 'model/World.js';
-
-import { generateArray } from 'utils/common/array.utils.js';
-import { getObject } from 'utils/common/fn.utils.js';
 
 import ObjectType from 'model/ObjectType.enum.js';
 import ResourceType from 'model/ResourceType.enum.js';
 
 import { equal } from 'utils/common/assertion.js';
+import { createEmptyWorld } from 'model/world/World.test-utils.js';
 
 describe('DropItemAction', function () {
 
@@ -26,8 +23,7 @@ describe('DropItemAction', function () {
     let actor;
 
     beforeEach(() => {
-      const tiles = generateArray(6, 6, getObject);
-      const world = new World(tiles);
+      const world = createEmptyWorld(6, 6);
 
       actor = world.place(2, 4, ObjectType.PERSON);
       actor.inventory.add(ResourceType.WOOD, 10);

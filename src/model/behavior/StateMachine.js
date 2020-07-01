@@ -23,11 +23,12 @@ export default class StateMachine {
 
     const actor = this.state.actor;
 
-    if (transition.to instanceof State) {
+    // TODO
+    if ((transition.to instanceof State) || transition.to == State.IDLE) {
       return new transition.to(actor);
-    } else {
-      return transition.to(actor);
     }
+
+    return transition.to(actor);
   }
 
   matchState(state) { // ?

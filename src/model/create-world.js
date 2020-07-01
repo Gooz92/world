@@ -1,6 +1,6 @@
 import diamondSquareGenerator from 'utils/common/DiamondSquareGenerator.js';
 
-import World from './World.js';
+import World from './world';
 import ObjectType from 'model/ObjectType.enum.js';
 
 import { randomGenerator } from 'utils/common/random.utils.js';
