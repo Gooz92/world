@@ -1,10 +1,6 @@
-import World from './World.js';
-
-import { generateArray } from 'utils/common/array.utils.js';
-import { getObject } from 'utils/common/fn.utils.js';
-
 import { equal, notEqual } from 'utils/common/assertion.js';
 import ObjectType from 'model/ObjectType.enum.js';
+import { createEmptyWorld } from './World.test-utils.js';
 
 describe('World', function () {
 
@@ -13,8 +9,7 @@ describe('World', function () {
   const W = 12, H = 9;
 
   beforeEach(() => {
-    const tiles = generateArray(H, W, getObject);
-    world = new World(tiles);
+    world = createEmptyWorld(W, H);
   });
 
   describe('#width', function () {

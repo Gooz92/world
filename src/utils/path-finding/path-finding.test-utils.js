@@ -1,6 +1,4 @@
 import Direction from 'model/Direction.enum.js';
-import ObjectType from 'model/ObjectType.enum.js';
-import { last } from 'utils/common/array.utils.js';
 
 function defaultSetData(node, data) {
   node.data = data;
@@ -49,23 +47,4 @@ export function calculateDirections(positions, startDirection) {
   }
 
   return path;
-}
-
-const createObstacle = () => ({ type: ObjectType.OBSTACLE });
-
-export function addWalls(tiles) {
-  for (let i = 0; i < tiles[0].length; i++) {
-    tiles[0][i].object = createObstacle();
-  }
-
-  for (let i = 1; i < tiles.length - 1; i++) {
-    tiles[i][0].object = createObstacle();
-    tiles[i][tiles[i].length - 1].object = createObstacle();
-  }
-
-  const lastRow = last(tiles);
-
-  for (let i = 0; i < lastRow.length; i++) {
-    lastRow[i].object = createObstacle();
-  }
 }
