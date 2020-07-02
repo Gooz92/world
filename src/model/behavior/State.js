@@ -38,6 +38,6 @@ export default class State {
   }
 
   isDone() {
-    return true;
+    return false;
   }
 }

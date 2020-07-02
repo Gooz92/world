@@ -1,34 +1,39 @@
-import { getNull } from './fn.utils.js';
+import { getNull, getArray } from './fn.utils.js';
 import { isFunction } from './is.utils.js';
 
-export function generateArray(...args) {
+function generate1DimArray(length, getItem) {
   const array = [];
 
-  const lastArgument = last(args);
-
-  let generateItem, dimsCount;
-
-  if (isFunction(lastArgument)) {
-    generateItem = lastArgument;
-    dimsCount = args.length - 1;
-  } else {
-    dimsCount = args.length;
-    generateItem = getNull;
-  }
-
-  const dims = args.slice(0, dimsCount);
-
-  // improve callback arguments
-  const $generateItem = dimsCount === 1 ? generateItem : (
-    (i, array) => generateArray(...dims.slice(1, dimsCount), generateItem)
-  );
-
-  for (let i = 0; i < args[0]; i++) {
-    const item = $generateItem(i, array);
+  for (let i = 0; i < length; i++) {
+    const item = getItem(i);
     array.push(item);
   }
 
   return array;
+}
+
+function generate2DimArray(n, m, getItem) {
+  return generate1DimArray(n, i => (
+    generate1DimArray(m, j => getItem(i, j))
+  ));
+}
+
+const arrayGenerators = [
+  getArray,
+  length => generate1DimArray(length, getNull),
+  (n, dimOrGetItem) => {
+    if (isFunction(dimOrGetItem)) {
+      return generate1DimArray(n, dimOrGetItem);
+    }
+
+    return generate2DimArray(n, dimOrGetItem, getNull);
+  },
+  generate2DimArray
+];
+
+export function generateArray(...args) {
+  const arrayGenerator = arrayGenerators[args.length];
+  return arrayGenerator(...args);
 }
 
 export const first = array => array[0];

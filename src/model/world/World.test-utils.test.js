@@ -1,5 +1,9 @@
-import { createEmptyWorld } from './World.test-utils.js';
-import { equal, isTrue } from 'utils/common/assertion.js';
+import {
+  createEmptyWorld,
+  createClosedEmptyWorld
+} from './World.test-utils.js';
+
+import { equal, deepEqual, isTrue } from 'utils/common/assertion.js';
 
 describe('World test utils', function () {
 
@@ -22,6 +26,27 @@ describe('World test utils', function () {
           isTrue(world.isTileEmpty(x, y));
         }
       }
+    });
+
+  });
+
+  describe('createClosedEmptyWorld', function () {
+
+    it('create world with obstacales on its borders', () => {
+      const width = 4, height = 3;
+      const world = createClosedEmptyWorld(width, height);
+
+      const map = world.tiles.map((row, y) => (
+        row
+          .map((tile, x) => world.isTileEmpty(x, y) ? '.' : '#')
+          .join(' ')
+      ));
+
+      deepEqual(map, [
+        '# # # #',
+        '# . . #',
+        '# # # #'
+      ]);
     });
 
   });

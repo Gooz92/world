@@ -14,16 +14,13 @@ export function createEmptyWorld(width, height) {
  * So in some cases useful to add obstacles on world border
  */
 
-export function createClosedEmptyWord(width, height) {
+export function createClosedEmptyWorld(width, height) {
   const maxX = width - 1, maxY = height - 1;
 
-  const tiles = generateArray(height, y => (
-    generateArray(width, x => (
-      x === 0 || y === 0 || x === maxX || y === maxY ? {
-        type: ObjectType.OBSTACLE
-      } : {}
-    ))
-  ));
+  const tiles = generateArray(height, width, (y, x) => ({
+    object: x === 0 || y === 0 || x === maxX || y === maxY ?
+      { type: ObjectType.OBSTACLE } : null
+  }));
 
   return new World(tiles);
 }

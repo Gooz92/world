@@ -1,30 +1,29 @@
-import createWalkBehavior from '../WalkBehavior.js';
 import TEST_CASES from './collision-test-cases.js';
 
-import { createEmptyWorld } from 'model/world/World.test-utils.js';
-import { remove } from 'utils/common/array.utils.js';
-import ObjectType from 'model/ObjectType.enum.js';
-import { calculateDirections } from 'utils/path-finding/path-finding.test-utils.js';
-import Direction from 'model/Direction.enum.js';
+import { deepEqual } from 'utils/common/assertion.js';
+import { createWorldWithWalkers } from './colllsion-test.utils.js';
+import { last } from 'utils/common/array.utils.js';
 
 describe('Collision test', function () {
 
   TEST_CASES
     .filter(testCase => !testCase.skip)
     .forEach(testCase => {
-      const { width, height } = testCase.data;
 
-      const world = createEmptyWorld(width, height);
+      const { walks, width, height } = testCase.data;
 
-      testCase.data.walks.forEach(walk => {
-        const [ x, y ] = remove(walk, 0);
-        const person = world.place(x, y, ObjectType.PERSON);
+      const world = createWorldWithWalkers(walks, width, height);
 
-        const startDirection = Direction.fromPoints(person.position, walk[0]);
-        const path = calculateDirections(walk, startDirection);
+      while (world.actors.some(person => person.isMoving())) {
+        world.tick();
+      }
 
-        person.setBehavior(createWalkBehavior, { path });
+      it('actors on target tiles', () => {
+        world.actors.forEach((actor, index) => {
+          deepEqual(actor.position, last(testCase.data.walks[index]));
+        });
       });
+
     });
 
 });

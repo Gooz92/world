@@ -29,12 +29,11 @@ function createTiles(seed, empty) {
     generator.generate(1, 42).map(i => Math.sqrt(i * i * i)), 1
   ).map(i => random.nextBoolean(0.4 * i));
 
-  const tiles = generateArray(height, y => (
-    generateArray(width, x => {
-      const index = getIndex(x, y, width, height);
-      const object = map[index] ? { type: ObjectType.TREE, amount: 10 } : null; // TODO
-      return { object };
-    })));
+  const tiles = generateArray(height, width, (y, x) => {
+    const index = getIndex(x, y, width, height);
+    const object = map[index] ? { type: ObjectType.TREE, amount: 10 } : null; // TODO
+    return { object };
+  });
 
   return nextGeneration(tiles, updateFcell, 4);
 }

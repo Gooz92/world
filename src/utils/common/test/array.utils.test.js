@@ -1,6 +1,5 @@
 import * as arrayUtils from '../array.utils.js';
 import spy from 'test-utils/spy.js';
-import { identity } from '../fn.utils.js';
 import { deepEqual, equal, isTrue, isFalse } from '../assertion.js';
 
 describe('arrayUtils', function () {
@@ -41,7 +40,7 @@ describe('arrayUtils', function () {
       equal(itemGenerator.calls.length, length);
     });
 
-    it('call itemGenerator with index as first argument', () => {
+    it('call itemGenerator with index as argument', () => {
       const itemGenerator = spy();
       generateArray(3, itemGenerator);
 
@@ -50,28 +49,22 @@ describe('arrayUtils', function () {
       equal(itemGenerator.calls[2][0], 2);
     });
 
-    it('call itemGenerator with generated array as second argument', () => {
-      const itemGenerator = spy(index => index);
-      const array = generateArray(1, itemGenerator);
-
-      equal(itemGenerator.calls[0][1], array);
-    });
-
     it('can create 2-dim array', () => {
       const arr = generateArray(1, 1, () => 1);
       deepEqual(arr, [ [ 1 ] ]);
     });
 
     it('can create n x m array', () => {
-      const arr = generateArray(4, 3, identity);
+      const arr = generateArray(4, 3, (...ij) => ij.join(','));
 
       deepEqual(arr, [
-        [ 0, 1, 2 ],
-        [ 0, 1, 2 ],
-        [ 0, 1, 2 ],
-        [ 0, 1, 2 ]
+        [ '0,0', '0,1', '0,2' ],
+        [ '1,0', '1,1', '1,2' ],
+        [ '2,0', '2,1', '2,2' ],
+        [ '3,0', '3,1', '3,2' ]
       ]);
     });
+
   });
 
   describe('remove', function () {
