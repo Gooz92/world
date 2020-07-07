@@ -13,4 +13,8 @@ export default class DropResourceState extends State {
   nextAction() {
     return new DropItemAction(this.actor, [ this.targetPosition ], this.resourceType);
   }
+
+  isDone() {
+    return !this.actor.inventory.contains(this.resourceType);
+  }
 }

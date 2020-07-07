@@ -2,7 +2,8 @@ import State from './State.js';
 
 import MoveAction from 'model/actions/MoveAction.js';
 import ObjectType from 'model/ObjectType.enum.js';
-// import { getMove } from './walk.utils.js';
+import { isInFrontalCollision, getMove, reCalculatePath } from './walk.utils.js';
+import { last } from 'utils/common/array.utils.js';
 
 export default class WalkState extends State {
 
@@ -23,6 +24,8 @@ export default class WalkState extends State {
   }
 
   update() {
+    super.update();
+
     const [ x0, y0 ] = this.actor.position;
 
     for (let x = x0 - 2; x < x0 + 2; x++) {
@@ -34,11 +37,24 @@ export default class WalkState extends State {
         const obj = this.actor.world.getObject(x, y);
 
         if (obj && obj.type == ObjectType.PERSON) { // movable object
-          // const moveA = getMove(this.actor);
-          // const moveB = getMove(obj);
+          const moveA = getMove(this.actor);
+          const moveB = getMove(obj);
+
+          if (isInFrontalCollision(moveA, moveB)) {
+            const path = reCalculatePath(this.actor.position,
+              last(this.path).position, moveB.tiles, this.actor.world);
+
+            this.setPath(path);
+          }
         }
       }
     }
+  }
+
+  setPath(path) {
+    this.path = path;
+    this.pathNodeIndex = 0;
+    this.action = null;
   }
 
   nextAction() {

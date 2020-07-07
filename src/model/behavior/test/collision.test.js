@@ -10,18 +10,22 @@ describe('Collision test', function () {
     .filter(testCase => !testCase.skip)
     .forEach(testCase => {
 
-      const { walks, width, height } = testCase.data;
+      describe(testCase.name, function () {
 
-      const world = createWorldWithWalkers(walks, width, height);
+        const { walks, width, height } = testCase.data;
 
-      while (world.actors.some(person => person.isMoving())) {
-        world.tick();
-      }
+        const world = createWorldWithWalkers(walks, width, height);
 
-      it('actors on target tiles', () => {
-        world.actors.forEach((actor, index) => {
-          deepEqual(actor.position, last(testCase.data.walks[index]));
+        while (world.actors.some(person => person.isMoving())) {
+          world.tick();
+        }
+
+        it('actors on target tiles', () => {
+          world.actors.forEach((actor, index) => {
+            deepEqual(actor.position, last(testCase.data.walks[index]));
+          });
         });
+
       });
 
     });

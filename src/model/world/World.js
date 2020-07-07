@@ -176,6 +176,11 @@ export default class World {
     return tile.object;
   }
 
+  isTilePassable(x, y) {
+    const object = this.getObject(x, y);
+    return object === null || object.type === ObjectType.PERSON;
+  }
+
   getTileType(x, y) {
     const tile = this.getTile(x, y);
     return get(tile, 'object.type');

@@ -36,21 +36,34 @@ export default [
       height: 8
     }
   },
+
+  /*
+    0 1 2 3 4 5 6
+    # # # # # # # 0
+    # . . . . . # 1
+    # . . . . . # 2
+    # . . @ . . # 3
+    # . . . . . # 4
+    # . . . . . # 5
+    # . . . . . # 6
+    # . . @ . . # 7
+    # . . . . . # 8
+    # . . . . . # 9
+    # # # # # # # a
+  */
   {
-    name: 'vertical collision (try to occupy same tile [ 3, 4 ])',
-    skip: true,
+    name: 'frontal #1',
     data: {
       walks: [
-        [ [ 3, 2 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], [ 3, 6 ] ],
-        [ [ 3, 6 ], [ 3, 5 ], [ 3, 4 ], [ 3, 3 ], [ 3, 2 ] ]
+        interpolate(3, 3, 3, 8),
+        interpolate(3, 7, 3, 2)
       ],
       width: 7,
-      height: 9
+      height: 11
     }
   },
   {
     name: 'vertical collision (try to occupy each other tiles)',
-    skip: true,
     data: {
       walks: [
         [ [ 3, 2 ], [ 3, 3 ], [ 3, 4 ], [ 3, 5 ], [ 3, 6 ], [ 3, 7 ] ],
@@ -58,30 +71,6 @@ export default [
       ],
       width: 7,
       height: 10
-    }
-  },
-  {
-    name: 'diagonal collision try to occupy same tile [ 4, 4 ]',
-    skip: true,
-    data: {
-      walks: [
-        [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ] ],
-        [ [ 6, 6 ], [ 5, 5 ], [ 4, 4 ], [ 3, 3 ], [ 2, 2 ] ]
-      ],
-      width: 8,
-      height: 8
-    }
-  },
-  {
-    name: 'diagonal collision try to occupy each other tiles',
-    skip: true,
-    data: {
-      walks: [
-        [ [ 2, 2 ], [ 3, 3 ], [ 4, 4 ], [ 5, 5 ], [ 6, 6 ], [ 7, 7 ] ],
-        [ [ 7, 7 ], [ 6, 6 ], [ 5, 5 ], [ 4, 4 ], [ 3, 3 ], [ 2, 2 ] ]
-      ],
-      width: 9,
-      height: 9
     }
   },
   {

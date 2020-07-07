@@ -22,7 +22,16 @@ export default class CutTreeState extends State {
     return new CutTreeAction(this.actor, this.treePosition);
   }
 
-  isDone() {
+  hasEnoughtWood() {
     return this.actor.inventory.getAmount(ResourceType.WOOD) >= 10;
+  }
+
+  isTargetTreeExists() {
+    const [ x, y ] = this.treePosition;
+    return this.actor.world.isTileOccupiedBy(x, y, ObjectType.TREE);
+  }
+
+  isDone() {
+    return this.hasEnoughtWood() || !this.isTargetTreeExists();
   }
 }

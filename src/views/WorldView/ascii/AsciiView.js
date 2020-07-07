@@ -13,7 +13,8 @@ export default class AsciiView {
     person: '@',
     obstacle: '#',
     food: '%',
-    stock: '_'
+    stock: '_',
+    wood: '='
   };
 
   constructor(world) {

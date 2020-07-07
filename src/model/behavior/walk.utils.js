@@ -5,11 +5,11 @@
  * + Multiple actor collision
  */
 
-import Direction from 'model/Direction.enum';
+import find from 'utils/path-finding/a-star.js';
 
-// const isPositionsEqual = (pos1, pos2) => (
-//   pos1[0] === pos2[0] && pos1[1] === pos2[1]
-// );
+const isPositionsEqual = (pos1, pos2) => (
+  pos1[0] === pos2[0] && pos1[1] === pos2[1]
+);
 
 export function getMove(person) {
   const { position } = person;
@@ -17,8 +17,7 @@ export function getMove(person) {
   if (!person.isMoving()) {
     return {
       tiles: [ position, position ],
-      duration: 0,
-      isStatic: false
+      direction: null
     };
   }
 
@@ -26,29 +25,28 @@ export function getMove(person) {
 
   return {
     tiles: [ position, moveAction.tiles[1] ],
-    duration: moveAction.getLeftDuration(),
-    isStatic: false
+    direction: moveAction.direction
   };
 }
 
-export function findPathToMoveAway(fx, fy, x0, y0, world) {
-  // axial first because axial move is cheapest
-  const directions = [ ...Direction.axial, ...Direction.diaginal ];
-
-  for (const direction of directions) {
-    const { dx, dy } = direction;
-
-    const x = x0 + dx;
-    const y = y0 + dy;
-
-    if (x === fx && y === fy) {
-      continue;
-    }
-
-    if (world.isTileEmpty(x, y)) {
-      return { direction, position: [ x, y ] };
-    }
+export function isInFrontalCollision(moveA, moveB) {
+  if (moveA.direction === null || !moveA.direction.isOpposite(moveB.direction)) {
+    return false;
   }
 
-  return null;
+  const [ fromA, toA ] = moveA.tiles, [ fromB, toB ] = moveB.tiles;
+
+  if (isPositionsEqual(toA, toB)) { // actors tries to move on same tile
+    return true;
+  }
+
+  return isPositionsEqual(fromA, toB) || isPositionsEqual(fromB, toA);
+}
+
+export function reCalculatePath(p1, p2, blocked, world) {
+  const isTilePassable = (x, y) => (
+    world.isTilePassable(x, y) && blocked.every(p => p[0] !== x || p[1] !== y)
+  );
+
+  return find(isTilePassable, p1[0], p1[1], p2[0], p2[1]);
 }

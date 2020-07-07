@@ -1,4 +1,3 @@
-import State from './State.js';
 import StateMachine from './StateMachine.js';
 
 import WalkState from './WalkState.js';
@@ -34,7 +33,7 @@ const treeFinder = new PathFinder({
     }
   },
 
-  isTilePassable: tile => !tile.object
+  isTilePassable: tile => !tile.object // TODO take movable actors into account
 });
 
 const stockFidner = new PathFinder({
@@ -78,11 +77,7 @@ function findOrCutTree(actor) {
   return new WalkState(actor, { path, targetPosition: position });
 }
 
-export default actor => new StateMachine(new State.IDLE(actor), [
-  {
-    from: State.IDLE,
-    to: findOrCutTree
-  },
+export default actor => new StateMachine(findOrCutTree(actor), [
   {
     from: WalkState,
     to: actor => {
