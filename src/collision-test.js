@@ -2,7 +2,7 @@ import AsciiView from 'views/WorldView/ascii/AsciiView.js';
 
 import COLLISIONS from 'model/behavior/test/collision-test-cases.js';
 import select from 'views/components/select';
-import { createWorldWithWalkers } from 'model/behavior/test/colllsion-test.utils';
+import { createWorld } from 'model/world/World.test-utils.js';
 
 const TEST_CASES = COLLISIONS.filter(testCase => !testCase.skip);
 
@@ -25,9 +25,9 @@ function run(scenario) {
 
   let moversCount = scenario.walks.length;
 
-  const { walks, width, height } = scenario;
+  const { width, height, ...config } = scenario;
 
-  const world = createWorldWithWalkers(walks, width, height);
+  const world = createWorld(config, width, height);
   const view = new AsciiView(world);
 
   const field = view.createElement();

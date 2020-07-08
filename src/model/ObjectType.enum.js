@@ -19,4 +19,8 @@ ObjectType.fromId = id => (
   ObjectType.members.find(type => type.id === id)
 );
 
+ObjectType.fromName = name => (
+  ObjectType.members.find(type => type.name === name)
+);
+
 export default ObjectType;

@@ -10,7 +10,7 @@ import ResourceType from 'model/ResourceType.enum.js';
 import PathFinder from 'utils/path-finding/PathFinder.js';
 import { isUndefined } from 'utils/common/is.utils.js';
 import { get } from 'utils/common/object.utils.js';
-import { isResourceCanBePlacedOnTile, findStockTile } from './utils.js';
+import { isResourceCanBePlacedOnTile, findStockTile } from './CutTreesBehavior.utils.js';
 import find from 'utils/path-finding/a-star.js';
 import { last } from 'utils/common/array.utils.js';
 

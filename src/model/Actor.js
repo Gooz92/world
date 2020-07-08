@@ -1,12 +1,4 @@
-// import State from './behavior/State.js';
-// import { noop } from 'utils/common/fn.utils.js';
-
 import State from './behavior/State';
-
-// const createIdleBehavior = actor => ({
-//   update: noop,
-//   state: new State.IDLE(actor)
-// });
 
 const MAX_ENERGY = 3;
 

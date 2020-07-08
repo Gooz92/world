@@ -1,4 +1,4 @@
-import * as utils from './utils.js';
+import * as utils from './CutTreesBehavior.utils.js';
 import { deepEqual } from 'utils/common/assertion.js';
 import ObjectType from 'model/ObjectType.enum.js';
 import { createEmptyWorld } from 'model/world/World.test-utils.js';

@@ -116,6 +116,12 @@ export default class World {
     return this.objectPlacer.place(x, y, type);
   }
 
+  placeMultiple(positions, type) {
+    return positions.map(([ x, y ]) => (
+      this.objectPlacer.place(x, y, type)
+    ));
+  }
+
   placeBuilding(Building, x, y) {
     const { WIDTH, HEIGHT } = Building;
     const building = new Building(x, y);
@@ -173,7 +179,7 @@ export default class World {
 
   getObject(x, y) {
     const tile = this.getTile(x, y);
-    return tile.object;
+    return tile.object || null;
   }
 
   isTilePassable(x, y) {

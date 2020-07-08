@@ -1,8 +1,8 @@
 import TEST_CASES from './collision-test-cases.js';
 
 import { deepEqual } from 'utils/common/assertion.js';
-import { createWorldWithWalkers } from './colllsion-test.utils.js';
 import { last } from 'utils/common/array.utils.js';
+import { createWorld } from 'model/world/World.test-utils.js';
 
 describe('Collision test', function () {
 
@@ -12,9 +12,9 @@ describe('Collision test', function () {
 
       describe(testCase.name, function () {
 
-        const { walks, width, height } = testCase.data;
+        const { width, height, ...config } = testCase.data;
 
-        const world = createWorldWithWalkers(walks, width, height);
+        const world = createWorld(config, width, height);
 
         while (world.actors.some(person => person.isMoving())) {
           world.tick();
