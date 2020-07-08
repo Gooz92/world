@@ -38,6 +38,7 @@ There is a trees
 ## Roadmap
 
   ### v 0.0.#
+    * Resource gethering zones
     * Woodcutting mechanics impovement (in progress)
     * Write tests for tree cutting (in progrees)
     * Fix wood drop on stock tile (wood amoun on tile can be > LIMIT in some cases)
