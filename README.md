@@ -31,14 +31,9 @@ There is a trees
   * Improve assertion error messages
   * Debug test from IDE
 
-## Collision handling
- * Detect collsion
-    Collsion occurs if two walkers on next tick try to occupy same tile or move trought each other
-
 ## Roadmap
 
   ### v 0.0.#
-    * Resource gethering zones
     * Woodcutting mechanics impovement (in progress)
     * Write tests for tree cutting (in progrees)
     * Fix wood drop on stock tile (wood amoun on tile can be > LIMIT in some cases)
