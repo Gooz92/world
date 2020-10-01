@@ -76,6 +76,13 @@ describe('deepEqual', function () {
     ));
   });
 
+  it('object with different number for keys are not equal', () => {
+    const p1 = { x: 0, y: 0 };
+    const p2 = { x: 0, y: 0, z: 0 };
+
+    isFalse(deepEqual(p1, p2));
+  });
+
   it('mixed object-array structure can be equal', () => {
     isTrue(deepEqual(
       { list: [{ id: 1 }, { id: 2 }] },
@@ -95,7 +102,7 @@ describe('deepEqual', function () {
     ));
   });
 
-  it.skip('circle references', () => {
+  it('circle references', () => {
 
     const getLoop = () => {
       const a = {};
