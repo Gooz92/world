@@ -24,7 +24,7 @@ export default class StateMachine {
     const actor = this.state.actor;
 
     // TODO
-    if ((transition.to instanceof State) || transition.to == State.IDLE) {
+    if ((transition.to instanceof State) || transition.to === State.IDLE) {
       return new transition.to(actor);
     }
 

@@ -36,7 +36,7 @@ export default class WalkState extends State {
 
         const obj = this.actor.world.getObject(x, y);
 
-        if (obj && obj.type == ObjectType.PERSON) { // movable object
+        if (obj && obj.type === ObjectType.PERSON) { // movable object
           const moveA = getMove(this.actor);
           const moveB = getMove(obj);
 

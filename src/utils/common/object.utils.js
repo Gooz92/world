@@ -33,7 +33,7 @@ export function get(obj, path) {
 
   let index = 0, length = path.length;
 
-  while (obj != null && index < length) {
+  while (obj !== null && typeof obj === 'object' && index < length) {
     obj = obj[path[index++]];
   }
 

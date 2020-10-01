@@ -39,7 +39,7 @@ export default function find(isTilePassable, x1, y1, x2, y2) {
     const currentNode = findMin(Array.from(openSet.values()), fScores);
     const [ x, y ] = currentNode.position;
 
-    if (x === x2 && y == y2) {
+    if (x === x2 && y === y2) {
       return backtracePath(currentNode);
     }
 

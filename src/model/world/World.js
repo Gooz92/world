@@ -88,6 +88,7 @@ export default class World {
           console.log(e); // TODO ?
         }
 
+        return null;
         // return actor.idle();
       }).filter(action => !!action); // ?
 

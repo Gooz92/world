@@ -43,7 +43,7 @@ export default class TileRenderer {
     }
 
     if ([ ObjectType.PERSON, ObjectType.TREE ].includes(objectType)) {
-      const [ sx, sy ] = objectType == ObjectType.PERSON ? [ 0, 0 ] : [ 2, 3 ];
+      const [ sx, sy ] = objectType === ObjectType.PERSON ? [ 0, 0 ] : [ 2, 3 ];
 
       const sxd = sx * ORIGINAL_TILE_SIZE;
       const syd = sy * ORIGINAL_TILE_SIZE;
