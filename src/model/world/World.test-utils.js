@@ -4,7 +4,7 @@ import ObjectType from 'model/ObjectType.enum.js';
 import { generateArray } from 'utils/common/array.utils.js';
 import { getObject } from 'utils/common/fn.utils.js';
 import { forIn } from 'utils/common/object.utils.js';
-import { calculateDirections } from 'utils/path-finding/path-finding.test-utils.js';
+import { buildPath } from 'utils/path-finding/path-finding.test-utils.js';
 import Direction from 'model/Direction.enum.js';
 import createWalkBehavior from 'model/behavior/WalkBehavior.js';
 import createCutTreesBehavior from 'model/behavior/CutTreesBehavior.js';
@@ -38,7 +38,7 @@ const customPlacers = {
       // path not include persons position
       const pathPositions = walk.slice(1, walk.length);
       const startDirection = Direction.fromPoints(walk[0], pathPositions[0]);
-      const path = calculateDirections(pathPositions, startDirection);
+      const path = buildPath(pathPositions, startDirection);
 
       person.setBehavior(createWalkBehavior, { path });
     });

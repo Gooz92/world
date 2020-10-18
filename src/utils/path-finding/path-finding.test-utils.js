@@ -33,7 +33,7 @@ export function isValidPath(positions) {
   return true;
 }
 
-export function calculateDirections(positions, startDirection) {
+export function buildPath(positions, startDirection) {
   const path = [{
     position: positions[0],
     direction: startDirection
