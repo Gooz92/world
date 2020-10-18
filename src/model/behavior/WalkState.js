@@ -1,9 +1,8 @@
 import State from './State.js';
 
 import MoveAction from 'model/actions/MoveAction.js';
-import ObjectType from 'model/ObjectType.enum.js';
-import { isInFrontalCollision, getMove, reCalculatePath } from './walk.utils.js';
-import { last } from 'utils/common/array.utils.js';
+
+const LOOK_UP_DISTANCE = 6;
 
 export default class WalkState extends State {
 
@@ -15,40 +14,12 @@ export default class WalkState extends State {
     this.pathNodeIndex = 0;
   }
 
-  getNextPathNode() {
+  nextPathNode() {
     return this.path[this.pathNodeIndex++];
   }
 
   hasNextPathNode() {
     return this.pathNodeIndex < this.path.length;
-  }
-
-  update() {
-    super.update();
-
-    const [ x0, y0 ] = this.actor.position;
-
-    for (let x = x0 - 2; x < x0 + 2; x++) {
-      for (let y = y0 - 2; y < y0 + 2; y++) {
-        if (x === x0 && y === y0) {
-          continue;
-        }
-
-        const obj = this.actor.world.getObject(x, y);
-
-        if (obj && obj.type === ObjectType.PERSON) { // movable object
-          const moveA = getMove(this.actor);
-          const moveB = getMove(obj);
-
-          if (isInFrontalCollision(moveA, moveB)) {
-            const path = reCalculatePath(this.actor.position,
-              last(this.path).position, moveB.tiles, this.actor.world);
-
-            this.setPath(path);
-          }
-        }
-      }
-    }
   }
 
   setPath(path) {
@@ -63,9 +34,26 @@ export default class WalkState extends State {
       return null;
     }
 
-    const { position } = this.getNextPathNode();
+    const { position } = this.nextPathNode();
 
     return new MoveAction(this.actor, position);
+  }
+
+  lookup() {
+    let pathNodeIndex = this.pathNodeIndex;
+    let distance = 0;
+
+    do {
+      const pathNode = this.path[pathNodeIndex++];
+      const [ x, y ] = pathNode.position;
+      const object = this.actor.world.getObject(x, y);
+      if (object) {
+        return object;
+      }
+      distance += pathNode.direction.distance;
+    } while (distance <= LOOK_UP_DISTANCE && pathNodeIndex < this.path.length);
+
+    return null;
   }
 
   isDone() {

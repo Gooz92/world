@@ -1,7 +1,5 @@
 import ObjectType from 'model/ObjectType.enum.js';
 
-// import handleCollision from './handle-collision.js';
-
 import { getCycleCoordinate } from 'utils/common/math.utils.js';
 import { get } from 'utils/common/object.utils.js';
 import { upperFirst } from 'utils/common/string.utils.js';
@@ -77,8 +75,6 @@ export default class World {
   }
 
   tick() {
-
-    // handleCollision(this.actors);
 
     const actions = this.actors
       .map(actor => {
