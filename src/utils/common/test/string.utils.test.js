@@ -1,5 +1,5 @@
 import * as stringUtils from '../string.utils.js';
-import { equal } from '../assertion.js';
+import { equal } from '../../assertion.js';
 
 describe('stringUtils', function () {
 
@@ -75,9 +75,6 @@ describe('stringUtils', function () {
       equal(str, '{ x: 1, y: 2 }');
     });
 
-    it('nested arrays', () => {
-      const arr = [ true, null, undefined, NaN, 1, 'asd' ];
-    });
   });
 
 });

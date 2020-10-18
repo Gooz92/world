@@ -1,5 +1,5 @@
-import { createElement } from 'utils/common/dom.utils.js';
-import diamondSquareGenerator from 'utils/common/DiamondSquareGenerator.js';
+import { createElement } from 'utils/dom';
+import diamondSquareGenerator from 'utils/DiamondSquareGenerator.js';
 import { normalize, getIndex } from 'utils/common/math.utils.js';
 import findPath from 'utils/path-finding/a-star.js';
 import { chunk } from 'utils/common/array.utils.js';

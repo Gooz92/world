@@ -1,6 +1,6 @@
-import { findMin, findMax } from './math.utils.js';
-import { generateArray } from './array.utils.js';
-import { getZero } from './fn.utils.js';
+import { findMin, findMax } from './common/math.utils.js';
+import { generateArray } from './common/array.utils.js';
+import { getZero } from './common/fn.utils.js';
 
 export default function getFrequencyTable(data, segments) {
 

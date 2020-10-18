@@ -1,6 +1,6 @@
 import * as objectUtils from '../object.utils.js';
 import spy from 'test-utils/spy.js';
-import { deepEqual, equal } from '../assertion.js';
+import { deepEqual, equal } from '../../assertion.js';
 
 describe('objectUtils', function () {
 

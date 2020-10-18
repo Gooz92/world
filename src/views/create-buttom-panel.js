@@ -1,7 +1,7 @@
 import createMenu from './create-menu.js';
 import createControls from './create-controls.js';
 
-import { createElement } from 'utils/common/dom.utils.js';
+import { createElement } from 'utils/dom';
 
 const presentors = {
   tree: tree => 'tree',

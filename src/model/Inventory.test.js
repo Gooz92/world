@@ -1,5 +1,5 @@
 import Inventory from './Inventory.js';
-import { equal } from 'utils/common/assertion.js';
+import { equal } from 'utils/assertion.js';
 
 const wood = { id: 1, name: 'wood' },
   stone = { id: 2, name: 'stone' };

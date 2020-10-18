@@ -1,5 +1,5 @@
 import * as mathUtils from '../math.utils.js';
-import { equal, deepEqual } from '../assertion.js';
+import { equal, deepEqual } from '../../assertion.js';
 
 describe('mathUtils', function () {
 

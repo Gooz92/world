@@ -8,7 +8,7 @@ import {
   renderGreenMask
 } from './renderers.js';
 
-import { createElement } from 'utils/common/dom.utils.js';
+import { createElement } from 'utils/dom';
 import { last } from 'utils/common/array.utils.js';
 import { forIn } from 'utils/common/object.utils.js';
 

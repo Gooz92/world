@@ -1,11 +1,11 @@
 import {
   diamond, square,
   default as diamondSquareGenerator
-} from '../DiamondSquareGenerator.js';
+} from './DiamondSquareGenerator.js';
 
-import { equal, deepEqual } from '../assertion.js';
+import { equal, deepEqual } from './assertion.js';
 import spy from 'test-utils/spy.js';
-import { first } from '../array.utils.js';
+import { first } from './common/array.utils.js';
 
 describe('Diamond Square', function () {
 

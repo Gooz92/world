@@ -2,7 +2,7 @@ import WorldView from './WorldView.js';
 import { getObject, noop } from 'utils/common/fn.utils.js';
 import { generateArray } from 'utils/common/array.utils.js';
 import World from 'model/world';
-import { equal, deepEqual, isFalse, isTrue } from 'utils/common/assertion.js';
+import { equal, deepEqual, isFalse, isTrue } from 'utils/assertion.js';
 import ObjectType from 'model/ObjectType.enum.js';
 
 // more like integration test

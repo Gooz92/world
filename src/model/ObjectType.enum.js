@@ -1,4 +1,4 @@
-import createEnum from 'utils/common/create-enum.js';
+import createEnum from 'utils/create-enum.js';
 
 const ObjectType = createEnum(
   function(id, name) {

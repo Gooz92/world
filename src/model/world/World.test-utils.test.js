@@ -4,7 +4,7 @@ import {
   createWorld
 } from './World.test-utils.js';
 
-import { equal, deepEqual, isTrue } from 'utils/common/assertion.js';
+import { equal, deepEqual, isTrue } from 'utils/assertion.js';
 import ObjectType from 'model/ObjectType.enum.js';
 
 describe('World test utils', function () {

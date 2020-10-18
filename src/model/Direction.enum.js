@@ -1,4 +1,4 @@
-import createEnum from 'utils/common/create-enum.js';
+import createEnum from 'utils/create-enum.js';
 import { camelCase } from 'utils/common/string.utils.js';
 
 /*

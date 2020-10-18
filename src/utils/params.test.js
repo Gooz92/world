@@ -1,4 +1,4 @@
-import { deepEqual, equal } from './common/assertion.js';
+import { deepEqual, equal } from './assertion.js';
 import { parseParams, stringifyParams } from './params.js';
 
 const toNumber = value => +value;

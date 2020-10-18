@@ -1,4 +1,4 @@
-import { equal, notEqual } from 'utils/common/assertion.js';
+import { equal, notEqual } from 'utils/assertion.js';
 import ObjectType from 'model/ObjectType.enum.js';
 import { createEmptyWorld } from './World.test-utils.js';
 

@@ -1,7 +1,7 @@
-import * as isUtils from './is.utils.js';
-import { omit } from './object.utils.js';
-import { upperFirst } from './string.utils.js';
-import { isTrue, isFalse } from './assertion.js';
+import * as isUtils from '../is.utils.js';
+import { omit } from '../object.utils.js';
+import { upperFirst } from '../string.utils.js';
+import { isTrue, isFalse } from '../../assertion.js';
 
 const types = {
   'undefined': void 0,

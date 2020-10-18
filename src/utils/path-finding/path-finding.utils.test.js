@@ -6,7 +6,7 @@ import {
   getNextCoordinate
 } from './path-finding.utils.js';
 
-import { deepEqual, equal, isTrue } from 'utils/common/assertion.js';
+import { deepEqual, equal, isTrue } from 'utils/assertion.js';
 
 import { last, isArraysEqual } from 'utils/common/array.utils.js';
 import { getTrue } from 'utils/common/fn.utils.js';

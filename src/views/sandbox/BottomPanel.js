@@ -1,4 +1,4 @@
-import { createElement } from 'utils/common/dom.utils.js';
+import { createElement } from 'utils/dom';
 import ResourceType from 'model/ResourceType.enum.js';
 
 const defaultSelectionPresenter = object => object.type.name;

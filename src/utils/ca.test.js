@@ -1,7 +1,7 @@
-import { getNeighbors, updateFcell } from '../ca.js';
-import { deepEqual, equal } from '../assertion.js';
-import { generateArray } from '../array.utils.js';
-import { getObject } from '../fn.utils.js';
+import { getNeighbors, updateFcell } from './ca.js';
+import { deepEqual, equal } from './assertion.js';
+import { generateArray } from './common/array.utils.js';
+import { getObject } from './common/fn.utils.js';
 import ObjectType from 'model/ObjectType.enum.js';
 
 describe('ca', function () {

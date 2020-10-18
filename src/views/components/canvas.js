@@ -1,4 +1,4 @@
-import { createElement } from 'utils/common/dom.utils.js';
+import { createElement } from 'utils/dom';
 
 export default function createCanvas(width, height) {
 

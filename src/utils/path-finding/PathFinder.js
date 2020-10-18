@@ -1,7 +1,7 @@
 import { noop, getTrue, getFalse } from 'utils/common/fn.utils.js';
 import { postProcess } from './path-finding.utils.js';
 import { getCycleCoordinate } from 'utils/common/math.utils.js';
-import PriorityQueue from 'utils/common/PriorityQueue.js';
+import PriorityQueue from 'utils/PriorityQueue.js';
 import Direction from 'model/Direction.enum.js';
 
 const hash = (x, y) => `${x}-${y}`;

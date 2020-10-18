@@ -13,7 +13,7 @@ import actions from './Actions.js';
 
 import { debounce, noop } from 'utils/common/fn.utils.js';
 import { upperFirst, camelCase } from 'utils/common/string.utils.js';
-import getArrowKeyCode from 'utils/common/get-arrow-key-code.js';
+import getArrowKeyCode from 'utils/get-arrow-key-code.js';
 import Dispatcher from './Dispatcher.js';
 
 let timerId;

@@ -1,4 +1,4 @@
-import diamondSquareGenerator from 'utils/common/DiamondSquareGenerator.js';
+import diamondSquareGenerator from 'utils/DiamondSquareGenerator.js';
 
 import World from './world';
 import ObjectType from 'model/ObjectType.enum.js';
@@ -7,7 +7,7 @@ import { randomGenerator } from 'utils/common/random.utils.js';
 import { getObject } from 'utils/common/fn.utils.js';
 import { normalize, getIndex } from 'utils/common/math.utils.js';
 import { generateArray } from 'utils/common/array.utils.js';
-import { nextGeneration, updateFcell } from 'utils/common/ca.js';
+import { nextGeneration, updateFcell } from 'utils/ca.js';
 
 const generator = diamondSquareGenerator()
   .setCellSize(32)

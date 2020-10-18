@@ -1,5 +1,5 @@
-import deepEqual from '../deep-equal.js';
-import { isTrue, isFalse } from '../assertion.js';
+import deepEqual from './common/deep-equal.js';
+import { isTrue, isFalse } from './assertion.js';
 
 describe('deepEqual', function () {
 

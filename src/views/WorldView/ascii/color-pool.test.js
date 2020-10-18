@@ -1,6 +1,6 @@
 import { default as colorPool, COLORS } from './color-pool.js';
 
-import { isTrue } from 'utils/common/assertion.js';
+import { isTrue } from 'utils/assertion.js';
 
 describe('colorPool', function () {
 

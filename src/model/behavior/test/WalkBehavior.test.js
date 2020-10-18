@@ -8,7 +8,7 @@ import {
 import deepEqual from 'utils/common/deep-equal.js';
 import { createEmptyWorld } from 'model/world/World.test-utils.js';
 import { last } from 'utils/common/array.utils.js';
-import { isTrue } from 'utils/common/assertion.js';
+import { isTrue } from 'utils/assertion.js';
 
 describe('WalkBehavior', function () {
 

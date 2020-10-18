@@ -1,4 +1,4 @@
-import { createElement } from 'utils/common/dom.utils.js';
+import { createElement } from 'utils/dom';
 import { getSeed } from 'utils/common/random.utils.js';
 
 export default function seed(value, onValueChanged) {

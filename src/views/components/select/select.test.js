@@ -1,5 +1,5 @@
 import select from './select.js';
-import { equal, deepEqual } from 'utils/common/assertion.js';
+import { equal, deepEqual } from 'utils/assertion.js';
 
 describe('select', function () {
 

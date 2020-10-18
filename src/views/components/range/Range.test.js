@@ -1,5 +1,5 @@
 import range from './Range.js';
-import { equal } from 'utils/common/assertion.js';
+import { equal } from 'utils/assertion.js';
 
 describe('range', function () {
 

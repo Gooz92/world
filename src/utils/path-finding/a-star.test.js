@@ -1,5 +1,5 @@
 import findPath from './a-star.js';
-import { deepEqual } from 'utils/common/assertion.js';
+import { deepEqual } from 'utils/assertion.js';
 import { getTrue } from 'utils/common/fn.utils.js';
 
 describe('findPath', function () {

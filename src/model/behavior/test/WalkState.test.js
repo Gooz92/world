@@ -2,7 +2,7 @@ import WalkState from '../WalkState.js';
 
 import ObjectType from 'model/ObjectType.enum.js';
 
-import { deepEqual } from 'utils/common/assertion.js';
+import { deepEqual } from 'utils/assertion.js';
 import Direction from 'model/Direction.enum.js';
 import { createEmptyWorld } from 'model/world/World.test-utils.js';
 

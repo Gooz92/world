@@ -1,8 +1,8 @@
-import { nextGeneration, updateFcell } from 'utils/common/ca.js';
+import { nextGeneration, updateFcell } from 'utils/ca.js';
 import { generateArray } from 'utils/common/array.utils.js';
 import { getObject } from 'utils/common/fn.utils.js';
 import select from 'views/components/select';
-import diamondSquareGenerator from 'utils/common/DiamondSquareGenerator.js';
+import diamondSquareGenerator from 'utils/DiamondSquareGenerator.js';
 import createCanvas from 'views/components/canvas';
 import { get } from 'utils/common/object.utils.js';
 import ObjectType from 'model/ObjectType.enum.js';

@@ -1,5 +1,5 @@
-import PriorityQueue from '../PriorityQueue.js';
-import { equal, deepEqual } from '../assertion.js';
+import PriorityQueue from './PriorityQueue.js';
+import { equal, deepEqual } from './assertion.js';
 
 describe('PriorityQueue', function () {
 

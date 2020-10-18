@@ -1,5 +1,5 @@
 import * as randomUtils from '../random.utils.js';
-import { equal, isTrue, isFalse } from '../assertion.js';
+import { equal, isTrue, isFalse } from '../../assertion.js';
 
 describe('randomUtils', function () {
 

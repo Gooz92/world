@@ -1,4 +1,4 @@
-import isDeepEqual from './deep-equal.js';
+import isDeepEqual from './common/deep-equal.js';
 
 const ERROR_MESSAGE = 'Assertion error';
 

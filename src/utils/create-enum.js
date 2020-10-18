@@ -1,4 +1,4 @@
-import { forIn } from './object.utils.js';
+import { forIn } from './common/object.utils.js';
 
 export default function createEnum(constructor, meta) {
 

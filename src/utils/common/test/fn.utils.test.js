@@ -7,7 +7,7 @@ import {
   isFalse,
   isNull,
   deepEqual
-} from '../assertion.js';
+} from '../../assertion.js';
 
 describe('fnUtils', function () {
 

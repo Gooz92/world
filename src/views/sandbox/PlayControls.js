@@ -1,4 +1,4 @@
-import { createElement } from 'utils/common/dom.utils.js';
+import { createElement } from 'utils/dom';
 import { upperFirst } from 'utils/common/string.utils.js';
 
 const BUTTONS = [

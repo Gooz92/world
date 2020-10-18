@@ -1,7 +1,7 @@
-import getFrequencyTable from '../frequency-table.js';
+import getFrequencyTable from './frequency-table.js';
 import { generateArray } from 'utils/common/array.utils.js';
-import { equal } from '../assertion.js';
-import { getNull } from '../fn.utils.js';
+import { equal } from './assertion.js';
+import { getNull } from './common/fn.utils.js';
 
 describe('getFrequencyTable()', function () {
 

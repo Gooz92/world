@@ -1,8 +1,8 @@
 import ObjectType from 'model/ObjectType.enum.js';
 
-import { getCycleCoordinate } from './math.utils.js';
-import { flatten } from './array.utils.js';
-import { get } from './object.utils.js';
+import { getCycleCoordinate } from './common/math.utils.js';
+import { flatten } from './common/array.utils.js';
+import { get } from './common/object.utils.js';
 
 // params:
 /*

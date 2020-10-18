@@ -1,4 +1,4 @@
-import { swap } from './array.utils.js';
+import { swap } from './common/array.utils.js';
 
 export default class PriorityQueue {
 

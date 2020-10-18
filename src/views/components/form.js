@@ -1,4 +1,4 @@
-import { createElement } from 'utils/common/dom.utils.js';
+import { createElement } from 'utils/dom';
 import { identity } from 'utils/common/fn.utils.js';
 
 function createFormRow(id, name, value) {

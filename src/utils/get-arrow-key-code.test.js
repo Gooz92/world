@@ -1,5 +1,5 @@
-import getArrowKeyCode from '../get-arrow-key-code.js';
-import { equal } from '../assertion.js';
+import getArrowKeyCode from './get-arrow-key-code.js';
+import { equal } from './assertion.js';
 
 const cases = {
   ArrowUp: 'up',

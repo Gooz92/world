@@ -1,4 +1,4 @@
-import { createElement, assignProperties } from 'utils/common/dom.utils.js';
+import { createElement, assignProperties } from 'utils/dom';
 import colorPool from './color-pool.js';
 import ObjectType from 'model/ObjectType.enum.js';
 

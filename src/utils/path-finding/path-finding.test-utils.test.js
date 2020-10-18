@@ -1,5 +1,5 @@
 import { buildLinkedList, isValidPath } from './path-finding.test-utils.js';
-import { equal, isTrue, isFalse } from 'utils/common/assertion.js';
+import { equal, isTrue, isFalse } from 'utils/assertion.js';
 
 describe('buildLinkedList', function () {
   it ('works', () => {

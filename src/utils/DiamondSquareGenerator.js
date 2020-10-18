@@ -1,7 +1,7 @@
 import { sum, getIndex } from 'utils/common/math.utils.js';
-import { generateArray } from './array.utils.js';
-import { getZero } from './fn.utils.js';
-import { randomGenerator } from './random.utils.js';
+import { generateArray } from './common/array.utils.js';
+import { getZero } from './common/fn.utils.js';
+import { randomGenerator } from './common/random.utils.js';
 
 /**
  * Input params

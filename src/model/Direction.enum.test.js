@@ -1,5 +1,5 @@
 import Direction from 'model/Direction.enum.js';
-import { equal } from 'utils/common/assertion.js';
+import { equal } from 'utils/assertion.js';
 
 describe('Direction.enum', function () {
 

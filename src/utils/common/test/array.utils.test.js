@@ -1,6 +1,6 @@
 import * as arrayUtils from '../array.utils.js';
 import spy from 'test-utils/spy.js';
-import { deepEqual, equal, isTrue, isFalse } from '../assertion.js';
+import { deepEqual, equal, isTrue, isFalse } from '../../assertion.js';
 
 describe('arrayUtils', function () {
 

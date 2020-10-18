@@ -1,6 +1,6 @@
 import TEST_CASES from './collision-test-cases.js';
 
-import { deepEqual } from 'utils/common/assertion.js';
+import { deepEqual } from 'utils/assertion.js';
 import { last } from 'utils/common/array.utils.js';
 import { createWorld } from 'model/world/World.test-utils.js';
 

@@ -1,5 +1,5 @@
 import Viewport from './Viewport.js';
-import { equal } from 'utils/common/assertion.js';
+import { equal } from 'utils/assertion.js';
 
 describe('Viewport', function () {
 

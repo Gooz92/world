@@ -1,5 +1,5 @@
 import Action from './Action.js';
-import { isTrue, equal } from 'utils/common/assertion.js';
+import { isTrue, equal } from 'utils/assertion.js';
 
 describe('Action', function () {
 

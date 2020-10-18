@@ -30,7 +30,10 @@ function nibbles2r64(nibbles, tail2Tag = DEFAULT_TAIL_2_TAG) {
   }
 
   if (tail === 2) {
-    const twoR64 = nibblesTrio2Letters(nibbles[nibbles.length - 2], nibbles[nibbles.length - 1], 0);
+    const twoR64 = nibblesTrio2Letters(
+      nibbles[nibbles.length - 2],
+      nibbles[nibbles.length - 1], 0);
+
     r64.push(twoR64[0], twoR64[1], tail2Tag);
   }
 

@@ -1,5 +1,5 @@
 import PathFinder from './PathFinder';
-import { deepEqual, equal, isTrue } from 'utils/common/assertion.js';
+import { deepEqual, equal, isTrue } from 'utils/assertion.js';
 import { generateArray } from 'utils/common/array.utils.js';
 import { identity, getFalse } from 'utils/common/fn.utils.js';
 import Direction from 'model/Direction.enum';

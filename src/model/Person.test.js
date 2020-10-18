@@ -1,7 +1,7 @@
 import ObjectType from './ObjectType.enum.js';
 
 import { createEmptyWorld } from './world/World.test-utils.js';
-import { equal, isTrue } from 'utils/common/assertion.js';
+import { equal, isTrue } from 'utils/assertion.js';
 import createWalkBehavior from './behavior/WalkBehavior.js';
 import { buildPath } from 'utils/path-finding/path-finding.test-utils.js';
 

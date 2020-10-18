@@ -1,5 +1,5 @@
 import interpolate from './interpolate.js';
-import { deepEqual } from 'utils/common/assertion.js';
+import { deepEqual } from 'utils/assertion.js';
 
 describe('interpolate', function () {
 

@@ -1,4 +1,4 @@
-import createEnum from 'utils/common/create-enum.js';
+import createEnum from 'utils/ceate-enum.js';
 import { noop } from 'utils/common/fn.utils.js';
 import { getItem } from 'utils/common/array.utils';
 
