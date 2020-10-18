@@ -1,5 +1,5 @@
-import substitute from '../substitute.js';
-import { equal } from '../../assertion.js';
+import substitute from './substitute.js';
+import { equal } from '../utils/assertion.js';
 
 describe('substitute', function () {
 

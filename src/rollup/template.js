@@ -1,5 +1,5 @@
 const { readFile, writeFile } = require('fs');
-const substitute = require('../utils/common/substitute.js');
+const substitute = require('./substitute.js');
 
 module.exports = function template({ input, output, data }) {
 
