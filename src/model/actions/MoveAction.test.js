@@ -1,5 +1,5 @@
 import MoveAction from './MoveAction.js';
-import spy from 'test-utils/spy.js';
+import { spy } from 'test-utils';
 import { deepEqual } from 'utils/assertion.js';
 
 describe('MoveAction', function () {

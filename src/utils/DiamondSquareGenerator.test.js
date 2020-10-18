@@ -4,7 +4,7 @@ import {
 } from './DiamondSquareGenerator.js';
 
 import { equal, deepEqual } from './assertion.js';
-import spy from 'test-utils/spy.js';
+import { spy } from 'test-utils';
 import { first } from './common/array.utils.js';
 
 describe('Diamond Square', function () {

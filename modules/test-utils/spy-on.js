@@ -1,7 +1,7 @@
-import spy from './spy.js';
+const spy = require('./spy.js');
 
-export default function spyOn(obj, methodName) {
+module.exports = function spyOn(obj, methodName) {
   const method = obj[methodName].bind(obj);
   obj[methodName] = spy((...args) => method(...args));
   return obj[methodName];
-}
+};

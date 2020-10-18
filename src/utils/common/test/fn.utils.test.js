@@ -1,5 +1,6 @@
 import * as fnUtils from '../fn.utils.js';
-import spy from 'test-utils/spy.js';
+import { spy } from 'test-utils';
+
 import {
   equal,
   notEqual,
