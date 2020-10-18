@@ -2,7 +2,7 @@ import createWalkBehavior from '../WalkBehavior.js';
 import ObjectType from 'model/ObjectType.enum.js';
 
 import {
-  calculateDirections
+  buildPath
 } from 'utils/path-finding/path-finding.test-utils.js';
 
 import deepEqual from 'utils/common/deep-equal.js';
@@ -15,7 +15,7 @@ describe('WalkBehavior', function () {
   it('actor with this behavior should go throught given path', () => {
     const world = createEmptyWorld(16, 9);
 
-    const path = calculateDirections([ [ 3, 4 ], [ 4, 4 ] ]);
+    const path = buildPath([ [ 3, 4 ], [ 4, 4 ] ]);
     const person = world.place(2, 3, ObjectType.PERSON);
     person.setBehavior(createWalkBehavior, { path });
 
@@ -29,7 +29,7 @@ describe('WalkBehavior', function () {
   it('switch actor to idle state when path is walked', () => {
     const world = createEmptyWorld(16, 9);
 
-    const path = calculateDirections([ [ 3, 4 ], [ 4, 4 ] ]);
+    const path = buildPath([ [ 3, 4 ], [ 4, 4 ] ]);
     const person = world.place(2, 3, ObjectType.PERSON);
     person.setBehavior(createWalkBehavior, { path });
 
