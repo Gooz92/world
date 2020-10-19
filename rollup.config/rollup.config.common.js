@@ -1,4 +1,4 @@
-const babel = require('rollup-plugin-babel');
+const { babel } = require('@rollup/plugin-babel');
 const resolve = require('rollup-plugin-node-resolve');
 
 module.exports = {
@@ -9,6 +9,7 @@ module.exports = {
   },
   plugins: [
     babel({
+      babelHelpers: 'bundled',
       exclude: 'node_modules/**'
     }),
     resolve({
