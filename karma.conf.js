@@ -1,8 +1,4 @@
-
-const
-  commonRollupConfig = require('./rollup.config/rollup.config.common.js'),
-
-  commonjs = require('rollup-plugin-commonjs');
+const commonRollupConfig = require('./rollup.config/rollup.config.common.js');
 
 module.exports = function (config) {
   config.set({
@@ -25,10 +21,7 @@ module.exports = function (config) {
           defaultOnWarn(warn);
         }
       },
-      plugins: [
-        ...commonRollupConfig.plugins,
-        commonjs()
-      ],
+      plugins: commonRollupConfig.plugins,
       output: {
         format: commonRollupConfig.output.format
 		  }

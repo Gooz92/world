@@ -1,5 +1,6 @@
 const { babel } = require('@rollup/plugin-babel');
 const resolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
 
 module.exports = {
   input: 'src/app.js',
@@ -14,8 +15,9 @@ module.exports = {
     }),
     resolve({
       customResolveOptions: {
-        moduleDirectory: 'src'
+        paths: [ 'src', 'node_modules' ]
       }
-    })
+    }),
+    commonjs()
   ]
 };
