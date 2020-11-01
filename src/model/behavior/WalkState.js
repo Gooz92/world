@@ -1,6 +1,36 @@
 import State from './State.js';
 
 import MoveAction from 'model/actions/MoveAction.js';
+import ObjectType from 'model/ObjectType.enum.js';
+
+/*
+ * . . . . .
+ * . . * . .
+ * . * * * .
+ * . * * * .
+ * . . @ . .
+ * . . . . .
+ *
+ */
+
+const LOOK_AHEAD_OFFSETS = [
+  [ 0, 1 ], [ 0, 2 ], [ 0, 3 ],
+  [ 1, 1 ], [ 1, 2 ],
+  [ -1, 1 ], [ -1, 2 ]
+];
+
+function getOffsets(direction) {
+
+  if (direction.dx === 0) {
+    return LOOK_AHEAD_OFFSETS.map(([ dx, dy ]) => [ dx, direction.dy * dy ]);
+  }
+
+  if (direction.dy === 0) {
+    return LOOK_AHEAD_OFFSETS.map(([ dx, dy ]) => [ dy, direction.dx * dx ]);
+  }
+
+  throw new Error('not yet implemented');
+}
 
 export default class WalkState extends State {
 
@@ -24,6 +54,24 @@ export default class WalkState extends State {
     this.path = path;
     this.pathNodeIndex = 0;
     this.action = null;
+  }
+
+  lookAhead() {
+    const offsets = getOffsets(this.getAction().direction);
+
+    const [ x0, y0 ] = this.actor.position;
+    const objects = [];
+
+    for (let i = 0; i < offsets.length; i++) {
+      const [ dx, dy ] = offsets[i];
+      const tile = this.actor.world.getTile(x0 + dx, y0 + dy);
+      const { object } = tile;
+      if (object && object.type === ObjectType.PERSON) {
+        objects.push(object);
+      }
+    }
+
+    return objects;
   }
 
   getRemainingPath() {

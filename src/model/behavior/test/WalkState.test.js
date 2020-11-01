@@ -7,6 +7,7 @@ import Direction from 'model/Direction.enum.js';
 
 import { createEmptyWorld } from 'model/world/World.test-utils.js';
 import { buildPath } from 'utils/path-finding/path-finding.test-utils.js';
+import createWalkBehavior from '../WalkBehavior.js';
 
 describe('WalkState', function () {
 
@@ -80,6 +81,29 @@ describe('WalkState', function () {
 
       deepEqual(times, [ [ 3, 5 ], [ 6, 7 ], [ 8, 9 ] ]);
     });
+  });
+
+  describe('#lookAhead()', function () {
+
+    let world;
+
+    beforeEach(() => {
+      world = createEmptyWorld(8, 12);
+    });
+
+    it('works', () => {
+      const walker = world.place(3, 3, ObjectType.PERSON);
+      walker.setBehavior(createWalkBehavior, {
+        path: buildPath([ [ 3, 4 ], [ 3, 5 ], [ 3, 6 ], [ 2, 5 ] ], Direction.SOUTH)
+      });
+
+      const idler = world.place(3, 6, ObjectType.PERSON);
+
+      const [ obstacle ] = walker.getState().lookAhead();
+
+      equal(idler, obstacle);
+    });
+
   });
 
 });
