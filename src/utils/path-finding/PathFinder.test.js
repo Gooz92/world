@@ -77,11 +77,14 @@ describe('PathFinder', function () {
        *    ###
        * ###
        *
+       *       / - -
+       * - - -
        */
 
       const path = finder.find(tiles, x0, y0);
 
       equal(path[3].direction, Direction.SOUTH_EAST);
+      equal(path[2].direction, Direction.EAST);
     });
 
     it('return empty array if path not found', () => {

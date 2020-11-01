@@ -50,3 +50,27 @@ export function reCalculatePath(p1, p2, blocked, world) {
 
   return find(isTilePassable, p1[0], p1[1], p2[0], p2[1]);
 }
+
+export function getPathIntersection(actor1, actor2, ticks) {
+  let path1 = actor1.getState().getFurtherPath(ticks);
+  let path2 = actor2.getState().getFurtherPath(ticks);
+
+  if (path1.length > path2.length) {
+    let t = path1;
+    path1 = path2;
+    path2 = t;
+  }
+
+  for (let i = 0; i < path1.length; i++) {
+    const p1 = path1[i];
+    for (let j = 0; j < path2.length; j++) {
+      const p2 = path2[i];
+      if (p1.start >= p2.start && p1.end <= p2.end &&
+        isPositionsEqual(p1.position, p2.position)) {
+        return p1;
+      }
+    }
+  }
+
+  return null;
+}

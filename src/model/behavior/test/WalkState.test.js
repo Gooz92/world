@@ -29,7 +29,7 @@ describe('WalkState', function () {
 
   });
 
-  describe('#lookup()', function () {
+  describe('#getFurtherPath()', () => {
 
     let world;
 
@@ -37,28 +37,49 @@ describe('WalkState', function () {
       world = createEmptyWorld(8, 12);
     });
 
-    it('return null if no obstacle near on path', () => {
-      const person = world.place(2, 3, ObjectType.PERSON);
+    it('return empty array if next path node is unreachable in given time', () => {
+      const person = world.place(2, 2, ObjectType.PERSON);
 
       const walkState = new WalkState(person, {
-        path: buildPath([ [ 3, 4 ] ], Direction.SOUTH_EAST)
+        path: buildPath([ [ 3, 3 ] ], Direction.SOUTH_EAST)
       });
 
-      equal(walkState.lookup(), null);
+      const path = walkState.getFurtherPath(2);
+
+      equal(path.length, 0);
     });
 
-    it('return obstacle on path (if there is one near)', () => {
-      const person = world.place(3, 3, ObjectType.PERSON);
+    it('return next path node if it reachable in given time', () => {
+      const person = world.place(2, 2, ObjectType.PERSON);
 
       const walkState = new WalkState(person, {
-        path: buildPath([ [ 4, 4 ], [ 5, 5 ] ], Direction.SOUTH_EAST)
+        path: buildPath([ [ 2, 3 ] ], Direction.EAST)
       });
 
-      const obstacle = world.place(5, 5, ObjectType.OBSTACLE);
+      const path = walkState.getFurtherPath(3);
 
-      equal(walkState.lookup(), obstacle);
+      equal(path[0].start, 2);
     });
 
+    it('return path segment which can be passed in given time', () => {
+      const person = world.place(2, 2, ObjectType.PERSON);
+
+      const walkState = new WalkState(person, {
+        path: buildPath(
+          [
+            [ 3, 3 ], // 3
+            [ 4, 4 ], // 6
+            [ 4, 5 ], // 8
+            [ 4, 6 ] //  10
+          ],
+          Direction.EAST
+        )
+      });
+
+      const times = walkState.getFurtherPath(9).map(node => [ node.start, node.end ]);
+
+      deepEqual(times, [ [ 3, 5 ], [ 6, 7 ], [ 8, 9 ] ]);
+    });
   });
 
 });
