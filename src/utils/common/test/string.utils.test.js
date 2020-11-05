@@ -74,10 +74,6 @@ describe('stringUtils', function () {
       const str = stringify(p, 1);
       equal(str, '{ x: 1, y: 2 }');
     });
-
-    it('nested arrays', () => {
-      const arr = [ true, null, undefined, NaN, 1, 'asd' ];
-    });
   });
 
 });

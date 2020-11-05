@@ -4,10 +4,10 @@ import { upperFirst } from './string.utils.js';
 import { isTrue, isFalse } from './assertion.js';
 
 const types = {
-  'undefined': void 0,
-  'function': () => 0,
-  'array': [],
-  'object': {}
+  undefined: void 0,
+  function: () => 0,
+  array: [],
+  object: {}
 };
 
 describe('isUtils', function () {

@@ -42,7 +42,8 @@
     "object-curly-spacing": [ 2, "always" ],
     "array-bracket-spacing": [ 2, "always", {
       "objectsInArrays": false
-    }]
+    }],
+    "quote-props": [ 2, "as-needed" ]
   },
 
   "overrides": [

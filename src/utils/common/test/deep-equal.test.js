@@ -102,6 +102,12 @@ describe('deepEqual', function () {
     ));
   });
 
+  // TODO
+  it.skip('object with different keys order should be equal', () => {
+    const x = 1, y = 2;
+    isTrue(deepEqual({ x, y }, { y, x }));
+  });
+
   it('circle references', () => {
 
     const getLoop = () => {

@@ -81,22 +81,41 @@ export default class WalkState extends State {
   getFurtherPath(ticks) {
     const action = this.getAction();
     let t = action.getLeftDuration();
-    let position = action.tiles[1];
+    let [ currentPosition, nextPosition ] = action.tiles;
+    let { direction } = action;
     const path = [];
+
+    let { pathNodeIndex } = this;
 
     while (t <= ticks) {
       const node = {
-        position,
+        position: nextPosition,
+        direction,
         start: t
       };
 
+      const [ currX, currY ] = currentPosition;
+      const [ nextX, nextY ] = nextPosition;
+
+      path.push({
+        position: [
+          (currX + nextX) / 2,
+          (currY + nextY) / 2
+        ],
+        direction,
+        time: node.start
+      });
+
       path.push(node);
 
-      const pathNode = this.path[this.pathNodeIndex++];
-      if (pathNode) {
+      if (pathNodeIndex < this.path.length) {
+        const pathNode = this.path[pathNodeIndex];
+        ++pathNodeIndex;
         t += pathNode.direction.distance;
-        position = pathNode.position;
         node.end = t - 1;
+        currentPosition = nextPosition;
+        nextPosition = pathNode.position;
+        direction = pathNode.direction;
       } else {
         break;
       }

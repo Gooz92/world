@@ -6,6 +6,7 @@
  */
 
 import find from 'utils/path-finding/a-star.js';
+import calculateDistance from 'utils/path-finding/calculate-distance.js';
 
 const isPositionsEqual = (pos1, pos2) => (
   pos1[0] === pos2[0] && pos1[1] === pos2[1]
@@ -51,6 +52,31 @@ export function reCalculatePath(p1, p2, blocked, world) {
   return find(isTilePassable, p1[0], p1[1], p2[0], p2[1]);
 }
 
+const COLLISION_HANDLING_RADIUS = 7;
+
+export function preFilter(actors) {
+  const canCollide = [];
+
+  for (let i = 0; i < actors.length; i++) {
+    const actorA = actors[i];
+    const [ x1, y1 ] = actorA.position;
+    for (let j = i; j < actors.length; j++) {
+      const actorB = actors[j];
+      const [ x2, y2 ] = actorB.position;
+      const distance = calculateDistance(x1, y1, x2, y2);
+
+      if (distance < COLLISION_HANDLING_RADIUS) {
+        if (!canCollide.includes(actorA)) {
+          canCollide.push(actorA);
+        }
+        canCollide.push(actorB);
+      }
+    }
+  }
+
+  return canCollide;
+}
+
 export function getPathIntersection(actor1, actor2, ticks) {
   let path1 = actor1.getState().getFurtherPath(ticks);
   let path2 = actor2.getState().getFurtherPath(ticks);
@@ -65,9 +91,12 @@ export function getPathIntersection(actor1, actor2, ticks) {
     const p1 = path1[i];
     for (let j = 0; j < path2.length; j++) {
       const p2 = path2[i];
-      if (p1.start >= p2.start && p1.end <= p2.end &&
+      if (p1.start >= p2.start && p1.start <= p2.end &&
         isPositionsEqual(p1.position, p2.position)) {
-        return p1;
+        return {
+          position: p1.position,
+          isFrontal: p1.direction.isOpposite(p2.direction)
+        };
       }
     }
   }

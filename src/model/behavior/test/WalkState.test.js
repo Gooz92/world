@@ -50,19 +50,22 @@ describe('WalkState', function () {
       equal(path.length, 0);
     });
 
-    it('return next path node if it reachable in given time', () => {
+    it('return next half-position and path node if it reachable in given time', () => {
       const person = world.place(2, 2, ObjectType.PERSON);
 
       const walkState = new WalkState(person, {
-        path: buildPath([ [ 2, 3 ] ], Direction.EAST)
+        path: buildPath([ [ 2, 3 ] ], Direction.SOUTH)
       });
 
-      const path = walkState.getFurtherPath(3);
+      const path = walkState.getFurtherPath(2);
 
-      equal(path[0].start, 2);
+      deepEqual(path, [
+        { position: [ 2, 2.5 ], direction: Direction.SOUTH, time: 2 },
+        { position: [ 2, 3 ], direction: Direction.SOUTH, start: 2 }
+      ]);
     });
 
-    it('return path segment which can be passed in given time', () => {
+    it('return path nodes and half-positions which can be passed in given time', () => {
       const person = world.place(2, 2, ObjectType.PERSON);
 
       const walkState = new WalkState(person, {
@@ -70,16 +73,23 @@ describe('WalkState', function () {
           [
             [ 3, 3 ], // 3
             [ 4, 4 ], // 6
-            [ 4, 5 ], // 8
-            [ 4, 6 ] //  10
+            [ 4, 5 ] // 8
           ],
           Direction.EAST
         )
       });
 
-      const times = walkState.getFurtherPath(9).map(node => [ node.start, node.end ]);
+      const path = walkState.getFurtherPath(9);
 
-      deepEqual(times, [ [ 3, 5 ], [ 6, 7 ], [ 8, 9 ] ]);
+      deepEqual(path, [
+        { position: [ 2.5, 2.5 ], direction: Direction.SOUTH_EAST, time: 3 },
+        { position: [ 3, 3 ], direction: Direction.SOUTH_EAST, start: 3, end: 5 },
+        { position: [ 3.5, 3.5 ], direction: Direction.SOUTH_EAST, time: 6 },
+        { position: [ 4, 4 ], direction: Direction.SOUTH_EAST, start: 6, end: 7 },
+        { position: [ 4, 4.5 ], direction: Direction.SOUTH, time: 8 },
+        { position: [ 4, 5 ], direction: Direction.SOUTH, start: 8 }
+      ]);
+
     });
   });
 

@@ -48,8 +48,7 @@ describe('walkUtils', function () {
       const p = getPathIntersection(dude1, dude2, 6);
       deepEqual(p, {
         position: [ 1, 1 ],
-        start: 4,
-        end: 5
+        isFrontal: false
       });
     });
 
