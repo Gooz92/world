@@ -102,8 +102,7 @@ describe('deepEqual', function () {
     ));
   });
 
-  // TODO
-  it.skip('object with different keys order should be equal', () => {
+  it('object with different keys order should be equal', () => {
     const x = 1, y = 2;
     isTrue(deepEqual({ x, y }, { y, x }));
   });

@@ -1,4 +1,3 @@
-import { isArraysEqual } from './array.utils.js';
 import { isArray, isObject } from './is.utils.js';
 
 function checkLoop(obj1, obj2, visitedMap) {
@@ -30,9 +29,10 @@ export default function deepEqual(obj1, obj2, visitedMap = new Map()) {
     const keys1 = Object.keys(obj1);
     const keys2 = Object.keys(obj2);
 
-    if (!isArraysEqual(keys1, keys2)) {
+    if (keys1.length !== keys2.length || keys1.some(key =>!keys2.includes(key))) {
       return false;
     }
+
     return keys1.every(key => deepEqual(obj1[key], obj2[key], visitedMap));
   }
 
